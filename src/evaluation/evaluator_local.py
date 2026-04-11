@@ -80,6 +80,20 @@ def _success_result(
     )
 
 
+def _require_local_bridge_cases(task: TaskSpec, evaluator_name: str) -> EvaluationResult | None:
+    if task.test_cases and task.benchmark_cases:
+        return None
+    return _failure_result(
+        "compile",
+        "bridge_cases_missing",
+        (
+            f"{evaluator_name} requires local test and benchmark cases. "
+            "Auto-bridged KernelBench tasks should use the paper evaluator, "
+            "or add a curated bridge override with local cases."
+        ),
+    )
+
+
 class DemoEvaluator(Evaluator):
     def __init__(self) -> None:
         self._reference_cache: dict[str, Any] = {}
@@ -184,6 +198,9 @@ class KernelBenchEvaluator(Evaluator):
     def evaluate(self, task: TaskSpec, code: str, config: StarkConfig) -> EvaluationResult:
         if task.entry_kind != "model_class":
             return _failure_result("compile", "compile_error", f"KernelBenchEvaluator only supports model_class tasks, got entry_kind={task.entry_kind}")
+        bridge_error = _require_local_bridge_cases(task, "KernelBenchEvaluator")
+        if bridge_error is not None:
+            return bridge_error
         torch = _require_torch()
         if not torch.cuda.is_available():
             return _failure_result("runtime", "runtime_error", "runtime_error[cuda]: CUDA is not available")
@@ -291,6 +308,9 @@ class CudaEvaluator(Evaluator):
     def evaluate(self, task: TaskSpec, code: str, config: StarkConfig) -> EvaluationResult:
         if task.entry_kind != "model_class":
             return _failure_result("compile", "compile_error", f"CudaEvaluator only supports model_class tasks, got entry_kind={task.entry_kind}")
+        bridge_error = _require_local_bridge_cases(task, "CudaEvaluator")
+        if bridge_error is not None:
+            return bridge_error
         torch = _require_torch()
         if not torch.cuda.is_available():
             return _failure_result("runtime", "runtime_error", "runtime_error[cuda]: CUDA is not available")

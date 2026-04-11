@@ -1,6 +1,5 @@
 # KernelWeaver
 
-
 ## Default Baseline
 
 The recommended default experiment is `paper_mini`.
@@ -80,6 +79,15 @@ Each user should configure their own `.env` file.
 - `runs/`: outputs, not for Git
 - `stark/`: compatibility package so `import stark...` still works
 
+## Docs
+
+- `docs/01_quickstart.md`
+- `docs/02_architecture.md`
+- `docs/03_config_guide.md`
+- `docs/04_results_guide.md`
+- `docs/05_baseline_playbook.md`
+- `docs/06_bridge_guide.md`
+
 ## Main Config Layers
 
 - `configs/experiments/`: top-level experiment presets
@@ -147,9 +155,7 @@ python stark_cli.py report-paper runs/paper_mini --output-dir runs/paper_report
 
 ## Notes
 
-- `quick_local` is for fast smoke testing.
+- `quick_local` is for fast  testing.
 - `paper_mini` is the default recommended baseline.
 - `paper_full` is the heavier paper-style preset.
 - New users should start from `configs/experiments/` instead of editing low-level configs first.
-- On our own server, we usually reuse the `stark` environment to save space.
-- On a new machine, we recommend creating a fresh `kernelweaver` environment from `environment.yml`.
