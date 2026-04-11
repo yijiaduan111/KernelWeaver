@@ -1,5 +1,6 @@
 # KernelWeaver
 
+
 ## Default Baseline
 
 The recommended default experiment is `paper_mini`.
@@ -17,6 +18,15 @@ It means:
 
 The config file is:
 - `configs/experiments/paper_mini.yaml`
+
+## Environment Setup
+
+### create a clean `kernelweaver` environment
+
+```bash
+conda env create -f environment.yml
+conda activate kernelweaver
+```
 
 ## Before You Run Anything
 
@@ -48,6 +58,9 @@ Then fill in your own values:
 - `OPENAI_BASE_URL` if needed
 - `OPENAI_MODEL` if needed
 
+Do not use someone else's API key.
+Each user should configure their own `.env` file.
+
 ## Repo Layout
 
 - `src/`
@@ -59,7 +72,7 @@ Then fill in your own values:
   - `cli.py`: main CLI
   - `config.py`: layered YAML config loader
   - `models.py`: core dataclasses
-  - `io.py`: run artifact save/load helpers
+  - `io.py`: run artifact save and load helpers
 - `configs/`: all formal configs
 - `scripts/`: thin helper scripts
 - `docs/`: supporting docs
@@ -138,3 +151,5 @@ python stark_cli.py report-paper runs/paper_mini --output-dir runs/paper_report
 - `paper_mini` is the default recommended baseline.
 - `paper_full` is the heavier paper-style preset.
 - New users should start from `configs/experiments/` instead of editing low-level configs first.
+- On our own server, we usually reuse the `stark` environment to save space.
+- On a new machine, we recommend creating a fresh `kernelweaver` environment from `environment.yml`.
