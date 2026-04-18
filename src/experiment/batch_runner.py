@@ -11,7 +11,11 @@ from typing import Any
 import yaml
 
 
-def load_task_manifest(path: str | Path, kernelbench_root: str | Path | None = None) -> dict[str, Any]:
+def load_task_manifest(
+    path: str | Path,
+    kernelbench_root: str | Path | None = None,
+    default_backend: str | None = None,
+) -> dict[str, Any]:
     manifest_path = Path(path)
     if not manifest_path.exists():
         raise FileNotFoundError(f'Could not find manifest: {manifest_path}')
@@ -23,13 +27,13 @@ def load_task_manifest(path: str | Path, kernelbench_root: str | Path | None = N
     if isinstance(tasks, list) and tasks:
         return {
             'name': payload.get('name', manifest_path.stem),
-            'tasks': [_normalize_task(item, payload.get('backend')) for item in tasks],
+            'tasks': [_normalize_task(item, payload.get('backend') or default_backend) for item in tasks],
         }
     source = str(payload.get('source') or '').strip()
     if source == 'kernelbench_all':
         if kernelbench_root is None:
             raise ValueError('kernelbench_root is required for source=kernelbench_all')
-        backend = str(payload.get('backend') or 'triton')
+        backend = str(payload.get('backend') or default_backend or 'triton')
         return {
             'name': payload.get('name', manifest_path.stem),
             'tasks': _discover_all_official_tasks(Path(kernelbench_root), backend=backend),

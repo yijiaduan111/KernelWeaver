@@ -1,4 +1,4 @@
-"""Code agent """
+"""Code agent wrapper."""
 
 from __future__ import annotations
 

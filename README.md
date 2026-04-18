@@ -1,53 +1,39 @@
 # KernelWeaver
 
-## Default Baseline
+KernelWeaver is a clean STARK-style baseline for kernel optimization experiments.
+It is organized for group collaboration: easy to configure, easy to run, and easy to extend.
 
-The recommended default experiment is `paper_mini`.
+## What To Prepare First
 
-It means:
-- backend: `cuda`
-- workflow: `stark`
-- task set: `kb9_cuda`
-- search budget: `10` attempts per task
-- provider routing:
-  - `PlanAgent` -> GPT API
-  - `CodeAgent` -> local `cudaLLM`
-  - `DebugAgent` -> GPT API
-  - `search-agent` path -> local `cudaLLM`
+### 1. Prepare your environment
 
-The config file is:
-- `configs/experiments/paper_mini.yaml`
+Use your own Python or Conda environment.
+The project needs at least:
+- Python 3.10+
+- `PyYAML`
+- `torch`
+- `triton` if you run Triton tasks
+- the official `KernelBench` package path available on disk
 
-## Environment Setup
+### 2. Prepare KernelBench
 
-### create a clean `kernelweaver` environment
-
-```bash
-conda env create -f environment.yml
-conda activate kernelweaver
-```
-
-## Before You Run Anything
-
-### 1. Prepare KernelBench
-
-Put your KernelBench repo somewhere on your own machine or server.
-Then edit:
+Clone KernelBench to your own machine or server, then edit:
 - `configs/runtime/kernelbench_paths.yaml`
 
 Set:
 - `kernelbench_root: /path/to/KernelBench`
 
-### 2. Prepare cudaLLM weights
+### 3. Prepare cudaLLM weights if you use local code generation
 
-Put your full-weight `cudaLLM-8B` directory somewhere on your own machine or server.
-Then edit:
+Edit:
 - `configs/models/providers/local-cudallm.yaml`
 
 Set:
 - `model_path: /path/to/cudaLLM-8B`
 
-### 3. Configure your own API
+### 4. Prepare your own API
+
+Do not use someone else's API.
 
 Copy:
 - `.env.example` -> `.env`
@@ -57,82 +43,99 @@ Then fill in your own values:
 - `OPENAI_BASE_URL` if needed
 - `OPENAI_MODEL` if needed
 
-Do not use someone else's API key.
-Each user should configure their own `.env` file.
+## The Four Things You Usually Choose
 
-## Repo Layout
+For one experiment, we mainly decide:
+- `tasks`
+- `backend`
+- `route`
+- `profile`
+
+The `profile` is always one of:
+- `quick`: smoke check
+- `paper`: paper-style setting
+- `main`: our regular setting
+
+And each `profile` only expands into:
+- `search`
+- `evaluator`
+- `measurement`
+
+## Recommended Defaults
+
+The regular group baseline is:
+- experiment: `main`
+- tasks: `main_l1_15`
+- backend: `cuda`
+- route: `codeagent_cudallm`
+
+That means:
+- `PlanAgent` -> GPT API
+- `CodeAgent` -> local `cudaLLM`
+- `DebugAgent` -> GPT API
+- `search-agent` path -> local `cudaLLM`
+
+## Repository Layout
 
 - `src/`
   - `core/`: bridge, workflow, tree, context
-  - `agents/`: plan/code/debug wrappers
-  - `providers/`: model backends and role routing
-  - `evaluation/`: local evaluator, paper evaluator, validation
-  - `experiment/`: batch summary and report helpers
+  - `agents/`: plan, code, and debug agents
+  - `providers/`: provider implementations and role routing
+  - `evaluation/`: demo evaluator, paper evaluator, validation
+  - `experiment/`: manifest loading and report helpers
   - `cli.py`: main CLI
-  - `config.py`: layered YAML config loader
-  - `models.py`: core dataclasses
-  - `io.py`: run artifact save and load helpers
-- `configs/`: all formal configs
+  - `config.py`: layered YAML loader
+  - `models.py`: shared dataclasses
+  - `io.py`: run save/load helpers
+- `configs/`
+  - `experiments/`: top-level experiment presets
+  - `tasks/`: task manifests
+  - `models/providers/`: provider connection defaults
+  - `models/routes/`: plan/code/debug/search routing
+  - `search/`: search-tree settings
+  - `evaluation/evaluators/`: evaluator path and reference modes
+  - `evaluation/measurement/`: correctness and timing budgets
+  - `runtime/`: paths, GPU visibility, env file
 - `scripts/`: thin helper scripts
-- `docs/`: supporting docs
-- `tests/`: minimal regression tests
+- `docs/`: onboarding and architecture notes
+- `tests/`: small regression tests
 - `runs/`: outputs, not for Git
 - `stark/`: compatibility package so `import stark...` still works
 
-## Docs
-
-- `docs/01_quickstart.md`
-- `docs/02_architecture.md`
-- `docs/03_config_guide.md`
-- `docs/04_results_guide.md`
-- `docs/05_baseline_playbook.md`
-- `docs/06_bridge_guide.md`
-
-## Main Config Layers
-
-- `configs/experiments/`: top-level experiment presets
-- `configs/tasks/`: task manifests
-- `configs/models/providers/`: provider connection defaults
-- `configs/models/routes/`: per-role routing
-- `configs/search/`: search budget and temperatures
-- `configs/evaluation/evaluators/`: evaluator kind
-- `configs/evaluation/measurement/`: warmup and trial counts
-- `configs/runtime/`: paths, GPU visibility, env file
-
 ## Most Common Commands
 
-### Run the default 9-task CUDA baseline
+### Run the regular baseline batch
 
 ```bash
 python stark_cli.py run-kernelbench-batch \
-  --experiment paper_mini \
-  --output-dir runs/paper_mini
+  --experiment main \
+  --output-dir runs/main
 ```
 
-### Run one KernelBench task with the default baseline
+### Run one KernelBench task
 
 ```bash
 python stark_cli.py run-kernelbench \
-  --experiment paper_mini \
+  --experiment main \
   --level 1 \
   --problem-id 25 \
   --output-dir runs/l1_p25
 ```
 
-### Run the smoke preset
+### Run the smoke setting
 
 ```bash
 python stark_cli.py run-kernelbench-batch \
-  --experiment quick_local \
-  --output-dir runs/quick_local
+  --experiment quick \
+  --output-dir runs/quick
 ```
 
-### Run the full paper-style preset
+### Run the paper-style setting
 
 ```bash
 python stark_cli.py run-kernelbench-batch \
-  --experiment paper_full \
-  --output-dir runs/paper_full
+  --experiment paper \
+  --output-dir runs/paper
 ```
 
 ### Inspect one run
@@ -141,21 +144,21 @@ python stark_cli.py run-kernelbench-batch \
 python stark_cli.py show-run runs/l1_p25/run.json
 ```
 
-### Re-validate one run
+### Verify one run again
 
 ```bash
 python stark_cli.py verify-kernelbench runs/l1_p25/run.json
 ```
 
-### Build a paper-style summary report
+### Build one summary report
 
 ```bash
-python stark_cli.py report-paper runs/paper_mini --output-dir runs/paper_report
+python stark_cli.py report-paper runs/main --output-dir runs/paper_report
 ```
 
 ## Notes
 
-- `quick_local` is for fast  testing.
-- `paper_mini` is the default recommended baseline.
-- `paper_full` is the heavier paper-style preset.
-- New users should start from `configs/experiments/` instead of editing low-level configs first.
+- `quick` is only for checking that the chain still works.
+- `paper` is for a more paper-aligned setting.
+- `main` is the default setting for our own experiments.
+- New users should start from `configs/experiments/` and only then drill into lower layers.

@@ -1,3 +1,4 @@
+"""Compatibility package that exposes the new source layout as `stark`."""
 
 from pathlib import Path
 import sys

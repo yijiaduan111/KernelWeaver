@@ -15,12 +15,8 @@ from .config import (
     evaluator_profile,
     evaluator_profile_choices,
     experiment_profile,
-    kernelbench_evaluation_profile_choices,
-    kernelbench_evaluator_choices,
     kernelbench_evaluator_kind,
-    kernelbench_preset_choices,
     legacy_evaluation_profile_name,
-    legacy_kernelbench_evaluator_name,
     legacy_preset_name,
     load_env_file,
     measurement_profile,
@@ -48,9 +44,7 @@ from .core.bridge import KernelBenchTaskBridge
 from .core.workflow import run_stark, run_workflow
 from .demo import build_demo_tasks
 from .evaluation import (
-    CudaEvaluator,
     DemoEvaluator,
-    KernelBenchEvaluator,
     KernelBenchPaperEvaluator,
     TritonEvaluator,
     load_validation,
@@ -88,9 +82,6 @@ ROUTE_CHOICES = agent_provider_profile_choices()
 TASK_CHOICES = task_profile_choices()
 RUNTIME_CHOICES = runtime_profile_choices()
 ROLE_PROVIDER_CHOICES = ["inherit", *PROVIDER_CHOICES]
-LEGACY_PRESET_CHOICES = kernelbench_preset_choices()
-LEGACY_EVALUATOR_CHOICES = kernelbench_evaluator_choices()
-LEGACY_EVALUATION_PROFILE_CHOICES = kernelbench_evaluation_profile_choices()
 
 
 def _demo_task_map() -> dict[str, Any]:
@@ -154,7 +145,7 @@ def _add_shared_run_arguments(parser: argparse.ArgumentParser, task_choices: lis
 
 
 def _add_kernelbench_run_arguments(parser: argparse.ArgumentParser, include_problem_flags: bool = True) -> None:
-    parser.add_argument("--experiment", "--run-profile", dest="run_profile", default="paper_mini", choices=EXPERIMENT_CHOICES)
+    parser.add_argument("--experiment", "--run-profile", dest="run_profile", default="main", choices=EXPERIMENT_CHOICES)
     parser.add_argument("--kernelbench-root", default=None)
     if include_problem_flags:
         parser.add_argument("--level", type=int, required=True)
@@ -167,9 +158,6 @@ def _add_kernelbench_run_arguments(parser: argparse.ArgumentParser, include_prob
     parser.add_argument("--evaluator-config", "--evaluator-profile", dest="evaluator_profile", default=None, choices=EVALUATOR_CHOICES)
     parser.add_argument("--measurement-config", "--measurement-profile", dest="measurement_profile", default=None, choices=MEASUREMENT_CHOICES)
     parser.add_argument("--route-config", "--agent-provider-profile", dest="agent_provider_profile", default=None, choices=ROUTE_CHOICES)
-    parser.add_argument("--preset", default=None, choices=LEGACY_PRESET_CHOICES, help="Legacy alias for experiment selection.")
-    parser.add_argument("--evaluation-profile", default=None, choices=LEGACY_EVALUATION_PROFILE_CHOICES, help="Legacy alias for measurement selection.")
-    parser.add_argument("--kernelbench-evaluator", default=None, choices=LEGACY_EVALUATOR_CHOICES, help="Legacy alias for evaluator selection.")
     parser.add_argument("--max-attempts", type=int, default=None)
     parser.add_argument("--epsilon", type=float, default=None)
     parser.add_argument("--output-dir", type=str, required=True)
@@ -187,19 +175,19 @@ def _add_provider_routing_arguments(parser: argparse.ArgumentParser) -> None:
 
 
 def _resolve_run_name(args: argparse.Namespace) -> str:
-    return resolve_run_profile(getattr(args, "run_profile", None), legacy_preset=getattr(args, "preset", None))
+    return resolve_run_profile(getattr(args, "run_profile", None))
 
 
 def _resolve_search_name(args: argparse.Namespace, run_name: str) -> str:
-    return resolve_search_profile(getattr(args, "search_profile", None), run_name, legacy_preset=getattr(args, "preset", None))
+    return resolve_search_profile(getattr(args, "search_profile", None), run_name)
 
 
 def _resolve_evaluator_name(args: argparse.Namespace, run_name: str) -> str:
-    return resolve_evaluator_profile(getattr(args, "evaluator_profile", None), run_name, legacy_evaluator=getattr(args, "kernelbench_evaluator", None))
+    return resolve_evaluator_profile(getattr(args, "evaluator_profile", None), run_name)
 
 
 def _resolve_measurement_name(args: argparse.Namespace, run_name: str) -> str:
-    return resolve_measurement_profile(getattr(args, "measurement_profile", None), run_name, legacy_evaluation_profile=getattr(args, "evaluation_profile", None))
+    return resolve_measurement_profile(getattr(args, "measurement_profile", None), run_name)
 
 
 def _resolve_route_name(args: argparse.Namespace, run_name: str) -> str:
@@ -328,10 +316,11 @@ def _close_provider(provider) -> None:
 
 def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
     search_name = _resolve_search_name(args, run_name)
-    evaluator_name = _resolve_evaluator_name(args, run_name) if getattr(args, "command", "") in {"run-kernelbench", "run-kernelbench-batch"} else "local"
+    evaluator_name = _resolve_evaluator_name(args, run_name) if getattr(args, "command", "") in {"run-kernelbench", "run-kernelbench-batch"} else "quick"
     measurement_name = _resolve_measurement_name(args, run_name) if getattr(args, "command", "") in {"run-kernelbench", "run-kernelbench-batch"} else "quick"
     route = _resolve_provider_routing(args, run_name)
     search_settings = search_profile(search_name)
+    evaluator_settings = evaluator_profile(evaluator_name)
     measure_settings = measurement_profile(measurement_name)
     max_attempts = int(getattr(args, "max_attempts", None) or search_settings.get("max_attempts", 6))
     epsilon = float(getattr(args, "epsilon", None) if getattr(args, "epsilon", None) is not None else search_settings.get("epsilon", 0.4))
@@ -363,16 +352,14 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
         paper_num_warmup=int(measure_settings.get("paper_num_warmup", 5)),
         paper_discard_first=int(measure_settings.get("paper_discard_first", 1)),
         timing_method=str(measure_settings.get("timing_method", "cuda_event")),
+        reference_modes=list(evaluator_settings.get("reference_modes") or ["torch_eager"]),
     )
 
 
 def _kernelbench_evaluator(backend: str, evaluator_name: str):
-    kind = kernelbench_evaluator_kind(evaluator_name)
-    if kind == "paper":
-        return KernelBenchPaperEvaluator()
-    if backend == "cuda":
-        return CudaEvaluator()
-    return KernelBenchEvaluator()
+    del backend
+    del evaluator_name
+    return KernelBenchPaperEvaluator()
 
 
 def _run_demo(args: argparse.Namespace) -> int:
@@ -408,7 +395,7 @@ def _run_kernelbench(args: argparse.Namespace) -> int:
     provider = _build_provider(args, run_name)
     config = _build_config(args, run_name)
     try:
-        result = run_workflow(task, config, provider, _kernelbench_evaluator(backend, config.evaluator_profile or "local"), workflow=workflow)
+        result = run_workflow(task, config, provider, _kernelbench_evaluator(backend, config.evaluator_profile or "quick"), workflow=workflow)
         return _save_and_print(result, args.output_dir)
     finally:
         _close_provider(provider)
@@ -419,7 +406,7 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
     backend = _resolve_backend(args, run_name)
     workflow = _resolve_workflow(args, run_name)
     kernelbench_root = _resolve_kernelbench_root(args, run_name)
-    manifest = load_task_manifest(_resolve_manifest_path(args, run_name), kernelbench_root=kernelbench_root)
+    manifest = load_task_manifest(_resolve_manifest_path(args, run_name), kernelbench_root=kernelbench_root, default_backend=backend)
     output_root = Path(args.output_dir)
     output_root.mkdir(parents=True, exist_ok=True)
     bridge = KernelBenchTaskBridge()

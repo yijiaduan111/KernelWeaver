@@ -1,21 +1,22 @@
 # Baseline Playbook
 
-## Repo Roles
-- `/data/dyj/STARK`: frozen reference repo
-- `/data/dyj/KernelWeaver`: clean collaboration baseline
+## What This Repo Is
 
-## Recommended Team Practice
-1. Start with `paper_mini` for the default 9-task CUDA baseline
-2. Use `quick_local` only when you need a very fast smoke check
-3. Use `paper_full` only when you want the heavier paper-style setting
+- `KernelWeaver` is the clean collaboration baseline
+- It is the repo teammates should read and extend
 
-## Keep The Repo Clean
-- Do not keep ad-hoc scripts in the repo root
-- Do not commit `runs/`
-- Do not leave temporary configs after debugging
-- Prefer changing YAML configs instead of patching CLI for one-off runs
+## Suggested Workflow
 
-## When To Edit What
-- Need a new task pack: add a file under `configs/tasks/`
-- Need a new provider: add one provider config and, if needed, one route config
-- Need a new experiment preset: add one file under `configs/experiments/`
+1. Start with `quick` if you only want a smoke test
+2. Use `main` for regular experiments
+3. Use `paper` when you need a heavier paper-style setup
+
+## Practical Rule
+
+When you run an experiment, decide these four things first:
+- `tasks`
+- `backend`
+- `route`
+- `profile`
+
+Then only edit lower-level files if you really need to.

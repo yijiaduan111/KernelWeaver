@@ -17,9 +17,9 @@ class KernelbenchFlowTests(unittest.TestCase):
             max_attempts=2,
             benchmark_loops=1,
             warmup_loops=0,
-            run_profile='quick_local',
-            search_profile='quick_local',
-            evaluator_profile='local',
+            run_profile='quick',
+            search_profile='quick',
+            evaluator_profile='quick',
             measurement_profile='quick',
         )
         result = run_stark(task, config, MockProvider(), DemoEvaluator())

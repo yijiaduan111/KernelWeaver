@@ -1,27 +1,26 @@
 # Results Guide
 
-## Single Task Output
-A single task directory usually contains:
-- `run.json`: full structured run record
-- `best_code.py`: current best candidate code
-- `validation.json`: replay validation result
+## Main Output Files
 
-## Batch Output
-A batch output directory usually contains:
-- `summary.json`: machine-readable batch summary
-- `summary.csv`: spreadsheet-friendly summary
-- one subdirectory per task
+Each task run usually writes:
+- `run.json`
+- `best_code.py`
+- `validation.json`
+
+A batch run usually writes:
+- `summary.json`
+- `summary.csv`
 
 ## Important Fields
-- `run_profile`: the selected experiment
-- `search_profile`: search config name
-- `evaluator_profile`: evaluator config name
-- `measurement_profile`: measurement config name
-- `kernelbench_evaluator`: resolved evaluator kind, such as `local` or `paper`
 
-## Useful CLI
+- `run_profile`: high-level preset name
+- `search_profile`: resolved search config
+- `evaluator_profile`: resolved evaluator config
+- `measurement_profile`: resolved measurement config
+- `kernelbench_evaluator`: actual evaluator kind
+
+## Report Command
+
 ```bash
-python stark_cli.py show-run runs/some_task/run.json
-python stark_cli.py verify-kernelbench runs/some_task/run.json
-python stark_cli.py report-paper runs/paper_mini --output-dir runs/paper_report
+python stark_cli.py report-paper runs/main --output-dir runs/paper_report
 ```

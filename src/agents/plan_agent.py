@@ -1,4 +1,4 @@
-"""Plan agent """
+"""Plan agent wrapper."""
 
 from __future__ import annotations
 

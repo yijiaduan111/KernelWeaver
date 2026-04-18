@@ -225,7 +225,7 @@ def load_run(path: str | Path) -> RunResult:
     config = _load_config(config_payload)
     legacy_preset = payload.get("preset", config_payload.get("preset", getattr(config, "preset", "default")))
     legacy_measurement = payload.get("evaluation_profile", config_payload.get("evaluation_profile", getattr(config, "evaluation_profile", "kernelbench_reduced_v1")))
-    legacy_evaluator = payload.get("kernelbench_evaluator", config_payload.get("kernelbench_evaluator", getattr(config, "kernelbench_evaluator", "local")))
+    legacy_evaluator = payload.get("kernelbench_evaluator", config_payload.get("kernelbench_evaluator", getattr(config, "kernelbench_evaluator", "paper")))
 
     run_profile_present = "run_profile" in payload or "run_profile" in config_payload
     raw_run_profile = payload["run_profile"] if "run_profile" in payload else config_payload.get("run_profile")

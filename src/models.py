@@ -176,8 +176,8 @@ class StarkConfig:
     context_limit: int = 5
     leaderboard_size: int = 3
     debug_retry_limit: int = 1
-    benchmark_loops: int = 300
-    warmup_loops: int = 20
+    benchmark_loops: int = 50
+    warmup_loops: int = 5
     seed: int = 7
     verbose: bool = False
     run_profile: str | None = None
@@ -191,13 +191,14 @@ class StarkConfig:
     debug_provider: str | None = None
     search_provider: str | None = None
     preset: str = "default"
-    evaluation_profile: str = "default"
-    kernelbench_evaluator: str = "local"
+    evaluation_profile: str = "kernelbench_reduced_v1"
+    kernelbench_evaluator: str = "paper"
     num_correct_trials: int = 1
-    num_perf_trials: int = 10
+    num_perf_trials: int = 20
     paper_num_warmup: int = 5
     paper_discard_first: int = 1
     timing_method: str = "cuda_event"
+    reference_modes: list[str] = field(default_factory=lambda: ["torch_eager"])
 
 
 @dataclass(slots=True)
@@ -226,8 +227,8 @@ class RunResult:
     evaluator_profile: str | None = None
     measurement_profile: str | None = None
     preset: str = "default"
-    evaluation_profile: str = "default"
-    kernelbench_evaluator: str = "local"
+    evaluation_profile: str = "kernelbench_reduced_v1"
+    kernelbench_evaluator: str = "paper"
     grounded_regions: list[GroundedRegion] = field(default_factory=list)
     reference_runtimes: dict[str, float | None] = field(default_factory=dict)
     speedups: dict[str, float | None] = field(default_factory=dict)

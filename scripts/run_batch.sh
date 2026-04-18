@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PYTHON_BIN="${PYTHON_BIN:-python}"
-EXPERIMENT="${EXPERIMENT:-quick_local}"
+EXPERIMENT="${EXPERIMENT:-main}"
 TASK_CONFIG="${TASK_CONFIG:-}"
 OUTPUT_DIR="${OUTPUT_DIR:-runs/batch}"
 

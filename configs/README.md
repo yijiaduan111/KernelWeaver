@@ -1,3 +1,7 @@
+# Config Layout
+
+Configs are split by responsibility so new users do not need to edit one large file.
+
 ## Top Level
 - `experiments/`: the main presets users should select first
 - `tasks/`: task manifests

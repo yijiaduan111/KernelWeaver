@@ -1,36 +1,33 @@
 # Config Guide
 
-## Main Idea
-Most users should start with one experiment file under `configs/experiments/`.
-An experiment file combines several lower-level config layers.
+## The Main Idea
 
-## Config Layers
-- `experiments/`: full preset users select from CLI
-- `tasks/`: which problems to run
-- `models/providers/`: provider connection defaults
-- `models/routes/`: plan/code/debug/search routing
-- `search/`: search budget and temperatures
-- `evaluation/evaluators/`: `local` or `paper`
-- `evaluation/measurement/`: warmup, correctness trials, perf trials
-- `runtime/`: paths, GPU visibility, env file
+Every experiment is mainly described by four things:
+- `tasks`
+- `backend`
+- `route`
+- `profile`
 
-## Good Editing Order
-1. Copy `configs/experiments/template_custom.yaml`
-2. Change the referenced task, route, search, evaluator, or measurement config
-3. Only edit the lower-level YAML files when you need a deeper change
+The `profile` is only a short name for:
+- `search`
+- `evaluator`
+- `measurement`
 
-## Common Questions
-### Change the task list
-Edit `configs/tasks/*.yaml`
+## Config Folders
 
-### Change the base model or API endpoint
-Edit `configs/models/providers/*.yaml`
+- `configs/experiments/`: high-level presets
+- `configs/tasks/`: which problems to run
+- `configs/models/providers/`: provider defaults
+- `configs/models/routes/`: which provider each role uses
+- `configs/search/`: search budget and temperatures
+- `configs/evaluation/evaluators/`: evaluator path and reference modes
+- `configs/evaluation/measurement/`: correctness and timing counts
+- `configs/runtime/`: paths and device settings
 
-### Make code role use a different model
-Edit `configs/models/routes/*.yaml`
+## Which File To Edit
 
-### Change search budget
-Edit `configs/search/*.yaml`
-
-### Change warmup and trial counts
-Edit `configs/evaluation/measurement/*.yaml`
+- Change the task list: edit `configs/tasks/`
+- Change model routing: edit `configs/models/routes/`
+- Change evaluator reference modes: edit `configs/evaluation/evaluators/`
+- Change correctness/timing budget: edit `configs/evaluation/measurement/`
+- Change the recommended preset combination: edit `configs/experiments/`

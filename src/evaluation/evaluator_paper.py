@@ -1,27 +1,16 @@
 from __future__ import annotations
 
-"""
-Paper-aligned KernelBench evaluator.
-This evaluator reuses the official KernelBench evaluation 
-"""
+"""KernelBench evaluator aligned with the official open-source helpers."""
 
 import sys
 from pathlib import Path
 from typing import Any, Callable
 
-from .evaluator_local import (
-    PRIMARY_REFERENCE,
-    Evaluator,
-    _build_speedups,
-    _failure_result,
-    _require_torch,
-    _success_result,
-)
 from ..models import EvaluationResult, StarkConfig, TaskSpec
+from .base import PRIMARY_REFERENCE, REFERENCE_MODES, Evaluator, _build_speedups, _failure_result, _require_torch, _success_result
 
 
 def _load_official_kernelbench_symbols(task: TaskSpec | None = None) -> tuple[Callable[..., Any], Callable[..., Any]]:
-    """Import the official KernelBench evaluation and timing helpers lazily."""
     try:
         from kernelbench.eval import eval_kernel_against_ref
         from kernelbench.timing import measure_ref_program_time
@@ -35,23 +24,23 @@ def _load_official_kernelbench_symbols(task: TaskSpec | None = None) -> tuple[Ca
 
 def _ensure_kernelbench_on_sys_path(task: TaskSpec | None = None) -> None:
     candidates: list[Path] = []
-    roots: list[Path] = []
-    if task is not None and getattr(task, 'source_root', None):
-        roots.append(Path(str(task.source_root)))
-    roots.append(Path('/data/dyj/cuda_kernel_eval/refs/KernelBench'))
-    seen: set[str] = set()
-    for root in roots:
-        for candidate in (root / 'src', root):
-            candidate_str = str(candidate)
-            if not candidate.exists() or candidate_str in seen:
-                continue
-            seen.add(candidate_str)
-            if candidate_str not in sys.path:
-                sys.path.insert(0, candidate_str)
+    if task is not None and getattr(task, "source_root", None):
+        source_root = Path(str(task.source_root))
+        candidates.extend([source_root / "src", source_root])
+    for candidate in candidates:
+        candidate_str = str(candidate)
+        if candidate.exists() and candidate_str not in sys.path:
+            sys.path.insert(0, candidate_str)
+
+
+def _selected_reference_modes(config: StarkConfig) -> list[str]:
+    raw_modes = list(getattr(config, "reference_modes", []) or [PRIMARY_REFERENCE])
+    filtered = [mode for mode in REFERENCE_MODES if mode in raw_modes]
+    return filtered or [PRIMARY_REFERENCE]
 
 
 class KernelBenchPaperEvaluator(Evaluator):
-    """Evaluate a candidate through the official KernelBench path."""
+    """Evaluate one candidate with the official KernelBench correctness and timing path."""
 
     def evaluate(self, task: TaskSpec, code: str, config: StarkConfig) -> EvaluationResult:
         if task.entry_kind != "model_class":
@@ -127,13 +116,14 @@ class KernelBenchPaperEvaluator(Evaluator):
             eager_fallback=eager_fallback,
         )
         speedups = _build_speedups(candidate_runtime, reference_runtimes)
+        primary_reference = PRIMARY_REFERENCE if PRIMARY_REFERENCE in reference_runtimes else next(iter(reference_runtimes.keys()), PRIMARY_REFERENCE)
         result = _success_result(
             candidate_runtime,
-            reference_runtime=reference_runtimes.get(PRIMARY_REFERENCE),
-            speedup=speedups.get(PRIMARY_REFERENCE),
+            reference_runtime=reference_runtimes.get(primary_reference),
+            speedup=speedups.get(primary_reference),
             reference_runtimes=reference_runtimes,
             speedups=speedups,
-            primary_reference=PRIMARY_REFERENCE,
+            primary_reference=primary_reference,
         )
         result.logs.extend(_metadata_logs(metadata))
         return result
@@ -146,33 +136,36 @@ class KernelBenchPaperEvaluator(Evaluator):
         device,
         eager_fallback: float | None,
     ) -> dict[str, float | None]:
-        reference_runtimes: dict[str, float | None] = {
-            PRIMARY_REFERENCE: self._measure_reference_mode(
-                task,
-                config,
-                measure_ref_program_time,
-                device=device,
-                use_torch_compile=False,
-                compile_mode=None,
-            ),
-            "torch_compile_default": self._measure_reference_mode(
-                task,
-                config,
-                measure_ref_program_time,
-                device=device,
-                use_torch_compile=True,
-                compile_mode="default",
-            ),
-            "torch_compile_max_autotune": self._measure_reference_mode(
-                task,
-                config,
-                measure_ref_program_time,
-                device=device,
-                use_torch_compile=True,
-                compile_mode="max-autotune",
-            ),
-        }
-        if reference_runtimes[PRIMARY_REFERENCE] is None:
+        reference_runtimes: dict[str, float | None] = {}
+        for mode in _selected_reference_modes(config):
+            if mode == PRIMARY_REFERENCE:
+                reference_runtimes[mode] = self._measure_reference_mode(
+                    task,
+                    config,
+                    measure_ref_program_time,
+                    device=device,
+                    use_torch_compile=False,
+                    compile_mode=None,
+                )
+            elif mode == "torch_compile_default":
+                reference_runtimes[mode] = self._measure_reference_mode(
+                    task,
+                    config,
+                    measure_ref_program_time,
+                    device=device,
+                    use_torch_compile=True,
+                    compile_mode="default",
+                )
+            elif mode == "torch_compile_max_autotune":
+                reference_runtimes[mode] = self._measure_reference_mode(
+                    task,
+                    config,
+                    measure_ref_program_time,
+                    device=device,
+                    use_torch_compile=True,
+                    compile_mode="max-autotune",
+                )
+        if PRIMARY_REFERENCE in reference_runtimes and reference_runtimes[PRIMARY_REFERENCE] is None:
             reference_runtimes[PRIMARY_REFERENCE] = eager_fallback
         return reference_runtimes
 

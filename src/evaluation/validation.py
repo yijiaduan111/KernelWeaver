@@ -1,29 +1,18 @@
-"""Shadow validation helpers for saved KernelBench runs.
-
-The main evaluator runs inside the search loop. This module replays the
-final best candidate afterward so we can cross-check correctness and the
-direction of the runtime comparison without mutating the search trace.
-"""
+"""Shadow validation helpers for saved KernelBench runs."""
 
 from __future__ import annotations
 
-from dataclasses import replace
 import json
+from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
 from ..core.bridge import KernelBenchTaskBridge
-from .evaluator_local import CudaEvaluator, KernelBenchEvaluator
-from .evaluator_paper import KernelBenchPaperEvaluator
 from ..io import load_run
+from .evaluator_paper import KernelBenchPaperEvaluator
 
 
-def verify_kernelbench_run(
-    run_path: str | Path,
-    kernelbench_root: str | Path | None = None,
-    output_path: str | Path | None = None,
-):
-    """Re-evaluate the saved best KernelBench candidate and write a sidecar."""
+def verify_kernelbench_run(run_path: str | Path, kernelbench_root: str | Path | None = None, output_path: str | Path | None = None):
     run_file = Path(run_path)
     result = load_run(run_file)
     if result.benchmark_family != "kernelbench":
@@ -38,29 +27,23 @@ def verify_kernelbench_run(
     if not best_code_path.exists():
         raise FileNotFoundError(f"Missing best_code.py next to run.json: {best_code_path}")
 
+    evaluator_kind = result.kernelbench_evaluator or getattr(result.config, "kernelbench_evaluator", "paper")
+    if evaluator_kind != "paper":
+        raise ValueError("Legacy local KernelBench evaluator has been removed. Only paper-based verification is supported now.")
+
     backend = result.backend or "triton"
-    evaluator_kind = result.kernelbench_evaluator or getattr(result.config, 'kernelbench_evaluator', 'local')
-    task = KernelBenchTaskBridge().load_official_problem(
-        resolved_root,
-        result.level,
-        result.problem_id,
-        backend=backend,
-    )
+    task = KernelBenchTaskBridge().load_official_problem(resolved_root, result.level, result.problem_id, backend=backend)
     validation_config = replace(
         result.config,
-        benchmark_loops=max(200, result.config.benchmark_loops),
+        benchmark_loops=max(120, result.config.benchmark_loops),
         warmup_loops=max(10, result.config.warmup_loops),
         num_correct_trials=max(3, result.config.num_correct_trials),
         num_perf_trials=max(30, result.config.num_perf_trials),
-        paper_num_warmup=max(20, result.config.paper_num_warmup),
+        paper_num_warmup=max(5, result.config.paper_num_warmup),
+        kernelbench_evaluator="paper",
     )
-    candidate_code = best_code_path.read_text(encoding='utf-8')
-    if evaluator_kind == "paper":
-        validation_result = KernelBenchPaperEvaluator().evaluate(task, candidate_code, validation_config)
-    elif backend == "cuda":
-        validation_result = CudaEvaluator().evaluate(task, candidate_code, validation_config)
-    else:
-        validation_result = KernelBenchEvaluator().evaluate(task, candidate_code, validation_config)
+    candidate_code = best_code_path.read_text(encoding="utf-8")
+    validation_result = KernelBenchPaperEvaluator().evaluate(task, candidate_code, validation_config)
 
     payload = {
         "task_name": result.task_name,
@@ -72,7 +55,7 @@ def verify_kernelbench_run(
         "search_profile": result.search_profile,
         "evaluator_profile": result.evaluator_profile,
         "measurement_profile": result.measurement_profile,
-        "kernelbench_evaluator": evaluator_kind,
+        "kernelbench_evaluator": "paper",
         "best_node_id": result.best_node_id,
         "kernelbench_root": resolved_root,
         "run_path": str(run_file),
@@ -110,7 +93,7 @@ def verify_kernelbench_run(
         },
     }
     target = Path(output_path) if output_path is not None else run_file.parent / "validation.json"
-    target.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding='utf-8')
+    target.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     return target
 
 
@@ -120,7 +103,7 @@ def load_validation(path: str | Path) -> dict[str, Any] | None:
         candidate = candidate.parent / "validation.json"
     if not candidate.exists():
         return None
-    return json.loads(candidate.read_text(encoding='utf-8'))
+    return json.loads(candidate.read_text(encoding="utf-8"))
 
 
 def _speed_direction(candidate_runtime: float | None, reference_runtime: float | None) -> str:

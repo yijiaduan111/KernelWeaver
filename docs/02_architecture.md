@@ -1,29 +1,27 @@
 # Architecture
 
-## Core Flow
-- `src/core/bridge.py`: loads official KernelBench tasks into internal `TaskSpec`
-- `src/core/workflow.py`: STARK workflow and related workflow modes
-- `src/core/tree.py`: search tree, leaderboard, pruning state
-- `src/core/context.py`: dynamic context construction for each role
+## Core Modules
 
-## Agent Layer
-- `src/agents/plan_agent.py`
-- `src/agents/code_agent.py`
-- `src/agents/debug_agent.py`
+- `src/core/bridge.py`: bridge from KernelBench tasks to the STARK-style workflow
+- `src/core/workflow.py`: main workflow implementations
+- `src/core/tree.py`: search-tree state
+- `src/core/context.py`: role-specific context construction
 
-These files are intentionally thin. They pass role-specific requests to providers.
+## Agent Modules
 
-## Provider Layer
-- `src/providers/openai_provider.py`: OpenAI-compatible API backend
-- `src/providers/cudallm_provider.py`: local full-weight cudaLLM backend
-- `src/providers/mock_provider.py`: deterministic smoke-test backend
-- `src/providers/role_router.py`: per-role provider dispatch
+- `src/agents/plan_agent.py`: planning step
+- `src/agents/code_agent.py`: code generation step
+- `src/agents/debug_agent.py`: debugging step
 
-## Evaluation Layer
-- `src/evaluation/evaluator_local.py`: local developer evaluator
-- `src/evaluation/evaluator_paper.py`: paper-style KernelBench path
-- `src/evaluation/validation.py`: replay and shadow validation
+## Provider Modules
 
-## Experiment Layer
-- `src/experiment/batch_runner.py`: manifest loading and batch summaries
-- `src/experiment/report_builder.py`: paper-style report generation
+- `src/providers/openai_provider.py`: OpenAI-compatible API provider
+- `src/providers/cudallm_provider.py`: local cudaLLM provider
+- `src/providers/role_router.py`: per-role routing
+
+## Evaluation Modules
+
+- `src/evaluation/base.py`: shared evaluator helpers
+- `src/evaluation/demo.py`: demo and Triton evaluators
+- `src/evaluation/evaluator_paper.py`: official KernelBench-based evaluator
+- `src/evaluation/validation.py`: saved-run revalidation

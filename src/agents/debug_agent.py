@@ -1,4 +1,4 @@
-"""Debug agent """
+"""Debug agent wrapper."""
 
 from __future__ import annotations
 

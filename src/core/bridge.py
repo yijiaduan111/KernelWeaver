@@ -416,45 +416,7 @@ _SELECTED_TARGETS: dict[tuple[int, int], dict[str, Any]] = {
     },
 }
 
-def _sanitize_problem_slug(value: str) -> str:
-    slug = re.sub(r"[^0-9a-zA-Z]+", "_", value).strip("_").lower()
-    return slug or "problem"
-
-
-def _problem_title_suffix(problem_path: Path, description: str) -> str:
-    stem = problem_path.stem
-    _, _, suffix = stem.partition("_")
-    candidate = suffix.replace("_", " ").strip() if suffix else ""
-    if candidate:
-        return candidate
-    normalized = " ".join(str(description).strip().split())
-    return normalized or stem.replace("_", " ")
-
-
-def _auto_problem_payload(
-    level: int,
-    problem_id: int,
-    backend: str,
-    problem_path: Path,
-    info: OfficialProblemInfo,
-) -> dict[str, Any]:
-    title_suffix = _problem_title_suffix(problem_path, info.description)
-    slug = _sanitize_problem_slug(title_suffix)
-    tags = ["kernelbench", "official", "gpu", backend, f"level{level}", "auto_bridge"]
-    if backend == "cuda" and "native_cuda" not in tags:
-        tags.append("native_cuda")
-    return {
-        "task_name": f"kernelbench_l{level}_{problem_id}_{slug}",
-        "description": (
-            f"KernelBench Level {level} / {problem_id} {title_suffix} "
-            "(auto-bridged from official KernelBench source; use the paper evaluator "
-            "for official benchmarking, or add a manual override for lighter local cases)."
-        ),
-        "tags": tags,
-        "test_cases": [],
-        "benchmark_cases": [],
-        "strategies": [],
-    }
+_CUDA_ENABLED_TARGETS: set[tuple[int, int]] = set(_SELECTED_TARGETS.keys())
 
 
 def _region_role(anchor_name: str) -> str:
@@ -464,7 +426,7 @@ def _region_role(anchor_name: str) -> str:
 
 
 def selected_kernelbench_targets() -> list[dict[str, Any]]:
-    """Return the curated KernelBench override list used for manual enhancements."""
+    """Return the fixed KernelBench target list enabled in the current stage."""
     rows = []
     for (level, problem_id), payload in sorted(_SELECTED_TARGETS.items()):
         rows.append(
@@ -516,30 +478,45 @@ class KernelBenchTaskBridge:
     ) -> TaskSpec:
         """Load one official KernelBench problem and build an anchored scaffold.
 
-        Curated tasks keep their hand-written overrides. All other official
-        KernelBench problems fall back to the auto-bridge path, which reuses
-        the official source structure and leaves local test and benchmark cases
-        empty so the paper evaluator can drive the official benchmark path.
+        The external benchmark file remains untouched. STARK extracts the
+        official `Model` structure, synthesizes a `ModelNew` scaffold, and
+        injects grounded edit anchors so the agents can make local changes
+        without rewriting the full module arbitrarily.
         """
         if backend not in {"triton", "cuda"}:
             raise BridgeLoadError(f"Unsupported KernelBench backend: {backend}. Supported backends: triton, cuda.")
+        target = _SELECTED_TARGETS.get((level, problem_id))
+        if target is None:
+            supported = ", ".join(f"L{item['level']}/P{item['problem_id']}" for item in selected_kernelbench_targets())
+            raise BridgeLoadError(
+                f"KernelBench problem L{level}/P{problem_id} is not enabled in this stage. Supported targets: {supported}"
+            )
+        if backend == "cuda":
+            if (level, problem_id) not in _CUDA_ENABLED_TARGETS:
+                supported = ", ".join(f"L{item[0]}/P{item[1]}" for item in sorted(_CUDA_ENABLED_TARGETS))
+                raise BridgeLoadError(f"CUDA backend is only enabled for {supported} in this stage.")
         root = Path(kernelbench_root)
         problem_path = self._resolve_problem_path(root, level, problem_id)
         info = self._inspect_official_problem(problem_path)
-        payload = self._resolve_problem_payload(level, problem_id, backend, problem_path, info)
+        test_cases = self._build_cases(target, kind="test")
+        benchmark_cases = self._build_cases(target, kind="benchmark")
         scaffold = self._build_model_scaffold(info, level=level, backend=backend, level_problem=(level, problem_id))
         grounded_regions = self._extract_grounded_regions(scaffold)
+        tags = [backend if tag == "triton" else tag for tag in target["tags"]]
+        if backend == "cuda" and "native_cuda" not in tags:
+            tags.append("native_cuda")
+        strategy_catalog = self._strategy_catalog_for_backend((level, problem_id), backend, target["strategies"])
         return TaskSpec(
-            name=str(payload["task_name"]),
-            description=str(payload["description"]),
+            name=target["task_name"],
+            description=f"{target['title']} (official KernelBench task with reduced local evaluation profile)",
             source_code=scaffold,
             reference_code=info.source_code,
             function_name="ModelNew",
             reference_function_name="Model",
-            test_cases=list(payload["test_cases"]),
-            benchmark_cases=list(payload["benchmark_cases"]),
-            tags=list(payload["tags"]),
-            strategy_catalog=list(payload["strategies"]),
+            test_cases=test_cases,
+            benchmark_cases=benchmark_cases,
+            tags=tags,
+            strategy_catalog=strategy_catalog,
             source_origin=str(problem_path),
             benchmark_family="kernelbench",
             entry_kind="model_class",
@@ -549,29 +526,6 @@ class KernelBenchTaskBridge:
             source_root=str(root),
             grounded_regions=grounded_regions,
         )
-
-    def _resolve_problem_payload(
-        self,
-        level: int,
-        problem_id: int,
-        backend: str,
-        problem_path: Path,
-        info: OfficialProblemInfo,
-    ) -> dict[str, Any]:
-        target = _SELECTED_TARGETS.get((level, problem_id))
-        if target is None:
-            return _auto_problem_payload(level, problem_id, backend, problem_path, info)
-        tags = [backend if tag == "triton" else tag for tag in target["tags"]]
-        if backend == "cuda" and "native_cuda" not in tags:
-            tags.append("native_cuda")
-        return {
-            "task_name": target["task_name"],
-            "description": f"{target['title']} (curated bridge override with reduced local evaluation profile)",
-            "tags": tags,
-            "test_cases": self._build_cases(target, kind="test"),
-            "benchmark_cases": self._build_cases(target, kind="benchmark"),
-            "strategies": self._strategy_catalog_for_backend((level, problem_id), backend, target["strategies"]),
-        }
 
     def _resolve_problem_path(self, kernelbench_root: Path, level: int, problem_id: int) -> Path:
         level_dir = kernelbench_root / "KernelBench" / f"level{level}"
