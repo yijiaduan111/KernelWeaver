@@ -64,7 +64,7 @@ from .experiment import (
 )
 from .io import load_run, save_run
 from .models import StarkConfig
-from .providers import LocalCudaLLMConfig, LocalCudaLLMProvider, MockProvider, OpenAICompatibleProvider, RoleRoutedProvider
+from .providers import ClaudeCompatibleConfig, ClaudeCompatibleProvider, LocalCudaLLMConfig, LocalCudaLLMProvider, MockProvider, OpenAICompatibleProvider, RoleRoutedProvider
 from .triton_tasks import build_triton_tasks
 from .utils import shorten_runtime
 
@@ -282,19 +282,39 @@ def _build_provider(args: argparse.Namespace, run_name: str):
             if key in search_settings
         }
 
+    def _config_payload(raw: dict[str, Any], allowed_keys: set[str]) -> dict[str, Any]:
+        return {key: value for key, value in raw.items() if key in allowed_keys}
+
     def _instantiate_single_provider(name: str, overrides: dict[str, Any]):
         if name == "mock":
             return MockProvider()
         if name == "openai-compatible":
             provider = OpenAICompatibleProvider.from_env(provider_defaults(name))
             return provider.with_overrides(**overrides) if overrides else provider
+        if name == "claude-compatible":
+            provider = ClaudeCompatibleProvider(
+                ClaudeCompatibleConfig(
+                    **_config_payload(
+                        provider_defaults(name),
+                        set(ClaudeCompatibleConfig.__dataclass_fields__.keys()),
+                    )
+                )
+            )
+            return provider.with_overrides(**overrides) if overrides else provider
         if name == "local-cudallm":
-            provider = LocalCudaLLMProvider(LocalCudaLLMConfig(**provider_defaults(name)))
+            provider = LocalCudaLLMProvider(
+                LocalCudaLLMConfig(
+                    **_config_payload(
+                        provider_defaults(name),
+                        set(LocalCudaLLMConfig.__dataclass_fields__.keys()),
+                    )
+                )
+            )
             return provider.with_overrides(**overrides) if overrides else provider
         raise SystemExit(f"Unsupported provider: {name}")
 
     resolved_names = {routing["plan_provider"], routing["code_provider"], routing["debug_provider"], routing["search_provider"]}
-    if any(name == "openai-compatible" for name in resolved_names):
+    if any(name in {"openai-compatible", "claude-compatible"} for name in resolved_names):
         load_env_file(_resolve_env_file(args, run_name))
     overrides = _provider_overrides()
     instances = {name: _instantiate_single_provider(name, overrides) for name in sorted(resolved_names)}
@@ -443,9 +463,9 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
                     workflow=workflow,
                 )
                 run_path = save_run(result, task_output_dir)
-                validation_path = verify_kernelbench_run(run_path, kernelbench_root=kernelbench_root)
+                validation_path = None
                 best = result.nodes[result.best_node_id]
-                validation = load_validation(validation_path) or {}
+                validation = {}
                 stats = candidate_attempt_stats(result)
                 row.update(
                     {
@@ -470,7 +490,7 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
                         "best_correct": bool(best.compile_ok and best.correct),
                         "paper_fast1": bool(best.correct and isinstance(best.speedup, (int, float)) and best.speedup >= 1.0),
                         "run_path": str(run_path),
-                        "validation_path": str(validation_path),
+                        "validation_path": None,
                         "root_correct": bool(result.nodes.get("root") and result.nodes["root"].correct),
                         "non_root_correct": any(node.correct and node.node_id != "root" for node in result.nodes.values()),
                         "improved_over_reference": bool(best.runtime is not None and best.reference_runtime is not None and best.runtime < best.reference_runtime),

@@ -38,3 +38,10 @@ class ProviderRoutingTests(unittest.TestCase):
         self.assertEqual(routing['plan_provider'], 'openai-compatible')
         self.assertEqual(routing['code_provider'], 'local-cudallm')
         self.assertEqual(routing['search_provider'], 'local-cudallm')
+
+    def test_codeagent_claude_route_is_resolved(self):
+        args = self._args(agent_provider_profile='codeagent_claude')
+        routing = _resolve_provider_routing(args, 'main')
+        self.assertEqual(routing['plan_provider'], 'openai-compatible')
+        self.assertEqual(routing['code_provider'], 'claude-compatible')
+        self.assertEqual(routing['search_provider'], 'claude-compatible')

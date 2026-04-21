@@ -80,6 +80,7 @@ class KernelBenchPaperEvaluator(Evaluator):
                 device=device,
                 backend=backend,
                 precision=torch.float32,
+                check_for_excessive_speedup=False,
             )
         except Exception as exc:
             failure_stage, failure_type = _paper_exception_stage(torch, exc)

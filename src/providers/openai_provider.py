@@ -22,7 +22,7 @@ class OpenAICompatibleConfig:
 
     api_key: str
     base_url: str = "https://api.openai.com/v1"
-    model: str = "gpt-4o-mini"
+    model: str = "gpt-5.4"
     wire_api: str = "chat_completions"
     timeout_seconds: int = 300
     plan_temperature: float = 0.7
@@ -35,6 +35,7 @@ class OpenAICompatibleConfig:
     max_retries: int = 3
     retry_backoff_seconds: float = 1.0
     disable_response_storage: bool = False
+    user_agent: str = "curl/8.5.0"
 
 
 class OpenAICompatibleProvider(AgentProvider):
@@ -53,7 +54,7 @@ class OpenAICompatibleProvider(AgentProvider):
         defaults = defaults or {}
         api_key = os.environ.get("OPENAI_API_KEY", "").strip()
         base_url = str(_env_or_default("OPENAI_BASE_URL", defaults.get("base_url", "https://api.openai.com/v1"))).strip().rstrip("/")
-        model = str(_env_or_default("OPENAI_MODEL", defaults.get("model", "gpt-4o-mini"))).strip()
+        model = str(_env_or_default("OPENAI_MODEL", defaults.get("model", "gpt-5.4"))).strip()
         wire_api = str(_env_or_default("OPENAI_WIRE_API", defaults.get("wire_api", "chat_completions"))).strip().lower()
         timeout_seconds = int(str(_env_or_default("OPENAI_TIMEOUT_SECONDS", defaults.get("timeout_seconds", 300))).strip() or "300")
         plan_temperature = float(str(_env_or_default("OPENAI_PLAN_TEMPERATURE", defaults.get("plan_temperature", 0.7))).strip() or "0.7")
@@ -78,6 +79,7 @@ class OpenAICompatibleProvider(AgentProvider):
             os.environ.get("OPENAI_DISABLE_RESPONSE_STORAGE"),
             default=bool(defaults.get("disable_response_storage", False)),
         )
+        user_agent = str(_env_or_default("OPENAI_USER_AGENT", defaults.get("user_agent", "curl/8.5.0"))).strip() or "curl/8.5.0"
         if not api_key:
             raise ValueError("OPENAI_API_KEY is required for the openai-compatible provider.")
         return cls(
@@ -97,6 +99,7 @@ class OpenAICompatibleProvider(AgentProvider):
                 max_retries=max_retries,
                 retry_backoff_seconds=retry_backoff_seconds,
                 disable_response_storage=disable_response_storage,
+                user_agent=user_agent,
             )
         )
 
@@ -342,7 +345,9 @@ class OpenAICompatibleProvider(AgentProvider):
             data=json.dumps(request_body, ensure_ascii=False, separators=(",", ":")).encode("utf-8"),
             headers={
                 "Content-Type": "application/json",
+                "Accept": "application/json",
                 "Authorization": f"Bearer {self.config.api_key}",
+                "User-Agent": self.config.user_agent,
             },
             method="POST",
         )
