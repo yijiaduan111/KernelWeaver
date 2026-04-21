@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import json
 import time
+import urllib.error
+import urllib.request
 from dataclasses import dataclass, replace
 from typing import Any
 
@@ -24,6 +27,7 @@ class ClaudeCompatibleConfig:
     api_key: str
     base_url: str = "https://api.anthropic.com"
     model: str = "claude-3-5-sonnet-20241022"
+    api_version: str = "2023-06-01"
     timeout_seconds: int = 300
     max_tokens: int = 4096
     plan_temperature: float = 0.7
@@ -55,6 +59,7 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
         api_key = str(_env_or_default("CLAUDE_API_KEY", defaults.get("api_key", ""))).strip()
         base_url = str(_env_or_default("CLAUDE_BASE_URL", defaults.get("base_url", "https://api.anthropic.com"))).strip().rstrip("/")
         model = str(_env_or_default("CLAUDE_MODEL", defaults.get("model", "claude-3-5-sonnet-20241022"))).strip()
+        api_version = str(_env_or_default("CLAUDE_API_VERSION", defaults.get("api_version", "2023-06-01"))).strip() or "2023-06-01"
         timeout_seconds = int(str(_env_or_default("CLAUDE_TIMEOUT_SECONDS", defaults.get("timeout_seconds", 300))).strip() or "300")
         max_tokens = int(str(_env_or_default("CLAUDE_MAX_TOKENS", defaults.get("max_tokens", 4096))).strip() or "4096")
         plan_temperature = float(str(_env_or_default("CLAUDE_PLAN_TEMPERATURE", defaults.get("plan_temperature", 0.7))).strip() or "0.7")
@@ -83,6 +88,7 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
                 api_key=api_key,
                 base_url=base_url,
                 model=model,
+                api_version=api_version,
                 timeout_seconds=timeout_seconds,
                 max_tokens=max_tokens,
                 plan_temperature=plan_temperature,
@@ -151,6 +157,28 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
             base = f"{base}/v1"
         return f"{base}/messages"
 
+    def _post_json(self, url: str, request_body: dict[str, Any]) -> dict[str, Any]:
+        request = urllib.request.Request(
+            url=url,
+            data=json.dumps(request_body, ensure_ascii=False, separators=(",", ":")).encode("utf-8"),
+            headers={
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": f"Bearer {self.config.api_key}",
+                "anthropic-version": self.config.api_version,
+                "User-Agent": self.config.user_agent,
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=self.config.timeout_seconds) as response:
+                return json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            detail = exc.read().decode("utf-8", errors="replace")
+            raise RuntimeError(f"Claude request failed: HTTP {exc.code}: {detail}") from exc
+        except urllib.error.URLError as exc:
+            raise RuntimeError(f"Claude request failed: {exc}") from exc
+
     @staticmethod
     def _extract_text_from_messages(payload: dict[str, Any]) -> str:
         content = payload.get("content")
@@ -167,4 +195,3 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
         if isinstance(payload.get("output_text"), str) and payload["output_text"].strip():
             return payload["output_text"].strip()
         raise RuntimeError(f"Claude response does not contain text content: {payload}")
-

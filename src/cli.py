@@ -292,12 +292,10 @@ def _build_provider(args: argparse.Namespace, run_name: str):
             provider = OpenAICompatibleProvider.from_env(provider_defaults(name))
             return provider.with_overrides(**overrides) if overrides else provider
         if name == "claude-compatible":
-            provider = ClaudeCompatibleProvider(
-                ClaudeCompatibleConfig(
-                    **_config_payload(
-                        provider_defaults(name),
-                        set(ClaudeCompatibleConfig.__dataclass_fields__.keys()),
-                    )
+            provider = ClaudeCompatibleProvider.from_env(
+                _config_payload(
+                    provider_defaults(name),
+                    set(ClaudeCompatibleConfig.__dataclass_fields__.keys()),
                 )
             )
             return provider.with_overrides(**overrides) if overrides else provider
