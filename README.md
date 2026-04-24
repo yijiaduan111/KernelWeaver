@@ -102,20 +102,46 @@ That means:
 - `runs/`: outputs, not for Git
 - `stark/`: compatibility package so `import stark...` still works
 
+## Stable Launch Rule
+
+For long CUDA experiments, do not launch with:
+- `conda run ...`
+- `... | tee ...`
+- remote wrappers that keep a fragile pipe open
+
+Use the helper scripts in `scripts/` instead. They:
+- keep one fresh output directory per run
+- use `python -u`
+- write a reproducible start script into the run directory
+- support `tmux` detached launch for long jobs
+
+If you want the script to activate a Conda env for you, set one of:
+- `KERNELWEAVER_CONDA_ENV=stark`
+- `KERNELWEAVER_CONDA_PREFIX=/path/to/env`
+
 ## Most Common Commands
 
-### Run the regular baseline batch
+### Run the regular baseline batch in tmux
 
 ```bash
-python stark_cli.py run-kernelbench-batch \
+KERNELWEAVER_CONDA_ENV=stark \
+bash scripts/run_batch.sh \
+  --detach \
   --experiment main \
-  --output-dir runs/main
+  --output-dir runs/main_cuda_cudallm
+```
+
+Then watch the log:
+
+```bash
+tail -f runs/main_cuda_cudallm/launcher.log
 ```
 
 ### Run one KernelBench task
 
 ```bash
-python stark_cli.py run-kernelbench \
+KERNELWEAVER_CONDA_ENV=stark \
+bash scripts/run_single.sh \
   --experiment main \
   --level 1 \
   --problem-id 25 \
@@ -125,7 +151,8 @@ python stark_cli.py run-kernelbench \
 ### Run the smoke setting
 
 ```bash
-python stark_cli.py run-kernelbench-batch \
+KERNELWEAVER_CONDA_ENV=stark \
+bash scripts/run_batch.sh \
   --experiment quick \
   --output-dir runs/quick
 ```
@@ -133,9 +160,22 @@ python stark_cli.py run-kernelbench-batch \
 ### Run the paper-style setting
 
 ```bash
-python stark_cli.py run-kernelbench-batch \
+KERNELWEAVER_CONDA_ENV=stark \
+bash scripts/run_batch.sh \
   --experiment paper \
   --output-dir runs/paper
+```
+
+### Pass extra CLI overrides
+
+```bash
+KERNELWEAVER_CONDA_ENV=stark \
+bash scripts/run_batch.sh \
+  --detach \
+  --experiment main \
+  --output-dir runs/main_triton \
+  --backend triton \
+  --route-config codeagent_cudallm
 ```
 
 ### Inspect one run
@@ -162,3 +202,4 @@ python stark_cli.py report-paper runs/main --output-dir runs/paper_report
 - `paper` is for a more paper-aligned setting.
 - `main` is the default setting for our own experiments.
 - New users should start from `configs/experiments/` and only then drill into lower layers.
+- Use a new `runs/...` directory for each launch unless you really mean to reuse an old directory.

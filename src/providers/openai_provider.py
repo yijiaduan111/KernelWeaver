@@ -112,7 +112,8 @@ class OpenAICompatibleProvider(AgentProvider):
             "Choose one optimization strategy for the current code.\n"
             "Required JSON schema: "
             '{"strategy_name":"...","strategy_summary":"...","expected_gain":"...","risk_notes":"...","anchor_edits":[{"anchor_name":"...","instruction":"...","operation":"replace"}]}\n'
-            "Use only anchor names from the provided anchors. operation must be replace or append."
+            "Use only anchor names from the provided anchors. operation must be replace or append. "
+            "If task_metadata.strategy_catalog is not empty, stay close to one of those grounded strategies before inventing a wider edit."
         ) + _task_prompt_suffix(task, role="plan")
         user = {
             "task_name": task.name,
@@ -196,7 +197,8 @@ class OpenAICompatibleProvider(AgentProvider):
             "You are the coding agent in a STARK-style workflow.\n"
             "Return only the full updated Python source code. No markdown fences.\n"
             "Preserve function signatures and task I/O. Apply the plan through the provided grounded anchor edits.\n"
-            "Do not delete, rename, or move any existing # <<<IMPROVE:...>>> or # <<<END_IMPROVE>>> anchor markers."
+            "Do not delete, rename, or move any existing # <<<IMPROVE:...>>> or # <<<END_IMPROVE>>> anchor markers. "
+            "If task_metadata.strategy_catalog is provided, keep the implementation aligned with the chosen grounded strategy and do not widen the edit scope."
         ) + _task_prompt_suffix(task, role="code")
         user = {
             "task_name": task.name,
@@ -237,6 +239,7 @@ class OpenAICompatibleProvider(AgentProvider):
             "Return only the full corrected Python source code. No markdown fences.\n"
             "Apply the smallest local fix needed to recover compilation, runtime, or correctness.\n"
             "Do not delete, rename, or move any existing # <<<IMPROVE:...>>> or # <<<END_IMPROVE>>> anchor markers.\n"
+            "Keep the fix within the existing grounded strategy scope when task_metadata.strategy_catalog is available.\n"
             f"{debug_focus}"
         ) + _task_prompt_suffix(task, role="debug")
         user = {
@@ -439,6 +442,17 @@ def _task_metadata(task: TaskSpec) -> dict[str, Any]:
         "problem_id": task.problem_id,
         "backend": task.backend,
         "source_origin": task.source_origin,
+        "tags": list(task.tags),
+        "strategy_catalog": [
+            {
+                "name": strategy.name,
+                "anchor_name": strategy.anchor_name,
+                "strategy_summary": strategy.strategy_summary,
+                "instruction": strategy.instruction,
+                "expected_gain": strategy.expected_gain,
+            }
+            for strategy in task.strategy_catalog
+        ],
         "grounded_regions": [
             {
                 "anchor_name": region.anchor_name,
@@ -519,20 +533,30 @@ def _task_prompt_suffix(task: TaskSpec, role: str) -> str:
 
 def _kernelbench_anchor_hint(task: TaskSpec) -> str:
     anchors = extract_anchor_names(task.source_code)
-    if task.backend == "cuda":
-        return "helpers/cuda_cpp/cuda_cu/init_body/forward_body anchors"
-    if any(anchor.startswith("forward_step_") for anchor in anchors):
+    if not anchors:
+        return "the provided anchors"
+    has_forward_steps = any(anchor.startswith("forward_step_") for anchor in anchors)
+    if task.backend == "cuda" and "cuda_safe_forward_only" in set(task.tags):
+        if has_forward_steps:
+            return "helpers/init_body/forward_step_* anchors"
+        return "helpers/init_body/forward_body anchors only"
+    if has_forward_steps:
         return "helpers/init_body/forward_step_* anchors"
-    return "helpers/init_body/forward_body anchors"
+    return "/".join(anchors) + " anchors"
 
 
 def _kernelbench_profile_hint(task: TaskSpec, role: str) -> str:
     tags = set(task.tags)
     if task.backend == "cuda":
+        if "cuda_safe_forward_only" in tags:
+            return (
+                " Treat this as a conservative CUDA task: keep the safe Python scaffold intact, "
+                "do not introduce load_inline, pybind exports, or handwritten CUDA kernels, and limit edits to the provided safe scaffold anchors."
+            )
         if role == "plan":
             return (
                 " Treat this as a native CUDA extension task: keep the scaffold intact, preserve the ModelNew interface, "
-                "and propose grounded edits that stay inside helpers/cuda_cpp/cuda_cu/init_body/forward_body."
+                "and propose grounded edits that stay inside the provided CUDA anchors."
             )
         return (
             " Treat this as a native CUDA extension task: preserve the pybind binding surface, keep CUDA kernel launch assumptions explicit, "
@@ -572,7 +596,6 @@ def _kernelbench_profile_hint(task: TaskSpec, role: str) -> str:
     if role == "debug":
         return " Keep fixes local to the failing anchor and preserve the official task I/O exactly."
     return ""
-
 
 def _normalize_operation(value: str) -> str:
     normalized = (value or "replace").strip().lower()

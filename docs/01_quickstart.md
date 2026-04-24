@@ -14,20 +14,28 @@ Recommended order:
 
 ## Example Commands
 
-Run a batch:
+Run a batch in a stable way:
 
 ```bash
-python stark_cli.py run-kernelbench-batch --experiment main --output-dir runs/main
+KERNELWEAVER_CONDA_ENV=stark \
+bash scripts/run_batch.sh --detach --experiment main --output-dir runs/main
 ```
 
 Run one task:
 
 ```bash
-python stark_cli.py run-kernelbench --experiment main --level 1 --problem-id 25 --output-dir runs/l1_p25
+KERNELWEAVER_CONDA_ENV=stark \
+bash scripts/run_single.sh --experiment main --level 1 --problem-id 25 --output-dir runs/l1_p25
 ```
 
 Run a demo:
 
 ```bash
 python stark_cli.py run-demo --task square_list --experiment quick --output-dir runs/demo_square_list
+```
+
+Watch one detached batch:
+
+```bash
+tail -f runs/main/launcher.log
 ```
