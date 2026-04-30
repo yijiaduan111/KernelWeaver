@@ -11,6 +11,7 @@ import urllib.request
 from dataclasses import dataclass, replace
 from typing import Any
 
+from ..backends import is_cute_backend, is_native_cuda_backend, is_tilelang_backend, normalize_backend
 from ..models import AgentContext, AnchorEdit, PlanProposal, SearchNode, TaskSpec
 from ..utils import extract_anchor_names
 from .base_provider import AgentProvider
@@ -112,8 +113,7 @@ class OpenAICompatibleProvider(AgentProvider):
             "Choose one optimization strategy for the current code.\n"
             "Required JSON schema: "
             '{"strategy_name":"...","strategy_summary":"...","expected_gain":"...","risk_notes":"...","anchor_edits":[{"anchor_name":"...","instruction":"...","operation":"replace"}]}\n'
-            "Use only anchor names from the provided anchors. operation must be replace or append. "
-            "If task_metadata.strategy_catalog is not empty, stay close to one of those grounded strategies before inventing a wider edit."
+            "Use only anchor names from the provided anchors. operation must be replace or append."
         ) + _task_prompt_suffix(task, role="plan")
         user = {
             "task_name": task.name,
@@ -197,8 +197,7 @@ class OpenAICompatibleProvider(AgentProvider):
             "You are the coding agent in a STARK-style workflow.\n"
             "Return only the full updated Python source code. No markdown fences.\n"
             "Preserve function signatures and task I/O. Apply the plan through the provided grounded anchor edits.\n"
-            "Do not delete, rename, or move any existing # <<<IMPROVE:...>>> or # <<<END_IMPROVE>>> anchor markers. "
-            "If task_metadata.strategy_catalog is provided, keep the implementation aligned with the chosen grounded strategy and do not widen the edit scope."
+            "Do not delete, rename, or move any existing # <<<IMPROVE:...>>> or # <<<END_IMPROVE>>> anchor markers."
         ) + _task_prompt_suffix(task, role="code")
         user = {
             "task_name": task.name,
@@ -239,7 +238,6 @@ class OpenAICompatibleProvider(AgentProvider):
             "Return only the full corrected Python source code. No markdown fences.\n"
             "Apply the smallest local fix needed to recover compilation, runtime, or correctness.\n"
             "Do not delete, rename, or move any existing # <<<IMPROVE:...>>> or # <<<END_IMPROVE>>> anchor markers.\n"
-            "Keep the fix within the existing grounded strategy scope when task_metadata.strategy_catalog is available.\n"
             f"{debug_focus}"
         ) + _task_prompt_suffix(task, role="debug")
         user = {
@@ -442,17 +440,6 @@ def _task_metadata(task: TaskSpec) -> dict[str, Any]:
         "problem_id": task.problem_id,
         "backend": task.backend,
         "source_origin": task.source_origin,
-        "tags": list(task.tags),
-        "strategy_catalog": [
-            {
-                "name": strategy.name,
-                "anchor_name": strategy.anchor_name,
-                "strategy_summary": strategy.strategy_summary,
-                "instruction": strategy.instruction,
-                "expected_gain": strategy.expected_gain,
-            }
-            for strategy in task.strategy_catalog
-        ],
         "grounded_regions": [
             {
                 "anchor_name": region.anchor_name,
@@ -487,6 +474,7 @@ def _strip_code_fences(text: str) -> str:
 
 def _task_prompt_suffix(task: TaskSpec, role: str) -> str:
     if task.benchmark_family == "kernelbench":
+        backend_hint = _kernelbench_backend_hint(task, role)
         base = (
             "\nThis task comes from the real KernelBench benchmark and is evaluated on CUDA. "
             "Return executable Python code only and do not include markdown fences or prose."
@@ -498,17 +486,20 @@ def _task_prompt_suffix(task: TaskSpec, role: str) -> str:
                 base
                 + " Generate a full candidate module directly, preserve the public evaluator I/O, keep ModelNew as the entry class when present, "
                 + "and keep any existing scaffold structure stable unless the current code is already broken."
+                + backend_hint
                 + profile_hint
             )
         if role == "plan":
             return (
                 base
                 + f" Propose grounded edits for the provided anchors only. Preserve the generated scaffold, keep ModelNew as the entry class, and use {anchor_hint} intentionally."
+                + backend_hint
                 + profile_hint
             )
         return (
             base
             + " The code must define ModelNew, keep the scaffold outside the anchors unchanged, preserve the __init__/forward signatures, and restrict edits to the provided anchors."
+            + backend_hint
             + profile_hint
         )
     if "triton" not in task.tags:
@@ -533,30 +524,65 @@ def _task_prompt_suffix(task: TaskSpec, role: str) -> str:
 
 def _kernelbench_anchor_hint(task: TaskSpec) -> str:
     anchors = extract_anchor_names(task.source_code)
-    if not anchors:
-        return "the provided anchors"
-    has_forward_steps = any(anchor.startswith("forward_step_") for anchor in anchors)
-    if task.backend == "cuda" and "cuda_safe_forward_only" in set(task.tags):
-        if has_forward_steps:
-            return "helpers/init_body/forward_step_* anchors"
-        return "helpers/init_body/forward_body anchors only"
-    if has_forward_steps:
+    if is_native_cuda_backend(task.backend):
+        return "helpers/cuda_cpp/cuda_cu/init_body/forward_body anchors"
+    if is_tilelang_backend(task.backend):
+        if any(anchor.startswith("forward_step_") for anchor in anchors):
+            return "helpers/tilelang_kernel/init_body/forward_step_* anchors"
+        return "helpers/tilelang_kernel/init_body/forward_body anchors"
+    if is_cute_backend(task.backend):
+        if any(anchor.startswith("forward_step_") for anchor in anchors):
+            return "helpers/cute_kernel/init_body/forward_step_* anchors"
+        return "helpers/cute_kernel/init_body/forward_body anchors"
+    if any(anchor.startswith("forward_step_") for anchor in anchors):
         return "helpers/init_body/forward_step_* anchors"
-    return "/".join(anchors) + " anchors"
+    return "helpers/init_body/forward_body anchors"
+
+
+def _kernelbench_backend_hint(task: TaskSpec, role: str) -> str:
+    backend = normalize_backend(task.backend)
+    if is_native_cuda_backend(backend):
+        return ""
+    if is_tilelang_backend(backend):
+        if role == "plan":
+            return (
+                " Treat this as a TileLang task: keep ModelNew and evaluator I/O unchanged, "
+                "put TileLang-specific helpers inside helpers/tilelang_kernel, and plan localized edits only."
+            )
+        return (
+            " Treat this as a TileLang task: return executable Python using torch and tilelang, "
+            "keep ModelNew and evaluator I/O unchanged, and place TileLang imports/helpers inside the grounded scaffold."
+        )
+    if is_cute_backend(backend):
+        if role == "plan":
+            return (
+                " Treat this as a CuTe DSL task: keep ModelNew and evaluator I/O unchanged, "
+                "put CuTe-specific helpers inside helpers/cute_kernel, and plan localized edits only."
+            )
+        return (
+            " Treat this as a CuTe DSL task: return executable Python using torch and cutlass.cute, "
+            "keep ModelNew and evaluator I/O unchanged, and place CuTe imports/helpers inside the grounded scaffold."
+        )
+    if backend == "triton":
+        if role == "plan":
+            return (
+                " Treat this as a Triton task: keep ModelNew and evaluator I/O unchanged, "
+                "and prefer Triton-friendly grounded edits over plain eager PyTorch rewrites."
+            )
+        return (
+            " Treat this as a Triton task: return executable Python using torch and triton, "
+            "keep ModelNew and evaluator I/O unchanged, and preserve the grounded scaffold."
+        )
+    return ""
 
 
 def _kernelbench_profile_hint(task: TaskSpec, role: str) -> str:
     tags = set(task.tags)
-    if task.backend == "cuda":
-        if "cuda_safe_forward_only" in tags:
-            return (
-                " Treat this as a conservative CUDA task: keep the safe Python scaffold intact, "
-                "do not introduce load_inline, pybind exports, or handwritten CUDA kernels, and limit edits to the provided safe scaffold anchors."
-            )
+    if is_native_cuda_backend(task.backend):
         if role == "plan":
             return (
                 " Treat this as a native CUDA extension task: keep the scaffold intact, preserve the ModelNew interface, "
-                "and propose grounded edits that stay inside the provided CUDA anchors."
+                "and propose grounded edits that stay inside helpers/cuda_cpp/cuda_cu/init_body/forward_body."
             )
         return (
             " Treat this as a native CUDA extension task: preserve the pybind binding surface, keep CUDA kernel launch assumptions explicit, "
@@ -597,13 +623,14 @@ def _kernelbench_profile_hint(task: TaskSpec, role: str) -> str:
         return " Keep fixes local to the failing anchor and preserve the official task I/O exactly."
     return ""
 
+
 def _normalize_operation(value: str) -> str:
     normalized = (value or "replace").strip().lower()
     return normalized or "replace"
 
 
 def _debug_focus_hint(failure_stage: str | None, backend: str | None = None) -> str:
-    if backend == "cuda":
+    if is_native_cuda_backend(backend):
         if failure_stage == "compile":
             return "Prioritize C++ binding signatures, CUDA kernel signatures, includes, extension build settings, and pybind exports."
         if failure_stage == "runtime":
@@ -611,6 +638,22 @@ def _debug_focus_hint(failure_stage: str | None, backend: str | None = None) -> 
         if failure_stage == "correctness":
             return "Prioritize formulas, reduction dimensions, masks, write-back indices, and broadcasting semantics."
         return "Prioritize the smallest local fix while preserving the native CUDA extension scaffold."
+    if is_tilelang_backend(backend):
+        if failure_stage == "compile":
+            return "Prioritize TileLang imports, kernel definition syntax, buffer shape annotations, and launcher wiring."
+        if failure_stage == "runtime":
+            return "Prioritize launch shapes, buffer layouts, memory scopes, tensor contiguity, and CUDA device placement."
+        if failure_stage == "correctness":
+            return "Prioritize TileLang indexing, masks, reduction axes, and write-back layout."
+        return "Prioritize the smallest local fix while preserving the TileLang scaffold."
+    if is_cute_backend(backend):
+        if failure_stage == "compile":
+            return "Prioritize CuTe imports, decorators, tensor layout construction, and kernel launcher wiring."
+        if failure_stage == "runtime":
+            return "Prioritize CuTe tensor layouts, launch arguments, memory movement, and CUDA device placement."
+        if failure_stage == "correctness":
+            return "Prioritize CuTe index mapping, tile partitioning, reduction axes, and write-back layout."
+        return "Prioritize the smallest local fix while preserving the CuTe scaffold."
     if failure_stage == "compile":
         return "Prioritize syntax fixes, imports, Triton decorators, and function signatures."
     if failure_stage == "runtime":

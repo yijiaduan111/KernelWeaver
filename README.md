@@ -13,6 +13,8 @@ The project needs at least:
 - `PyYAML`
 - `torch`
 - `triton` if you run Triton tasks
+- `tilelang` if you run TileLang tasks
+- `nvidia-cutlass-dsl` if you run CuTe tasks
 - the official `KernelBench` package path available on disk
 
 ### 2. Prepare KernelBench
@@ -178,6 +180,30 @@ bash scripts/run_batch.sh \
   --route-config codeagent_cudallm
 ```
 
+### Run the same task set with TileLang
+
+```bash
+KERNELWEAVER_CONDA_ENV=stark \
+bash scripts/run_batch.sh \
+  --detach \
+  --experiment main \
+  --output-dir runs/main_tilelang \
+  --backend tilelang \
+  --route-config codeagent_cudallm
+```
+
+### Run the same task set with CuTe
+
+```bash
+KERNELWEAVER_CONDA_ENV=stark \
+bash scripts/run_batch.sh \
+  --detach \
+  --experiment main \
+  --output-dir runs/main_cute \
+  --backend cute \
+  --route-config codeagent_cudallm
+```
+
 ### Inspect one run
 
 ```bash
@@ -201,5 +227,7 @@ python stark_cli.py report-paper runs/main --output-dir runs/paper_report
 - `quick` is only for checking that the chain still works.
 - `paper` is for a more paper-aligned setting.
 - `main` is the default setting for our own experiments.
+- `tilelang` is wired like the existing `cuda` and `triton` backends and uses the same KernelBench batch flow.
+- `cute` is wired as a CuTe DSL backend and follows the same KernelBench batch flow.
 - New users should start from `configs/experiments/` and only then drill into lower layers.
 - Use a new `runs/...` directory for each launch unless you really mean to reuse an old directory.

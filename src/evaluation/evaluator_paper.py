@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 from typing import Any, Callable
 
+from ..backends import is_supported_kernelbench_backend, normalize_backend, supported_kernelbench_backends_text
 from ..models import EvaluationResult, StarkConfig, TaskSpec
 from .base import PRIMARY_REFERENCE, REFERENCE_MODES, Evaluator, _build_speedups, _failure_result, _require_torch, _success_result
 
@@ -49,12 +50,12 @@ class KernelBenchPaperEvaluator(Evaluator):
                 "compile_error",
                 f"KernelBenchPaperEvaluator only supports model_class tasks, got entry_kind={task.entry_kind}",
             )
-        backend = str(task.backend or "triton").lower()
-        if backend not in {"triton", "cuda"}:
+        backend = normalize_backend(task.backend or "triton")
+        if not is_supported_kernelbench_backend(backend):
             return _failure_result(
                 "compile",
                 "compile_error",
-                f"KernelBenchPaperEvaluator only supports triton/cuda backends, got backend={backend}",
+                f"KernelBenchPaperEvaluator only supports {supported_kernelbench_backends_text()} backends, got backend={backend}",
             )
 
         torch = _require_torch()
@@ -67,6 +68,7 @@ class KernelBenchPaperEvaluator(Evaluator):
             return _failure_result("compile", "paper_evaluator_import_error", f"paper_evaluator_import_error: {exc}")
 
         device = torch.device(f"cuda:{torch.cuda.current_device()}")
+        eval_precision, ref_precision = _precision_settings(torch, backend)
         try:
             official_result = eval_kernel_against_ref(
                 original_model_src=task.reference_code,
@@ -79,7 +81,7 @@ class KernelBenchPaperEvaluator(Evaluator):
                 verbose=config.verbose,
                 device=device,
                 backend=backend,
-                precision=torch.float32,
+                precision=eval_precision,
                 check_for_excessive_speedup=False,
             )
         except Exception as exc:
@@ -115,6 +117,7 @@ class KernelBenchPaperEvaluator(Evaluator):
             measure_ref_program_time=measure_ref_program_time,
             device=device,
             eager_fallback=eager_fallback,
+            ref_precision=ref_precision,
         )
         speedups = _build_speedups(candidate_runtime, reference_runtimes)
         primary_reference = PRIMARY_REFERENCE if PRIMARY_REFERENCE in reference_runtimes else next(iter(reference_runtimes.keys()), PRIMARY_REFERENCE)
@@ -136,6 +139,7 @@ class KernelBenchPaperEvaluator(Evaluator):
         measure_ref_program_time: Callable[..., Any],
         device,
         eager_fallback: float | None,
+        ref_precision: str,
     ) -> dict[str, float | None]:
         reference_runtimes: dict[str, float | None] = {}
         for mode in _selected_reference_modes(config):
@@ -147,6 +151,7 @@ class KernelBenchPaperEvaluator(Evaluator):
                     device=device,
                     use_torch_compile=False,
                     compile_mode=None,
+                    ref_precision=ref_precision,
                 )
             elif mode == "torch_compile_default":
                 reference_runtimes[mode] = self._measure_reference_mode(
@@ -156,6 +161,7 @@ class KernelBenchPaperEvaluator(Evaluator):
                     device=device,
                     use_torch_compile=True,
                     compile_mode="default",
+                    ref_precision=ref_precision,
                 )
             elif mode == "torch_compile_max_autotune":
                 reference_runtimes[mode] = self._measure_reference_mode(
@@ -165,6 +171,7 @@ class KernelBenchPaperEvaluator(Evaluator):
                     device=device,
                     use_torch_compile=True,
                     compile_mode="max-autotune",
+                    ref_precision=ref_precision,
                 )
         if PRIMARY_REFERENCE in reference_runtimes and reference_runtimes[PRIMARY_REFERENCE] is None:
             reference_runtimes[PRIMARY_REFERENCE] = eager_fallback
@@ -178,6 +185,7 @@ class KernelBenchPaperEvaluator(Evaluator):
         device,
         use_torch_compile: bool,
         compile_mode: str | None,
+        ref_precision: str,
     ) -> float | None:
         try:
             stats = measure_ref_program_time(
@@ -191,13 +199,19 @@ class KernelBenchPaperEvaluator(Evaluator):
                 torch_compile_options=compile_mode or "default",
                 device=device,
                 verbose=config.verbose,
-                precision="fp32",
+                precision=ref_precision,
             )
         except Exception:
             return None
         if not isinstance(stats, dict):
             return None
         return _seconds_from_milliseconds(stats.get("mean"))
+
+
+def _precision_settings(torch, backend: str) -> tuple[Any, str]:
+    if backend in {"tilelang", "cute"}:
+        return torch.bfloat16, "bf16"
+    return torch.float32, "fp32"
 
 
 def _paper_exception_stage(torch, exc: Exception) -> tuple[str, str]:

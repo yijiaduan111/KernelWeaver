@@ -35,3 +35,25 @@ class SmokeCliTests(unittest.TestCase):
         ])
         self.assertEqual(args.level, 1)
         self.assertEqual(args.problem_id, 25)
+
+    def test_single_parser_accepts_tilelang_backend(self):
+        parser = _build_parser()
+        args = parser.parse_args([
+            'run-kernelbench',
+            '--level', '1',
+            '--problem-id', '25',
+            '--backend', 'tilelang',
+            '--output-dir', 'runs/test_tilelang',
+        ])
+        self.assertEqual(args.backend, 'tilelang')
+
+    def test_single_parser_accepts_cute_backend(self):
+        parser = _build_parser()
+        args = parser.parse_args([
+            'run-kernelbench',
+            '--level', '1',
+            '--problem-id', '25',
+            '--backend', 'cute',
+            '--output-dir', 'runs/test_cute',
+        ])
+        self.assertEqual(args.backend, 'cute')

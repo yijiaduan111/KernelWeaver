@@ -19,6 +19,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from ..backends import is_cute_backend, is_native_cuda_backend, is_supported_kernelbench_backend, is_tilelang_backend, supported_kernelbench_backends_text
 from ..models import GroundedRegion, StrategySpec, TaskSpec, TestCase
 
 
@@ -56,19 +57,762 @@ class OfficialProblemInfo:
     forward_steps: list[str] = field(default_factory=list)
 
 
-from .bridge_specs import (
-    CUDA_ENABLED_TARGETS as _CUDA_ENABLED_TARGETS,
-    NATIVE_CUDA_TARGETS as _NATIVE_CUDA_TARGETS,
-    SAFE_CUDA_FORWARD_ONLY_TARGETS as _SAFE_CUDA_FORWARD_ONLY_TARGETS,
-    SELECTED_TARGETS as _SELECTED_TARGETS,
-    selected_kernelbench_targets,
-)
+_SELECTED_TARGETS: dict[tuple[int, int], dict[str, Any]] = {
+    (1, 1): {
+        "alias": "KB-L1-P1",
+        "task_name": "kernelbench_l1_1_square_matmul",
+        "title": "KernelBench Level 1 / 1 Square matrix multiplication",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "matmul"],
+        "init_args": [],
+        "init_kwargs": {},
+        "test_case_specs": [
+            {
+                "args": [
+                    {"kind": "rand", "shape": (128, 128)},
+                    {"kind": "rand", "shape": (128, 128)},
+                ]
+            },
+            {
+                "args": [
+                    {"kind": "rand", "shape": (192, 192)},
+                    {"kind": "rand", "shape": (192, 192)},
+                ]
+            },
+        ],
+        "benchmark_case_specs": [
+            {
+                "args": [
+                    {"kind": "rand", "shape": (256, 256)},
+                    {"kind": "rand", "shape": (256, 256)},
+                ]
+            },
+            {
+                "args": [
+                    {"kind": "rand", "shape": (384, 384)},
+                    {"kind": "rand", "shape": (384, 384)},
+                ]
+            },
+        ],
+        "strategies": [
+            StrategySpec(
+                name="square_matmul_explicit",
+                anchor_name="forward_body",
+                strategy_summary="Keep the square GEMM path explicit with contiguous inputs and torch.matmul.",
+                instruction="Replace the forward body with contiguous temporaries for A and B and return torch.matmul on those tensors.",
+                expected_gain="Expose the matrix multiplication boundary clearly for later backend-specific lowering.",
+                good_body="a_contiguous = A.contiguous()\nb_contiguous = B.contiguous()\nreturn torch.matmul(a_contiguous, b_contiguous)\n",
+                broken_body="return torch.matmul(A, A)\n",
+                debug_body="a_contiguous = A.contiguous()\nb_contiguous = B.contiguous()\nreturn torch.matmul(a_contiguous, b_contiguous)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 10): {
+        "alias": "KB-L1-P10",
+        "task_name": "kernelbench_l1_10_tensor_matmul_3d",
+        "title": "KernelBench Level 1 / 10 3D tensor matrix multiplication",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "matmul", "batched_matmul"],
+        "init_args": [],
+        "init_kwargs": {},
+        "test_case_specs": [
+            {
+                "args": [
+                    {"kind": "rand", "shape": (4, 64, 128)},
+                    {"kind": "rand", "shape": (128, 96)},
+                ]
+            },
+            {
+                "args": [
+                    {"kind": "rand", "shape": (6, 96, 160)},
+                    {"kind": "rand", "shape": (160, 128)},
+                ]
+            },
+        ],
+        "benchmark_case_specs": [
+            {
+                "args": [
+                    {"kind": "rand", "shape": (8, 128, 256)},
+                    {"kind": "rand", "shape": (256, 192)},
+                ]
+            },
+            {
+                "args": [
+                    {"kind": "rand", "shape": (10, 160, 320)},
+                    {"kind": "rand", "shape": (320, 256)},
+                ]
+            },
+        ],
+        "strategies": [
+            StrategySpec(
+                name="batched_matmul_explicit",
+                anchor_name="forward_body",
+                strategy_summary="Keep the tensor-matrix multiplication explicit with contiguous operands and torch.matmul.",
+                instruction="Replace the forward body with contiguous temporaries for A and B and return torch.matmul on those tensors.",
+                expected_gain="Expose the batched matmul boundary clearly for later backend-specific lowering.",
+                good_body="a_contiguous = A.contiguous()\nb_contiguous = B.contiguous()\nreturn torch.matmul(a_contiguous, b_contiguous)\n",
+                broken_body="return torch.matmul(A, A)\n",
+                debug_body="a_contiguous = A.contiguous()\nb_contiguous = B.contiguous()\nreturn torch.matmul(a_contiguous, b_contiguous)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 20): {
+        "alias": "KB-L1-P20",
+        "task_name": "kernelbench_l1_20_leakyrelu",
+        "title": "KernelBench Level 1 / 20 LeakyReLU",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "activation", "elementwise", "parameterized"],
+        "init_args": [],
+        "init_kwargs": {},
+        "test_shapes": [(32, 256), (48, 384)],
+        "benchmark_shapes": [(64, 768), (96, 1024)],
+        "input_kind": "symmetric",
+        "strategies": [
+            StrategySpec(
+                name="leakyrelu_where_explicit",
+                anchor_name="forward_body",
+                strategy_summary="Rewrite LeakyReLU with an explicit torch.where using the stored negative slope.",
+                instruction="Replace the forward body with torch.where so the positive and negative branches are explicit.",
+                expected_gain="Make the elementwise branch structure explicit for later kernel lowering.",
+                good_body="return torch.where(x >= 0, x, x * self.negative_slope)\n",
+                broken_body="return torch.relu(x)\n",
+                debug_body="return torch.where(x >= 0, x, x * self.negative_slope)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 25): {
+        "alias": "KB-T1",
+        "task_name": "kernelbench_l1_25_swish",
+        "title": "KernelBench Level 1 / 25 Swish",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "elementwise"],
+        "init_args": [],
+        "init_kwargs": {},
+        "test_shapes": [(32, 256), (48, 384)],
+        "benchmark_shapes": [(64, 768), (96, 1024)],
+        "input_kind": "symmetric",
+        "strategies": [
+            StrategySpec(
+                name="swish_forward_rewrite",
+                anchor_name="forward_body",
+                strategy_summary="Rewrite Swish using an explicit sigmoid temporary inside the anchored forward body.",
+                instruction="Replace the forward body with an explicit sigmoid temporary and a final multiply.",
+                expected_gain="Make the nonlinear forward path easier to optimize or later fuse.",
+                good_body="sigmoid_x = torch.sigmoid(x)\nreturn x * sigmoid_x\n",
+                broken_body="return x + torch.sigmoid(x)\n",
+                debug_body="sigmoid_x = torch.sigmoid(x)\nreturn x * sigmoid_x\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 31): {
+        "alias": "KB-T2",
+        "task_name": "kernelbench_l1_31_elu",
+        "title": "KernelBench Level 1 / 31 ELU",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "parameterized"],
+        "init_args": [1.0],
+        "init_kwargs": {},
+        "test_shapes": [(32, 256), (48, 384)],
+        "benchmark_shapes": [(64, 768), (96, 1024)],
+        "input_kind": "symmetric",
+        "strategies": [
+            StrategySpec(
+                name="elu_forward_where",
+                anchor_name="forward_body",
+                strategy_summary="Rewrite ELU with torch.where using the anchored alpha state.",
+                instruction="Replace the forward body with a torch.where formulation that uses self.alpha for the negative branch.",
+                expected_gain="Make the activation path explicit for later low-level optimization.",
+                good_body="positive = x >= 0\nnegative = self.alpha * (torch.exp(x) - 1.0)\nreturn torch.where(positive, x, negative)\n",
+                broken_body="return torch.where(x >= 0, x, torch.exp(x) - 1.0)\n",
+                debug_body="positive = x >= 0\nnegative = self.alpha * (torch.exp(x) - 1.0)\nreturn torch.where(positive, x, negative)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 42): {
+        "alias": "KB-L1-P42",
+        "task_name": "kernelbench_l1_42_maxpool2d",
+        "title": "KernelBench Level 1 / 42 Max Pooling 2D",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "pooling", "maxpool"],
+        "init_args": [4, 1, 1, 1],
+        "init_kwargs": {},
+        "test_shapes": [(4, 32, 64, 64), (6, 32, 80, 80)],
+        "benchmark_shapes": [(8, 64, 128, 128), (10, 64, 160, 160)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="maxpool2d_functional_explicit",
+                anchor_name="forward_body",
+                strategy_summary="Rewrite MaxPool2d with an explicit functional call using the stored module state.",
+                instruction="Replace the forward body with torch.nn.functional.max_pool2d and pass the state from self.maxpool explicitly.",
+                expected_gain="Expose the pooling parameters clearly while preserving the module-owned configuration.",
+                good_body="return torch.nn.functional.max_pool2d(x, kernel_size=self.maxpool.kernel_size, stride=self.maxpool.stride, padding=self.maxpool.padding, dilation=self.maxpool.dilation, ceil_mode=self.maxpool.ceil_mode, return_indices=self.maxpool.return_indices)\n",
+                broken_body="return torch.nn.functional.max_pool2d(x, kernel_size=self.maxpool.kernel_size, stride=self.maxpool.stride)\n",
+                debug_body="return torch.nn.functional.max_pool2d(x, kernel_size=self.maxpool.kernel_size, stride=self.maxpool.stride, padding=self.maxpool.padding, dilation=self.maxpool.dilation, ceil_mode=self.maxpool.ceil_mode, return_indices=self.maxpool.return_indices)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 45): {
+        "alias": "KB-L1-P45",
+        "task_name": "kernelbench_l1_45_avgpool2d",
+        "title": "KernelBench Level 1 / 45 Average Pooling 2D",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "pooling", "avgpool"],
+        "init_args": [11],
+        "init_kwargs": {},
+        "test_shapes": [(4, 32, 64, 64), (6, 32, 80, 80)],
+        "benchmark_shapes": [(8, 64, 128, 128), (10, 64, 160, 160)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="avgpool2d_functional_explicit",
+                anchor_name="forward_body",
+                strategy_summary="Rewrite AvgPool2d with an explicit functional call using the stored module state.",
+                instruction="Replace the forward body with torch.nn.functional.avg_pool2d and pass the state from self.avg_pool explicitly.",
+                expected_gain="Expose the pooling parameters clearly while preserving the module-owned configuration.",
+                good_body="return torch.nn.functional.avg_pool2d(x, kernel_size=self.avg_pool.kernel_size, stride=self.avg_pool.stride, padding=self.avg_pool.padding, ceil_mode=self.avg_pool.ceil_mode, count_include_pad=self.avg_pool.count_include_pad, divisor_override=self.avg_pool.divisor_override)\n",
+                broken_body="return torch.nn.functional.avg_pool2d(x, kernel_size=self.avg_pool.kernel_size)\n",
+                debug_body="return torch.nn.functional.avg_pool2d(x, kernel_size=self.avg_pool.kernel_size, stride=self.avg_pool.stride, padding=self.avg_pool.padding, ceil_mode=self.avg_pool.ceil_mode, count_include_pad=self.avg_pool.count_include_pad, divisor_override=self.avg_pool.divisor_override)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 50): {
+        "alias": "KB-L1-P50",
+        "task_name": "kernelbench_l1_50_conv2d_standard",
+        "title": "KernelBench Level 1 / 50 Standard Conv2D",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "conv"],
+        "init_args": [1000],
+        "init_kwargs": {},
+        "test_shapes": [(2, 3, 64, 64), (3, 3, 96, 96)],
+        "benchmark_shapes": [(4, 3, 128, 128), (6, 3, 160, 160)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="conv2d_functional_explicit",
+                anchor_name="forward_body",
+                strategy_summary="Rewrite the Conv2D path with an explicit functional convolution call.",
+                instruction="Replace the forward body with torch.nn.functional.conv2d using the stored self.conv1 parameters explicitly.",
+                expected_gain="Expose the convolution parameters clearly for later backend-specific lowering.",
+                good_body="return torch.nn.functional.conv2d(x, self.conv1.weight, self.conv1.bias, stride=self.conv1.stride, padding=self.conv1.padding, dilation=self.conv1.dilation, groups=self.conv1.groups)\n",
+                broken_body="return torch.nn.functional.conv2d(x, self.conv1.weight, None, stride=self.conv1.stride, padding=self.conv1.padding)\n",
+                debug_body="return torch.nn.functional.conv2d(x, self.conv1.weight, self.conv1.bias, stride=self.conv1.stride, padding=self.conv1.padding, dilation=self.conv1.dilation, groups=self.conv1.groups)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 61): {
+        "alias": "KB-L1-P61",
+        "task_name": "kernelbench_l1_61_conv_transpose3d",
+        "title": "KernelBench Level 1 / 61 ConvTranspose3D",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "conv", "conv3d", "transpose_conv"],
+        "init_args": [24, 24, 3],
+        "init_kwargs": {},
+        "test_shapes": [(1, 24, 8, 8, 8), (2, 24, 10, 10, 10)],
+        "benchmark_shapes": [(2, 24, 12, 12, 12), (3, 24, 14, 14, 14)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="conv_transpose3d_functional_explicit",
+                anchor_name="forward_body",
+                strategy_summary="Rewrite ConvTranspose3D with an explicit functional call using the stored module state.",
+                instruction="Replace the forward body with torch.nn.functional.conv_transpose3d using the stored self.conv_transpose3d parameters explicitly.",
+                expected_gain="Expose the transpose-convolution parameters clearly for later backend-specific lowering.",
+                good_body="return torch.nn.functional.conv_transpose3d(x, self.conv_transpose3d.weight, self.conv_transpose3d.bias, stride=self.conv_transpose3d.stride, padding=self.conv_transpose3d.padding, output_padding=self.conv_transpose3d.output_padding, groups=self.conv_transpose3d.groups, dilation=self.conv_transpose3d.dilation)\n",
+                broken_body="return torch.nn.functional.conv_transpose3d(x, self.conv_transpose3d.weight, None, stride=self.conv_transpose3d.stride, padding=self.conv_transpose3d.padding)\n",
+                debug_body="return torch.nn.functional.conv_transpose3d(x, self.conv_transpose3d.weight, self.conv_transpose3d.bias, stride=self.conv_transpose3d.stride, padding=self.conv_transpose3d.padding, output_padding=self.conv_transpose3d.output_padding, groups=self.conv_transpose3d.groups, dilation=self.conv_transpose3d.dilation)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 82): {
+        "alias": "KB-L1-P82",
+        "task_name": "kernelbench_l1_82_depthwise_conv2d",
+        "title": "KernelBench Level 1 / 82 Depthwise Conv2D",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "conv", "depthwise"],
+        "init_args": [32, 3, 1, 0],
+        "init_kwargs": {},
+        "test_shapes": [(4, 32, 64, 64), (6, 32, 80, 80)],
+        "benchmark_shapes": [(8, 32, 128, 128), (10, 32, 160, 160)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="depthwise_conv2d_functional_explicit",
+                anchor_name="forward_body",
+                strategy_summary="Rewrite the depthwise Conv2D path with an explicit functional convolution call.",
+                instruction="Replace the forward body with torch.nn.functional.conv2d using the stored self.conv2d parameters explicitly.",
+                expected_gain="Expose the depthwise convolution parameters clearly for later backend-specific lowering.",
+                good_body="return torch.nn.functional.conv2d(x, self.conv2d.weight, self.conv2d.bias, stride=self.conv2d.stride, padding=self.conv2d.padding, dilation=self.conv2d.dilation, groups=self.conv2d.groups)\n",
+                broken_body="return torch.nn.functional.conv2d(x, self.conv2d.weight, self.conv2d.bias, stride=self.conv2d.stride, padding=self.conv2d.padding)\n",
+                debug_body="return torch.nn.functional.conv2d(x, self.conv2d.weight, self.conv2d.bias, stride=self.conv2d.stride, padding=self.conv2d.padding, dilation=self.conv2d.dilation, groups=self.conv2d.groups)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 89): {
+        "alias": "KB-L1-P89",
+        "task_name": "kernelbench_l1_89_cumsum",
+        "title": "KernelBench Level 1 / 89 Cumsum",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "reduction", "scan"],
+        "init_args": [1],
+        "init_kwargs": {},
+        "test_shapes": [(128, 128), (160, 160)],
+        "benchmark_shapes": [(256, 256), (320, 320)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="cumsum_explicit",
+                anchor_name="forward_body",
+                strategy_summary="Keep the scan path explicit with torch.cumsum and the stored dimension.",
+                instruction="Replace the forward body with torch.cumsum over self.dim.",
+                expected_gain="Expose the scan boundary clearly while preserving the output contract.",
+                good_body="return torch.cumsum(x, dim=self.dim)\n",
+                broken_body="return torch.cumsum(x, dim=0)\n",
+                debug_body="return torch.cumsum(x, dim=self.dim)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 95): {
+        "alias": "KB-L1-P95",
+        "task_name": "kernelbench_l1_95_cross_entropy_loss",
+        "title": "KernelBench Level 1 / 95 CrossEntropyLoss",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "loss"],
+        "init_args": [],
+        "init_kwargs": {},
+        "test_case_specs": [
+            {
+                "args": [
+                    {"kind": "rand", "shape": (128, 64)},
+                    {"kind": "randint", "shape": (128,), "low": 0, "high": 64, "dtype": "int64"},
+                ]
+            },
+            {
+                "args": [
+                    {"kind": "rand", "shape": (192, 96)},
+                    {"kind": "randint", "shape": (192,), "low": 0, "high": 96, "dtype": "int64"},
+                ]
+            },
+        ],
+        "benchmark_case_specs": [
+            {
+                "args": [
+                    {"kind": "rand", "shape": (256, 128)},
+                    {"kind": "randint", "shape": (256,), "low": 0, "high": 128, "dtype": "int64"},
+                ]
+            },
+            {
+                "args": [
+                    {"kind": "rand", "shape": (384, 192)},
+                    {"kind": "randint", "shape": (384,), "low": 0, "high": 192, "dtype": "int64"},
+                ]
+            },
+        ],
+        "strategies": [
+            StrategySpec(
+                name="cross_entropy_logsoftmax_nll",
+                anchor_name="forward_body",
+                strategy_summary="Rewrite cross entropy as explicit log_softmax plus nll_loss.",
+                instruction="Replace the forward body with torch.nn.functional.log_softmax on dim=1 followed by torch.nn.functional.nll_loss.",
+                expected_gain="Expose the loss decomposition clearly for later backend-specific reasoning.",
+                good_body="log_probs = torch.nn.functional.log_softmax(predictions, dim=1)\nreturn torch.nn.functional.nll_loss(log_probs, targets)\n",
+                broken_body="log_probs = torch.nn.functional.log_softmax(predictions, dim=0)\nreturn torch.nn.functional.nll_loss(log_probs, targets)\n",
+                debug_body="log_probs = torch.nn.functional.log_softmax(predictions, dim=1)\nreturn torch.nn.functional.nll_loss(log_probs, targets)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 97): {
+        "alias": "KB-L1-P97",
+        "task_name": "kernelbench_l1_97_scaled_dot_product_attention",
+        "title": "KernelBench Level 1 / 97 Scaled Dot Product Attention",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "attention"],
+        "init_args": [],
+        "init_kwargs": {},
+        "test_case_specs": [
+            {
+                "args": [
+                    {"kind": "rand", "shape": (2, 4, 32, 64)},
+                    {"kind": "rand", "shape": (2, 4, 32, 64)},
+                    {"kind": "rand", "shape": (2, 4, 32, 64)},
+                ]
+            },
+            {
+                "args": [
+                    {"kind": "rand", "shape": (3, 4, 48, 64)},
+                    {"kind": "rand", "shape": (3, 4, 48, 64)},
+                    {"kind": "rand", "shape": (3, 4, 48, 64)},
+                ]
+            },
+        ],
+        "benchmark_case_specs": [
+            {
+                "args": [
+                    {"kind": "rand", "shape": (4, 8, 64, 64)},
+                    {"kind": "rand", "shape": (4, 8, 64, 64)},
+                    {"kind": "rand", "shape": (4, 8, 64, 64)},
+                ]
+            },
+            {
+                "args": [
+                    {"kind": "rand", "shape": (4, 8, 80, 64)},
+                    {"kind": "rand", "shape": (4, 8, 80, 64)},
+                    {"kind": "rand", "shape": (4, 8, 80, 64)},
+                ]
+            },
+        ],
+        "strategies": [
+            StrategySpec(
+                name="scaled_dot_product_attention_explicit",
+                anchor_name="forward_body",
+                strategy_summary="Keep the attention path explicit with torch.nn.functional.scaled_dot_product_attention.",
+                instruction="Replace the forward body with an explicit scaled_dot_product_attention call using Q, K, and V.",
+                expected_gain="Expose the attention boundary clearly for later backend-specific lowering.",
+                good_body="return torch.nn.functional.scaled_dot_product_attention(Q, K, V, dropout_p=0.0, is_causal=False)\n",
+                broken_body="return torch.nn.functional.scaled_dot_product_attention(Q, Q, V, dropout_p=0.0, is_causal=False)\n",
+                debug_body="return torch.nn.functional.scaled_dot_product_attention(Q, K, V, dropout_p=0.0, is_causal=False)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (2, 1): {
+    "alias": "KB-T12",
+    "task_name": "kernelbench_l2_1_conv2d_relu_biasadd",
+    "title": "KernelBench Level 2 / 1 Conv2D ReLU BiasAdd",
+    "tags": ["kernelbench", "official", "gpu", "triton", "level2", "fusion", "conv"],
+    "init_args": [64, 128, 3, (128, 1, 1)],
+    "init_kwargs": {},
+    "test_shapes": [(2, 64, 32, 32), (3, 64, 40, 40)],
+    "benchmark_shapes": [(4, 64, 64, 64), (6, 64, 80, 80)],
+    "input_kind": "rand",
+    "strategies": [
+        StrategySpec(
+            name="conv_relu_biasadd_explicit",
+            anchor_name="forward_body",
+            strategy_summary="Keep the Conv2D path explicit with convolution, ReLU, and bias add in the original order.",
+            instruction="Replace the forward body with an explicit conv call, a ReLU activation, and the final bias add using self.bias.",
+            expected_gain="Expose the conv-plus-activation-plus-bias fusion boundary without changing module ownership.",
+            good_body='conv = self.conv(x)\nactivated = torch.relu(conv)\nreturn activated + self.bias\n',
+            broken_body='conv = self.conv(x)\nbiased = conv + self.bias\nreturn torch.relu(biased)\n',
+            debug_body='conv = self.conv(x)\nactivated = torch.relu(conv)\nreturn activated + self.bias\n',
+            broken_failure_type="correctness_error",
+        )
+    ],
+},
+(2, 8): {
+    "alias": "KB-T13",
+    "task_name": "kernelbench_l2_8_conv3d_globalpool_biasadd_sum",
+    "title": "KernelBench Level 2 / 8 Conv3D Divide Max GlobalAvgPool BiasAdd Sum",
+    "tags": ["kernelbench", "official", "gpu", "triton", "level2", "fusion", "conv3d", "reduction"],
+    "init_args": [8, 16, (3, 3, 3), 2.0, (2, 2, 2), (16, 1, 1, 1), 1],
+    "init_kwargs": {},
+    "test_shapes": [(2, 8, 8, 32, 32), (3, 8, 10, 40, 40)],
+    "benchmark_shapes": [(4, 8, 12, 48, 48), (6, 8, 16, 64, 64)],
+    "input_kind": "rand",
+    "strategies": [
+        StrategySpec(
+            name="conv3d_pool_reduce_explicit",
+            anchor_name="forward_body",
+            strategy_summary="Keep the Conv3D pipeline explicit with divide, max-pool, global average pool, bias add, and final reduction.",
+            instruction="Replace the forward body with explicit temporaries for conv, divide, max-pool, global average pool, bias add, and torch.sum over self.sum_dim.",
+            expected_gain="Expose the full post-conv pipeline clearly for later low-level optimization or fusion.",
+            good_body='conv = self.conv(x)\nscaled = conv / self.divisor\npooled = self.max_pool(scaled)\nglobal_pooled = self.global_avg_pool(pooled)\nshifted = global_pooled + self.bias\nreturn torch.sum(shifted, dim=self.sum_dim)\n',
+            broken_body='conv = self.conv(x)\nscaled = conv / self.divisor\npooled = self.max_pool(scaled)\nglobal_pooled = self.global_avg_pool(pooled)\nreturn torch.sum(global_pooled, dim=self.sum_dim)\n',
+            debug_body='conv = self.conv(x)\nscaled = conv / self.divisor\npooled = self.max_pool(scaled)\nglobal_pooled = self.global_avg_pool(pooled)\nshifted = global_pooled + self.bias\nreturn torch.sum(shifted, dim=self.sum_dim)\n',
+            broken_failure_type="correctness_error",
+        )
+    ],
+},
+    (2, 12): {
+        "alias": "KB-T3",
+        "task_name": "kernelbench_l2_12_gemm_multiply_leakyrelu",
+        "title": "KernelBench Level 2 / 12 Gemm Multiply LeakyReLU",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level2", "fusion", "gemm"],
+        "init_args": [256, 256, 2.0, 0.1],
+        "init_kwargs": {},
+        "test_shapes": [(16, 256), (24, 256)],
+        "benchmark_shapes": [(32, 256), (48, 256)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="gemm_scale_leakyrelu_fused_forward",
+                anchor_name="forward_body",
+                strategy_summary="Rewrite the fused forward path with explicit linear, scaling, and leaky ReLU operations.",
+                instruction="Replace the forward body with an explicit linear call, multiply by self.multiplier, and apply leaky ReLU using the stored slope.",
+                expected_gain="Make the fusion boundary explicit for later Triton or fused-kernel optimization.",
+                good_body="linear = torch.nn.functional.linear(x, self.gemm.weight, self.gemm.bias)\nscaled = linear * self.multiplier\nreturn torch.nn.functional.leaky_relu(scaled, negative_slope=self.leaky_relu.negative_slope)\n",
+                broken_body="linear = torch.nn.functional.linear(x, self.gemm.weight, self.gemm.bias)\nreturn torch.relu(linear)\n",
+                debug_body="linear = torch.nn.functional.linear(x, self.gemm.weight, self.gemm.bias)\nscaled = linear * self.multiplier\nreturn torch.nn.functional.leaky_relu(scaled, negative_slope=self.leaky_relu.negative_slope)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 33): {
+        "alias": "KB-T4",
+        "task_name": "kernelbench_l1_33_batchnorm",
+        "title": "KernelBench Level 1 / 33 BatchNorm",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "norm", "batchnorm"],
+        "init_args": [32],
+        "init_kwargs": {},
+        "test_shapes": [(8, 32, 16, 16), (12, 32, 20, 20)],
+        "benchmark_shapes": [(16, 32, 32, 32), (24, 32, 40, 40)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="batchnorm_functional_eval",
+                anchor_name="forward_body",
+                strategy_summary="Rewrite BatchNorm with an explicit functional call in eval mode.",
+                instruction="Replace the forward body with torch.nn.functional.batch_norm using the stored BatchNorm state in eval mode.",
+                expected_gain="Make the normalization path explicit while preserving parameter and running-stat usage.",
+                good_body="return torch.nn.functional.batch_norm(x, self.bn.running_mean, self.bn.running_var, self.bn.weight, self.bn.bias, training=False, momentum=self.bn.momentum, eps=self.bn.eps)\n",
+                broken_body="return torch.nn.functional.batch_norm(x, None, None, self.bn.weight, self.bn.bias, training=True, momentum=self.bn.momentum, eps=self.bn.eps)\n",
+                debug_body="return torch.nn.functional.batch_norm(x, self.bn.running_mean, self.bn.running_var, self.bn.weight, self.bn.bias, training=False, momentum=self.bn.momentum, eps=self.bn.eps)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 40): {
+        "alias": "KB-T5",
+        "task_name": "kernelbench_l1_40_layernorm",
+        "title": "KernelBench Level 1 / 40 LayerNorm",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "norm", "layernorm"],
+        "init_args": [(32, 16, 16)],
+        "init_kwargs": {},
+        "test_shapes": [(4, 32, 16, 16), (6, 32, 16, 16)],
+        "benchmark_shapes": [(8, 32, 16, 16), (12, 32, 16, 16)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="layernorm_functional_rewrite",
+                anchor_name="forward_body",
+                strategy_summary="Rewrite LayerNorm with torch.nn.functional.layer_norm using the stored affine state.",
+                instruction="Replace the forward body with torch.nn.functional.layer_norm using self.ln.normalized_shape, self.ln.weight, self.ln.bias, and self.ln.eps.",
+                expected_gain="Keep the normalization semantics explicit for later backend-specific lowering.",
+                good_body="return torch.nn.functional.layer_norm(x, self.ln.normalized_shape, self.ln.weight, self.ln.bias, self.ln.eps)\n",
+                broken_body="return x - x.mean(dim=-1, keepdim=True)\n",
+                debug_body="return torch.nn.functional.layer_norm(x, self.ln.normalized_shape, self.ln.weight, self.ln.bias, self.ln.eps)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (1, 47): {
+        "alias": "KB-T6",
+        "task_name": "kernelbench_l1_47_sum_reduction",
+        "title": "KernelBench Level 1 / 47 Sum reduction over a dimension",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level1", "reduction"],
+        "init_args": [1],
+        "init_kwargs": {},
+        "test_shapes": [(8, 256, 255), (12, 384, 383)],
+        "benchmark_shapes": [(16, 512, 511), (20, 640, 639)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="sum_keepdim_explicit",
+                anchor_name="forward_body",
+                strategy_summary="Keep the reduction explicit with torch.sum and the stored reduction dimension.",
+                instruction="Replace the forward body with torch.sum over self.dim and keep keepdim=True.",
+                expected_gain="Expose the reduction boundary clearly while preserving shape semantics.",
+                good_body="return torch.sum(x, dim=self.dim, keepdim=True)\n",
+                broken_body="return torch.sum(x, dim=self.dim)\n",
+                debug_body="return torch.sum(x, dim=self.dim, keepdim=True)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (2, 57): {
+        "alias": "KB-T7",
+        "task_name": "kernelbench_l2_57_conv2d_relu_hardswish",
+        "title": "KernelBench Level 2 / 57 Conv2d ReLU HardSwish",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level2", "fusion", "conv"],
+        "init_args": [8, 32, 3],
+        "init_kwargs": {},
+        "test_shapes": [(4, 8, 32, 32), (6, 8, 40, 40)],
+        "benchmark_shapes": [(8, 8, 64, 64), (12, 8, 80, 80)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="conv_relu_hardswish_functional",
+                anchor_name="forward_body",
+                strategy_summary="Keep the convolution module but make the fused post-ops explicit with ReLU and HardSwish.",
+                instruction="Replace the forward body with an explicit conv call, a ReLU, and torch.nn.functional.hardswish.",
+                expected_gain="Expose the conv-plus-activation fusion boundary without changing module ownership.",
+                good_body="conv = self.conv(x)\nrelu_out = torch.relu(conv)\nreturn torch.nn.functional.hardswish(relu_out)\n",
+                broken_body="return torch.relu(self.conv(x))\n",
+                debug_body="conv = self.conv(x)\nrelu_out = torch.relu(conv)\nreturn torch.nn.functional.hardswish(relu_out)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (2, 76): {
+        "alias": "KB-T8",
+        "task_name": "kernelbench_l2_76_gemm_add_relu",
+        "title": "KernelBench Level 2 / 76 Gemm Add ReLU",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level2", "fusion", "gemm"],
+        "init_args": [1024, 1024, (1024,)],
+        "init_kwargs": {},
+        "test_shapes": [(16, 1024), (24, 1024)],
+        "benchmark_shapes": [(32, 1024), (48, 1024)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="gemm_bias_relu_explicit",
+                anchor_name="forward_body",
+                strategy_summary="Rewrite the GEMM path with explicit linear, bias add, and ReLU steps.",
+                instruction="Replace the forward body with self.gemm(x), add self.bias, and apply torch.relu.",
+                expected_gain="Make the fused GEMM + bias + activation structure explicit for later optimization.",
+                good_body="projected = self.gemm(x)\nshifted = projected + self.bias\nreturn torch.relu(shifted)\n",
+                broken_body="projected = self.gemm(x)\nreturn torch.relu(projected)\n",
+                debug_body="projected = self.gemm(x)\nshifted = projected + self.bias\nreturn torch.relu(shifted)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (3, 1): {
+        "alias": "KB-T9",
+        "task_name": "kernelbench_l3_1_mlp",
+        "title": "KernelBench Level 3 / 1 MLP",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level3", "mlp"],
+        "init_args": [128, [128, 64], 32],
+        "init_kwargs": {},
+        "test_shapes": [(8, 128), (12, 128)],
+        "benchmark_shapes": [(16, 128), (24, 128)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="mlp_forward_explicit_return",
+                anchor_name="forward_step_1",
+                strategy_summary="Keep the MLP path explicit by storing the sequential output before the final return step.",
+                instruction="Replace the first forward step with a named temporary for self.network(x) while preserving the remaining forward steps.",
+                expected_gain="Make the forward chain easier to inspect and debug while preserving the Level 3 scaffold.",
+                good_body="_stark_forward_value = self.network(x)\n",
+                broken_body="_stark_forward_value = self.network(x + 1.0)\n",
+                debug_body="_stark_forward_value = self.network(x)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+    (3, 8): {
+        "alias": "KB-T10",
+        "task_name": "kernelbench_l3_8_resnet_basic_block",
+        "title": "KernelBench Level 3 / 8 ResNetBasicBlock",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level3", "cnn_block", "residual", "conv"],
+        "init_args": [8, 8, 1],
+        "init_kwargs": {},
+        "test_shapes": [(2, 8, 16, 16), (3, 8, 20, 20)],
+        "benchmark_shapes": [(4, 8, 32, 32), (6, 8, 40, 40)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="resnet_residual_merge_explicit",
+                anchor_name="forward_step_8",
+                strategy_summary="Rewrite the residual merge as an explicit out = out + identity step.",
+                instruction="Replace the residual merge step with an explicit out = out + identity assignment while preserving the surrounding block structure.",
+                expected_gain="Keep the residual block semantics explicit for later backend-focused edits.",
+                good_body="out = out + identity\n",
+                broken_body="out = out - identity\n",
+                debug_body="out = out + identity\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+(3, 11): {
+    "alias": "KB-T14",
+    "task_name": "kernelbench_l3_11_vgg16",
+    "title": "KernelBench Level 3 / 11 VGG16",
+    "tags": ["kernelbench", "official", "gpu", "triton", "level3", "cnn", "classifier"],
+    "init_args": [1000],
+    "init_kwargs": {},
+    "test_shapes": [(1, 3, 224, 224), (2, 3, 224, 224)],
+    "benchmark_shapes": [(2, 3, 224, 224), (3, 3, 224, 224)],
+    "input_kind": "rand",
+    "strategies": [
+        StrategySpec(
+            name="vgg_flatten_step_explicit",
+            anchor_name="forward_step_2",
+            strategy_summary="Keep the classifier boundary explicit by flattening features with start_dim=1.",
+            instruction="Replace the flatten step with torch.flatten(x, 1) before the classifier step.",
+            expected_gain="Preserve the VGG classifier interface while keeping the forward chain easy to inspect.",
+            good_body='x = torch.flatten(x, 1)\n',
+            broken_body='x = torch.flatten(x, 0)\n',
+            debug_body='x = torch.flatten(x, 1)\n',
+            broken_failure_type="correctness_error",
+        )
+    ],
+},
+(3, 21): {
+    "alias": "KB-T15",
+    "task_name": "kernelbench_l3_21_efficientnet_mbconv",
+    "title": "KernelBench Level 3 / 21 EfficientNetMBConv",
+    "tags": ["kernelbench", "official", "gpu", "triton", "level3", "cnn_block", "depthwise", "residual"],
+    "init_args": [112, 192, 5, 2, 6],
+    "init_kwargs": {},
+    "test_shapes": [(1, 112, 64, 64), (1, 112, 80, 80)],
+    "benchmark_shapes": [(1, 112, 96, 96), (2, 112, 112, 112)],
+    "input_kind": "rand",
+    "strategies": [
+        StrategySpec(
+            name="mbconv_residual_explicit",
+            anchor_name="forward_step_5",
+            strategy_summary="Keep the MBConv residual merge explicit when the residual path is enabled.",
+            instruction="Replace the residual step with an explicit x = x + identity assignment guarded by self.use_residual.",
+            expected_gain="Preserve the residual structure while making the merge point explicit for later backend-focused edits.",
+            good_body='if self.use_residual:\n    x = x + identity\n',
+            broken_body='if self.use_residual:\n    x = identity\n',
+            debug_body='if self.use_residual:\n    x = x + identity\n',
+            broken_failure_type="correctness_error",
+        )
+    ],
+},
+    (3, 31): {
+        "alias": "KB-T11",
+        "task_name": "kernelbench_l3_31_vision_attention",
+        "title": "KernelBench Level 3 / 31 VisionAttention",
+        "tags": ["kernelbench", "official", "gpu", "triton", "level3", "attention"],
+        "init_args": [64, 4],
+        "init_kwargs": {},
+        "test_shapes": [(1, 64, 8, 8), (2, 64, 8, 8)],
+        "benchmark_shapes": [(2, 64, 16, 16), (4, 64, 16, 16)],
+        "input_kind": "rand",
+        "strategies": [
+            StrategySpec(
+                name="attention_residual_norm_explicit",
+                anchor_name="forward_step_4",
+                strategy_summary="Make the attention residual and LayerNorm step explicit inside one forward step anchor.",
+                instruction="Replace the residual normalization step with an explicit residual temporary followed by LayerNorm.",
+                expected_gain="Expose the attention residual path clearly without changing the surrounding reshape logic.",
+                good_body="residual = attn_output + x\nx = self.norm(residual)\n",
+                broken_body="x = self.norm(attn_output)\n",
+                debug_body="residual = attn_output + x\nx = self.norm(residual)\n",
+                broken_failure_type="correctness_error",
+            )
+        ],
+    },
+}
+
+_CUDA_ENABLED_TARGETS: set[tuple[int, int]] = set(_SELECTED_TARGETS.keys())
 
 
 def _region_role(anchor_name: str) -> str:
     if anchor_name.startswith("forward_step_"):
         return "forward_step"
     return anchor_name
+
+
+def selected_kernelbench_targets() -> list[dict[str, Any]]:
+    """Return the fixed KernelBench target list enabled in the current stage."""
+    rows = []
+    for (level, problem_id), payload in sorted(_SELECTED_TARGETS.items()):
+        rows.append(
+            {
+                "alias": payload.get("alias"),
+                "level": level,
+                "problem_id": problem_id,
+                "task_name": payload["task_name"],
+                "title": payload["title"],
+                "tags": list(payload["tags"]),
+            }
+        )
+    return rows
+
 
 class KernelBenchTaskBridge:
     def load_task(self, config: BridgeTaskConfig) -> TaskSpec:
@@ -111,36 +855,25 @@ class KernelBenchTaskBridge:
         injects grounded edit anchors so the agents can make local changes
         without rewriting the full module arbitrarily.
         """
-        if backend not in {"triton", "cuda"}:
-            raise BridgeLoadError(f"Unsupported KernelBench backend: {backend}. Supported backends: triton, cuda.")
+        if not is_supported_kernelbench_backend(backend):
+            raise BridgeLoadError(
+                f"Unsupported KernelBench backend: {backend}. Supported backends: {supported_kernelbench_backends_text()}."
+            )
         root = Path(kernelbench_root)
         problem_path = self._resolve_problem_path(root, level, problem_id)
         info = self._inspect_official_problem(problem_path)
         target = _SELECTED_TARGETS.get((level, problem_id))
-        is_auto_bridge = target is None
-        if is_auto_bridge:
+        if target is None:
             target = self._build_auto_target(problem_path, info, level, problem_id, backend)
             test_cases, benchmark_cases = self._build_auto_cases(problem_path)
         else:
             test_cases = self._build_cases(target, kind="test")
             benchmark_cases = self._build_cases(target, kind="benchmark")
-        scaffold = self._build_model_scaffold(
-            info,
-            level=level,
-            backend=backend,
-            level_problem=(level, problem_id),
-            target=target,
-            is_auto_bridge=is_auto_bridge,
-        )
+        scaffold = self._build_model_scaffold(info, level=level, backend=backend, level_problem=(level, problem_id))
         grounded_regions = self._extract_grounded_regions(scaffold)
         tags = [backend if tag == "triton" else tag for tag in target["tags"]]
-        if backend == "cuda":
-            if self._uses_native_cuda_scaffold((level, problem_id)):
-                if "native_cuda" not in tags:
-                    tags.append("native_cuda")
-            else:
-                if "cuda_safe_forward_only" not in tags:
-                    tags.append("cuda_safe_forward_only")
+        if is_native_cuda_backend(backend) and "native_cuda" not in tags:
+            tags.append("native_cuda")
         strategy_catalog = self._strategy_catalog_for_backend((level, problem_id), backend, target.get("strategies", []))
         return TaskSpec(
             name=target["task_name"],
@@ -398,24 +1131,20 @@ class KernelBenchTaskBridge:
         temp_name = "_stark_forward_value"
         return [f"{temp_name} = {expression}", f"return {temp_name}"]
 
-
     def _build_model_scaffold(
         self,
         info: OfficialProblemInfo,
         level: int,
         backend: str,
         level_problem: tuple[int, int],
-        target: dict[str, Any] | None = None,
-        is_auto_bridge: bool = False,
     ) -> str:
         """Render the anchored `ModelNew` module used by the STARK agents."""
-        if backend == "cuda":
-            return self._build_cuda_model_scaffold(
-                info,
-                level_problem,
-                target=target,
-                is_auto_bridge=is_auto_bridge,
-            )
+        if is_native_cuda_backend(backend):
+            return self._build_cuda_model_scaffold(info, level_problem)
+        if is_tilelang_backend(backend):
+            return self._build_tilelang_model_scaffold(info, level)
+        if is_cute_backend(backend):
+            return self._build_cute_model_scaffold(info, level)
 
         imports = info.imports_block.strip()
         parts = []
@@ -450,9 +1179,13 @@ class KernelBenchTaskBridge:
                 f"    def {info.forward_signature}:",
             ]
         )
-        forward_steps = self._curated_forward_steps(info, target, allow_level3_steps=level >= 3)
-        if forward_steps:
-            self._append_forward_step_regions(parts, forward_steps, indent="        ")
+        if level >= 3 and info.forward_steps:
+            for index, step in enumerate(info.forward_steps, start=1):
+                parts.append(f"        # <<<IMPROVE:forward_step_{index}>>>")
+                if step:
+                    for line in step.splitlines():
+                        parts.append(f"        {line}" if line else "")
+                parts.append("        # <<<END_IMPROVE>>>")
         else:
             parts.append("        # <<<IMPROVE:forward_body>>>")
             if info.forward_body:
@@ -462,16 +1195,141 @@ class KernelBenchTaskBridge:
         parts.append("")
         return "\n".join(parts).rstrip() + "\n"
 
-    def _build_cuda_model_scaffold(
-        self,
-        info: OfficialProblemInfo,
-        level_problem: tuple[int, int],
-        target: dict[str, Any] | None = None,
-        is_auto_bridge: bool = False,
-    ) -> str:
-        if self._uses_safe_cuda_scaffold(level_problem, is_auto_bridge=is_auto_bridge):
-            return self._build_safe_cuda_model_scaffold(info, target=target)
+    def _build_tilelang_model_scaffold(self, info: OfficialProblemInfo, level: int) -> str:
+        imports = info.imports_block.strip()
+        parts = []
+        if imports:
+            parts.append(imports)
+            parts.append("")
+        parts.extend(
+            [
+                "# <<<IMPROVE:helpers>>>",
+                "_STARK_TILELANG_KERNEL = None",
+                "",
+                "def _stark_import_tilelang():",
+                "    import tilelang",
+                "    import tilelang.language as T",
+                "    return tilelang, T",
+                "# <<<END_IMPROVE>>>",
+                "",
+                "# <<<IMPROVE:tilelang_kernel>>>",
+                "# Define or cache TileLang kernels/helpers here.",
+                "# Keep the public ModelNew interface unchanged.",
+                "# <<<END_IMPROVE>>>",
+                "",
+                "class ModelNew(nn.Module):",
+            ]
+        )
+        if info.class_preamble:
+            for line in info.class_preamble.splitlines():
+                parts.append(f"    {line}" if line else "")
+        parts.extend(
+            [
+                f"    def {info.init_signature}:",
+                "        super().__init__()",
+                "        # <<<IMPROVE:init_body>>>",
+            ]
+        )
+        if info.init_body:
+            for line in info.init_body.splitlines():
+                parts.append(f"        {line}" if line else "")
+        parts.extend(
+            [
+                "        # <<<END_IMPROVE>>>",
+                "",
+                f"    def {info.forward_signature}:",
+            ]
+        )
+        if level >= 3 and info.forward_steps:
+            for index, step in enumerate(info.forward_steps, start=1):
+                parts.append(f"        # <<<IMPROVE:forward_step_{index}>>>")
+                if step:
+                    for line in step.splitlines():
+                        parts.append(f"        {line}" if line else "")
+                parts.append("        # <<<END_IMPROVE>>>")
+        else:
+            parts.extend(
+                [
+                    "        # <<<IMPROVE:forward_body>>>",
+                    "        # Baseline fallback keeps the official PyTorch forward path.",
+                    "        # Replace it with a TileLang launch when the kernel is ready.",
+                ]
+            )
+            if info.forward_body:
+                for line in info.forward_body.splitlines():
+                    parts.append(f"        {line}" if line else "")
+            parts.append("        # <<<END_IMPROVE>>>")
+        parts.append("")
+        return "\n".join(parts).rstrip() + "\n"
 
+    def _build_cute_model_scaffold(self, info: OfficialProblemInfo, level: int) -> str:
+        imports = info.imports_block.strip()
+        parts = []
+        if imports:
+            parts.append(imports)
+            parts.append("")
+        parts.extend(
+            [
+                "# <<<IMPROVE:helpers>>>",
+                "_STARK_CUTE_KERNEL = None",
+                "",
+                "def _stark_import_cute():",
+                "    import cutlass",
+                "    import cutlass.cute as cute",
+                "    return cutlass, cute",
+                "# <<<END_IMPROVE>>>",
+                "",
+                "# <<<IMPROVE:cute_kernel>>>",
+                "# Define or cache CuTe DSL kernels/helpers here.",
+                "# Keep the public ModelNew interface unchanged.",
+                "# <<<END_IMPROVE>>>",
+                "",
+                "class ModelNew(nn.Module):",
+            ]
+        )
+        if info.class_preamble:
+            for line in info.class_preamble.splitlines():
+                parts.append(f"    {line}" if line else "")
+        parts.extend(
+            [
+                f"    def {info.init_signature}:",
+                "        super().__init__()",
+                "        # <<<IMPROVE:init_body>>>",
+            ]
+        )
+        if info.init_body:
+            for line in info.init_body.splitlines():
+                parts.append(f"        {line}" if line else "")
+        parts.extend(
+            [
+                "        # <<<END_IMPROVE>>>",
+                "",
+                f"    def {info.forward_signature}:",
+            ]
+        )
+        if level >= 3 and info.forward_steps:
+            for index, step in enumerate(info.forward_steps, start=1):
+                parts.append(f"        # <<<IMPROVE:forward_step_{index}>>>")
+                if step:
+                    for line in step.splitlines():
+                        parts.append(f"        {line}" if line else "")
+                parts.append("        # <<<END_IMPROVE>>>")
+        else:
+            parts.extend(
+                [
+                    "        # <<<IMPROVE:forward_body>>>",
+                    "        # Baseline fallback keeps the official PyTorch forward path.",
+                    "        # Replace it with a CuTe DSL launch when the kernel is ready.",
+                ]
+            )
+            if info.forward_body:
+                for line in info.forward_body.splitlines():
+                    parts.append(f"        {line}" if line else "")
+            parts.append("        # <<<END_IMPROVE>>>")
+        parts.append("")
+        return "\n".join(parts).rstrip() + "\n"
+
+    def _build_cuda_model_scaffold(self, info: OfficialProblemInfo, level_problem: tuple[int, int]) -> str:
         imports = self._ensure_cuda_extension_imports(info.imports_block.strip())
         helper_body, cpp_body, cu_body, forward_body = self._cuda_backend_bodies(level_problem, info.forward_body)
         parts = []
@@ -546,29 +1404,6 @@ class KernelBenchTaskBridge:
         return "\n".join(parts).rstrip() + "\n"
 
     @staticmethod
-    def _curated_forward_steps(
-        info: OfficialProblemInfo,
-        target: dict[str, Any] | None,
-        allow_level3_steps: bool,
-    ) -> list[str]:
-        if target is not None:
-            curated_steps = target.get("forward_steps")
-            if curated_steps:
-                return [str(step).strip("\n") for step in curated_steps]
-        if allow_level3_steps and info.forward_steps:
-            return list(info.forward_steps)
-        return []
-
-    @staticmethod
-    def _append_forward_step_regions(parts: list[str], steps: list[str], indent: str) -> None:
-        for index, step in enumerate(steps, start=1):
-            parts.append(f"{indent}# <<<IMPROVE:forward_step_{index}>>>")
-            if step:
-                for line in step.splitlines():
-                    parts.append(f"{indent}{line}" if line else "")
-            parts.append(f"{indent}# <<<END_IMPROVE>>>")
-
-    @staticmethod
     def _ensure_cuda_extension_imports(imports: str) -> str:
         lines = [line for line in imports.splitlines() if line.strip()]
         required = [
@@ -581,63 +1416,6 @@ class KernelBenchTaskBridge:
                 lines.append(line)
         return "\n".join(lines)
 
-    @staticmethod
-    def _uses_native_cuda_scaffold(level_problem: tuple[int, int]) -> bool:
-        return level_problem in _NATIVE_CUDA_TARGETS
-
-    @staticmethod
-    def _uses_safe_cuda_scaffold(level_problem: tuple[int, int], is_auto_bridge: bool = False) -> bool:
-        return is_auto_bridge or level_problem in _SAFE_CUDA_FORWARD_ONLY_TARGETS
-
-    def _build_safe_cuda_model_scaffold(self, info: OfficialProblemInfo, target: dict[str, Any] | None = None) -> str:
-        imports = info.imports_block.strip()
-        parts = []
-        if imports:
-            parts.append(imports)
-            parts.append("")
-        parts.extend(
-            [
-                "# <<<IMPROVE:helpers>>>",
-                "# Keep this CUDA task on a safe Python scaffold until a task-specific native kernel bridge is added.",
-                "# Do not add load_inline / pybind / handwritten CUDA here unless the task already has a curated native scaffold.",
-                "# <<<END_IMPROVE>>>",
-                "",
-                "class ModelNew(nn.Module):",
-            ]
-        )
-        if info.class_preamble:
-            for line in info.class_preamble.splitlines():
-                parts.append(f"    {line}" if line else "")
-        parts.extend(
-            [
-                f"    def {info.init_signature}:",
-                "        super().__init__()",
-                "        # <<<IMPROVE:init_body>>>",
-            ]
-        )
-        if info.init_body:
-            for line in info.init_body.splitlines():
-                parts.append(f"        {line}" if line else "")
-        parts.extend(
-            [
-                "        # <<<END_IMPROVE>>>",
-                "",
-                f"    def {info.forward_signature}:",
-            ]
-        )
-        forward_steps = self._curated_forward_steps(info, target, allow_level3_steps=False)
-        if forward_steps:
-            self._append_forward_step_regions(parts, forward_steps, indent="        ")
-        else:
-            parts.append("        # <<<IMPROVE:forward_body>>>")
-            if info.forward_body:
-                for line in info.forward_body.splitlines():
-                    parts.append(f"        {line}" if line else "")
-            else:
-                parts.append("        raise NotImplementedError('Empty forward body for safe CUDA scaffold')")
-            parts.append("        # <<<END_IMPROVE>>>")
-        parts.append("")
-        return "\n".join(parts).rstrip() + "\n"
     def _cuda_backend_bodies(self, level_problem: tuple[int, int], baseline_forward_body: str) -> tuple[str, str, str, str]:
         if level_problem == (1, 25):
             return (
@@ -1007,7 +1785,7 @@ class KernelBenchTaskBridge:
         backend: str,
         base_catalog: list[StrategySpec],
     ) -> list[StrategySpec]:
-        if backend != "cuda":
+        if not is_native_cuda_backend(backend):
             return list(base_catalog)
         if level_problem == (1, 25):
             return [

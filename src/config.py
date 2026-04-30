@@ -18,12 +18,14 @@ from typing import Any
 
 import yaml
 
+from .backends import KERNELBENCH_BACKENDS
+
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 _CONFIG_ROOT = _REPO_ROOT / "configs"
 
 _WORKFLOWS = ["stark", "sampling", "reflexion", "search-agent", "ma-only"]
-_BACKENDS = ["triton", "cuda"]
+_BACKENDS = list(KERNELBENCH_BACKENDS)
 
 _DEFAULTS: dict[str, Any] = {
     "workflow": "stark",
