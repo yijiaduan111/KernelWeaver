@@ -227,6 +227,18 @@ def _resolve_workflow(args: argparse.Namespace, run_name: str) -> str:
     return str(experiment.get("workflow", default_setting("workflow")))
 
 
+def _resolve_semantics_settings(run_name: str) -> dict[str, Any]:
+    experiment = experiment_profile(run_name)
+    raw = experiment.get("semantics", {})
+    if not isinstance(raw, dict):
+        raw = {}
+    return {
+        "enabled": bool(raw.get("enabled", True)),
+        "mode": str(raw.get("mode", "rule")),
+        "max_anchor_hints": int(raw.get("max_anchor_hints", 6)),
+    }
+
+
 def _resolve_env_file(args: argparse.Namespace, run_name: str) -> str:
     if getattr(args, "env_file", None):
         return str(args.env_file)
@@ -340,6 +352,7 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
     search_settings = search_profile(search_name)
     evaluator_settings = evaluator_profile(evaluator_name)
     measure_settings = measurement_profile(measurement_name)
+    semantics_settings = _resolve_semantics_settings(run_name)
     max_attempts = int(getattr(args, "max_attempts", None) or search_settings.get("max_attempts", 6))
     epsilon = float(getattr(args, "epsilon", None) if getattr(args, "epsilon", None) is not None else search_settings.get("epsilon", 0.4))
     return StarkConfig(
@@ -371,6 +384,9 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
         paper_discard_first=int(measure_settings.get("paper_discard_first", 1)),
         timing_method=str(measure_settings.get("timing_method", "cuda_event")),
         reference_modes=list(evaluator_settings.get("reference_modes") or ["torch_eager"]),
+        semantics_enabled=semantics_settings["enabled"],
+        semantics_mode=semantics_settings["mode"],
+        semantics_max_anchor_hints=semantics_settings["max_anchor_hints"],
     )
 
 
@@ -409,9 +425,17 @@ def _run_kernelbench(args: argparse.Namespace) -> int:
     backend = _resolve_backend(args, run_name)
     workflow = _resolve_workflow(args, run_name)
     loader = KernelBenchLoader()
-    task = loader.load_official_problem(_resolve_kernelbench_root(args, run_name), args.level, args.problem_id, backend=backend)
-    provider = _build_provider(args, run_name)
     config = _build_config(args, run_name)
+    task = loader.load_official_problem(
+        _resolve_kernelbench_root(args, run_name),
+        args.level,
+        args.problem_id,
+        backend=backend,
+        semantics_enabled=config.semantics_enabled,
+        semantics_mode=config.semantics_mode,
+        semantics_max_anchor_hints=config.semantics_max_anchor_hints,
+    )
+    provider = _build_provider(args, run_name)
     try:
         result = run_workflow(task, config, provider, _kernelbench_evaluator(backend, config.evaluator_profile or "quick"), workflow=workflow)
         return _save_and_print(result, args.output_dir)
@@ -451,11 +475,20 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
                 "error": None,
             }
             try:
-                task = loader.load_official_problem(kernelbench_root, level, problem_id, backend=item_backend)
+                config = _build_config(args, run_name)
+                task = loader.load_official_problem(
+                    kernelbench_root,
+                    level,
+                    problem_id,
+                    backend=item_backend,
+                    semantics_enabled=config.semantics_enabled,
+                    semantics_mode=config.semantics_mode,
+                    semantics_max_anchor_hints=config.semantics_max_anchor_hints,
+                )
                 task_output_dir = output_root / batch_output_dir_name(alias, level, problem_id)
                 result = run_workflow(
                     task,
-                    _build_config(args, run_name),
+                    config,
                     provider,
                     _kernelbench_evaluator(item_backend, _resolve_evaluator_name(args, run_name)),
                     workflow=workflow,

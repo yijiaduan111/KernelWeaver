@@ -246,6 +246,7 @@ def _finalize_run(
         evaluation_profile=config.evaluation_profile,
         kernelbench_evaluator=config.kernelbench_evaluator,
         grounded_regions=list(task.grounded_regions),
+        semantic_profile=task.semantic_profile,
         reference_runtimes=dict(best_node.reference_runtimes),
         speedups=dict(best_node.speedups),
         primary_reference=best_node.primary_reference,

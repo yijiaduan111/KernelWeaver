@@ -1,4 +1,4 @@
-﻿"""Thin KernelBench loader used by the STARK workflow.
+"""Thin KernelBench loader used by the STARK workflow.
 
 This module deliberately avoids per-problem adapter specs. It only reads an
 official KernelBench problem, builds a generic ModelNew scaffold, and leaves
@@ -17,6 +17,7 @@ from typing import Any
 
 from ..backends import is_cute_backend, is_native_cuda_backend, is_supported_kernelbench_backend, is_tilelang_backend, supported_kernelbench_backends_text
 from ..models import GroundedRegion, TaskSpec, TestCase
+from ..semantics import SemanticAnalyzer, SemanticProfile
 
 
 class KernelBenchLoadError(ValueError):
@@ -46,6 +47,9 @@ class KernelBenchLoader:
         level: int,
         problem_id: int,
         backend: str = "triton",
+        semantics_enabled: bool = True,
+        semantics_mode: str = "rule",
+        semantics_max_anchor_hints: int = 6,
     ) -> TaskSpec:
         if not is_supported_kernelbench_backend(backend):
             raise KernelBenchLoadError(
@@ -55,6 +59,15 @@ class KernelBenchLoader:
         problem_path = self._resolve_problem_path(root, level, problem_id)
         info = self._inspect_problem(problem_path)
         scaffold = self._build_scaffold(info, level=level, problem_id=problem_id, backend=backend)
+        grounded_regions = self._extract_grounded_regions(scaffold)
+        semantic_profile = self._build_semantic_profile(
+            info,
+            grounded_regions,
+            backend=backend,
+            enabled=semantics_enabled,
+            mode=semantics_mode,
+            max_anchor_hints=semantics_max_anchor_hints,
+        )
         return TaskSpec(
             name=self._task_name(level, problem_id, problem_path),
             description=f"KernelBench Level {level} / Problem {problem_id}: {info.description}",
@@ -73,7 +86,28 @@ class KernelBenchLoader:
             problem_id=problem_id,
             backend=backend,
             source_root=str(root),
-            grounded_regions=self._extract_grounded_regions(scaffold),
+            grounded_regions=grounded_regions,
+            semantic_profile=semantic_profile,
+        )
+
+
+    @staticmethod
+    def _build_semantic_profile(
+        info: ProblemInfo,
+        grounded_regions: list[GroundedRegion],
+        backend: str,
+        enabled: bool,
+        mode: str,
+        max_anchor_hints: int,
+    ) -> SemanticProfile | None:
+        if not enabled:
+            return SemanticProfile(enabled=False, mode=mode, op_type="disabled", summary="Semantic analysis is disabled.")
+        return SemanticAnalyzer().analyze(
+            info,
+            grounded_regions,
+            backend=backend,
+            mode=mode,
+            max_anchor_hints=max_anchor_hints,
         )
 
     def _resolve_problem_path(self, kernelbench_root: Path, level: int, problem_id: int) -> Path:
@@ -275,9 +309,9 @@ class KernelBenchLoader:
             for line in info.init_body.splitlines():
                 parts.append(f"        {line}" if line else "")
         parts.extend(["        # <<<END_IMPROVE>>>", "", f"    def {info.forward_signature}:"])
-        if level >= 3 and info.forward_steps:
+        if info.forward_steps:
             for index, step in enumerate(info.forward_steps, start=1):
-                parts.append(f"        # <<<IMPROVE:forward_step_{index}>>>")
+                parts.append(f"        # <<<IMPROVE:forward_stmt_{index}>>>")
                 if index == 1:
                     for intro in forward_intro:
                         parts.append(f"        {intro}")
@@ -432,6 +466,6 @@ def _region_role(anchor_name: str) -> str:
         return "helper"
     if anchor_name == "init_body":
         return "init"
-    if anchor_name == "forward_body" or anchor_name.startswith("forward_step_"):
+    if anchor_name == "forward_body" or anchor_name.startswith("forward_stmt_"):
         return "forward"
     return "unknown"

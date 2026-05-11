@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from .semantics.schema import SemanticProfile
+
 
 @dataclass(slots=True)
 class TestCase:
@@ -56,6 +58,7 @@ class TaskSpec:
     backend: str | None = None
     source_root: str | None = None
     grounded_regions: list[GroundedRegion] = field(default_factory=list)
+    semantic_profile: SemanticProfile | None = None
 
     def strategy_map(self) -> dict[str, StrategySpec]:
         return {strategy.name: strategy for strategy in self.strategy_catalog}
@@ -199,6 +202,9 @@ class StarkConfig:
     paper_discard_first: int = 1
     timing_method: str = "cuda_event"
     reference_modes: list[str] = field(default_factory=lambda: ["torch_eager"])
+    semantics_enabled: bool = True
+    semantics_mode: str = "rule"
+    semantics_max_anchor_hints: int = 6
 
 
 @dataclass(slots=True)
@@ -233,3 +239,4 @@ class RunResult:
     reference_runtimes: dict[str, float | None] = field(default_factory=dict)
     speedups: dict[str, float | None] = field(default_factory=dict)
     primary_reference: str | None = None
+    semantic_profile: SemanticProfile | None = None

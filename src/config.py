@@ -445,6 +445,7 @@ def _fallback_experiment(name: str) -> dict[str, Any]:
             "evaluator": "paper",
             "measurement": "paper",
             "runtime": "gpu_single",
+            "semantics": {"enabled": True, "mode": "rule", "max_anchor_hints": 6},
             "output_root": "runs",
         }
     if name == "main":
@@ -460,6 +461,7 @@ def _fallback_experiment(name: str) -> dict[str, Any]:
             "evaluator": "main",
             "measurement": "main",
             "runtime": "gpu_single",
+            "semantics": {"enabled": True, "mode": "rule", "max_anchor_hints": 6},
             "output_root": "runs",
         }
     return {
@@ -474,5 +476,6 @@ def _fallback_experiment(name: str) -> dict[str, Any]:
         "evaluator": "quick",
         "measurement": "quick",
         "runtime": "gpu_single",
+        "semantics": {"enabled": True, "mode": "rule", "max_anchor_hints": 6},
         "output_root": "runs",
     }

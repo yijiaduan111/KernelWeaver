@@ -1,4 +1,4 @@
-﻿import importlib.util
+import importlib.util
 import shutil
 import tempfile
 import unittest
@@ -98,7 +98,7 @@ class KernelbenchLoaderTests(unittest.TestCase):
         self.assertEqual(task.test_cases, [])
         self.assertEqual(task.benchmark_cases, [])
         self.assertIn("class ModelNew", task.source_code)
-        self.assertIn("# <<<IMPROVE:forward_body>>>", task.source_code)
+        self.assertIn("# <<<IMPROVE:forward_stmt_1>>>", task.source_code)
         self.assertIn("return torch.relu(x)", task.source_code)
 
     @unittest.skipUnless(importlib.util.find_spec("torch") is not None, "torch is required for loader tests")

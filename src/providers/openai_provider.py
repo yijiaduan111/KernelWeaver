@@ -13,6 +13,7 @@ from typing import Any
 
 from ..backends import is_cute_backend, is_native_cuda_backend, is_tilelang_backend, normalize_backend
 from ..models import AgentContext, AnchorEdit, PlanProposal, SearchNode, TaskSpec
+from ..semantics import semantic_profile_to_prompt_dict
 from ..utils import extract_anchor_names
 from .base_provider import AgentProvider
 
@@ -111,7 +112,7 @@ class OpenAICompatibleProvider(AgentProvider):
         prompt = (
             "You are the planning agent in a STARK-style workflow. Return JSON only.\n"
             "Choose one optimization strategy and decide which code region should be edited.\n"
-            "The loader only provides generic structural anchors; inspect the current code and select the best anchor for this step.\n"
+            "The loader provides generic structural anchors plus a semantic_profile; use the semantic_profile to choose the optimization intent and edit target.\n"
             "Required JSON schema: "
             '{"strategy_name":"...","strategy_summary":"...","expected_gain":"...","risk_notes":"...","anchor_edits":[{"anchor_name":"...","instruction":"...","operation":"replace"}]}\n'
             "Use only anchor names from the provided anchors. operation must be replace or append. "
@@ -199,6 +200,7 @@ class OpenAICompatibleProvider(AgentProvider):
             "You are the coding agent in a STARK-style workflow.\n"
             "Return only the full updated Python source code. No markdown fences.\n"
             "Preserve function signatures and task I/O. Apply the plan through the provided grounded anchor edits.\n"
+            "Use semantic_profile only as an implementation hint; do not change task semantics or evaluator I/O.\n"
             "Do not delete, rename, or move any existing # <<<IMPROVE:...>>> or # <<<END_IMPROVE>>> anchor markers."
         ) + _task_prompt_suffix(task, role="code")
         user = {
@@ -442,6 +444,7 @@ def _task_metadata(task: TaskSpec) -> dict[str, Any]:
         "problem_id": task.problem_id,
         "backend": task.backend,
         "source_origin": task.source_origin,
+        "semantic_profile": semantic_profile_to_prompt_dict(task.semantic_profile),
         "grounded_regions": [
             {
                 "anchor_name": region.anchor_name,
@@ -529,18 +532,18 @@ def _task_prompt_suffix(task: TaskSpec, role: str) -> str:
 def _kernelbench_anchor_hint(task: TaskSpec) -> str:
     anchors = extract_anchor_names(task.source_code)
     if is_native_cuda_backend(task.backend):
-        return "helpers/cuda_cpp/cuda_cu/init_body/forward_body anchors"
+        return "helpers/cuda_cpp/cuda_cu/init_body/forward_stmt_* anchors"
     if is_tilelang_backend(task.backend):
-        if any(anchor.startswith("forward_step_") for anchor in anchors):
-            return "helpers/tilelang_kernel/init_body/forward_step_* anchors"
-        return "helpers/tilelang_kernel/init_body/forward_body anchors"
+        if any(anchor.startswith("forward_stmt_") for anchor in anchors):
+            return "helpers/tilelang_kernel/init_body/forward_stmt_* anchors"
+        return "helpers/tilelang_kernel/init_body/forward_stmt_* anchors"
     if is_cute_backend(task.backend):
-        if any(anchor.startswith("forward_step_") for anchor in anchors):
-            return "helpers/cute_kernel/init_body/forward_step_* anchors"
-        return "helpers/cute_kernel/init_body/forward_body anchors"
-    if any(anchor.startswith("forward_step_") for anchor in anchors):
-        return "helpers/init_body/forward_step_* anchors"
-    return "helpers/init_body/forward_body anchors"
+        if any(anchor.startswith("forward_stmt_") for anchor in anchors):
+            return "helpers/cute_kernel/init_body/forward_stmt_* anchors"
+        return "helpers/cute_kernel/init_body/forward_stmt_* anchors"
+    if any(anchor.startswith("forward_stmt_") for anchor in anchors):
+        return "helpers/init_body/forward_stmt_* anchors"
+    return "helpers/init_body/forward_stmt_* anchors"
 
 
 def _kernelbench_backend_hint(task: TaskSpec, role: str) -> str:
@@ -586,7 +589,7 @@ def _kernelbench_profile_hint(task: TaskSpec, role: str) -> str:
         if role == "plan":
             return (
                 " Treat this as a native CUDA extension task: keep the scaffold intact, preserve the ModelNew interface, "
-                "and propose grounded edits that stay inside helpers/cuda_cpp/cuda_cu/init_body/forward_body."
+                "and propose grounded edits that stay inside helpers/cuda_cpp/cuda_cu/init_body/forward_stmt_*."
             )
         return (
             " Treat this as a native CUDA extension task: preserve the pybind binding surface, keep CUDA kernel launch assumptions explicit, "
