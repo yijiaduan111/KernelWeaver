@@ -110,10 +110,12 @@ class OpenAICompatibleProvider(AgentProvider):
             raise ValueError("No grounded instruction anchors found in source code.")
         prompt = (
             "You are the planning agent in a STARK-style workflow. Return JSON only.\n"
-            "Choose one optimization strategy for the current code.\n"
+            "Choose one optimization strategy and decide which code region should be edited.\n"
+            "The loader only provides generic structural anchors; inspect the current code and select the best anchor for this step.\n"
             "Required JSON schema: "
             '{"strategy_name":"...","strategy_summary":"...","expected_gain":"...","risk_notes":"...","anchor_edits":[{"anchor_name":"...","instruction":"...","operation":"replace"}]}\n'
-            "Use only anchor names from the provided anchors. operation must be replace or append."
+            "Use only anchor names from the provided anchors. operation must be replace or append. "
+            "Each instruction must be concrete enough for the coding agent to implement without changing unrelated scaffold."
         ) + _task_prompt_suffix(task, role="plan")
         user = {
             "task_name": task.name,
@@ -492,7 +494,9 @@ def _task_prompt_suffix(task: TaskSpec, role: str) -> str:
         if role == "plan":
             return (
                 base
-                + f" Propose grounded edits for the provided anchors only. Preserve the generated scaffold, keep ModelNew as the entry class, and use {anchor_hint} intentionally."
+                + f" Select the most relevant edit target from the provided structural anchors ({anchor_hint}). "
+                + "Do not assume any handwritten adapter has pre-selected the target; infer the best region from the raw KernelBench ModelNew code and current feedback. "
+                + "Preserve the generated scaffold and keep ModelNew as the entry class."
                 + backend_hint
                 + profile_hint
             )

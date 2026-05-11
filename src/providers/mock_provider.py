@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from ..models import AgentContext, AnchorEdit, PlanProposal, SearchNode, TaskSpec
-from ..utils import apply_anchor_edit
+from ..utils import apply_anchor_edit, extract_anchor_names
 from .base_provider import AgentProvider
 
 
@@ -16,7 +16,6 @@ class MockProvider(AgentProvider):
         self._broken_once: set[tuple[str, str]] = set()
 
     def propose_plan(self, task: TaskSpec, node: SearchNode, context: AgentContext) -> PlanProposal:
-        del node
         strategies = task.strategy_catalog
         tried_here = {snapshot.plan_strategy_name for snapshot in context.related if snapshot.plan_strategy_name}
         leader_strategies = {snapshot.plan_strategy_name for snapshot in context.leaders if snapshot.plan_strategy_name}
@@ -35,19 +34,14 @@ class MockProvider(AgentProvider):
                     expected_gain=strategy.expected_gain,
                     risk_notes="Use the existing grounded anchor and keep the edit local.",
                 )
-        strategy = strategies[0]
+        anchors = extract_anchor_names(node.code)
+        anchor_name = "forward_body" if "forward_body" in anchors else (anchors[0] if anchors else "helpers")
         return PlanProposal(
-            strategy_name=strategy.name,
-            strategy_summary=strategy.strategy_summary,
-            anchor_edits=[
-                AnchorEdit(
-                    anchor_name=strategy.anchor_name,
-                    instruction=strategy.instruction,
-                    operation="replace",
-                )
-            ],
-            expected_gain=strategy.expected_gain,
-            risk_notes="Fallback to the first known grounded strategy.",
+            strategy_name="mock_structural_plan",
+            strategy_summary="Use the generic structural anchor selected by the loader.",
+            anchor_edits=[AnchorEdit(anchor_name=anchor_name, instruction="Keep the baseline implementation unchanged.", operation="replace")],
+            expected_gain="Smoke-test the loader and workflow without handwritten task strategies.",
+            risk_notes="No task-specific strategy catalog is available.",
         )
 
     def generate_code(
@@ -58,8 +52,10 @@ class MockProvider(AgentProvider):
         context: AgentContext,
     ) -> str:
         del context
-        strategy = task.strategy_map()[proposal.strategy_name]
         edit = proposal.anchor_edits[0]
+        strategy = task.strategy_map().get(proposal.strategy_name)
+        if strategy is None:
+            return node.code
         broken_key = (task.name, strategy.name)
         body = strategy.good_body
         if strategy.broken_body is not None and broken_key not in self._broken_once:
@@ -71,7 +67,9 @@ class MockProvider(AgentProvider):
         del context
         if node.plan_strategy_name is None:
             raise ValueError("Cannot debug a node without a plan strategy.")
-        strategy = task.strategy_map()[node.plan_strategy_name]
+        strategy = task.strategy_map().get(node.plan_strategy_name)
+        if strategy is None:
+            return node.code
         edit = node.anchor_edits[0] if node.anchor_edits else AnchorEdit(anchor_name=strategy.anchor_name, instruction="repair", operation="replace")
         body = strategy.debug_body or strategy.good_body
         return apply_anchor_edit(node.code, edit.anchor_name, body, operation=edit.operation)

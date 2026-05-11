@@ -1,1 +1,1 @@
-"""Core STARK mechanisms: bridge, workflow, tree, and context."""
+"""Core STARK mechanisms: loader, workflow, tree, and context."""

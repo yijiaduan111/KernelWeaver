@@ -40,7 +40,7 @@ from .config import (
     task_profile_choices,
     workflow_choices,
 )
-from .core.bridge import KernelBenchTaskBridge
+from .core.loader import KernelBenchLoader
 from .core.workflow import run_stark, run_workflow
 from .demo import build_demo_tasks
 from .evaluation import (
@@ -408,8 +408,8 @@ def _run_kernelbench(args: argparse.Namespace) -> int:
     run_name = _resolve_run_name(args)
     backend = _resolve_backend(args, run_name)
     workflow = _resolve_workflow(args, run_name)
-    bridge = KernelBenchTaskBridge()
-    task = bridge.load_official_problem(_resolve_kernelbench_root(args, run_name), args.level, args.problem_id, backend=backend)
+    loader = KernelBenchLoader()
+    task = loader.load_official_problem(_resolve_kernelbench_root(args, run_name), args.level, args.problem_id, backend=backend)
     provider = _build_provider(args, run_name)
     config = _build_config(args, run_name)
     try:
@@ -427,7 +427,7 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
     manifest = load_task_manifest(_resolve_manifest_path(args, run_name), kernelbench_root=kernelbench_root, default_backend=backend)
     output_root = Path(args.output_dir)
     output_root.mkdir(parents=True, exist_ok=True)
-    bridge = KernelBenchTaskBridge()
+    loader = KernelBenchLoader()
     provider = _build_provider(args, run_name)
     rows: list[dict[str, Any]] = []
     try:
@@ -451,7 +451,7 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
                 "error": None,
             }
             try:
-                task = bridge.load_official_problem(kernelbench_root, level, problem_id, backend=item_backend)
+                task = loader.load_official_problem(kernelbench_root, level, problem_id, backend=item_backend)
                 task_output_dir = output_root / batch_output_dir_name(alias, level, problem_id)
                 result = run_workflow(
                     task,

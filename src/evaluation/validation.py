@@ -7,7 +7,7 @@ from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
-from ..core.bridge import KernelBenchTaskBridge
+from ..core.loader import KernelBenchLoader
 from ..io import load_run
 from .evaluator_paper import KernelBenchPaperEvaluator
 
@@ -32,7 +32,7 @@ def verify_kernelbench_run(run_path: str | Path, kernelbench_root: str | Path | 
         raise ValueError("Legacy local KernelBench evaluator has been removed. Only paper-based verification is supported now.")
 
     backend = result.backend or "triton"
-    task = KernelBenchTaskBridge().load_official_problem(resolved_root, result.level, result.problem_id, backend=backend)
+    task = KernelBenchLoader().load_official_problem(resolved_root, result.level, result.problem_id, backend=backend)
     validation_config = replace(
         result.config,
         benchmark_loops=max(120, result.config.benchmark_loops),

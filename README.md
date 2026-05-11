@@ -80,7 +80,7 @@ That means:
 ## Repository Layout
 
 - `src/`
-  - `core/`: bridge, workflow, tree, context
+  - `core/`: loader, workflow, tree, context
   - `agents/`: plan, code, and debug agents
   - `providers/`: provider implementations and role routing
   - `evaluation/`: demo evaluator, paper evaluator, validation
@@ -103,6 +103,18 @@ That means:
 - `tests/`: small regression tests
 - `runs/`: outputs, not for Git
 - `stark/`: compatibility package so `import stark...` still works
+
+
+## KernelBench Task Loading
+
+KernelWeaver now follows a STARK-style input path:
+- the input is an official KernelBench problem
+- `src/core/loader.py` reads `Model`, `get_inputs`, and `get_init_inputs`
+- the loader builds a generic `ModelNew` scaffold with structural anchors
+- `PlanAgent` selects the edit target during the workflow
+- no per-task handwritten adapter or strategy catalog is used
+
+This keeps the baseline clean: task ingestion is generic, while model choice, DSL choice, and search behavior remain configurable.
 
 ## Stable Launch Rule
 
