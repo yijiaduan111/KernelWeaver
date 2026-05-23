@@ -3,10 +3,11 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from .deliberation.schema import StrategyPortfolio
 from .semantics.schema import SemanticProfile
 
 
-@dataclass(slots=True)
+@dataclass
 class TestCase:
     label: str
     args: list[Any]
@@ -15,7 +16,7 @@ class TestCase:
     init_kwargs: dict[str, Any] = field(default_factory=dict)
 
 
-@dataclass(slots=True)
+@dataclass
 class StrategySpec:
     name: str
     anchor_name: str
@@ -28,7 +29,7 @@ class StrategySpec:
     broken_failure_type: str | None = None
 
 
-@dataclass(slots=True)
+@dataclass
 class GroundedRegion:
     anchor_name: str
     region_role: str
@@ -38,7 +39,7 @@ class GroundedRegion:
     source_hash: str
 
 
-@dataclass(slots=True)
+@dataclass
 class TaskSpec:
     name: str
     description: str
@@ -59,19 +60,20 @@ class TaskSpec:
     source_root: str | None = None
     grounded_regions: list[GroundedRegion] = field(default_factory=list)
     semantic_profile: SemanticProfile | None = None
+    strategy_portfolio: StrategyPortfolio | None = None
 
     def strategy_map(self) -> dict[str, StrategySpec]:
         return {strategy.name: strategy for strategy in self.strategy_catalog}
 
 
-@dataclass(slots=True)
+@dataclass
 class AnchorEdit:
     anchor_name: str
     instruction: str
     operation: str = "replace"
 
 
-@dataclass(slots=True)
+@dataclass
 class PlanProposal:
     strategy_name: str
     strategy_summary: str
@@ -80,7 +82,7 @@ class PlanProposal:
     risk_notes: str = ""
 
 
-@dataclass(slots=True)
+@dataclass
 class EvaluationResult:
     compile_ok: bool
     correct: bool
@@ -100,7 +102,7 @@ class EvaluationResult:
         return self.failure_stage != "none"
 
 
-@dataclass(slots=True)
+@dataclass
 class SearchNode:
     node_id: str
     parent_id: str | None
@@ -138,7 +140,7 @@ class SearchNode:
         return self.node_status
 
 
-@dataclass(slots=True)
+@dataclass
 class NodeSnapshot:
     node_id: str
     parent_id: str | None
@@ -160,7 +162,7 @@ class NodeSnapshot:
     code_hash: str | None = None
 
 
-@dataclass(slots=True)
+@dataclass
 class AgentContext:
     role: str
     current: NodeSnapshot
@@ -170,7 +172,7 @@ class AgentContext:
     failure: NodeSnapshot | None = None
 
 
-@dataclass(slots=True)
+@dataclass
 class StarkConfig:
     max_attempts: int = 6
     epsilon: float = 0.4
@@ -205,9 +207,17 @@ class StarkConfig:
     semantics_enabled: bool = True
     semantics_mode: str = "rule"
     semantics_max_anchor_hints: int = 6
+    deliberation_enabled: bool = False
+    deliberation_profile: str | None = None
+    deliberation_mode: str = "multi_model_v0"
+    deliberation_providers: list[str] = field(default_factory=list)
+    deliberation_max_strategies: int = 10
+    deliberation_strategies_per_model: int = 4
+    deliberation_proposal_temperature: float = 0.4
+    deliberation_review_temperature: float = 0.1
 
 
-@dataclass(slots=True)
+@dataclass
 class RunResult:
     task_name: str
     config: StarkConfig
@@ -240,3 +250,4 @@ class RunResult:
     speedups: dict[str, float | None] = field(default_factory=dict)
     primary_reference: str | None = None
     semantic_profile: SemanticProfile | None = None
+    strategy_portfolio: StrategyPortfolio | None = None

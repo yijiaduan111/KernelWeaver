@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+
 from ..models import AgentContext, AnchorEdit, PlanProposal, SearchNode, TaskSpec
 from ..utils import apply_anchor_edit, extract_anchor_names
 from .base_provider import AgentProvider
@@ -35,6 +37,26 @@ class MockProvider(AgentProvider):
                     risk_notes="Use the existing grounded anchor and keep the edit local.",
                 )
         anchors = extract_anchor_names(node.code)
+        portfolio = getattr(task, "strategy_portfolio", None)
+        if portfolio is not None and portfolio.strategies:
+            used = tried_here | leader_strategies
+            for strategy in portfolio.strategies:
+                if strategy.strategy_id in used:
+                    continue
+                target = next((anchor for anchor in strategy.target_anchors if anchor in anchors), anchors[0] if anchors else "helpers")
+                return PlanProposal(
+                    strategy_name=strategy.strategy_id,
+                    strategy_summary=strategy.summary,
+                    anchor_edits=[
+                        AnchorEdit(
+                            anchor_name=target,
+                            instruction="; ".join(strategy.implementation_hints) or strategy.summary,
+                            operation="replace",
+                        )
+                    ],
+                    expected_gain=strategy.expected_gain,
+                    risk_notes="; ".join(strategy.risk_notes),
+                )
         anchor_name = "forward_body" if "forward_body" in anchors else (anchors[0] if anchors else "helpers")
         return PlanProposal(
             strategy_name="mock_structural_plan",
@@ -73,3 +95,38 @@ class MockProvider(AgentProvider):
         edit = node.anchor_edits[0] if node.anchor_edits else AnchorEdit(anchor_name=strategy.anchor_name, instruction="repair", operation="replace")
         body = strategy.debug_body or strategy.good_body
         return apply_anchor_edit(node.code, edit.anchor_name, body, operation=edit.operation)
+
+    def generate_text(
+        self,
+        system_prompt: str,
+        user_payload: dict,
+        temperature: float = 0.2,
+        purpose: str = "generic",
+    ) -> str:
+        del system_prompt, temperature
+        provider_name = str(user_payload.get("provider_name") or self.name)
+        if purpose == "deliberation_review":
+            portfolio = user_payload.get("strategy_portfolio") or {}
+            scores = [
+                {"strategy_id": item.get("strategy_id"), "score": 4, "notes": f"{provider_name} mock review"}
+                for item in portfolio.get("strategies", [])
+                if item.get("strategy_id")
+            ]
+            return json.dumps({"scores": scores})
+        anchors = list(user_payload.get("available_anchors") or [])
+        target = next((anchor for anchor in anchors if str(anchor).startswith("forward_stmt_")), anchors[0] if anchors else "helpers")
+        return json.dumps(
+            {
+                "strategies": [
+                    {
+                        "intent": f"{provider_name}_mock_fusion",
+                        "summary": f"Use {target} for a local mock optimization plan.",
+                        "target_anchors": [target],
+                        "implementation_hints": ["Keep the public task interface unchanged.", "Edit only the selected grounded anchor."],
+                        "expected_gain": "Exercise deliberation wiring in tests.",
+                        "risk_notes": ["Mock strategy does not optimize real performance."],
+                        "score": 4,
+                    }
+                ]
+            }
+        )

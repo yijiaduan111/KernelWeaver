@@ -54,6 +54,9 @@ kw_write_launch_script() {
     ANTHROPIC_API_KEY
     ANTHROPIC_BASE_URL
     ANTHROPIC_MODEL
+    GEMINI_API_KEY
+    GEMINI_BASE_URL
+    GEMINI_MODEL
   )
   {
     cat <<SCRIPT_HEAD
@@ -91,7 +94,14 @@ export PYTHONUNBUFFERED=${PYTHONUNBUFFERED:-1}
 export TOKENIZERS_PARALLELISM=${TOKENIZERS_PARALLELISM:-false}
 export PYTORCH_CUDA_ALLOC_CONF=${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True}
 
-if [[ -z ${CUDA_HOME:-} ]]; then
+resolve_cuda_home() {
+  if [[ -n ${CUDA_HOME:-} && -x $CUDA_HOME/bin/nvcc ]]; then
+    return 0
+  fi
+  if [[ -n ${CUDA_HOME:-} && ! -x $CUDA_HOME/bin/nvcc ]]; then
+    echo [KernelWeaver] Ignoring CUDA_HOME without nvcc: $CUDA_HOME >&2
+    unset CUDA_HOME
+  fi
   if [[ -n ${CONDA_PREFIX:-} && -x $CONDA_PREFIX/bin/nvcc ]]; then
     export CUDA_HOME=$CONDA_PREFIX
   elif command -v nvcc >/dev/null 2>&1; then
@@ -107,10 +117,19 @@ if [[ -z ${CUDA_HOME:-} ]]; then
       fi
     done
   fi
+}
+resolve_cuda_home
+if [[ -z ${CUDA_HOME:-} || ! -x $CUDA_HOME/bin/nvcc ]]; then
+  echo [KernelWeaver] Could not locate a CUDA toolkit with nvcc. Set CUDA_HOME to a valid CUDA toolkit root. >&2
+  exit 1
 fi
 
 if [[ -n ${CUDA_HOME:-} ]]; then
-  export PATH=$CUDA_HOME/bin:$PATH
+  if [[ -n ${CONDA_PREFIX:-} ]]; then
+    export PATH=$CONDA_PREFIX/bin:$CUDA_HOME/bin:$PATH
+  else
+    export PATH=$CUDA_HOME/bin:$PATH
+  fi
   if [[ -n ${LD_LIBRARY_PATH:-} ]]; then
     export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$CUDA_HOME/lib:$LD_LIBRARY_PATH
   else

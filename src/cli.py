@@ -12,6 +12,8 @@ from .config import (
     agent_provider_profile_choices,
     backend_choices,
     default_setting,
+    deliberation_profile,
+    deliberation_profile_choices,
     evaluator_profile,
     evaluator_profile_choices,
     experiment_profile,
@@ -26,6 +28,7 @@ from .config import (
     provider_choices,
     provider_defaults,
     resolve_agent_provider_profile,
+    resolve_deliberation_profile,
     resolve_evaluator_profile,
     resolve_measurement_profile,
     resolve_run_profile,
@@ -41,6 +44,7 @@ from .config import (
     workflow_choices,
 )
 from .core.loader import KernelBenchLoader
+from .deliberation.runner import MultiModelDeliberationRunner
 from .core.workflow import run_stark, run_workflow
 from .demo import build_demo_tasks
 from .evaluation import (
@@ -64,7 +68,7 @@ from .experiment import (
 )
 from .io import load_run, save_run
 from .models import StarkConfig
-from .providers import ClaudeCompatibleConfig, ClaudeCompatibleProvider, LocalCudaLLMConfig, LocalCudaLLMProvider, MockProvider, OpenAICompatibleProvider, RoleRoutedProvider
+from .providers import ClaudeCompatibleConfig, ClaudeCompatibleProvider, GeminiCompatibleConfig, GeminiCompatibleProvider, LocalCudaLLMConfig, LocalCudaLLMProvider, MockProvider, OpenAICompatibleProvider, RoleRoutedProvider
 from .triton_tasks import build_triton_tasks
 from .utils import shorten_runtime
 
@@ -77,6 +81,7 @@ EXPERIMENT_CHOICES = run_profile_choices()
 SEARCH_CHOICES = search_profile_choices()
 EVALUATOR_CHOICES = evaluator_profile_choices()
 MEASUREMENT_CHOICES = measurement_profile_choices()
+DELIBERATION_CHOICES = deliberation_profile_choices()
 PROVIDER_CHOICES = provider_choices()
 ROUTE_CHOICES = agent_provider_profile_choices()
 TASK_CHOICES = task_profile_choices()
@@ -139,6 +144,7 @@ def _add_shared_run_arguments(parser: argparse.ArgumentParser, task_choices: lis
     parser.add_argument("--provider", default=None, choices=PROVIDER_CHOICES)
     parser.add_argument("--search-config", "--search-profile", dest="search_profile", default=None, choices=SEARCH_CHOICES)
     parser.add_argument("--route-config", "--agent-provider-profile", dest="agent_provider_profile", default=None, choices=ROUTE_CHOICES)
+    parser.add_argument("--deliberation-config", "--deliberation-profile", dest="deliberation_profile", default=None, choices=DELIBERATION_CHOICES)
     _add_provider_routing_arguments(parser)
     parser.add_argument("--env-file", default=None)
     parser.add_argument("--verbose", action="store_true")
@@ -157,6 +163,7 @@ def _add_kernelbench_run_arguments(parser: argparse.ArgumentParser, include_prob
     parser.add_argument("--search-config", "--search-profile", dest="search_profile", default=None, choices=SEARCH_CHOICES)
     parser.add_argument("--evaluator-config", "--evaluator-profile", dest="evaluator_profile", default=None, choices=EVALUATOR_CHOICES)
     parser.add_argument("--measurement-config", "--measurement-profile", dest="measurement_profile", default=None, choices=MEASUREMENT_CHOICES)
+    parser.add_argument("--deliberation-config", "--deliberation-profile", dest="deliberation_profile", default=None, choices=DELIBERATION_CHOICES)
     parser.add_argument("--route-config", "--agent-provider-profile", dest="agent_provider_profile", default=None, choices=ROUTE_CHOICES)
     parser.add_argument("--max-attempts", type=int, default=None)
     parser.add_argument("--epsilon", type=float, default=None)
@@ -192,6 +199,10 @@ def _resolve_measurement_name(args: argparse.Namespace, run_name: str) -> str:
 
 def _resolve_route_name(args: argparse.Namespace, run_name: str) -> str:
     return resolve_agent_provider_profile(getattr(args, "agent_provider_profile", None), run_name)
+
+
+def _resolve_deliberation_name(args: argparse.Namespace, run_name: str) -> str:
+    return resolve_deliberation_profile(getattr(args, "deliberation_profile", None), run_name)
 
 
 def _resolve_task_name(args: argparse.Namespace, run_name: str) -> str:
@@ -280,53 +291,67 @@ def _resolve_provider_routing(args: argparse.Namespace, run_name: str) -> dict[s
     }
 
 
-def _build_provider(args: argparse.Namespace, run_name: str):
-    routing = _resolve_provider_routing(args, run_name)
+def _provider_overrides(args: argparse.Namespace, run_name: str) -> dict[str, Any]:
     search_settings = search_profile(_resolve_search_name(args, run_name))
+    return {
+        key: search_settings[key]
+        for key in ["plan_temperature", "code_temperature", "debug_temperature", "timeout_seconds", "max_retries"]
+        if key in search_settings
+    }
+
+
+def _config_payload(raw: dict[str, Any], allowed_keys: set[str]) -> dict[str, Any]:
+    return {key: value for key, value in raw.items() if key in allowed_keys}
+
+
+def _instantiate_single_provider(name: str, overrides: dict[str, Any] | None = None):
+    overrides = overrides or {}
+    if name == "mock":
+        return MockProvider()
+    if name == "openai-compatible":
+        provider = OpenAICompatibleProvider.from_env(provider_defaults(name))
+        return provider.with_overrides(**overrides) if overrides else provider
+    if name == "claude-compatible":
+        provider = ClaudeCompatibleProvider.from_env(
+            _config_payload(
+                provider_defaults(name),
+                set(ClaudeCompatibleConfig.__dataclass_fields__.keys()),
+            )
+        )
+        return provider.with_overrides(**overrides) if overrides else provider
+    if name == "gemini-compatible":
+        provider = GeminiCompatibleProvider.from_env(
+            _config_payload(
+                provider_defaults(name),
+                set(GeminiCompatibleConfig.__dataclass_fields__.keys()),
+            )
+        )
+        return provider.with_overrides(**overrides) if overrides else provider
+    if name == "local-cudallm":
+        provider = LocalCudaLLMProvider(
+            LocalCudaLLMConfig(
+                **_config_payload(
+                    provider_defaults(name),
+                    set(LocalCudaLLMConfig.__dataclass_fields__.keys()),
+                )
+            )
+        )
+        return provider.with_overrides(**overrides) if overrides else provider
+    raise SystemExit(f"Unsupported provider: {name}")
+
+
+def _prepare_runtime_and_env(args: argparse.Namespace, run_name: str) -> None:
     runtime_settings = _resolve_runtime_settings(args, run_name)
     if runtime_settings.get("cuda_visible_devices") and "CUDA_VISIBLE_DEVICES" not in __import__("os").environ:
         __import__("os").environ["CUDA_VISIBLE_DEVICES"] = str(runtime_settings["cuda_visible_devices"])
+    load_env_file(_resolve_env_file(args, run_name))
 
-    def _provider_overrides() -> dict[str, Any]:
-        return {
-            key: search_settings[key]
-            for key in ["plan_temperature", "code_temperature", "debug_temperature", "timeout_seconds", "max_retries"]
-            if key in search_settings
-        }
 
-    def _config_payload(raw: dict[str, Any], allowed_keys: set[str]) -> dict[str, Any]:
-        return {key: value for key, value in raw.items() if key in allowed_keys}
-
-    def _instantiate_single_provider(name: str, overrides: dict[str, Any]):
-        if name == "mock":
-            return MockProvider()
-        if name == "openai-compatible":
-            provider = OpenAICompatibleProvider.from_env(provider_defaults(name))
-            return provider.with_overrides(**overrides) if overrides else provider
-        if name == "claude-compatible":
-            provider = ClaudeCompatibleProvider.from_env(
-                _config_payload(
-                    provider_defaults(name),
-                    set(ClaudeCompatibleConfig.__dataclass_fields__.keys()),
-                )
-            )
-            return provider.with_overrides(**overrides) if overrides else provider
-        if name == "local-cudallm":
-            provider = LocalCudaLLMProvider(
-                LocalCudaLLMConfig(
-                    **_config_payload(
-                        provider_defaults(name),
-                        set(LocalCudaLLMConfig.__dataclass_fields__.keys()),
-                    )
-                )
-            )
-            return provider.with_overrides(**overrides) if overrides else provider
-        raise SystemExit(f"Unsupported provider: {name}")
-
+def _build_provider(args: argparse.Namespace, run_name: str):
+    routing = _resolve_provider_routing(args, run_name)
+    _prepare_runtime_and_env(args, run_name)
+    overrides = _provider_overrides(args, run_name)
     resolved_names = {routing["plan_provider"], routing["code_provider"], routing["debug_provider"], routing["search_provider"]}
-    if any(name in {"openai-compatible", "claude-compatible"} for name in resolved_names):
-        load_env_file(_resolve_env_file(args, run_name))
-    overrides = _provider_overrides()
     instances = {name: _instantiate_single_provider(name, overrides) for name in sorted(resolved_names)}
     if len(instances) == 1:
         return instances[next(iter(instances))]
@@ -337,6 +362,29 @@ def _build_provider(args: argparse.Namespace, run_name: str):
         search_provider=instances[routing["search_provider"]],
     )
 
+
+def _build_deliberation_runner(args: argparse.Namespace, run_name: str, config: StarkConfig) -> MultiModelDeliberationRunner | None:
+    if not config.deliberation_enabled:
+        return None
+    _prepare_runtime_and_env(args, run_name)
+    providers = {
+        name: _instantiate_single_provider(name, {"timeout_seconds": _provider_overrides(args, run_name).get("timeout_seconds", 300)})
+        for name in config.deliberation_providers
+    }
+    return MultiModelDeliberationRunner(
+        providers=providers,
+        max_strategies=config.deliberation_max_strategies,
+        strategies_per_model=config.deliberation_strategies_per_model,
+        proposal_temperature=config.deliberation_proposal_temperature,
+        review_temperature=config.deliberation_review_temperature,
+        mode=config.deliberation_mode,
+    )
+
+
+def _apply_deliberation(task, config: StarkConfig, runner: MultiModelDeliberationRunner | None) -> None:
+    if runner is None or not config.deliberation_enabled:
+        return
+    task.strategy_portfolio = runner.run(task, config)
 
 def _close_provider(provider) -> None:
     close_fn = getattr(provider, "close", None)
@@ -353,6 +401,8 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
     evaluator_settings = evaluator_profile(evaluator_name)
     measure_settings = measurement_profile(measurement_name)
     semantics_settings = _resolve_semantics_settings(run_name)
+    deliberation_name = _resolve_deliberation_name(args, run_name)
+    deliberation_settings = deliberation_profile(deliberation_name)
     max_attempts = int(getattr(args, "max_attempts", None) or search_settings.get("max_attempts", 6))
     epsilon = float(getattr(args, "epsilon", None) if getattr(args, "epsilon", None) is not None else search_settings.get("epsilon", 0.4))
     return StarkConfig(
@@ -387,6 +437,14 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
         semantics_enabled=semantics_settings["enabled"],
         semantics_mode=semantics_settings["mode"],
         semantics_max_anchor_hints=semantics_settings["max_anchor_hints"],
+        deliberation_enabled=bool(deliberation_settings.get("enabled", False)),
+        deliberation_profile=deliberation_name,
+        deliberation_mode=str(deliberation_settings.get("mode", "multi_model_v0")),
+        deliberation_providers=list(deliberation_settings.get("providers") or []),
+        deliberation_max_strategies=int(deliberation_settings.get("max_strategies", 10)),
+        deliberation_strategies_per_model=int(deliberation_settings.get("strategies_per_model", 4)),
+        deliberation_proposal_temperature=float(deliberation_settings.get("proposal_temperature", 0.4)),
+        deliberation_review_temperature=float(deliberation_settings.get("review_temperature", 0.1)),
     )
 
 
@@ -399,12 +457,17 @@ def _kernelbench_evaluator(backend: str, evaluator_name: str):
 def _run_demo(args: argparse.Namespace) -> int:
     run_name = _resolve_run_name(args)
     task = _demo_task_map()[args.task]
+    config = _build_config(args, run_name)
+    deliberation_runner = _build_deliberation_runner(args, run_name, config)
     provider = _build_provider(args, run_name)
     try:
-        result = run_stark(task, _build_config(args, run_name), provider, DemoEvaluator())
+        _apply_deliberation(task, config, deliberation_runner)
+        result = run_stark(task, config, provider, DemoEvaluator())
         return _save_and_print(result, args.output_dir)
     finally:
         _close_provider(provider)
+        if deliberation_runner is not None:
+            deliberation_runner.close()
 
 
 def _run_triton(args: argparse.Namespace) -> int:
@@ -412,12 +475,18 @@ def _run_triton(args: argparse.Namespace) -> int:
     task_map = _triton_task_map()
     if args.task not in task_map:
         raise SystemExit(f"Unknown Triton task: {args.task}")
+    task = task_map[args.task]
+    config = _build_config(args, run_name)
+    deliberation_runner = _build_deliberation_runner(args, run_name, config)
     provider = _build_provider(args, run_name)
     try:
-        result = run_stark(task_map[args.task], _build_config(args, run_name), provider, TritonEvaluator())
+        _apply_deliberation(task, config, deliberation_runner)
+        result = run_stark(task, config, provider, TritonEvaluator())
         return _save_and_print(result, args.output_dir)
     finally:
         _close_provider(provider)
+        if deliberation_runner is not None:
+            deliberation_runner.close()
 
 
 def _run_kernelbench(args: argparse.Namespace) -> int:
@@ -435,12 +504,16 @@ def _run_kernelbench(args: argparse.Namespace) -> int:
         semantics_mode=config.semantics_mode,
         semantics_max_anchor_hints=config.semantics_max_anchor_hints,
     )
+    deliberation_runner = _build_deliberation_runner(args, run_name, config)
     provider = _build_provider(args, run_name)
     try:
+        _apply_deliberation(task, config, deliberation_runner)
         result = run_workflow(task, config, provider, _kernelbench_evaluator(backend, config.evaluator_profile or "quick"), workflow=workflow)
         return _save_and_print(result, args.output_dir)
     finally:
         _close_provider(provider)
+        if deliberation_runner is not None:
+            deliberation_runner.close()
 
 
 def _run_kernelbench_batch(args: argparse.Namespace) -> int:
@@ -452,6 +525,8 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
     output_root = Path(args.output_dir)
     output_root.mkdir(parents=True, exist_ok=True)
     loader = KernelBenchLoader()
+    batch_config = _build_config(args, run_name)
+    deliberation_runner = _build_deliberation_runner(args, run_name, batch_config)
     provider = _build_provider(args, run_name)
     rows: list[dict[str, Any]] = []
     try:
@@ -485,6 +560,7 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
                     semantics_mode=config.semantics_mode,
                     semantics_max_anchor_hints=config.semantics_max_anchor_hints,
                 )
+                _apply_deliberation(task, config, deliberation_runner)
                 task_output_dir = output_root / batch_output_dir_name(alias, level, problem_id)
                 result = run_workflow(
                     task,
@@ -507,6 +583,8 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
                         "evaluator_profile": result.evaluator_profile,
                         "measurement_profile": result.measurement_profile,
                         "agent_provider_profile": result.config.agent_provider_profile,
+                        "deliberation_profile": result.config.deliberation_profile,
+                        "strategy_count": len(result.strategy_portfolio.strategies) if result.strategy_portfolio else 0,
                         "plan_provider": result.config.plan_provider,
                         "code_provider": result.config.code_provider,
                         "debug_provider": result.config.debug_provider,
@@ -558,6 +636,7 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
             "evaluator_profile": _resolve_evaluator_name(args, run_name),
             "measurement_profile": _resolve_measurement_name(args, run_name),
             "agent_provider_profile": _resolve_route_name(args, run_name),
+            "deliberation_profile": _resolve_deliberation_name(args, run_name),
             "kernelbench_root": kernelbench_root,
             "output_dir": str(output_root),
             "rows": rows,
@@ -570,6 +649,8 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
         return 0
     finally:
         _close_provider(provider)
+        if deliberation_runner is not None:
+            deliberation_runner.close()
 
 
 def _verify_kernelbench(args: argparse.Namespace) -> int:
@@ -616,6 +697,8 @@ def _save_and_print(result, output_dir: str) -> int:
     print(f"saved={run_path}")
     print(f"workflow={result.workflow} task={result.task_name} best_node={result.best_node_id} status={best.status}")
     print(f"run_profile={result.run_profile} search={result.search_profile} evaluator={result.evaluator_profile} measurement={result.measurement_profile}")
+    if result.strategy_portfolio is not None:
+        print(f"deliberation={result.config.deliberation_profile} strategies={len(result.strategy_portfolio.strategies)} enabled={result.strategy_portfolio.enabled}")
     print(f"best_runtime={shorten_runtime(best.runtime)} reference_runtime={shorten_runtime(best.reference_runtime)} speedup={format_speedup(best.speedup)}")
     return 0
 
@@ -673,3 +756,4 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

@@ -7,7 +7,7 @@ import re
 from dataclasses import dataclass, field
 
 
-@dataclass(slots=True)
+@dataclass
 class PatternMatch:
     op_type: str
     op_names: list[str] = field(default_factory=list)

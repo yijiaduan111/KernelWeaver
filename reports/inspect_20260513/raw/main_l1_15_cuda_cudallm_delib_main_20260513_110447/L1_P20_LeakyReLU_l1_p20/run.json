@@ -1,0 +1,1336 @@
+{
+  "task_name": "kernelbench_l1_20_20_leakyrelu",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": false,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_cudallm",
+    "plan_provider": "openai-compatible",
+    "code_provider": "local-cudallm",
+    "debug_provider": "openai-compatible",
+    "search_provider": "local-cudallm",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1
+  },
+  "best_node_id": "root",
+  "leaderboard": [
+    "root",
+    "n2"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "root",
+      "n2"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "root",
+    "n3",
+    "n5",
+    "root",
+    "n7",
+    "n8",
+    "n2"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "debug_retry_failure",
+    "explore_leaf",
+    "exploit_best_score",
+    "debug_retry_failure",
+    "explore_leaf",
+    "exploit_best_score",
+    "debug_retry_failure",
+    "exploit_best_score",
+    "exploit_best_score"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {
+      "n1": "debug_retry_limit_reached"
+    },
+    {
+      "n1": "debug_retry_limit_reached"
+    },
+    {
+      "n1": "debug_retry_limit_reached"
+    },
+    {
+      "n1": "debug_retry_limit_reached",
+      "n3": "debug_retry_limit_reached"
+    },
+    {
+      "n1": "debug_retry_limit_reached",
+      "n3": "debug_retry_limit_reached"
+    },
+    {
+      "root": "dead_branch_pruned",
+      "n1": "debug_retry_limit_reached",
+      "n3": "debug_retry_limit_reached"
+    },
+    {
+      "root": "dead_branch_pruned",
+      "n1": "debug_retry_limit_reached",
+      "n3": "debug_retry_limit_reached",
+      "n7": "debug_retry_limit_reached"
+    },
+    {
+      "root": "dead_branch_pruned",
+      "n1": "debug_retry_limit_reached",
+      "n3": "debug_retry_limit_reached",
+      "n7": "debug_retry_limit_reached"
+    }
+  ],
+  "pruned_nodes": {
+    "root": "dead_branch_pruned"
+  },
+  "debug_stats": {
+    "total_attempts": 3,
+    "per_node": {
+      "n1": 1,
+      "n3": 1,
+      "n7": 1
+    }
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 7,
+    "debug_attempts": 3,
+    "failure_counts": {
+      "broken_anchor_markers": 7,
+      "anchor_marker_drift": 3
+    },
+    "failure_stage_counts": {
+      "compile": 7
+    },
+    "invalid_proposals": 0,
+    "pruned_count": 1
+  },
+  "benchmark_family": "kernelbench",
+  "level": 1,
+  "problem_id": 20,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level1/20_LeakyReLU.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.0169
+  },
+  "speedups": {
+    "torch_eager": 1.0
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "elementwise",
+    "summary": "Elementwise computation; likely optimization is fusing pointwise math and avoiding intermediate tensors.",
+    "source": "KernelBench/KernelBench/level1/20_LeakyReLU.py",
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "cuda_cu",
+      "cuda_cpp",
+      "helpers"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "elementwise",
+        "source_excerpt": "\"\"\"\n        Applies LeakyReLU activation to the input tensor.\n\n        Args:\n            x (torch.Tensor): Input tensor of any shape.\n\n        Returns:\n            torch.Tensor: Output tensor with LeakyReLU applied, same shape as input.\n        \"\"\"",
+        "op_names": [
+          "_leakyrelu",
+          "a",
+          "activation",
+          "any",
+          "applied",
+          "applies",
+          "args",
+          "as",
+          "defaults",
+          "float",
+          "function",
+          "functional"
+        ],
+        "optimization_intents": [
+          "fuse_elementwise_ops",
+          "avoid_intermediate_allocations"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use one thread per element",
+          "prefer a grid-stride loop"
+        ],
+        "risk_notes": [
+          "preserve exact activation math and broadcasting",
+          "check fast-math numerical tolerance"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "elementwise",
+        "source_excerpt": "return torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)",
+        "op_names": [
+          "_leakyrelu",
+          "a",
+          "activation",
+          "any",
+          "applied",
+          "applies",
+          "args",
+          "as",
+          "defaults",
+          "float",
+          "function",
+          "functional"
+        ],
+        "optimization_intents": [
+          "fuse_elementwise_ops",
+          "avoid_intermediate_allocations"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use one thread per element",
+          "prefer a grid-stride loop"
+        ],
+        "risk_notes": [
+          "preserve exact activation math and broadcasting",
+          "check fast-math numerical tolerance"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "cuda_cpp",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+        "op_names": [
+          "add",
+          "cuda",
+          "custom",
+          "entrypoints",
+          "exports",
+          "extension",
+          "for",
+          "h",
+          "here",
+          "include",
+          "m",
+          "pybind"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      },
+      {
+        "anchor_name": "cuda_cu",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+        "op_names": [
+          "add",
+          "and",
+          "cuda",
+          "cuda_runtime",
+          "exported",
+          "extension",
+          "functions",
+          "h",
+          "here",
+          "include",
+          "kernels",
+          "torch"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      },
+      {
+        "anchor_name": "helpers",
+        "region_role": "helper",
+        "semantic_type": "helper_region",
+        "source_excerpt": "_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p20_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION",
+        "op_names": [
+          "_stark_extension",
+          "_stark_extension_name",
+          "_stark_get_extension",
+          "_stark_strip_anchor_markers",
+          "append",
+          "arithmetic",
+          "cleaned_lines",
+          "cleaned_lines.append",
+          "continue",
+          "cpp_sources",
+          "cuda_cpp_src",
+          "cuda_cu_src"
+        ],
+        "optimization_intents": [
+          "inspect_source_before_editing"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 2
+      },
+      {
+        "anchor_name": "init_body",
+        "region_role": "init",
+        "semantic_type": "state_initialization",
+        "source_excerpt": "\"\"\"\n        Initializes the LeakyReLU module.\n\n        Args:\n            negative_slope (float, optional): The negative slope of the activation function. Defaults to 0.01.\n        \"\"\"\nself.negative_slope = negative_slope",
+        "op_names": [
+          "activation",
+          "args",
+          "defaults",
+          "float",
+          "function",
+          "initializes",
+          "leakyrelu",
+          "module",
+          "negative",
+          "negative_slope",
+          "of",
+          "optional"
+        ],
+        "optimization_intents": [
+          "inspect_source_before_editing"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 2
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "fuse_elementwise_ops",
+        "summary": "fuse elementwise ops",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "cuda_cu",
+          "cuda_cpp",
+          "helpers"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "use one thread per element",
+            "prefer a grid-stride loop"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use tl.arange blocks over contiguous elements"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve exact activation math and broadcasting",
+          "check fast-math numerical tolerance"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "avoid_intermediate_allocations",
+        "summary": "avoid intermediate allocations",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "cuda_cu",
+          "cuda_cpp",
+          "helpers"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "use one thread per element",
+            "prefer a grid-stride loop"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use tl.arange blocks over contiguous elements"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve exact activation math and broadcasting",
+          "check fast-math numerical tolerance"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve exact activation math and broadcasting",
+      "check fast-math numerical tolerance"
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_01",
+        "intent": "fuse_elementwise_ops",
+        "summary": "Implement a custom CUDA LeakyReLU kernel that reads input once, applies the branch/select activation in-kernel, and writes output once, replacing the framework fallback for CUDA tensors.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Add a single exported entrypoint in cuda_cpp/cuda_cu and invoke it from the forward path while keeping ModelNew I/O unchanged.",
+          "Use one thread per element over a flattened contiguous view and prefer a grid-stride loop for arbitrary tensor sizes.",
+          "Preserve exact LeakyReLU semantics by applying x if x >= 0 else x * negative_slope inside the kernel.",
+          "Keep a safe fallback to torch.nn.functional.leaky_relu for unsupported device/dtype/layout cases."
+        ],
+        "expected_gain": "Moderate; removes dispatcher overhead and enables a minimal single-pass CUDA path for this pure elementwise op.",
+        "risk_notes": [
+          "Preserve exact activation math and broadcasting semantics for any accepted shape handling.",
+          "Check fast-math numerical tolerance because the scaffold enables --use_fast_math.",
+          "Need to validate assumptions about contiguity, dtype coverage, and CUDA-only dispatch."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 5.0,
+          "claude-compatible": 4.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "High-value baseline optimization for this elementwise LeakyReLU task. A single-pass custom CUDA kernel matches the semantic profile well, removes framework overhead, and is straightforward to implement with manageable correctness risk if fallback gating is preserved.",
+          "claude-compatible": "Solid baseline custom CUDA kernel strategy. Grid-stride loop, single-pass, correct semantics, fallback path. Well-scoped and low-risk. Moderate gain is realistic for a simple elementwise op. Minor deduction for not including vectorization.",
+          "gemini-compatible": "Solid baseline custom CUDA kernel for LeakyReLU with grid-stride loop."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_02",
+        "intent": "fuse_elementwise_ops",
+        "summary": "Implement a custom CUDA kernel for LeakyReLU using a grid-stride loop with float4 vectorized loads/stores to maximize memory throughput, replacing the PyTorch fallback.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "In cuda_cu, write a __global__ leaky_relu_kernel that takes float* input, float* output, int n, float negative_slope",
+          "Use a grid-stride loop: for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < n; i += blockDim.x * gridDim.x)",
+          "Apply LeakyReLU: output[i] = (input[i] >= 0) ? input[i] : negative_slope * input[i]",
+          "For float4 vectorization: cast pointers to float4* and process 4 elements per thread when n is divisible by 4, handle remainder with scalar loop",
+          "Use blockDim=256, gridDim=min((n+255)/256, 65535) for launch config",
+          "Export a wrapper function leaky_relu_cuda(torch::Tensor x, float negative_slope) that allocates output tensor and launches kernel",
+          "In cuda_cpp, add PYBIND11_MODULE export for leaky_relu_cuda",
+          "In forward_stmt_1/2, call _stark_get_extension().leaky_relu_cuda(x, self.negative_slope)"
+        ],
+        "expected_gain": "2-4x speedup over PyTorch fallback due to reduced kernel launch overhead and vectorized memory access; LeakyReLU is memory-bandwidth bound so float4 helps significantly",
+        "risk_notes": [
+          "Ensure input tensor is contiguous before passing to kernel; call x.contiguous() if needed",
+          "Handle non-float32 dtypes gracefully or add dtype check",
+          "float4 path requires n divisible by 4; scalar fallback needed for remainder",
+          "Verify negative_slope is passed correctly as a float (not double)"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 5.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "Useful but somewhat over-assertive. A custom kernel is good, but claimed 2-4x gains and float4 vectorization benefits may be optimistic for a simple bandwidth-bound op already well optimized by frameworks. Added complexity around alignment, contiguity, and remainder handling reduces risk-adjusted value.",
+          "claude-compatible": "Best overall strategy. Combines custom kernel with float4 vectorization, correct launch config, contiguity handling, and scalar remainder path. LeakyReLU is memory-bandwidth bound so float4 is directly impactful. Well-specified and implementable.",
+          "gemini-compatible": "Vectorized float4 memory accesses are critical for maximizing bandwidth in memory-bound elementwise operations."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "avoid_intermediate_allocations",
+        "summary": "Ensure the custom path allocates only the final output tensor and performs no extra temporaries, using direct output creation in the CUDA wrapper and immediate kernel launch.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "In the exported wrapper, allocate exactly one output tensor shaped like the input and launch the kernel directly into it.",
+          "Avoid composing multiple ATen ops in the custom path; keep all arithmetic inside the CUDA kernel body.",
+          "Route the forward call site directly to the extension entrypoint so the op does not materialize framework-side intermediate expressions."
+        ],
+        "expected_gain": "Small to moderate; for a simple activation, memory traffic and allocator overhead are the main avoidable costs beyond launch overhead.",
+        "risk_notes": [
+          "Benefit is bounded because baseline LeakyReLU is already simple and may already be fused internally in some cases.",
+          "Must preserve output shape, dtype, and device exactly.",
+          "Need to inspect shape and layout assumptions before hardwiring output allocation behavior."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Good complementary strategy. Avoiding extra temporaries and keeping the custom path to one output allocation is aligned with the workload and low risk, though the incremental gain beyond a basic custom kernel is limited.",
+          "claude-compatible": "Correct principle but limited standalone value. Single output allocation is already implied by strategy_01/02. Useful as a constraint/checklist item rather than an independent optimization. Low risk, low incremental gain.",
+          "gemini-compatible": "Standard practice to allocate only the output tensor; necessary but not a novel optimization."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "fuse_elementwise_ops",
+        "summary": "Use CUDA streams and asynchronous kernel launch to overlap kernel execution with any surrounding Python/PyTorch operations, and use __builtin_expect or branch-free arithmetic for the LeakyReLU condition.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Use branch-free LeakyReLU: val * (val >= 0 ? 1.0f : negative_slope) can be written as val * (0.5f * (1.0f + negative_slope) + 0.5f * (1.0f - negative_slope) * copysignf(1.0f, val)) but simpler: use fmaxf(val, 0) + negative_slope * fminf(val, 0)",
+          "fmaxf/fminf map to single CUDA instructions (FMNMX) and avoid branch divergence",
+          "Use at::cuda::getCurrentCUDAStream() to launch on the current PyTorch stream for correct synchronization",
+          "Set --use_fast_math in extra_cuda_cflags (already present in scaffold) to enable fast fmaxf/fminf",
+          "Combine with float4 vectorization: apply fmaxf/fminf on each component of the float4"
+        ],
+        "expected_gain": "Branch-free arithmetic eliminates warp divergence (minimal gain for uniform data but important for mixed-sign tensors); stream reuse avoids synchronization overhead",
+        "risk_notes": [
+          "fmaxf(val, 0) + negative_slope * fminf(val, 0) is numerically equivalent to LeakyReLU but verify with negative_slope=0 edge case",
+          "getCurrentCUDAStream() must be called from the C++ wrapper, not inside the kernel"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 4.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Some parts are reasonable, especially using the current CUDA stream and possibly branch-free min/max formulation, but the stream-overlap framing is not very meaningful for this already asynchronous elementwise op. Net gain is likely small and the proposal mixes useful and low-value ideas.",
+          "claude-compatible": "Branch-free fmaxf/fminf formulation is a concrete, well-motivated improvement for mixed-sign tensors and maps to efficient CUDA instructions. Stream reuse is correct practice. Combining with float4 is a good synthesis. Slight risk around numerical edge cases with negative_slope=0 but manageable.",
+          "gemini-compatible": "Branch-free arithmetic using fmaxf/fminf avoids warp divergence, which is highly relevant and effective for LeakyReLU."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_03",
+        "intent": "fuse_elementwise_ops",
+        "summary": "Use __half2 (FP16 packed) arithmetic in the CUDA kernel to process two FP16 elements per instruction when the input tensor is half-precision, doubling arithmetic throughput.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Add a templated kernel or separate __half kernel path in cuda_cu",
+          "For float16 inputs, cast to __half2* and use __hgt2, __hmul2 intrinsics for the LeakyReLU condition",
+          "LeakyReLU in half2: use __hgt2(val, zero) to get mask, then blend val and __hmul2(slope_h2, val)",
+          "For float32 inputs, use the float4 vectorized path from strategy 1",
+          "Dispatch based on x.scalar_type() in the C++ wrapper",
+          "Keep negative_slope as __half2 by broadcasting: __half2 slope_h2 = __float2half2_rn(negative_slope)"
+        ],
+        "expected_gain": "For FP16 workloads: near 2x throughput improvement from packed half2 arithmetic; for FP32: same as strategy 1",
+        "risk_notes": [
+          "Requires compute capability >= 5.3 for native FP16 support",
+          "Numerical behavior of __half2 LeakyReLU may differ slightly from FP32 reference",
+          "Must handle odd-length tensors with scalar fallback for the last element"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Potentially beneficial only for FP16-heavy workloads, but it adds substantial complexity, narrower applicability, architecture constraints, and higher numerical/correctness risk. Likely too specialized for a general benchmark-first optimization pass.",
+          "claude-compatible": "FP16 half2 path is valuable if the benchmark uses FP16, but the task description implies float32. Adds implementation complexity and compute-capability constraints. Useful as a secondary specialization but not the primary optimization target here.",
+          "gemini-compatible": "Packed half2 arithmetic is excellent if FP16 inputs are used, effectively doubling throughput."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_05",
+        "intent": "inspect_source_before_editing",
+        "summary": "Add conservative dispatch gating in the forward path so the CUDA extension is used only when its assumptions hold, preventing regressions while still accelerating the common CUDA case.",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "init_body",
+          "helpers"
+        ],
+        "implementation_hints": [
+          "Check for CUDA device placement and any dtype/layout constraints expected by the custom kernel before calling the extension.",
+          "Keep negative_slope sourced from module state unchanged and pass it through explicitly to the backend entrypoint.",
+          "Retain the existing PyTorch fallback for CPU, unsupported dtypes, or nonconforming layouts/shapes."
+        ],
+        "expected_gain": "Indirect but important; protects benchmark stability and ensures optimization applies to the fast path without broad correctness risk.",
+        "risk_notes": [
+          "Too much gating can reduce optimization coverage and mute gains.",
+          "Must preserve exact module semantics and output parity across fallback/custom paths.",
+          "Inspect shape, dtype, and broadcasting assumptions before narrowing the accepted fast path."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Strong risk-management strategy. Conservative dispatch gating materially improves robustness and preserves semantics across unsupported cases. It does not create speedup by itself, but it increases the practical value of deploying the custom CUDA fast path.",
+          "claude-compatible": "Important for correctness and regression safety but not a performance strategy on its own. Dispatch gating is necessary scaffolding. Scores lower because it contributes indirectly and could reduce coverage if over-applied.",
+          "gemini-compatible": "Basic boilerplate for safety and dispatching, low direct performance impact."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "avoid_intermediate_allocations",
+        "summary": "Implement an in-place LeakyReLU CUDA kernel that writes directly to a pre-allocated output tensor, avoiding any intermediate tensor allocations inside the kernel wrapper.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Allocate output tensor once with torch::empty_like(x) in the C++ wrapper before kernel launch",
+          "Pass raw data pointers directly to the kernel to avoid any PyTorch dispatcher overhead",
+          "Use __ldg() for read-only input loads to leverage the texture cache path",
+          "Keep the wrapper function signature as torch::Tensor leaky_relu_cuda(torch::Tensor x, float negative_slope)",
+          "Avoid any intermediate torch operations inside the wrapper; only allocate output and launch kernel"
+        ],
+        "expected_gain": "Eliminates Python-level tensor allocation overhead and PyTorch dispatcher overhead; modest gain (~10-20%) on top of basic custom kernel",
+        "risk_notes": [
+          "Must ensure x is on CUDA device before dereferencing data_ptr",
+          "__ldg() only benefits read-only access patterns; verify input is not aliased with output"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Despite the wording, this is not truly in-place from the module API perspective since it still allocates an output tensor. __ldg() is dated and often unnecessary on modern GPUs, so the unique value here is limited beyond the basic custom-kernel approach.",
+          "claude-compatible": "__ldg() for read-only loads is a legitimate micro-optimization and torch::empty_like allocation is correct practice. However, gains are modest and most of this is already implied by strategy_02. The __ldg() hint is the only distinct contribution worth preserving.",
+          "gemini-compatible": "Using __ldg() for read-only loads is a good addition to improve cache hits, though empty_like allocation is standard."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_07",
+        "intent": "implement_backend_kernel",
+        "summary": "Specialize the CUDA kernel launch/configuration for bandwidth-bound elementwise work: flatten indexing, choose a practical fixed block size, and keep wrapper overhead minimal.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "helpers"
+        ],
+        "implementation_hints": [
+          "Use a straightforward flattened element count interface from the C++ wrapper to the CUDA kernel.",
+          "Prefer a conventional launch shape suited to elementwise kernels and a grid-stride loop to cover large tensors without complex indexing.",
+          "Keep the pybind/export surface minimal so extension load and call overhead stay low."
+        ],
+        "expected_gain": "Small but reliable; improves effective occupancy and keeps the custom kernel path simple for a memory-bound activation.",
+        "risk_notes": [
+          "Over-tuning launch parameters can have negligible impact relative to memory bandwidth limits.",
+          "Need to inspect source before editing to ensure extension naming/loading and exported symbols remain stable.",
+          "Do not alter external API behavior while simplifying internal launch wiring."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 3.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Reasonable implementation hygiene for the backend kernel path. Flattened indexing, fixed block sizing, and minimal wrapper overhead are sound, but mostly execution details rather than standalone optimization wins. Useful as part of strategy_01, less valuable on its own.",
+          "claude-compatible": "Too generic and vague. Restates standard elementwise kernel advice without adding specifics beyond strategy_01. 'Small but reliable' gain with no concrete mechanism. Low incremental value in a portfolio that already has strategy_01 and strategy_02.",
+          "gemini-compatible": "Generic launch configuration advice; lacks specific novel optimizations."
+        },
+        "priority": 3
+      }
+    ],
+    "proposal_errors": {
+      "gemini-compatible": "Expecting ',' delimiter: line 1 column 835 (char 834)"
+    },
+    "review_errors": {}
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "helpers",
+      "region_role": "helper",
+      "start_line": 6,
+      "end_line": 36,
+      "source_excerpt": "_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p20_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION",
+      "source_hash": "25c69f968398"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 39,
+      "end_line": 44,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 48,
+      "end_line": 54,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 63,
+      "end_line": 71,
+      "source_excerpt": "\"\"\"\n        Initializes the LeakyReLU module.\n\n        Args:\n            negative_slope (float, optional): The negative slope of the activation function. Defaults to 0.01.\n        \"\"\"\nself.negative_slope = negative_slope",
+      "source_hash": "4bd3f51d959f"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 74,
+      "end_line": 86,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n\"\"\"\n        Applies LeakyReLU activation to the input tensor.\n\n        Args:\n            x (torch.Tensor): Input tensor of any shape.\n\n        Returns:\n            torch.Tensor: Output tensor with LeakyReLU applied, same shape as input.\n        \"\"\"",
+      "source_hash": "178e70b3cb80"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 87,
+      "end_line": 89,
+      "source_excerpt": "return torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)",
+      "source_hash": "89a98300c8ce"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n# <<<IMPROVE:helpers>>>\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p20_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a LeakyReLU activation.\n        \"\"\"\n    def __init__(self, negative_slope: float = 0.01):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        \"\"\"\n                Initializes the LeakyReLU module.\n\n                Args:\n                    negative_slope (float, optional): The negative slope of the activation function. Defaults to 0.01.\n                \"\"\"\n        self.negative_slope = negative_slope\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Applies LeakyReLU activation to the input tensor.\n\n                Args:\n                    x (torch.Tensor): Input tensor of any shape.\n\n                Returns:\n                    torch.Tensor: Output tensor with LeakyReLU applied, same shape as input.\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1",
+        "n4",
+        "n7"
+      ],
+      "selected_count": 3,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0169,
+      "score": 0.0169,
+      "logs": [],
+      "failure_type": null,
+      "node_status": "pruned",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": "dead_branch_pruned",
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0169,
+      "speedup": 1.0,
+      "reference_runtimes": {
+        "torch_eager": 0.0169
+      },
+      "speedups": {
+        "torch_eager": 1.0
+      },
+      "primary_reference": "torch_eager"
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "{\n  \"anchor_patches\": [\n    {\n      \"anchor_name\": \"cuda_cpp\",\n      \"operation\": \"replace\",\n      \"body\": \"#include <torch/extension.h>\\n\\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\\n    m.def(\\\"leaky_relu_cuda\\\", &leaky_relu_cuda, \\\"LeakyReLU CUDA\\\");\\n}\\n\\n#include <ATen/ATen.h>\\n#include <ATen/cuda/CUDAContext.h>\\n#include <c10/cuda/CUDACachingAllocator.h>\\n\\nvoid leaky_relu_cuda_impl(torch::Tensor x, torch::Tensor out, double negative_slope) {\\n    int64_t numel = x.numel();\\n    const int block_size = 256;\\n    const int grid_size = (numel + block_size - 1) / block_size;\\n\\n    leaky_relu_kernel<<<grid_size, block_size>>>(\n        x.data_ptr<float>(),\n        out.data_ptr<float>(),\n        numel,\n        negative_slope\n    );\\n}\\n\\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope) {\\n    TORCH_CHECK(x.is_cuda(), \\\"Input tensor must be on CUDA\\\");\\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \\\"Input tensor must be float32\\\");\\n    auto out = torch::empty_like(x);\\n    leaky_relu_cuda_impl(x, out, negative_slope);\\n    return out;\\n}\\n\\n__global__ void leaky_relu_kernel(const float* in, float* out, int64_t numel, double negative_slope) {\\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\\n    if (idx < numel) {\\n        float val = in[idx];\\n        out[idx] = val >= 0.0f ? val : val * static_cast<float>(negative_slope);\\n    }\\n}\"\n    },\n    {\n      \"anchor_name\": \"cuda_cu\",\n      \"operation\": \"replace\",\n      \"body\": \"#include <torch/extension.h>\\n#include <cuda.h>\\n#include <cuda_runtime.h>\\n\\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\\n    m.def(\\\"leaky_relu_cuda\\\", &leaky_relu_cuda, \\\"LeakyReLU CUDA\\\");\\n}\\n\\n#include <ATen/ATen.h>\\n#include <ATen/cuda/CUDAContext.h>\\n#include <c10/cuda/CUDACachingAllocator.h>\\n\\nvoid leaky_relu_cuda_impl(torch::Tensor x, torch::Tensor out, double negative_slope) {\\n    int64_t numel = x.numel();\\n    const int block_size = 256;\\n    const int grid_size = (numel + block_size - 1) / block_size;\\n\\n    leaky_relu_kernel<<<grid_size, block_size>>>(\n        x.data_ptr<float>(),\n        out.data_ptr<float>(),\n        numel,\n        negative_slope\n    );\\n}\\n\\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope) {\\n    TORCH_CHECK(x.is_cuda(), \\\"Input tensor must be on CUDA\\\");\\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \\\"Input tensor must be float32\\\");\\n    auto out = torch::empty_like(x);\\n    leaky_relu_cuda_impl(x, out, negative_slope);\\n    return out;\\n}\\n\\n__global__ void leaky_relu_kernel(const float* in, float* out, int64_t numel, double negative_slope) {\\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\\n    if (idx < numel) {\\n        float val = in[idx];\\n        out[idx] = val >= 0.0f ? val : val * static_cast<float>(negative_slope);\\n    }\\n}\"\n    },\n    {\n      \"anchor_name\": \"forward_stmt_2\",\n      \"operation\": \"replace\",\n      \"body\": \"return _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope)) if x.is_cuda() and x.dtype in [torch.float32, torch.float64] else torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)\"\n    }\n  ]\n}",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Implement a custom CUDA LeakyReLU kernel and route the CUDA forward path through it, keeping a safe PyTorch fallback for unsupported cases.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the empty pybind module with a declaration of a CUDA wrapper function `torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope);` and export it via `m.def(\"leaky_relu_cuda\", &leaky_relu_cuda, \"LeakyReLU CUDA\");`. Keep the module name/scaffold unchanged.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the placeholder with a complete CUDA implementation: include necessary ATen/CUDA headers, define a templated `__global__` grid-stride kernel that flattens over `numel` and writes `out[i] = in[i] >= 0 ? in[i] : in[i] * negative_slope`; define `torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope)` that checks `x.is_cuda()`, allocates `torch::empty_like(x)`, computes `numel`, launches the kernel on the current CUDA stream, and returns the output. Dispatch at least for `float` and `double` using `AT_DISPATCH_FLOATING_TYPES`, and require contiguous input inside the wrapper by operating on `x = x.contiguous()` if needed.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the direct `torch.nn.functional.leaky_relu` return with gated dispatch: if `x.is_cuda` and `x.dtype` is a floating type supported by the extension, call `_stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope))`; otherwise return `torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)`. Keep ModelNew I/O unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "broken_anchor_markers: expected=['helpers', 'cuda_cpp', 'cuda_cu', 'init_body', 'forward_stmt_1', 'forward_stmt_2']; observed=[]"
+      ],
+      "failure_type": "broken_anchor_markers",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import hashlib\nimport torch\nimport torch.nn as nn\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\n# <<<IMPROVE:helpers>>>\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p20_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"leaky_relu_cuda\", &leaky_relu_cuda, \"LeakyReLU CUDA\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n#include <c10/cuda/CUDAGuard.h>\n\n__global__ void leaky_relu_kernel(const float* in, float* out, int64_t numel, float negative_slope) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    int64_t stride = (int64_t)blockDim.x * gridDim.x;\n    for (int64_t i = idx; i < numel; i += stride) {\n        float v = in[i];\n        out[i] = v >= 0.0f ? v : v * negative_slope;\n    }\n}\n\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope) {\n    TORCH_CHECK(x.is_cuda(), \"Input tensor must be on CUDA\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"Input tensor must be float32\");\n    auto x_contig = x.contiguous();\n    auto out = torch::empty_like(x_contig);\n\n    const int64_t numel = x_contig.numel();\n    if (numel > 0) {\n        const int threads = 256;\n        const int blocks = (int)std::min<int64_t>((numel + threads - 1) / threads, 4096);\n        leaky_relu_kernel<<<blocks, threads, 0, at::cuda::getDefaultCUDAStream()>>>(\n            x_contig.data_ptr<float>(),\n            out.data_ptr<float>(),\n            numel,\n            static_cast<float>(negative_slope)\n        );\n    }\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    def __init__(self, negative_slope=0.01):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        \"\"\"\n        Initializes the LeakyReLU module.\n\n        Args:\n            negative_slope (float, optional): The negative slope of the activation function. Defaults to 0.01.\n        \"\"\"\n        self.negative_slope = negative_slope\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n        Applies LeakyReLU activation to the input tensor.\n\n        Args:\n            x (torch.Tensor): Input tensor of any shape.\n\n        Returns:\n            torch.Tensor: Output tensor with LeakyReLU applied, same shape as input.\n        \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if x.is_cuda and x.dtype == torch.float32:\n            return _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope))\n        return torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)\n        # <<<END_IMPROVE>>>",
+      "origin": "debug",
+      "child_ids": [
+        "n3",
+        "n10"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Implement a custom CUDA LeakyReLU kernel and route the CUDA forward path through it, keeping a safe PyTorch fallback for unsupported cases.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the empty pybind module with a declaration of a CUDA wrapper function `torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope);` and export it via `m.def(\"leaky_relu_cuda\", &leaky_relu_cuda, \"LeakyReLU CUDA\");`. Keep the module name/scaffold unchanged.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the placeholder with a complete CUDA implementation: include necessary ATen/CUDA headers, define a templated `__global__` grid-stride kernel that flattens over `numel` and writes `out[i] = in[i] >= 0 ? in[i] : in[i] * negative_slope`; define `torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope)` that checks `x.is_cuda()`, allocates `torch::empty_like(x)`, computes `numel`, launches the kernel on the current CUDA stream, and returns the output. Dispatch at least for `float` and `double` using `AT_DISPATCH_FLOATING_TYPES`, and require contiguous input inside the wrapper by operating on `x = x.contiguous()` if needed.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the direct `torch.nn.functional.leaky_relu` return with gated dispatch: if `x.is_cuda` and `x.dtype` is a floating type supported by the extension, call `_stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope))`; otherwise return `torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)`. Keep ModelNew I/O unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.019100000000000002,
+      "score": 0.019100000000000002,
+      "logs": [
+        "anchor_marker_drift: expected=[]; observed=['helpers', 'cuda_cpp', 'cuda_cu', 'init_body', 'forward_stmt_1', 'forward_stmt_2']"
+      ],
+      "failure_type": "anchor_marker_drift",
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0169,
+      "speedup": 0.8848167539267013,
+      "reference_runtimes": {
+        "torch_eager": 0.0169
+      },
+      "speedups": {
+        "torch_eager": 0.8848167539267013
+      },
+      "primary_reference": "torch_eager"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "{\n  \"anchor_patches\": [\n    {\n      \"anchor_name\": \"cuda_cu\",\n      \"operation\": \"replace\",\n      \"body\": \"#include <torch/extension.h>\\n#include <cuda.h>\\n#include <cuda_runtime.h>\\n#include <ATen/cuda/CUDAContext.h>\\n#include <c10/cuda/CUDAGuard.h>\\n\\n__global__ void leaky_relu_kernel(const float* in, float* out, int64_t numel, float negative_slope) {\\n    int64_t idx = blockIdx.x * blockDim.x + threadIdx.x;\\n    int64_t stride = blockDim.x * gridDim.x;\\n    for (int64_t i = idx; i < numel; i += stride) {\\n        float v = in[i];\\n        out[i] = v >= 0.0f ? v : v * negative_slope;\\n    }\\n}\\n\\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope) {\\n    TORCH_CHECK(x.is_cuda(), \\\"Input tensor must be on CUDA\\\");\\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \\\"Input tensor must be float32\\\");\\n    auto x_contig = x.contiguous();\\n    auto out = torch::empty_like(x_contig);\\n\\n    const int64_t numel = x_contig.numel();\\n    if (numel > 0) {\\n        const int threads = 256;\\n        const int blocks = (numel + threads - 1) / threads;\\n        leaky_relu_kernel<<<blocks, threads, 0, at::cuda::getDefaultCUDAStream()>>>(\n            x_contig.data_ptr<float>(),\n            out.data_ptr<float>(),\n            numel,\n            static_cast<float>(negative_slope)\n        );\\n    }\\n    return out;\\n}\"\n    },\n    {\n      \"anchor_name\": \"cuda_cpp\",\n      \"operation\": \"replace\",\n      \"body\": \"#include <torch/extension.h>\\n\\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope);\\n\\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\\n    m.def(\\\"leaky_relu_cuda\\\", &leaky_relu_cuda, \\\"LeakyReLU CUDA\\\");\\n}\"\n    },\n    {\n      \"anchor_name\": \"forward_stmt_2\",\n      \"operation\": \"replace\",\n      \"body\": \"if x.is_cuda and x.dtype == torch.float32:\\n            return _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope))\\n        return torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)\"\n    }\n  ]\n}",
+      "origin": "plan_code",
+      "child_ids": [
+        "n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Keep the optimization narrowly focused on eliminating unnecessary allocations and wrapper overhead by replacing the custom CUDA path with a minimal direct-output implementation and routing the forward fast path only when safe.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA source with a minimal implementation that exports one wrapper `torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope)`. In the wrapper: check `x.is_cuda()`, require `x.scalar_type()==torch::kFloat32`, make `auto x_contig = x.contiguous()`, allocate exactly one `auto out = torch::empty_like(x_contig)`, compute `numel = x_contig.numel()`, and if `numel > 0` launch a single grid-stride kernel over flattened elements with one thread per element and a fixed block size such as 256 on `at::cuda::getCurrentCUDAStream()`. In the kernel, implement exact LeakyReLU math as `out[i] = v >= 0.0f ? v : v * negative_slope;`. Return `out` and do not compose any ATen arithmetic ops inside the wrapper.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the C++ binding source so it only forward-declares `torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope);` and exposes exactly one pybind entry `m.def(\"leaky_relu_cuda\", &leaky_relu_cuda, \"LeakyReLU CUDA\");` inside `PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)`. Keep the export surface minimal and unchanged from the Python call site.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the forward return logic with conservative dispatch gating: if `x.is_cuda and x.dtype == torch.float32`, call `_stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope))`; otherwise fall back to `torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)`. Do not alter ModelNew I/O or add other behavior.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "broken_anchor_markers: expected=['helpers', 'cuda_cpp', 'cuda_cu', 'init_body', 'forward_stmt_1', 'forward_stmt_2']; observed=[]"
+      ],
+      "failure_type": "broken_anchor_markers",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "{\n  \"anchor_patches\": [\n    {\n      \"anchor_name\": \"cuda_cpp\",\n      \"operation\": \"replace\",\n      \"body\": \"#include <torch/extension.h>\\n\\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\\n    m.def(\\\"leaky_relu_cuda\\\", &leaky_relu_cuda, \\\"LeakyReLU CUDA\\\");\\n}\"\n    },\n    {\n      \"anchor_name\": \"cuda_cu\",\n      \"operation\": \"replace\",\n      \"body\": \"#include <torch/extension.h>\\n#include <ATen/cuda/CUDAContext.h>\\n#include <cuda.h>\\n#include <cuda_runtime.h>\\n#include <algorithm>\\n\\n__global__ void leaky_relu_kernel(const float* x, float* y, int64_t n, float negative_slope) {\\n    int64_t idx = blockIdx.x * blockDim.x + threadIdx.x;\\n    if (idx < n) {\\n        float val = x[idx];\\n        y[idx] = fmaxf(val, 0.0f) + negative_slope * fminf(val, 0.0f);\\n    }\\n}\\n\\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope) {\\n    TORCH_CHECK(x.is_cuda(), \\\"Input tensor must be on CUDA\\\");\\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \\\"Input tensor must be float32\\\");\\n    TORCH_CHECK(x.is_contiguous(), \\\"Input tensor must be contiguous\\\");\\n\\n    auto y = torch::empty_like(x);\\n    int64_t n = x.numel();\\n    if (n == 0) return y;\\n\\n    const int block_size = 256;\\n    int grid_size = (n + block_size - 1) / block_size;\\n    grid_size = std::min(grid_size, 4096);\\n\\n    leaky_relu_kernel<<<grid_size, block_size>>>(\n        x.data_ptr<float>(),\n        y.data_ptr<float>(),\n        n,\n        static_cast<float>(negative_slope)\n    );\\n\\n    return y;\\n}\"\n    },\n    {\n      \"anchor_name\": \"forward_stmt_2\",\n      \"operation\": \"replace\",\n      \"body\": \"return _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope)) if x.is_cuda() and x.dtype == torch.float32 and x.is_contiguous() else torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)\"\n    }\n  ]\n}",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Implement a minimal custom CUDA LeakyReLU path that allocates only the final output tensor and performs the activation entirely inside one kernel, while keeping a conservative PyTorch fallback in forward.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a pybind export declaration for a CUDA wrapper function named leaky_relu_cuda(torch::Tensor x, double negative_slope). Include <torch/extension.h>, declare the function prototype, and define PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) { m.def(\"leaky_relu_cuda\", &leaky_relu_cuda, \"LeakyReLU CUDA\"); }. Do not add extra scaffolding outside this export/prototype block.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a complete CUDA implementation: include <torch/extension.h>, <ATen/cuda/CUDAContext.h>, <cuda.h>, <cuda_runtime.h>, and <algorithm>. Define a __global__ kernel leaky_relu_kernel(const float* x, float* y, int64_t n, float negative_slope) using a grid-stride loop over flattened elements and branch-free math y[i] = fmaxf(v, 0.0f) + negative_slope * fminf(v, 0.0f). Define torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope) that checks x.is_cuda(), x.scalar_type()==at::kFloat, and x.is_contiguous(), allocates auto y = torch::empty_like(x), computes n = x.numel(), launches the kernel with block=256 and grid=std::min<int64_t>((n + block - 1) / block, 4096) on at::cuda::getDefaultCUDAStream() or at::cuda::getDefaultCUDAStream() equivalent current PyTorch CUDA stream from ATen, and returns y. If n==0, return y immediately. Keep wrapper limited to contiguous float32 CUDA tensors; rely on Python fallback for other cases.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the single fallback return with guarded dispatch: if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous(): return _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope)); otherwise return torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope).",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "broken_anchor_markers: expected=['helpers', 'cuda_cpp', 'cuda_cu', 'init_body', 'forward_stmt_1', 'forward_stmt_2']; observed=[]"
+      ],
+      "failure_type": "broken_anchor_markers",
+      "node_status": "compile_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import hashlib\nimport torch\nimport torch.nn as nn\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\n# <<<IMPROVE:helpers>>>\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p20_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"leaky_relu_cuda\", &leaky_relu_cuda, \"LeakyReLU CUDA\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n#include <c10/cuda/CUDAGuard.h>\n\n__global__ void leaky_relu_kernel(const float* in, float* out, int64_t numel, float negative_slope) {\n    int64_t idx = static_cast<int64_t>(blockIdx.x) * blockDim.x + threadIdx.x;\n    int64_t stride = static_cast<int64_t>(blockDim.x) * gridDim.x;\n    for (int64_t i = idx; i < numel; i += stride) {\n        float v = in[i];\n        out[i] = v >= 0.0f ? v : v * negative_slope;\n    }\n}\n\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope) {\n    TORCH_CHECK(x.is_cuda(), \"Input tensor must be on CUDA\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"Input tensor must be float32\");\n\n    c10::cuda::CUDAGuard device_guard(x.device());\n    auto x_contig = x.contiguous();\n    auto out = torch::empty_like(x_contig);\n\n    const int64_t numel = x_contig.numel();\n    if (numel > 0) {\n        const int threads = 256;\n        const int blocks = static_cast<int>((numel + threads - 1) / threads);\n        const int max_blocks = 4096;\n        leaky_relu_kernel<<<blocks < max_blocks ? blocks : max_blocks, threads, 0, at::cuda::getDefaultCUDAStream()>>>(\n            x_contig.data_ptr<float>(),\n            out.data_ptr<float>(),\n            numel,\n            static_cast<float>(negative_slope)\n        );\n    }\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    def __init__(self, negative_slope=0.01):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        \"\"\"\n        Initializes the LeakyReLU module.\n\n        Args:\n            negative_slope (float, optional): The negative slope of the activation function. Defaults to 0.01.\n        \"\"\"\n        self.negative_slope = negative_slope\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n        Applies LeakyReLU activation to the input tensor.\n\n        Args:\n            x (torch.Tensor): Input tensor of any shape.\n\n        Returns:\n            torch.Tensor: Output tensor with LeakyReLU applied, same shape as input.\n        \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if x.is_cuda and x.dtype == torch.float32:\n            return _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope))\n        return torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)\n        # <<<END_IMPROVE>>>",
+      "origin": "debug",
+      "child_ids": [
+        "n6"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Keep the optimization narrowly focused on eliminating unnecessary allocations and wrapper overhead by replacing the custom CUDA path with a minimal direct-output implementation and routing the forward fast path only when safe.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA source with a minimal implementation that exports one wrapper `torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope)`. In the wrapper: check `x.is_cuda()`, require `x.scalar_type()==torch::kFloat32`, make `auto x_contig = x.contiguous()`, allocate exactly one `auto out = torch::empty_like(x_contig)`, compute `numel = x_contig.numel()`, and if `numel > 0` launch a single grid-stride kernel over flattened elements with one thread per element and a fixed block size such as 256 on `at::cuda::getCurrentCUDAStream()`. In the kernel, implement exact LeakyReLU math as `out[i] = v >= 0.0f ? v : v * negative_slope;`. Return `out` and do not compose any ATen arithmetic ops inside the wrapper.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the C++ binding source so it only forward-declares `torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope);` and exposes exactly one pybind entry `m.def(\"leaky_relu_cuda\", &leaky_relu_cuda, \"LeakyReLU CUDA\");` inside `PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)`. Keep the export surface minimal and unchanged from the Python call site.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the forward return logic with conservative dispatch gating: if `x.is_cuda and x.dtype == torch.float32`, call `_stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope))`; otherwise fall back to `torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)`. Do not alter ModelNew I/O or add other behavior.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.019100000000000002,
+      "score": 0.019100000000000002,
+      "logs": [
+        "anchor_marker_drift: expected=[]; observed=['helpers', 'cuda_cpp', 'cuda_cu', 'init_body', 'forward_stmt_1', 'forward_stmt_2']"
+      ],
+      "failure_type": "anchor_marker_drift",
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0169,
+      "speedup": 0.8848167539267013,
+      "reference_runtimes": {
+        "torch_eager": 0.0169
+      },
+      "speedups": {
+        "torch_eager": 0.8848167539267013
+      },
+      "primary_reference": "torch_eager"
+    },
+    "n6": {
+      "node_id": "n6",
+      "parent_id": "n5",
+      "depth": 5,
+      "code": "{\n  \"anchor_patches\": [\n    {\n      \"anchor_name\": \"cuda_cu\",\n      \"operation\": \"replace\",\n      \"body\": \"#include <torch/extension.h>\\n#include <cuda.h>\\n#include <cuda_runtime.h>\\n#include <ATen/cuda/CUDAContext.h>\\n#include <c10/cuda/CUDAGuard.h>\\n\\n__global__ void leaky_relu_kernel(const float* in, float* out, int64_t numel, float negative_slope) {\\n    int64_t idx = blockIdx.x * blockDim.x + threadIdx.x;\\n    int64_t stride = blockDim.x * gridDim.x;\\n    for (int64_t i = idx; i < numel; i += stride) {\\n        float v = in[i];\\n        out[i] = fmaxf(v, 0.0f) + negative_slope * fminf(v, 0.0f);\\n    }\\n}\\n\\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope) {\\n    TORCH_CHECK(x.is_cuda(), \\\"Input tensor must be on CUDA\\\");\\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \\\"Input tensor must be float32\\\");\\n\\n    c10::cuda::CUDAGuard device_guard(x.device());\\n    auto x_contig = x.contiguous();\\n    auto out = torch::empty_like(x_contig);\\n\\n    const int64_t numel = x_contig.numel();\\n    if (numel > 0) {\\n        const int threads = 256;\\n        const int blocks = static_cast<int>((numel + threads - 1) / threads);\\n        const int max_blocks = 4096;\\n        leaky_relu_kernel<<<std::min(blocks, max_blocks), threads, 0, at::cuda::getDefaultCUDAStream()>>>(\n            x_contig.data_ptr<float>(),\n            out.data_ptr<float>(),\n            numel,\n            static_cast<float>(negative_slope)\n        );\\n    }\\n    return out;\\n}\"\n    },\n    {\n      \"anchor_name\": \"forward_stmt_2\",\n      \"operation\": \"replace\",\n      \"body\": \"return _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope)) if x.is_cuda and x.dtype == torch.float32 else torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)\"\n    }\n  ]\n}",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Replace the current custom CUDA path with a branch-free LeakyReLU kernel launched on PyTorch's current CUDA stream, and keep conservative forward-path dispatch gating for supported CUDA float32 tensors only.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA source with a complete implementation that includes: (1) the same includes plus ATen/cuda/CUDAContext.h and c10/cuda/CUDAGuard.h; (2) a __global__ kernel operating on flattened float32 data with a grid-stride loop; (3) branch-free activation computation `out[i] = fmaxf(v, 0.0f) + negative_slope * fminf(v, 0.0f);`; (4) an exported wrapper `torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope)` that checks `x.is_cuda()` and `x.scalar_type() == torch::kFloat32`, guards the device, makes `x_contig = x.contiguous()`, allocates `out = torch::empty_like(x_contig)`, computes `numel = x_contig.numel()`, launches with `threads=256` and `blocks=min<int64_t>((numel + threads - 1) / threads, 4096)`, and uses `at::cuda::getDefaultCUDAStream()` replaced by `at::cuda::getDefaultCUDAStream(x.device().index())` only if current-stream API is unavailable, otherwise prefer launching on PyTorch's current CUDA stream for the input device; (5) return `out` without extra temporaries.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the forward return logic with conservative dispatch gating: if `x.is_cuda and x.dtype == torch.float32`, call `_stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope))`; otherwise return `torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)`. Keep the fallback exactly for unsupported cases and do not add unrelated conditions.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "broken_anchor_markers: expected=['helpers', 'cuda_cpp', 'cuda_cu', 'init_body', 'forward_stmt_1', 'forward_stmt_2']; observed=[]"
+      ],
+      "failure_type": "broken_anchor_markers",
+      "node_status": "compile_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null
+    },
+    "n7": {
+      "node_id": "n7",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "{\n  \"anchor_patches\": [\n    {\n      \"anchor_name\": \"cuda_cpp\",\n      \"operation\": \"replace\",\n      \"body\": \"#include <torch/extension.h>\\n\\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\\n    m.def(\\\"leaky_relu_cuda\\\", &leaky_relu_cuda, \\\"LeakyReLU CUDA\\\");\\n}\"\n    },\n    {\n      \"anchor_name\": \"cuda_cu\",\n      \"operation\": \"replace\",\n      \"body\": \"#include <torch/extension.h>\\n#include <cuda.h>\\n#include <cuda_runtime.h>\\n#include <ATen/cuda/CUDAContext.h>\\n#include <c10/cuda/CUDAGuard.h>\\n\\n__global__ void leaky_relu_kernel(const float* x, float* y, int64_t n, float negative_slope) {\\n    int64_t i = blockIdx.x * blockDim.x + threadIdx.x;\\n    if (i < n) {\\n        float v = x[i];\\n        y[i] = fmaxf(v, 0.0f) + negative_slope * fminf(v, 0.0f);\\n    }\\n}\\n\\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope) {\\n    TORCH_CHECK(x.is_cuda(), \\\"x must be a CUDA tensor\\\");\\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \\\"x must be float32\\\");\\n    TORCH_CHECK(x.is_contiguous(), \\\"x must be contiguous\\\");\\n\\n    auto y = torch::empty_like(x);\\n    int64_t n = x.numel();\\n    if (n == 0) return y;\\n\\n    c10::cuda::CUDAGuard device_guard(x.device());\\n    const int block = 256;\\n    const int grid = (n + block - 1) / block;\\n\\n    leaky_relu_kernel<<<grid, block>>>(\n        x.data_ptr<float>(),\n        y.data_ptr<float>(),\n        n,\n        static_cast<float>(negative_slope)\n    );\\n\\n    return y;\\n}\"\n    },\n    {\n      \"anchor_name\": \"forward_stmt_2\",\n      \"operation\": \"replace\",\n      \"body\": \"if x.is_cuda() and x.dtype == torch.float32 and x.is_contiguous():\\n    return _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope))\\nreturn torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)\"\n    }\n  ]\n}",
+      "origin": "plan_code",
+      "child_ids": [
+        "n8"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Implement a custom CUDA LeakyReLU path using a branch-free kernel expression and current-stream launch, with conservative forward dispatch to the extension for supported CUDA tensors and fallback otherwise.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a minimal pybind module that declares torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope); and exports it via m.def(\"leaky_relu_cuda\", &leaky_relu_cuda, \"LeakyReLU CUDA\");. Include torch/extension.h only and keep the file limited to declaration plus PYBIND11_MODULE export.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a complete CUDA implementation: include torch/extension.h, ATen/cuda/CUDAContext.h, cuda.h, cuda_runtime.h, and c10/cuda/CUDAGuard.h. Define a __global__ kernel taking const float* x, float* y, int64_t n, float negative_slope and using a grid-stride loop over flattened elements. Compute each output with branch-free arithmetic: float v = x[i]; y[i] = fmaxf(v, 0.0f) + negative_slope * fminf(v, 0.0f);. Implement torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope) that checks x.is_cuda(), x.scalar_type()==at::kFloat, x.is_contiguous(), allocates out = torch::empty_like(x), guards the device with c10::cuda::CUDAGuard device_guard(x.device()), computes n=x.numel(), returns out immediately for n==0, launches with block=256 and grid=min((n+block-1)/block, 4096LL) on at::cuda::getDefaultCUDAStream() or preferably at::cuda::getCurrentCUDAStream(), and returns out. Add AT_CUDA_CHECK(cudaGetLastError()) after launch.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the direct torch.nn.functional.leaky_relu call with conservative dispatch: if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous(): return _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope)); otherwise return torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope). Leave forward_stmt_1 scaffold/comments untouched.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "broken_anchor_markers: expected=['helpers', 'cuda_cpp', 'cuda_cu', 'init_body', 'forward_stmt_1', 'forward_stmt_2']; observed=[]"
+      ],
+      "failure_type": "broken_anchor_markers",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null
+    },
+    "n8": {
+      "node_id": "n8",
+      "parent_id": "n7",
+      "depth": 2,
+      "code": "import hashlib\nimport torch\nimport torch.nn as nn\nfrom torch.utils.cpp_extension import load_inline\n\n# <<<IMPROVE:helpers>>>\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p20_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"leaky_relu_cuda\", &leaky_relu_cuda, \"LeakyReLU CUDA\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n#include <c10/cuda/CUDAGuard.h>\n\n__global__ void leaky_relu_kernel(const float* x, float* y, int64_t n, float negative_slope) {\n    int64_t idx = static_cast<int64_t>(blockIdx.x) * blockDim.x + threadIdx.x;\n    int64_t stride = static_cast<int64_t>(blockDim.x) * gridDim.x;\n    for (int64_t i = idx; i < n; i += stride) {\n        float v = x[i];\n        y[i] = fmaxf(v, 0.0f) + negative_slope * fminf(v, 0.0f);\n    }\n}\n\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n\n    c10::cuda::CUDAGuard device_guard(x.device());\n    auto y = torch::empty_like(x);\n    int64_t n = x.numel();\n    if (n == 0) return y;\n\n    const int block = 256;\n    const int grid = std::min<int64_t>((n + block - 1) / block, 4096);\n\n    leaky_relu_kernel<<<grid, block, 0, at::cuda::getDefaultCUDAStream()>>>(\n        x.data_ptr<float>(),\n        y.data_ptr<float>(),\n        n,\n        static_cast<float>(negative_slope)\n    );\n\n    return y;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    def __init__(self, negative_slope=0.01):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        \"\"\"\n        Initializes the LeakyReLU module.\n\n        Args:\n            negative_slope (float, optional): The negative slope of the activation function. Defaults to 0.01.\n        \"\"\"\n        self.negative_slope = negative_slope\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n        Applies LeakyReLU activation to the input tensor.\n\n        Args:\n            x (torch.Tensor): Input tensor of any shape.\n\n        Returns:\n            torch.Tensor: Output tensor with LeakyReLU applied, same shape as input.\n        \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous():\n            return _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope))\n        return torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)\n        # <<<END_IMPROVE>>>",
+      "origin": "debug",
+      "child_ids": [
+        "n9"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Implement a custom CUDA LeakyReLU path using a branch-free kernel expression and current-stream launch, with conservative forward dispatch to the extension for supported CUDA tensors and fallback otherwise.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a minimal pybind module that declares torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope); and exports it via m.def(\"leaky_relu_cuda\", &leaky_relu_cuda, \"LeakyReLU CUDA\");. Include torch/extension.h only and keep the file limited to declaration plus PYBIND11_MODULE export.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a complete CUDA implementation: include torch/extension.h, ATen/cuda/CUDAContext.h, cuda.h, cuda_runtime.h, and c10/cuda/CUDAGuard.h. Define a __global__ kernel taking const float* x, float* y, int64_t n, float negative_slope and using a grid-stride loop over flattened elements. Compute each output with branch-free arithmetic: float v = x[i]; y[i] = fmaxf(v, 0.0f) + negative_slope * fminf(v, 0.0f);. Implement torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope) that checks x.is_cuda(), x.scalar_type()==at::kFloat, x.is_contiguous(), allocates out = torch::empty_like(x), guards the device with c10::cuda::CUDAGuard device_guard(x.device()), computes n=x.numel(), returns out immediately for n==0, launches with block=256 and grid=min((n+block-1)/block, 4096LL) on at::cuda::getDefaultCUDAStream() or preferably at::cuda::getCurrentCUDAStream(), and returns out. Add AT_CUDA_CHECK(cudaGetLastError()) after launch.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the direct torch.nn.functional.leaky_relu call with conservative dispatch: if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous(): return _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope)); otherwise return torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope). Leave forward_stmt_1 scaffold/comments untouched.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.019100000000000002,
+      "score": 0.019100000000000002,
+      "logs": [
+        "anchor_marker_drift: expected=[]; observed=['helpers', 'cuda_cpp', 'cuda_cu', 'init_body', 'forward_stmt_1', 'forward_stmt_2']"
+      ],
+      "failure_type": "anchor_marker_drift",
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0169,
+      "speedup": 0.8848167539267013,
+      "reference_runtimes": {
+        "torch_eager": 0.0169
+      },
+      "speedups": {
+        "torch_eager": 0.8848167539267013
+      },
+      "primary_reference": "torch_eager"
+    },
+    "n9": {
+      "node_id": "n9",
+      "parent_id": "n8",
+      "depth": 3,
+      "code": "{\n  \"anchor_patches\": [\n    {\n      \"anchor_name\": \"cuda_cu\",\n      \"operation\": \"replace\",\n      \"body\": \"#include <torch/extension.h>\\n#include <cuda.h>\\n#include <cuda_runtime.h>\\n#include <ATen/cuda/CUDAContext.h>\\n#include <c10/cuda/CUDAGuard.h>\\n\\n__global__ void leaky_relu_kernel(const float* x, float* y, int64_t n, float negative_slope) {\\n    int64_t idx = blockIdx.x * blockDim.x + threadIdx.x;\\n    int64_t stride = blockDim.x * gridDim.x;\\n    for (int64_t i = idx; i < n; i += stride) {\\n        float v = x[i];\\n        y[i] = (v >= 0.0f) ? v : v * negative_slope;\\n    }\\n}\\n\\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope) {\\n    TORCH_CHECK(x.is_cuda(), \\\"x must be a CUDA tensor\\\");\\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \\\"x must be float32\\\");\\n    TORCH_CHECK(x.is_contiguous(), \\\"x must be contiguous\\\");\\n\\n    c10::cuda::CUDAGuard device_guard(x.device());\\n    auto y = torch::empty_like(x);\\n    int64_t n = x.numel();\\n    if (n == 0) return y;\\n\\n    const int block = 256;\\n    const int grid = std::min<int64_t>((n + block - 1) / block, 4096);\\n\\n    leaky_relu_kernel<<<grid, block, 0, at::cuda::getCurrentCUDAStream()>>>(\n        x.data_ptr<float>(),\n        y.data_ptr<float>(),\n        n,\n        static_cast<float>(negative_slope)\n    );\\n\\n    return y;\\n}\"\n    },\n    {\n      \"anchor_name\": \"forward_stmt_2\",\n      \"operation\": \"replace\",\n      \"body\": \"return _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope))\"\n    }\n  ]\n}",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Keep the custom LeakyReLU path minimal by allocating only the final output tensor in the CUDA wrapper and routing the forward path directly to that single-pass kernel, with fallback for unsupported cases.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA source with an implementation that exports torch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope), checks x.is_cuda() and x.scalar_type()==torch::kFloat32, makes a contiguous copy only when needed via auto x_contig = x.contiguous(), allocates exactly one output tensor with torch::empty_like(x_contig), launches a single grid-stride kernel on at::cuda::getCurrentCUDAStream() (not getDefaultCUDAStream()) over x_contig.numel() applying y[i] = (v >= 0.0f ? v : v * negative_slope) or the equivalent fmaxf/fminf form, and if x was non-contiguous returns y.view(x_contig.sizes()).as_strided(x.sizes(), x.strides()) is NOT needed—instead only use the custom path for contiguous tensors and leave non-contiguous handling to Python fallback.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the forward return logic with conservative dispatch gating: if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous(), call _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope)); otherwise return torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope). Keep ModelNew interface unchanged and do not add extra temporaries in Python.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "broken_anchor_markers: expected=['helpers', 'cuda_cpp', 'cuda_cu', 'init_body', 'forward_stmt_1', 'forward_stmt_2']; observed=[]"
+      ],
+      "failure_type": "broken_anchor_markers",
+      "node_status": "compile_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null
+    },
+    "n10": {
+      "node_id": "n10",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "{\n  \"anchor_patches\": [\n    {\n      \"anchor_name\": \"cuda_cu\",\n      \"operation\": \"replace\",\n      \"body\": \"#include <torch/extension.h>\\n#include <cuda.h>\\n#include <cuda_runtime.h>\\n#include <ATen/cuda/CUDAContext.h>\\n#include <c10/cuda/CUDAGuard.h>\\n\\n__global__ void leaky_relu_kernel(const float* in, float* out, int64_t numel, float negative_slope) {\\n    int64_t idx = blockIdx.x * blockDim.x + threadIdx.x;\\n    int64_t stride = blockDim.x * gridDim.x;\\n    for (int64_t i = idx; i < numel; i += stride) {\\n        float v = in[i];\\n        out[i] = fmaxf(v, 0.0f) + negative_slope * fminf(v, 0.0f);\\n    }\\n}\\n\\ntorch::Tensor leaky_relu_cuda(torch::Tensor x, double negative_slope) {\\n    TORCH_CHECK(x.is_cuda(), \\\"Input tensor must be on CUDA\\\");\\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \\\"Input tensor must be float32\\\");\\n    auto x_contig = x.contiguous();\\n    auto out = torch::empty_like(x_contig);\\n\\n    const int64_t numel = x_contig.numel();\\n    if (numel > 0) {\\n        const int threads = 256;\\n        const int blocks = (numel + threads - 1) / threads;\\n        leaky_relu_kernel<<<blocks, threads, 0, at::cuda::getCurrentCUDAStream()>>>(\n            x_contig.data_ptr<float>(),\n            out.data_ptr<float>(),\n            numel,\n            static_cast<float>(negative_slope)\n        );\\n    }\\n    return out;\\n}\"\n    },\n    {\n      \"anchor_name\": \"forward_stmt_2\",\n      \"operation\": \"replace\",\n      \"body\": \"if x.is_cuda and x.dtype == torch.float32:\\n    return _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope))\\nreturn torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope)\"\n    }\n  ]\n}",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Refine the custom CUDA LeakyReLU path to use branch-free arithmetic and correct current-stream launching, while keeping a safe fallback in forward for unsupported cases.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA source with an implementation that keeps the existing exported function name leaky_relu_cuda(torch::Tensor x, double negative_slope) but changes the kernel body to branch-free arithmetic: out[i] = fmaxf(v, 0.0f) + negative_slope * fminf(v, 0.0f). Include <ATen/cuda/CUDAContext.h> and launch on at::cuda::getDefaultCUDAStream() only if the scaffold cannot access the current stream symbol; otherwise prefer at::cuda::getDefaultCUDAStream() replacement with the proper current stream object from ATen CUDAContext for the kernel launch. Preserve checks for CUDA and float32, keep x.contiguous(), allocate exactly one output tensor with torch::empty_like(x_contig), use a 256-thread grid-stride loop over numel, and return the output tensor.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the forward return logic with conservative dispatch gating: if x.is_cuda and x.dtype == torch.float32, call _stark_get_extension().leaky_relu_cuda(x, float(self.negative_slope)); otherwise return torch.nn.functional.leaky_relu(x, negative_slope=self.negative_slope). Do not change ModelNew inputs or outputs.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "broken_anchor_markers: expected=['helpers', 'cuda_cpp', 'cuda_cu', 'init_body', 'forward_stmt_1', 'forward_stmt_2']; observed=[]"
+      ],
+      "failure_type": "broken_anchor_markers",
+      "node_status": "compile_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null
+    }
+  }
+}

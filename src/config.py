@@ -35,6 +35,7 @@ _DEFAULTS: dict[str, Any] = {
     "agent_provider_profile": "codeagent_cudallm",
     "runtime_profile": "gpu_single",
     "task_config": "main_l1_15",
+    "deliberation_profile": "quick",
     "output_root": "runs",
 }
 
@@ -53,6 +54,7 @@ _PROFILE_DIRS = {
     "search": _CONFIG_ROOT / "search",
     "evaluators": _CONFIG_ROOT / "evaluation" / "evaluators",
     "measurement": _CONFIG_ROOT / "evaluation" / "measurement",
+    "deliberation": _CONFIG_ROOT / "deliberation",
     "runtime": _CONFIG_ROOT / "runtime",
 }
 
@@ -167,6 +169,11 @@ def runtime_profile_choices(path: str | Path | None = None) -> list[str]:
     return _profile_names("runtime")
 
 
+def deliberation_profile_choices(path: str | Path | None = None) -> list[str]:
+    del path
+    return _profile_names("deliberation")
+
+
 def kernelbench_preset_choices(path: str | Path | None = None) -> list[str]:
     del path
     return sorted(_LEGACY_EXPERIMENT_ALIASES.keys())
@@ -242,6 +249,12 @@ def agent_provider_profile(name: str, path: str | Path | None = None) -> dict[st
 def runtime_profile(name: str, path: str | Path | None = None) -> dict[str, Any]:
     del path
     selected = _load_profile("runtime", name)
+    return copy.deepcopy(selected)
+
+
+def deliberation_profile(name: str, path: str | Path | None = None) -> dict[str, Any]:
+    del path
+    selected = _load_profile("deliberation", name)
     return copy.deepcopy(selected)
 
 
@@ -341,6 +354,15 @@ def resolve_runtime_profile(explicit: str | None, run_profile_name: str | None =
         selected = run_profile(run_profile_name)
         return str(selected.get("runtime", _DEFAULTS["runtime_profile"]))
     return str(_DEFAULTS["runtime_profile"])
+
+
+def resolve_deliberation_profile(explicit: str | None, run_profile_name: str | None = None) -> str:
+    if explicit:
+        return str(explicit)
+    if run_profile_name:
+        selected = run_profile(run_profile_name)
+        return str(selected.get("deliberation", _DEFAULTS["deliberation_profile"]))
+    return str(_DEFAULTS["deliberation_profile"])
 
 
 def legacy_preset_name(search_profile_name: str | None) -> str:

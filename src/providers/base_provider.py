@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from typing import Any
 
 from ..models import AgentContext, PlanProposal, SearchNode, TaskSpec
 
@@ -45,3 +46,14 @@ class AgentProvider(ABC):
         proposal = self.propose_plan(task, node, context)
         code = self.generate_code(task, node, proposal, context)
         return proposal, code
+
+    def generate_text(
+        self,
+        system_prompt: str,
+        user_payload: dict[str, Any],
+        temperature: float = 0.2,
+        purpose: str = "generic",
+    ) -> str:
+        """Generic text-generation hook used by non-agent modules."""
+        del system_prompt, user_payload, temperature, purpose
+        raise NotImplementedError(f"{self.name} does not support generic text generation.")

@@ -18,6 +18,7 @@ class ProviderRoutingTests(unittest.TestCase):
             'search_profile': None,
             'evaluator_profile': None,
             'measurement_profile': None,
+            'deliberation_profile': None,
             'task_config': None,
             'runtime_config': None,
             'env_file': None,
@@ -45,3 +46,17 @@ class ProviderRoutingTests(unittest.TestCase):
         self.assertEqual(routing['plan_provider'], 'openai-compatible')
         self.assertEqual(routing['code_provider'], 'claude-compatible')
         self.assertEqual(routing['search_provider'], 'claude-compatible')
+    def test_codeagent_gemini_route_is_resolved(self):
+        args = self._args(agent_provider_profile='codeagent_gemini')
+        routing = _resolve_provider_routing(args, 'main')
+        self.assertEqual(routing['plan_provider'], 'openai-compatible')
+        self.assertEqual(routing['code_provider'], 'gemini-compatible')
+        self.assertEqual(routing['search_provider'], 'gemini-compatible')
+
+    def test_all_gemini_route_is_resolved(self):
+        args = self._args(provider='gemini-compatible', agent_provider_profile='all_gemini')
+        routing = _resolve_provider_routing(args, 'main')
+        self.assertEqual(routing['plan_provider'], 'gemini-compatible')
+        self.assertEqual(routing['code_provider'], 'gemini-compatible')
+        self.assertEqual(routing['debug_provider'], 'gemini-compatible')
+

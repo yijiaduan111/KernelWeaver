@@ -12,13 +12,14 @@ from dataclasses import dataclass, replace
 from typing import Any
 
 from ..backends import is_cute_backend, is_native_cuda_backend, is_tilelang_backend, normalize_backend
+from ..deliberation import strategy_portfolio_to_prompt_dict
 from ..models import AgentContext, AnchorEdit, PlanProposal, SearchNode, TaskSpec
 from ..semantics import semantic_profile_to_prompt_dict
 from ..utils import extract_anchor_names
 from .base_provider import AgentProvider
 
 
-@dataclass(slots=True)
+@dataclass
 class OpenAICompatibleConfig:
     """Resolved configuration for an OpenAI-compatible backend."""
 
@@ -50,6 +51,16 @@ class OpenAICompatibleProvider(AgentProvider):
 
     def with_overrides(self, **overrides) -> "OpenAICompatibleProvider":
         return OpenAICompatibleProvider(replace(self.config, **overrides))
+
+    def generate_text(
+        self,
+        system_prompt: str,
+        user_payload: dict[str, Any],
+        temperature: float = 0.2,
+        purpose: str = "generic",
+    ) -> str:
+        del purpose
+        return self._chat(system_prompt, user_payload, temperature, reasoning_effort=None)
 
     @classmethod
     def from_env(cls, defaults: dict[str, Any] | None = None) -> "OpenAICompatibleProvider":
@@ -116,13 +127,16 @@ class OpenAICompatibleProvider(AgentProvider):
             "Required JSON schema: "
             '{"strategy_name":"...","strategy_summary":"...","expected_gain":"...","risk_notes":"...","anchor_edits":[{"anchor_name":"...","instruction":"...","operation":"replace"}]}\n'
             "Use only anchor names from the provided anchors. operation must be replace or append. "
-            "Each instruction must be concrete enough for the coding agent to implement without changing unrelated scaffold."
+            "Each instruction must be concrete enough for the coding agent to implement without changing unrelated scaffold. "
+            "If task_metadata.strategy_portfolio is present, set strategy_name to one selected strategy_id from it, "
+            "prefer strategy_ids not listed in used_strategy_names, and diversify across attempts when possible."
         ) + _task_prompt_suffix(task, role="plan")
         user = {
             "task_name": task.name,
             "task_description": task.description,
             "task_metadata": _task_metadata(task),
             "available_anchors": anchors,
+            "used_strategy_names": _used_strategy_names(context),
             "current_node": _snapshot_to_dict(context.current),
             "root_node": _snapshot_to_dict(context.root),
             "leader_nodes": [_snapshot_to_dict(item) for item in context.leaders],
@@ -445,6 +459,7 @@ def _task_metadata(task: TaskSpec) -> dict[str, Any]:
         "backend": task.backend,
         "source_origin": task.source_origin,
         "semantic_profile": semantic_profile_to_prompt_dict(task.semantic_profile),
+        "strategy_portfolio": strategy_portfolio_to_prompt_dict(task.strategy_portfolio),
         "grounded_regions": [
             {
                 "anchor_name": region.anchor_name,
@@ -457,6 +472,15 @@ def _task_metadata(task: TaskSpec) -> dict[str, Any]:
             for region in task.grounded_regions
         ],
     }
+
+def _used_strategy_names(context: AgentContext) -> list[str]:
+    names: list[str] = []
+    for snapshot in [context.current, *context.related, *context.leaders]:
+        name = getattr(snapshot, "plan_strategy_name", None)
+        if name and name not in names:
+            names.append(name)
+    return names
+
 
 def _parse_json_object(text: str) -> dict[str, Any]:
     cleaned = _strip_code_fences(text)
@@ -480,10 +504,21 @@ def _strip_code_fences(text: str) -> str:
 def _task_prompt_suffix(task: TaskSpec, role: str) -> str:
     if task.benchmark_family == "kernelbench":
         backend_hint = _kernelbench_backend_hint(task, role)
-        base = (
-            "\nThis task comes from the real KernelBench benchmark and is evaluated on CUDA. "
-            "Return executable Python code only and do not include markdown fences or prose."
-        )
+        if role == "plan":
+            base = (
+                "\nThis task comes from the real KernelBench benchmark and is evaluated on CUDA. "
+                "Return the requested planning JSON only and do not include markdown fences or prose."
+            )
+        elif role == "search":
+            base = (
+                "\nThis task comes from the real KernelBench benchmark and is evaluated on CUDA. "
+                "Return the requested JSON object only; its code field must contain executable Python source without markdown fences or prose."
+            )
+        else:
+            base = (
+                "\nThis task comes from the real KernelBench benchmark and is evaluated on CUDA. "
+                "Return executable Python code only and do not include markdown fences or prose."
+            )
         anchor_hint = _kernelbench_anchor_hint(task)
         profile_hint = _kernelbench_profile_hint(task, role)
         if role == "search":

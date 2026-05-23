@@ -46,6 +46,15 @@ class RoleRoutedProvider(AgentProvider):
     ) -> tuple[PlanProposal, str]:
         return self.search_provider.generate_search_candidate(task, node, context)
 
+    def generate_text(
+        self,
+        system_prompt: str,
+        user_payload: dict,
+        temperature: float = 0.2,
+        purpose: str = "generic",
+    ) -> str:
+        return self.plan_provider.generate_text(system_prompt, user_payload, temperature, purpose)
+
     def close(self) -> None:
         seen: set[int] = set()
         for child in (self.plan_provider, self.code_provider, self.debug_provider, self.search_provider):

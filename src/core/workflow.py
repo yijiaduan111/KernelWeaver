@@ -99,6 +99,33 @@ def _anchors_preserved(parent_code: str, candidate_code: str) -> bool:
     return preserve_anchor_scaffold(parent_code, candidate_code)
 
 
+def _has_evaluable_anchor_drift(candidate_code: str) -> bool:
+    # STARK-style full-file rewrites may drop fine-grained marker comments.
+    # Keep evaluating them if the candidate still looks like a complete task module.
+    return "class ModelNew" in candidate_code or "def forward" in candidate_code or "load_inline" in candidate_code
+
+
+def _evaluate_marker_drift(task: TaskSpec, config: StarkConfig, evaluator, parent_code: str, candidate_code: str) -> EvaluationResult:
+    if not _has_evaluable_anchor_drift(candidate_code):
+        return _broken_anchor_evaluation(parent_code, candidate_code)
+    evaluation = evaluator.evaluate(task, candidate_code, config)
+    expected = extract_anchor_names(parent_code)
+    observed = extract_anchor_names(candidate_code)
+    evaluation.logs.insert(0, f"anchor_marker_drift: expected={expected}; observed={observed}")
+    if not observed:
+        # A full-file candidate without anchors can be evaluated, but it must not
+        # become an expandable search node because later PlanAgent calls need anchors.
+        evaluation.failure_stage = "compile"
+        evaluation.correct = False
+        evaluation.score = float("inf")
+        evaluation.runtime = None
+        evaluation.failure_type = "anchor_marker_drift_unexpandable"
+        return evaluation
+    if evaluation.failure_type is None:
+        evaluation.failure_type = "anchor_marker_drift"
+    return evaluation
+
+
 def _build_debug_proposal(node: SearchNode) -> PlanProposal:
     return PlanProposal(
         strategy_name=node.plan_strategy_name or "debug",
@@ -185,7 +212,7 @@ def _evaluate_plan_code(
         return selected_node.code, _invalid_anchor_evaluation(selected_node.code, proposal)
     candidate_code = code_agent.run(task, selected_node, proposal, code_context)
     if not _anchors_preserved(selected_node.code, candidate_code):
-        return candidate_code, _broken_anchor_evaluation(selected_node.code, candidate_code)
+        return candidate_code, _evaluate_marker_drift(task, config, evaluator, selected_node.code, candidate_code)
     return candidate_code, evaluator.evaluate(task, candidate_code, config)
 
 
@@ -200,7 +227,7 @@ def _evaluate_debug(
     candidate_code = debug_agent.run(task, selected_node, debug_context)
     proposal = _build_debug_proposal(selected_node)
     if not _anchors_preserved(selected_node.code, candidate_code):
-        return proposal, candidate_code, _broken_anchor_evaluation(selected_node.code, candidate_code)
+        return proposal, candidate_code, _evaluate_marker_drift(task, config, evaluator, selected_node.code, candidate_code)
     return proposal, candidate_code, evaluator.evaluate(task, candidate_code, config)
 
 
@@ -247,6 +274,7 @@ def _finalize_run(
         kernelbench_evaluator=config.kernelbench_evaluator,
         grounded_regions=list(task.grounded_regions),
         semantic_profile=task.semantic_profile,
+        strategy_portfolio=task.strategy_portfolio,
         reference_runtimes=dict(best_node.reference_runtimes),
         speedups=dict(best_node.speedups),
         primary_reference=best_node.primary_reference,

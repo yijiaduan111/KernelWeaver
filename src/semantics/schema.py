@@ -6,7 +6,7 @@ from dataclasses import asdict, dataclass, field
 from typing import Any
 
 
-@dataclass(slots=True)
+@dataclass
 class OptimizationIntent:
     """A backend-neutral optimization idea attached to a task or anchor."""
 
@@ -18,7 +18,7 @@ class OptimizationIntent:
     priority: int = 3
 
 
-@dataclass(slots=True)
+@dataclass
 class SemanticAnchorProfile:
     """Semantic interpretation for one grounded edit anchor."""
 
@@ -33,7 +33,7 @@ class SemanticAnchorProfile:
     priority: int = 3
 
 
-@dataclass(slots=True)
+@dataclass
 class SemanticProfile:
     """Compact task-level semantic summary used by planning prompts."""
 

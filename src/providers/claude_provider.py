@@ -20,7 +20,7 @@ from .openai_provider import (
 )
 
 
-@dataclass(slots=True)
+@dataclass
 class ClaudeCompatibleConfig:
     """Resolved configuration for a Claude-compatible backend."""
 

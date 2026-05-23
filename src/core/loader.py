@@ -24,7 +24,7 @@ class KernelBenchLoadError(ValueError):
     pass
 
 
-@dataclass(slots=True)
+@dataclass
 class ProblemInfo:
     path: Path
     source_code: str

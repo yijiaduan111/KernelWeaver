@@ -21,6 +21,7 @@ from .config import (
     resolve_run_profile,
     resolve_search_profile,
 )
+from .deliberation import strategy_portfolio_from_dict, strategy_portfolio_to_dict
 from .models import AnchorEdit, GroundedRegion, RunResult, SearchNode, StarkConfig
 from .semantics import semantic_profile_from_dict, semantic_profile_to_dict
 
@@ -96,6 +97,7 @@ def save_run(run: RunResult, output_dir: str | Path) -> Path:
         "speedups": {key: _dump_float(value) for key, value in run.speedups.items()},
         "primary_reference": run.primary_reference,
         "semantic_profile": semantic_profile_to_dict(run.semantic_profile),
+        "strategy_portfolio": strategy_portfolio_to_dict(run.strategy_portfolio),
         "grounded_regions": [
             {
                 "anchor_name": region.anchor_name,
@@ -276,6 +278,7 @@ def load_run(path: str | Path) -> RunResult:
         speedups=run_speedups,
         primary_reference=payload.get("primary_reference", "torch_eager" if run_reference_runtimes else None),
         semantic_profile=semantic_profile_from_dict(payload.get("semantic_profile")),
+        strategy_portfolio=strategy_portfolio_from_dict(payload.get("strategy_portfolio")),
         grounded_regions=[
             GroundedRegion(
                 anchor_name=region["anchor_name"],
