@@ -5,6 +5,7 @@ import random
 from copy import deepcopy
 
 from ..models import EvaluationResult, PlanProposal, SearchNode, StarkConfig
+from ..utils import extract_anchor_names
 
 
 def _status_from_evaluation(evaluation: EvaluationResult) -> str:
@@ -135,6 +136,8 @@ class TreeMemory:
         node = self.nodes[node_id]
         if node_id in self.pruned_nodes:
             return self.pruned_nodes[node_id]
+        if not extract_anchor_names(node.code):
+            return "no_anchor_unexpandable"
         if node_id == self.root_id and len(node.child_ids) >= config.root_child_limit:
             return "root_throttled"
         if node.is_failure and node.debug_attempts >= config.debug_retry_limit:

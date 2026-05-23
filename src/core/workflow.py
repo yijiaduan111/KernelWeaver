@@ -16,7 +16,9 @@ validation, and batch reporting stay compatible across modes.
 from __future__ import annotations
 
 from ..agents import CodeAgent, DebugAgent, PlanAgent
+from .candidate import normalize_candidate
 from .context import build_code_context, build_debug_context, build_plan_context, snapshot_node
+from .static_check import check_candidate_static
 from ..models import AgentContext, AnchorEdit, EvaluationResult, PlanProposal, RunResult, SearchNode, StarkConfig, TaskSpec
 from .tree import TreeMemory
 from ..utils import extract_anchor_names, preserve_anchor_scaffold, shorten_runtime
@@ -79,6 +81,28 @@ def _invalid_anchor_evaluation(code: str, proposal: PlanProposal) -> EvaluationR
         failure_type="invalid_anchor_edit",
         failure_stage="compile",
     )
+
+
+def _guard_failure(failure_type: str, logs: list[str]) -> EvaluationResult:
+    return EvaluationResult(
+        compile_ok=False,
+        correct=False,
+        runtime=None,
+        score=float("inf"),
+        logs=list(logs),
+        failure_type=failure_type,
+        failure_stage="compile",
+    )
+
+
+def _prepare_candidate_for_evaluation(task: TaskSpec, parent_code: str, raw_candidate: str) -> tuple[str, EvaluationResult | None]:
+    normalized = normalize_candidate(parent_code, raw_candidate)
+    if not normalized.ok:
+        return normalized.code, _guard_failure(normalized.failure_type or "invalid_candidate", normalized.logs)
+    static_result = check_candidate_static(normalized.code, backend=task.backend)
+    if not static_result.ok:
+        return normalized.code, _guard_failure(static_result.failure_type or "static_check_failed", static_result.logs)
+    return normalized.code, None
 
 
 def _broken_anchor_evaluation(parent_code: str, candidate_code: str) -> EvaluationResult:
@@ -210,7 +234,10 @@ def _evaluate_plan_code(
     if not _has_valid_anchor_edits(selected_node.code, proposal.anchor_edits):
         stats["invalid_proposals"] += 1
         return selected_node.code, _invalid_anchor_evaluation(selected_node.code, proposal)
-    candidate_code = code_agent.run(task, selected_node, proposal, code_context)
+    raw_candidate = code_agent.run(task, selected_node, proposal, code_context)
+    candidate_code, guard_evaluation = _prepare_candidate_for_evaluation(task, selected_node.code, raw_candidate)
+    if guard_evaluation is not None:
+        return candidate_code, guard_evaluation
     if not _anchors_preserved(selected_node.code, candidate_code):
         return candidate_code, _evaluate_marker_drift(task, config, evaluator, selected_node.code, candidate_code)
     return candidate_code, evaluator.evaluate(task, candidate_code, config)
@@ -224,8 +251,11 @@ def _evaluate_debug(
     selected_node: SearchNode,
     debug_context: AgentContext,
 ) -> tuple[PlanProposal, str, EvaluationResult]:
-    candidate_code = debug_agent.run(task, selected_node, debug_context)
+    raw_candidate = debug_agent.run(task, selected_node, debug_context)
     proposal = _build_debug_proposal(selected_node)
+    candidate_code, guard_evaluation = _prepare_candidate_for_evaluation(task, selected_node.code, raw_candidate)
+    if guard_evaluation is not None:
+        return proposal, candidate_code, guard_evaluation
     if not _anchors_preserved(selected_node.code, candidate_code):
         return proposal, candidate_code, _evaluate_marker_drift(task, config, evaluator, selected_node.code, candidate_code)
     return proposal, candidate_code, evaluator.evaluate(task, candidate_code, config)
