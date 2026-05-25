@@ -211,17 +211,23 @@ class OpenAICompatibleProvider(AgentProvider):
         context: AgentContext,
     ) -> str:
         prompt = (
-            "You are the coding agent in a STARK-style workflow.\n"
-            "Return only the full updated Python source code. No markdown fences.\n"
-            "Preserve function signatures and task I/O. Apply the plan through the provided grounded anchor edits.\n"
-            "Use semantic_profile only as an implementation hint; do not change task semantics or evaluator I/O.\n"
-            "Do not delete, rename, or move any existing # <<<IMPROVE:...>>> or # <<<END_IMPROVE>>> anchor markers."
+            "You are the coding agent in a STARK-style workflow. Return JSON only.\n"
+            "Do not return a full Python file and do not include markdown fences.\n"
+            "Required JSON schema: "
+            '{"region_patches":[{"region":"...","operation":"replace","body":"..."}]}\n'
+            "Edit only the requested editable regions. Each body contains code inside that region only.\n"
+            "Never include # <<<IMPROVE:...>>> or # <<<END_IMPROVE>>> marker comments in a body.\n"
+            "You may write complete CUDA kernels, helper functions, launchers, pybind bindings, and fallback logic inside their regions.\n"
+            "Preserve task semantics, ModelNew/forward signatures, evaluator I/O, and protected scaffold.\n"
+            "Use semantic_profile and strategy_portfolio only as implementation hints."
         ) + _task_prompt_suffix(task, role="code")
         user = {
             "task_name": task.name,
             "task_description": task.description,
             "task_metadata": _task_metadata(task),
             "available_anchors": extract_anchor_names(node.code),
+            "available_regions": extract_anchor_names(node.code),
+            "requested_regions": [edit.anchor_name for edit in proposal.anchor_edits],
             "plan": {
                 "strategy_name": proposal.strategy_name,
                 "strategy_summary": proposal.strategy_summary,
@@ -252,10 +258,13 @@ class OpenAICompatibleProvider(AgentProvider):
     def debug_code(self, task: TaskSpec, node: SearchNode, context: AgentContext) -> str:
         debug_focus = _debug_focus_hint(node.latest_failure_stage, task.backend)
         prompt = (
-            "You are the debug agent in a STARK-style workflow.\n"
-            "Return only the full corrected Python source code. No markdown fences.\n"
-            "Apply the smallest local fix needed to recover compilation, runtime, or correctness.\n"
-            "Do not delete, rename, or move any existing # <<<IMPROVE:...>>> or # <<<END_IMPROVE>>> anchor markers.\n"
+            "You are the debug agent in a STARK-style workflow. Return JSON only.\n"
+            "Do not return a full Python file and do not include markdown fences.\n"
+            "Required JSON schema: "
+            '{"region_patches":[{"region":"...","operation":"replace","body":"..."}]}\n'
+            "Apply the smallest local fix needed inside editable regions only.\n"
+            "Never include # <<<IMPROVE:...>>> or # <<<END_IMPROVE>>> marker comments in a body.\n"
+            "Preserve task semantics, ModelNew/forward signatures, evaluator I/O, and protected scaffold.\n"
             f"{debug_focus}"
         ) + _task_prompt_suffix(task, role="debug")
         user = {
@@ -266,6 +275,7 @@ class OpenAICompatibleProvider(AgentProvider):
             "root_node": _snapshot_to_dict(context.root),
             "related_nodes": [_snapshot_to_dict(item) for item in context.related],
             "failure_node": _snapshot_to_dict(context.failure) if context.failure else None,
+            "available_regions": extract_anchor_names(node.code),
             "plan_strategy_name": node.plan_strategy_name,
             "plan_summary": node.plan_summary,
             "failure_stage": node.latest_failure_stage,

@@ -17,6 +17,21 @@ def _status_from_evaluation(evaluation: EvaluationResult) -> str:
         return "correctness_fail"
     return "correct"
 
+_COMPILE_THROTTLE_FAILURES = {
+    "SyntaxError",
+    "python_syntax_error",
+    "python_region_syntax_error",
+    "invalid_patch_format",
+    "invalid_region_patch_format",
+    "region_apply_failed",
+    "anchor_apply_failed",
+    "unapplied_patch_payload",
+}
+
+
+def _is_compile_throttle_failure(node: SearchNode) -> bool:
+    return node.latest_failure_stage == "compile" or node.failure_type in _COMPILE_THROTTLE_FAILURES
+
 
 class TreeMemory:
     def __init__(self, root_node: SearchNode, config: StarkConfig) -> None:
@@ -131,6 +146,10 @@ class TreeMemory:
         self.refresh_pruned_nodes(config)
         return node_id in self.pruned_nodes
 
+    def _productive_root_child_count(self) -> int:
+        root = self.nodes[self.root_id]
+        return sum(1 for child_id in root.child_ids if not _is_compile_throttle_failure(self.nodes[child_id]))
+
     def exclusion_reason(self, node_id: str, config: StarkConfig) -> str | None:
         self.refresh_pruned_nodes(config)
         node = self.nodes[node_id]
@@ -138,8 +157,10 @@ class TreeMemory:
             return self.pruned_nodes[node_id]
         if not extract_anchor_names(node.code):
             return "no_anchor_unexpandable"
-        if node_id == self.root_id and len(node.child_ids) >= config.root_child_limit:
+        if node_id == self.root_id and self._productive_root_child_count() >= config.root_child_limit:
             return "root_throttled"
+        if node.is_failure and _is_compile_throttle_failure(node) and node.debug_attempts >= 1:
+            return "compile_failure_debug_throttled"
         if node.is_failure and node.debug_attempts >= config.debug_retry_limit:
             return "debug_retry_limit_reached"
         return None

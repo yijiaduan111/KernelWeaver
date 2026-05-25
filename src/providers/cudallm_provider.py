@@ -10,7 +10,7 @@ from dataclasses import dataclass, replace
 from typing import Any
 
 from ..models import AgentContext, PlanProposal, SearchNode, TaskSpec
-from ..utils import apply_anchor_edit, extract_anchor_names, preserve_anchor_scaffold
+from ..utils import extract_anchor_names
 
 from .openai_provider import OpenAICompatibleProvider, _compact_payload_text, _snapshot_to_dict, _strip_code_fences, _task_metadata
 
@@ -125,10 +125,10 @@ class LocalCudaLLMProvider(OpenAICompatibleProvider):
             "You are the coding agent in a STARK-style workflow.\n"
             "Return JSON only. Do not return a full Python file.\n"
             "Required JSON schema: "
-            '{"anchor_patches":[{"anchor_name":"...","operation":"replace","body":"..."}]}\n'
-            "Each body must contain only the replacement code inside that anchor.\n"
+            '{"region_patches":[{"region":"...","operation":"replace","body":"..."}]}\n'
+            "Each body must contain only the replacement code inside that editable region.\n"
             "Do not include # <<<IMPROVE:...>>> or # <<<END_IMPROVE>>> marker comments in any body.\n"
-            "Use only anchor names requested by the plan. Preserve task semantics and evaluator I/O."
+            "Use only region names requested by the plan. Preserve task semantics, protected scaffold, and evaluator I/O."
         )
         user = {
             "task_name": task.name,
@@ -136,6 +136,7 @@ class LocalCudaLLMProvider(OpenAICompatibleProvider):
             "task_metadata": _task_metadata(task),
             "available_anchors": extract_anchor_names(node.code),
             "requested_anchors": requested_anchors,
+            "requested_regions": requested_anchors,
             "plan": {
                 "strategy_name": proposal.strategy_name,
                 "strategy_summary": proposal.strategy_summary,
@@ -161,7 +162,7 @@ class LocalCudaLLMProvider(OpenAICompatibleProvider):
             temperature=self.config.code_temperature,
             reasoning_effort=self.config.code_reasoning_effort,
         )
-        return _apply_anchor_patch_response(node.code, content, proposal)
+        return _normalize_patch_response(content, proposal)
 
     def _chat(
         self,
@@ -262,37 +263,27 @@ def _compose_local_chat_prompt(tokenizer, messages: list[dict[str, str]], use_ch
     parts.append("Assistant:\n")
     return "\n\n".join(parts)
 
-def _apply_anchor_patch_response(source_code: str, response_text: str, proposal: PlanProposal) -> str:
-    cleaned = _strip_code_fences(response_text)
+def _normalize_patch_response(response_text: str, proposal: PlanProposal) -> str:
+    cleaned = _strip_code_fences(response_text).strip()
     patches = _parse_anchor_patches(cleaned)
     if not patches:
-        if preserve_anchor_scaffold(source_code, cleaned):
-            return cleaned
-        if _looks_like_full_python_module(cleaned):
-            return cleaned
-        if len(proposal.anchor_edits) == 1:
-            edit = proposal.anchor_edits[0]
-            return apply_anchor_edit(source_code, edit.anchor_name, cleaned, edit.operation)
         return cleaned
-
     allowed = {edit.anchor_name: edit.operation for edit in proposal.anchor_edits}
-    updated = source_code
+    normalized: list[dict[str, str]] = []
     for patch in patches:
-        anchor_name = str(patch.get("anchor_name") or "").strip()
-        if anchor_name not in allowed:
-            raise RuntimeError(f"Local cudaLLM returned patch for unexpected anchor: {anchor_name}")
+        region = str(patch.get("region") or patch.get("anchor_name") or "").strip()
+        if region not in allowed:
+            raise RuntimeError(f"Local cudaLLM returned patch for unexpected region: {region}")
         body = patch.get("body")
         if body is None:
             body = patch.get("code") or patch.get("replacement") or patch.get("new_body")
         if not isinstance(body, str) or not body.strip():
-            raise RuntimeError(f"Local cudaLLM returned empty patch body for anchor: {anchor_name}")
-        operation = str(patch.get("operation") or allowed[anchor_name] or "replace").strip().lower()
+            raise RuntimeError(f"Local cudaLLM returned empty patch body for region: {region}")
+        operation = str(patch.get("operation") or allowed[region] or "replace").strip().lower()
         if operation not in {"replace", "append"}:
-            operation = allowed[anchor_name]
-        body = _strip_anchor_markers_from_body(body)
-        updated = apply_anchor_edit(updated, anchor_name, body, operation)
-    return updated
-
+            operation = allowed[region]
+        normalized.append({"region": region, "operation": operation, "body": _strip_anchor_markers_from_body(body)})
+    return json.dumps({"region_patches": normalized})
 
 def _parse_anchor_patches(text: str) -> list[dict[str, Any]]:
     candidates = [text]
@@ -305,7 +296,7 @@ def _parse_anchor_patches(text: str) -> list[dict[str, Any]]:
         except json.JSONDecodeError:
             continue
         if isinstance(payload, dict):
-            patches = payload.get("anchor_patches") or payload.get("patches") or payload.get("edits")
+            patches = payload.get("region_patches") or payload.get("anchor_patches") or payload.get("patches") or payload.get("edits")
             if isinstance(patches, list):
                 return [item for item in patches if isinstance(item, dict)]
             if "anchor_name" in payload:

@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 
 from ..models import AgentContext, AnchorEdit, PlanProposal, SearchNode, TaskSpec
-from ..utils import apply_anchor_edit, extract_anchor_names
+from ..utils import extract_anchor_names
 from .base_provider import AgentProvider
 
 
@@ -77,13 +77,13 @@ class MockProvider(AgentProvider):
         edit = proposal.anchor_edits[0]
         strategy = task.strategy_map().get(proposal.strategy_name)
         if strategy is None:
-            return node.code
+            return json.dumps({"region_patches": [{"region": edit.anchor_name, "operation": edit.operation, "body": _region_body(node.code, edit.anchor_name)}]})
         broken_key = (task.name, strategy.name)
         body = strategy.good_body
         if strategy.broken_body is not None and broken_key not in self._broken_once:
             body = strategy.broken_body
             self._broken_once.add(broken_key)
-        return apply_anchor_edit(node.code, edit.anchor_name, body, operation=edit.operation)
+        return json.dumps({"region_patches": [{"region": edit.anchor_name, "operation": edit.operation, "body": body}]})
 
     def debug_code(self, task: TaskSpec, node: SearchNode, context: AgentContext) -> str:
         del context
@@ -91,10 +91,10 @@ class MockProvider(AgentProvider):
             raise ValueError("Cannot debug a node without a plan strategy.")
         strategy = task.strategy_map().get(node.plan_strategy_name)
         if strategy is None:
-            return node.code
+            return json.dumps({"region_patches": [{"region": edit.anchor_name, "operation": edit.operation, "body": _region_body(node.code, edit.anchor_name)}]})
         edit = node.anchor_edits[0] if node.anchor_edits else AnchorEdit(anchor_name=strategy.anchor_name, instruction="repair", operation="replace")
         body = strategy.debug_body or strategy.good_body
-        return apply_anchor_edit(node.code, edit.anchor_name, body, operation=edit.operation)
+        return json.dumps({"region_patches": [{"region": edit.anchor_name, "operation": edit.operation, "body": body}]})
 
     def generate_text(
         self,
@@ -130,3 +130,13 @@ class MockProvider(AgentProvider):
                 ]
             }
         )
+
+
+def _region_body(source_code: str, region: str) -> str:
+    import re
+    import textwrap
+    pattern = re.compile(r"(?ms)^[ \t]*#\s*<<<IMPROVE:" + re.escape(region) + r">>>(?:\r?\n)(?P<body>.*?)(^[ \t]*#\s*<<<END_IMPROVE>>>)")
+    match = pattern.search(source_code)
+    if not match:
+        return "pass"
+    return textwrap.dedent(match.group("body")).strip("\n")

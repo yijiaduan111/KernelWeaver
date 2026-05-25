@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -367,10 +368,22 @@ def _build_deliberation_runner(args: argparse.Namespace, run_name: str, config: 
     if not config.deliberation_enabled:
         return None
     _prepare_runtime_and_env(args, run_name)
-    providers = {
-        name: _instantiate_single_provider(name, {"timeout_seconds": _provider_overrides(args, run_name).get("timeout_seconds", 300)})
-        for name in config.deliberation_providers
-    }
+    timeout_seconds = _provider_overrides(args, run_name).get("timeout_seconds", 300)
+    providers = {}
+    for name in config.deliberation_providers:
+        try:
+            providers[name] = _instantiate_single_provider(name, {"timeout_seconds": timeout_seconds})
+        except ValueError as exc:
+            print(
+                f"[KernelWeaver] Skipping deliberation provider {name}: {exc}",
+                file=sys.stderr,
+            )
+    if not providers:
+        print(
+            "[KernelWeaver] No deliberation providers are available; falling back to the base workflow.",
+            file=sys.stderr,
+        )
+        return None
     return MultiModelDeliberationRunner(
         providers=providers,
         max_strategies=config.deliberation_max_strategies,

@@ -19,6 +19,7 @@ from ..agents import CodeAgent, DebugAgent, PlanAgent
 from .candidate import normalize_candidate
 from .context import build_code_context, build_debug_context, build_plan_context, snapshot_node
 from .static_check import check_candidate_static
+from .regions import preserve_region_scaffold
 from ..models import AgentContext, AnchorEdit, EvaluationResult, PlanProposal, RunResult, SearchNode, StarkConfig, TaskSpec
 from .tree import TreeMemory
 from ..utils import extract_anchor_names, preserve_anchor_scaffold, shorten_runtime
@@ -120,34 +121,22 @@ def _broken_anchor_evaluation(parent_code: str, candidate_code: str) -> Evaluati
 
 
 def _anchors_preserved(parent_code: str, candidate_code: str) -> bool:
-    return preserve_anchor_scaffold(parent_code, candidate_code)
-
-
-def _has_evaluable_anchor_drift(candidate_code: str) -> bool:
-    # STARK-style full-file rewrites may drop fine-grained marker comments.
-    # Keep evaluating them if the candidate still looks like a complete task module.
-    return "class ModelNew" in candidate_code or "def forward" in candidate_code or "load_inline" in candidate_code
+    return preserve_region_scaffold(parent_code, candidate_code)
 
 
 def _evaluate_marker_drift(task: TaskSpec, config: StarkConfig, evaluator, parent_code: str, candidate_code: str) -> EvaluationResult:
-    if not _has_evaluable_anchor_drift(candidate_code):
-        return _broken_anchor_evaluation(parent_code, candidate_code)
-    evaluation = evaluator.evaluate(task, candidate_code, config)
+    del task, config, evaluator
     expected = extract_anchor_names(parent_code)
     observed = extract_anchor_names(candidate_code)
-    evaluation.logs.insert(0, f"anchor_marker_drift: expected={expected}; observed={observed}")
-    if not observed:
-        # A full-file candidate without anchors can be evaluated, but it must not
-        # become an expandable search node because later PlanAgent calls need anchors.
-        evaluation.failure_stage = "compile"
-        evaluation.correct = False
-        evaluation.score = float("inf")
-        evaluation.runtime = None
-        evaluation.failure_type = "anchor_marker_drift_unexpandable"
-        return evaluation
-    if evaluation.failure_type is None:
-        evaluation.failure_type = "anchor_marker_drift"
-    return evaluation
+    return EvaluationResult(
+        compile_ok=False,
+        correct=False,
+        runtime=None,
+        score=float("inf"),
+        logs=[f"anchor_marker_drift: expected={expected}; observed={observed}"],
+        failure_type="anchor_marker_drift",
+        failure_stage="compile",
+    )
 
 
 def _build_debug_proposal(node: SearchNode) -> PlanProposal:

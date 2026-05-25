@@ -11,6 +11,8 @@ import re
 from dataclasses import dataclass, field
 
 from ..utils import extract_anchor_names
+from .regions import validate_region_scaffold
+from .hygiene import validate_python_source
 
 
 @dataclass
@@ -34,12 +36,24 @@ def check_candidate_static(source_code: str, backend: str | None = None) -> Stat
 
 def _check_basic_source(source_code: str) -> StaticCheckResult:
     stripped = source_code.lstrip()
-    if stripped.startswith("{") or "\"anchor_patches\"" in source_code or "'anchor_patches'" in source_code:
-        return _fail("unapplied_patch_payload", "candidate still contains an unapplied anchor_patches payload")
+    if (
+        stripped.startswith("{")
+        or "\"anchor_patches\"" in source_code
+        or "'anchor_patches'" in source_code
+        or "\"region_patches\"" in source_code
+        or "'region_patches'" in source_code
+    ):
+        return _fail("unapplied_patch_payload", "candidate still contains an unapplied patch payload")
     if "class ModelNew" not in source_code:
         return _fail("missing_modelnew", "candidate is missing class ModelNew")
     if "def forward" not in source_code:
         return _fail("missing_forward", "candidate is missing forward method")
+    syntax = validate_python_source(source_code)
+    if not syntax.ok:
+        return _fail(syntax.failure_type or "python_syntax_error", syntax.message or "candidate has invalid Python syntax")
+    ok, message = validate_region_scaffold(source_code)
+    if not ok:
+        return _fail("invalid_region_scaffold", message or "candidate has invalid editable region markers")
     if not extract_anchor_names(source_code):
         return _fail("no_anchor_markers", "candidate has no anchor markers")
     return StaticCheckResult(True)
