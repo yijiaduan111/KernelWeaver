@@ -215,6 +215,8 @@ class StarkConfig:
     deliberation_strategies_per_model: int = 4
     deliberation_proposal_temperature: float = 0.4
     deliberation_review_temperature: float = 0.1
+    evaluator_isolation: str = "off"
+    evaluator_timeout_seconds: int = 900
 
 
 @dataclass

@@ -137,3 +137,22 @@ def test_tree_throttles_compile_failure_debug_and_ignores_bad_root_children_for_
     assert tree.exclusion_reason(child.node_id, config) is None
     child.debug_attempts = 1
     assert tree.exclusion_reason(child.node_id, config) == "compile_failure_debug_throttled"
+
+
+def test_region_patch_normalizes_dtype_and_device_properties():
+    raw = json.dumps({
+        "region_patches": [
+            {
+                "region": "forward_stmt_1",
+                "operation": "replace",
+                "body": "if x.dtype() == torch.float32 and x.device() == y.device:\n    return x\nreturn x",
+            }
+        ]
+    })
+    result = normalize_candidate(PARENT, raw)
+    assert result.ok
+    assert "x.dtype == torch.float32" in result.code
+    assert "x.device == y.device" in result.code
+    assert "x.dtype()" not in result.code
+    assert "x.device()" not in result.code
+    assert check_candidate_static(result.code, backend="cuda").ok

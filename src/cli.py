@@ -51,6 +51,7 @@ from .demo import build_demo_tasks
 from .evaluation import (
     DemoEvaluator,
     KernelBenchPaperEvaluator,
+    IsolatedEvaluator,
     TritonEvaluator,
     load_validation,
     verify_kernelbench_run,
@@ -458,13 +459,18 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
         deliberation_strategies_per_model=int(deliberation_settings.get("strategies_per_model", 4)),
         deliberation_proposal_temperature=float(deliberation_settings.get("proposal_temperature", 0.4)),
         deliberation_review_temperature=float(deliberation_settings.get("review_temperature", 0.1)),
+        evaluator_isolation=str(evaluator_settings.get("evaluator_isolation", "off")),
+        evaluator_timeout_seconds=int(evaluator_settings.get("evaluator_timeout_seconds", 900)),
     )
 
 
-def _kernelbench_evaluator(backend: str, evaluator_name: str):
+def _kernelbench_evaluator(backend: str, evaluator_name: str, config: StarkConfig | None = None):
     del backend
     del evaluator_name
-    return KernelBenchPaperEvaluator()
+    evaluator = KernelBenchPaperEvaluator()
+    if config is not None and config.evaluator_isolation == "candidate_subprocess":
+        return IsolatedEvaluator(evaluator, timeout_seconds=config.evaluator_timeout_seconds)
+    return evaluator
 
 
 def _run_demo(args: argparse.Namespace) -> int:
@@ -521,7 +527,7 @@ def _run_kernelbench(args: argparse.Namespace) -> int:
     provider = _build_provider(args, run_name)
     try:
         _apply_deliberation(task, config, deliberation_runner)
-        result = run_workflow(task, config, provider, _kernelbench_evaluator(backend, config.evaluator_profile or "quick"), workflow=workflow)
+        result = run_workflow(task, config, provider, _kernelbench_evaluator(backend, config.evaluator_profile or "quick", config), workflow=workflow)
         return _save_and_print(result, args.output_dir)
     finally:
         _close_provider(provider)
@@ -579,7 +585,7 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
                     task,
                     config,
                     provider,
-                    _kernelbench_evaluator(item_backend, _resolve_evaluator_name(args, run_name)),
+                    _kernelbench_evaluator(item_backend, _resolve_evaluator_name(args, run_name), config),
                     workflow=workflow,
                 )
                 run_path = save_run(result, task_output_dir)

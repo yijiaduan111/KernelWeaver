@@ -104,9 +104,11 @@ def _wrapped_body_is_valid(body: str) -> bool:
 
 
 def _fix_tensor_property_calls(body: str) -> str:
-    # High-confidence PyTorch boolean properties. Do not touch is_contiguous(), which is a method.
+    # High-confidence PyTorch properties. Do not touch is_contiguous(), which is a method.
     fixed = re.sub(r"(\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)\.is_cuda\s*\(\s*\)", r"\1.is_cuda", body)
     fixed = re.sub(r"(\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)\.training\s*\(\s*\)", r"\1.training", fixed)
+    fixed = re.sub(r"(\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)\.dtype\s*\(\s*\)", r"\1.dtype", fixed)
+    fixed = re.sub(r"(\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)\.device\s*\(\s*\)", r"\1.device", fixed)
     return fixed
 
 
