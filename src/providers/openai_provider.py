@@ -577,7 +577,7 @@ def _task_prompt_suffix(task: TaskSpec, role: str) -> str:
 def _kernelbench_anchor_hint(task: TaskSpec) -> str:
     anchors = extract_anchor_names(task.source_code)
     if is_native_cuda_backend(task.backend):
-        return "helpers/cuda_cpp/cuda_cu/init_body/forward_stmt_* anchors"
+        return "user_helpers/cuda_cpp/cuda_cu/init_body/forward_stmt_* anchors"
     if is_tilelang_backend(task.backend):
         if any(anchor.startswith("forward_stmt_") for anchor in anchors):
             return "helpers/tilelang_kernel/init_body/forward_stmt_* anchors"
@@ -634,11 +634,12 @@ def _kernelbench_profile_hint(task: TaskSpec, role: str) -> str:
         if role == "plan":
             return (
                 " Treat this as a native CUDA extension task: keep the scaffold intact, preserve the ModelNew interface, "
-                "and propose grounded edits that stay inside helpers/cuda_cpp/cuda_cu/init_body/forward_stmt_*."
+                "and propose grounded edits that stay inside user_helpers/cuda_cpp/cuda_cu/init_body/forward_stmt_*. "
+                "CUDA framework loader helpers are protected and are not editable anchors."
             )
         return (
             " Treat this as a native CUDA extension task: preserve the pybind binding surface, keep CUDA kernel launch assumptions explicit, "
-            "and restrict edits to the grounded regions only."
+            "restrict edits to the grounded regions only, and use user_helpers only for optional Python helpers."
         )
     if "level3" in tags:
         if "attention" in tags:

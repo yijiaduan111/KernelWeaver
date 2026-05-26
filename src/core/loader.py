@@ -219,7 +219,7 @@ class KernelBenchLoader:
 
     def _build_cuda_scaffold(self, info: ProblemInfo, level: int, problem_id: int) -> str:
         imports = self._ensure_cuda_imports(info.imports_block)
-        helper_lines = [
+        protected_helper_lines = [
             "_STARK_EXTENSION = None",
             "",
             "def _stark_strip_anchor_markers(source: str) -> str:",
@@ -250,7 +250,19 @@ class KernelBenchLoader:
             "        )",
             "    return _STARK_EXTENSION",
         ]
-        parts = self._imports_and_helpers(imports, helper_lines=helper_lines)
+        parts: list[str] = []
+        imports = imports.strip()
+        if imports:
+            parts.append(imports)
+            parts.append("")
+        parts.extend(protected_helper_lines)
+        parts.extend([
+            "",
+            "# <<<IMPROVE:user_helpers>>>",
+            "# Add optional pure Python helpers here. Do not edit framework CUDA loader helpers.",
+            "# <<<END_IMPROVE>>>",
+            "",
+        ])
         parts.extend([
             'CUDA_CPP_SRC = r"""',
             "# <<<IMPROVE:cuda_cpp>>>",

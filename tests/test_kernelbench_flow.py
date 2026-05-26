@@ -11,6 +11,7 @@ from stark.evaluation import DemoEvaluator
 from stark.io import load_run, save_run
 from stark.models import StarkConfig
 from stark.providers import MockProvider
+from stark.utils import apply_anchor_edit, extract_anchor_names
 
 
 class KernelbenchFlowTests(unittest.TestCase):
@@ -113,8 +114,33 @@ class KernelbenchLoaderTests(unittest.TestCase):
 
         self.assertEqual(task.backend, "cuda")
         self.assertIn("CUDA_CPP_SRC", task.source_code)
+        self.assertIn("_stark_strip_anchor_markers", task.source_code)
+        self.assertIn("_stark_extension_name", task.source_code)
+        self.assertIn("_stark_get_extension", task.source_code)
+        self.assertIn("# <<<IMPROVE:user_helpers>>>", task.source_code)
+        self.assertNotIn("# <<<IMPROVE:helpers>>>", task.source_code)
         self.assertIn("# <<<IMPROVE:cuda_cu>>>", task.source_code)
         self.assertIn("return torch.sigmoid(x)", task.source_code)
+        self.assertLess(task.source_code.index("_stark_get_extension"), task.source_code.index("# <<<IMPROVE:user_helpers>>>"))
+        self.assertEqual(
+            extract_anchor_names(task.source_code),
+            ["user_helpers", "cuda_cpp", "cuda_cu", "init_body", "forward_stmt_1"],
+        )
+
+    def test_cuda_scaffold_rejects_legacy_helpers_anchor(self):
+        tmp = self._new_tmp_dir()
+        try:
+            self._write_problem(tmp, 12, "return x + 1")
+            task = self.loader.load_official_problem(tmp, 1, 12, backend="cuda")
+        finally:
+            if tmp.exists():
+                shutil.rmtree(tmp)
+
+        with self.assertRaisesRegex(ValueError, "Anchor 'helpers' not found"):
+            apply_anchor_edit(task.source_code, "helpers", "# legacy helper edit")
+
+        edited = apply_anchor_edit(task.source_code, "user_helpers", "def helper(x):\n    return x")
+        self.assertIn("def helper(x):", edited)
 
     @unittest.skipUnless(importlib.util.find_spec("torch") is not None, "torch is required for loader tests")
     def test_loader_builds_tilelang_and_cute_scaffolds(self):
