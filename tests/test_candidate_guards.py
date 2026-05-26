@@ -9,6 +9,7 @@ from src.models import EvaluationResult, PlanProposal, SearchNode, StarkConfig
 PARENT = '''
 import torch
 import torch.nn as nn
+from torch.utils.cpp_extension import load_inline
 
 # <<<IMPROVE:helpers>>>
 # helper
@@ -77,7 +78,7 @@ def test_static_check_rejects_extension_mismatch():
 
 
 def test_static_check_accepts_matching_extension_contract():
-    helper = 'def _stark_get_extension():\n    return object()'
+    helper = "def _stark_get_extension():\n    return load_inline(name='x', cpp_sources=CUDA_CPP_SRC, cuda_sources=CUDA_CU_SRC, functions=None, with_cuda=True)"
     code = PARENT.replace('# helper', helper)
     code = code.replace('PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}', 'torch::Tensor foo(torch::Tensor x);\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) { m.def("foo", &foo, "foo"); }')
     code = code.replace('#include <torch/extension.h>\n# <<<END_IMPROVE>>>', '#include <torch/extension.h>\ntorch::Tensor foo(torch::Tensor x) { return x; }\n# <<<END_IMPROVE>>>')

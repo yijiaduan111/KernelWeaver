@@ -86,3 +86,47 @@ def test_non_cuda_backends_skip_cuda_contract():
         result = check_backend_contract(broken_cuda, backend=backend)
         assert result.ok
         assert any("backend_contract_skipped" in log for log in result.logs)
+
+
+LOADER_STYLE_CUDA = CUDA_BASE.replace(
+    'def _stark_get_extension():\n    return load_inline(name="x", cpp_sources=CUDA_CPP_SRC, cuda_sources=CUDA_CU_SRC, functions=None, with_cuda=True)',
+    "def _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'x_{digest}'\n\ndef _stark_get_extension():\n    return load_inline(name=_stark_extension_name(), cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC), cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC), functions=None, with_cuda=True)",
+)
+
+
+def test_cuda_contract_rejects_missing_strip_helper_when_loader_uses_it():
+    code = LOADER_STYLE_CUDA.replace('def _stark_strip_anchor_markers(source: str) -> str:', 'def _broken_strip_helper(source: str) -> str:')
+    result = check_backend_contract(code, backend="cuda")
+    assert not result.ok
+    assert result.failure_type == "extension_missing_strip_helper"
+
+
+def test_cuda_contract_rejects_missing_name_helper_when_loader_uses_it():
+    code = LOADER_STYLE_CUDA.replace('def _stark_extension_name() -> str:', 'def _broken_extension_name() -> str:')
+    result = check_backend_contract(code, backend="cuda")
+    assert not result.ok
+    assert result.failure_type == "extension_missing_name_helper"
+
+
+def test_cuda_contract_rejects_missing_cuda_sources_argument():
+    code = CUDA_BASE.replace('cuda_sources=CUDA_CU_SRC, ', '')
+    result = check_backend_contract(code, backend="cuda")
+    assert not result.ok
+    assert result.failure_type == "extension_invalid_load_inline_contract"
+
+
+def test_cuda_contract_rejects_invalid_strip_helper():
+    code = LOADER_STYLE_CUDA.replace(
+        "if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue",
+        "continue",
+    )
+    result = check_backend_contract(code, backend="cuda")
+    assert not result.ok
+    assert result.failure_type == "extension_invalid_strip_helper"
+
+
+def test_cuda_contract_rejects_invalid_name_helper():
+    code = LOADER_STYLE_CUDA.replace("digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]", "digest = 'fixed'")
+    result = check_backend_contract(code, backend="cuda")
+    assert not result.ok
+    assert result.failure_type == "extension_invalid_name_helper"
