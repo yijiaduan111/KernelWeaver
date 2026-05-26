@@ -73,13 +73,15 @@ def test_static_check_rejects_extension_mismatch():
     code = PARENT.replace('return x', 'return _stark_get_extension().missing(x)')
     result = check_candidate_static(code, backend="cuda")
     assert not result.ok
-    assert result.failure_type in {"missing_pybind_binding", "extension_entrypoint_mismatch"}
+    assert result.failure_type in {"extension_missing_helper", "extension_missing_pybind_export", "extension_entrypoint_mismatch"}
 
 
 def test_static_check_accepts_matching_extension_contract():
-    code = PARENT.replace('PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}', 'torch::Tensor foo(torch::Tensor x);\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) { m.def("foo", &foo, "foo"); }')
+    helper = 'def _stark_get_extension():\n    return object()'
+    code = PARENT.replace('# helper', helper)
+    code = code.replace('PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}', 'torch::Tensor foo(torch::Tensor x);\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) { m.def("foo", &foo, "foo"); }')
     code = code.replace('#include <torch/extension.h>\n# <<<END_IMPROVE>>>', '#include <torch/extension.h>\ntorch::Tensor foo(torch::Tensor x) { return x; }\n# <<<END_IMPROVE>>>')
-    code = code.replace('return x', 'return _stark_get_extension().foo(x)')
+    code = code.replace('return x\n        # <<<END_IMPROVE>>>', 'return _stark_get_extension().foo(x)\n        # <<<END_IMPROVE>>>')
     result = check_candidate_static(code, backend="cuda")
     assert result.ok
 
