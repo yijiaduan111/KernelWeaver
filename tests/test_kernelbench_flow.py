@@ -11,7 +11,8 @@ from stark.evaluation import DemoEvaluator
 from stark.io import load_run, save_run
 from stark.models import StarkConfig
 from stark.providers import MockProvider
-from stark.utils import apply_anchor_edit, extract_anchor_names
+from stark.core.regions import RegionPatch, apply_region_patches
+from stark.utils import extract_anchor_names
 
 
 class KernelbenchFlowTests(unittest.TestCase):
@@ -127,7 +128,7 @@ class KernelbenchLoaderTests(unittest.TestCase):
             ["user_helpers", "cuda_cpp", "cuda_cu", "init_body", "forward_stmt_1"],
         )
 
-    def test_cuda_scaffold_rejects_legacy_helpers_anchor(self):
+    def test_cuda_scaffold_rejects_legacy_helpers_region(self):
         tmp = self._new_tmp_dir()
         try:
             self._write_problem(tmp, 12, "return x + 1")
@@ -136,11 +137,11 @@ class KernelbenchLoaderTests(unittest.TestCase):
             if tmp.exists():
                 shutil.rmtree(tmp)
 
-        with self.assertRaisesRegex(ValueError, "Anchor 'helpers' not found"):
-            apply_anchor_edit(task.source_code, "helpers", "# legacy helper edit")
+        with self.assertRaisesRegex(ValueError, "editable region 'helpers' not found"):
+            apply_region_patches(task.source_code, [RegionPatch(region="helpers", body="# legacy helper edit")])
 
-        edited = apply_anchor_edit(task.source_code, "user_helpers", "def helper(x):\n    return x")
-        self.assertIn("def helper(x):", edited)
+        edited = apply_region_patches(task.source_code, [RegionPatch(region="user_helpers", body="def helper(x):\n    return x")])
+        self.assertIn("def helper(x):", edited.code)
 
     @unittest.skipUnless(importlib.util.find_spec("torch") is not None, "torch is required for loader tests")
     def test_loader_builds_tilelang_and_cute_scaffolds(self):

@@ -13,7 +13,7 @@ from dataclasses import dataclass, field
 
 
 _PYTHON_REGION_PREFIXES = ("forward_stmt_",)
-_PYTHON_REGION_NAMES = {"helpers", "init_body", "forward_body"}
+_PYTHON_REGION_NAMES = {"helpers", "user_helpers", "init_body", "forward_body"}
 
 
 @dataclass(frozen=True)

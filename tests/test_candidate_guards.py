@@ -33,12 +33,12 @@ class ModelNew(nn.Module):
 '''
 
 
-def test_normalize_applies_anchor_patch():
+def test_normalize_rejects_anchor_patch_payload():
     raw = '{"anchor_patches":[{"anchor_name":"forward_stmt_1","operation":"replace","body":"return x + 1"}]}'
     result = normalize_candidate(PARENT, raw)
-    assert result.ok
-    assert "return x + 1" in result.code
-    assert "anchor_patches" not in result.code
+    assert not result.ok
+    assert result.failure_type == "invalid_patch_format"
+    assert "region_patches" in result.logs[0]
 
 
 def test_normalize_rejects_bad_patch_payload():
@@ -68,6 +68,12 @@ def test_static_check_rejects_unapplied_region_payload():
     result = check_candidate_static('{"region_patches": []}', backend="cuda")
     assert not result.ok
     assert result.failure_type == "unapplied_patch_payload"
+
+
+def test_region_scaffold_rejects_full_module_output():
+    result = normalize_candidate(PARENT, PARENT.replace("return x", "return x + 1"))
+    assert not result.ok
+    assert result.failure_type == "full_module_region_task"
 
 
 def test_static_check_rejects_extension_mismatch():
@@ -112,6 +118,40 @@ def test_region_patch_normalizes_forward_indent_and_is_cuda_property():
     assert "x.is_cuda()" not in result.code
     assert "    return x + 1" in result.code
     assert "        return x + 1" in result.code
+    assert check_candidate_static(result.code, backend="cuda").ok
+
+
+def test_region_patch_rejects_anchor_name_alias():
+    raw = json.dumps({
+        "region_patches": [
+            {
+                "anchor_name": "forward_stmt_1",
+                "operation": "replace",
+                "body": "return x + 1",
+            }
+        ]
+    })
+    result = normalize_candidate(PARENT, raw)
+    assert not result.ok
+    assert result.failure_type == "invalid_region_patch_format"
+
+
+def test_user_helpers_region_uses_python_hygiene():
+    parent = PARENT.replace("# <<<IMPROVE:helpers>>>", "# <<<IMPROVE:user_helpers>>>")
+    raw = json.dumps({
+        "region_patches": [
+            {
+                "region": "user_helpers",
+                "operation": "replace",
+                "body": "def helper(x):\n            return x.is_cuda()",
+            }
+        ]
+    })
+    result = normalize_candidate(parent, raw)
+    assert result.ok
+    assert "return x.is_cuda" in result.code
+    assert "x.is_cuda()" not in result.code
+    assert "applied_region_patch:user_helpers:replace" in result.logs
     assert check_candidate_static(result.code, backend="cuda").ok
 
 
