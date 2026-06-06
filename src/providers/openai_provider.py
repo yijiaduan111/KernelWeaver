@@ -12,6 +12,7 @@ from dataclasses import dataclass, replace
 from typing import Any
 
 from ..backends import is_cute_backend, is_native_cuda_backend, is_tilelang_backend, normalize_backend
+from ..core.patch_payload import canonicalize_region_patches, parse_loose_json_dict
 from ..deliberation import strategy_portfolio_to_prompt_dict
 from ..models import AgentContext, AnchorEdit, PlanProposal, SearchNode, TaskSpec
 from ..semantics import semantic_profile_to_prompt_dict
@@ -38,6 +39,7 @@ class OpenAICompatibleConfig:
     max_retries: int = 3
     retry_backoff_seconds: float = 1.0
     disable_response_storage: bool = False
+    responses_fallback_to_chat_completions: bool = True
     user_agent: str = "curl/8.5.0"
 
 
@@ -47,10 +49,20 @@ class OpenAICompatibleProvider(AgentProvider):
     name = "openai-compatible"
 
     def __init__(self, config: OpenAICompatibleConfig) -> None:
-        self.config = config
+        self.config = self._normalize_config(config)
 
     def with_overrides(self, **overrides) -> "OpenAICompatibleProvider":
         return OpenAICompatibleProvider(replace(self.config, **overrides))
+
+    @staticmethod
+    def _normalize_config(config: OpenAICompatibleConfig) -> OpenAICompatibleConfig:
+        if config.wire_api == "chat_completions" and not config.responses_fallback_to_chat_completions:
+            return config
+        return replace(
+            config,
+            wire_api="chat_completions",
+            responses_fallback_to_chat_completions=False,
+        )
 
     def generate_text(
         self,
@@ -92,6 +104,10 @@ class OpenAICompatibleProvider(AgentProvider):
             os.environ.get("OPENAI_DISABLE_RESPONSE_STORAGE"),
             default=bool(defaults.get("disable_response_storage", False)),
         )
+        responses_fallback_to_chat_completions = _env_bool(
+            os.environ.get("OPENAI_RESPONSES_FALLBACK_TO_CHAT_COMPLETIONS"),
+            default=bool(defaults.get("responses_fallback_to_chat_completions", True)),
+        )
         user_agent = str(_env_or_default("OPENAI_USER_AGENT", defaults.get("user_agent", "curl/8.5.0"))).strip() or "curl/8.5.0"
         if not api_key:
             raise ValueError("OPENAI_API_KEY is required for the openai-compatible provider.")
@@ -112,6 +128,7 @@ class OpenAICompatibleProvider(AgentProvider):
                 max_retries=max_retries,
                 retry_backoff_seconds=retry_backoff_seconds,
                 disable_response_storage=disable_response_storage,
+                responses_fallback_to_chat_completions=responses_fallback_to_chat_completions,
                 user_agent=user_agent,
             )
         )
@@ -129,14 +146,14 @@ class OpenAICompatibleProvider(AgentProvider):
             "Use only anchor names from the provided anchors. operation must be replace or append. "
             "Each instruction must be concrete enough for the coding agent to implement without changing unrelated scaffold. "
             "If task_metadata.strategy_portfolio is present, set strategy_name to one selected strategy_id from it, "
-            "prefer strategy_ids not listed in used_strategy_names, and diversify across attempts when possible."
+            "Use strategy_history to guide selection: prefer strategies not yet attempted; if a strategy achieved speedup > 1.0, consider refinement variants; avoid strategies with only compile failures unless you have a concrete fix."
         ) + _task_prompt_suffix(task, role="plan")
         user = {
             "task_name": task.name,
             "task_description": task.description,
             "task_metadata": _task_metadata(task),
             "available_anchors": anchors,
-            "used_strategy_names": _used_strategy_names(context),
+            "strategy_history": context.strategy_history,
             "current_node": _snapshot_to_dict(context.current),
             "root_node": _snapshot_to_dict(context.root),
             "leader_nodes": [_snapshot_to_dict(item) for item in context.leaders],
@@ -253,7 +270,10 @@ class OpenAICompatibleProvider(AgentProvider):
             temperature=self.config.code_temperature,
             reasoning_effort=self.config.code_reasoning_effort,
         )
-        return _strip_code_fences(content)
+        return _normalize_patch_response(
+            response_text=content,
+            allowed_regions={edit.anchor_name: edit.operation for edit in proposal.anchor_edits},
+        )
 
     def debug_code(self, task: TaskSpec, node: SearchNode, context: AgentContext) -> str:
         debug_focus = _debug_focus_hint(node.latest_failure_stage, task.backend)
@@ -288,7 +308,10 @@ class OpenAICompatibleProvider(AgentProvider):
             temperature=self.config.debug_temperature,
             reasoning_effort=self.config.debug_reasoning_effort,
         )
-        return _strip_code_fences(content)
+        return _normalize_patch_response(
+            response_text=content,
+            allowed_regions={name: "replace" for name in extract_anchor_names(node.code)},
+        )
 
     def _chat(
         self,
@@ -303,7 +326,13 @@ class OpenAICompatibleProvider(AgentProvider):
             try:
                 if self.config.wire_api == "responses":
                     payload = self._responses_request(system_prompt, user_payload, temperature, reasoning_effort)
-                    return self._extract_text_from_responses(payload)
+                    try:
+                        return self._extract_text_from_responses(payload)
+                    except RuntimeError as exc:
+                        if self._should_fallback_from_responses(payload, exc):
+                            payload = self._chat_completions_request(system_prompt, user_payload, temperature)
+                            return self._extract_text_from_chat_completions(payload)
+                        raise
                 payload = self._chat_completions_request(system_prompt, user_payload, temperature)
                 return self._extract_text_from_chat_completions(payload)
             except TimeoutError as exc:
@@ -312,8 +341,10 @@ class OpenAICompatibleProvider(AgentProvider):
                 last_error = exc
                 if not _is_retryable_llm_error(exc):
                     raise
-            if attempt + 1 < attempts and self.config.retry_backoff_seconds > 0:
-                time.sleep(self.config.retry_backoff_seconds * (attempt + 1))
+            if attempt + 1 < attempts:
+                delay_seconds = _retry_delay_seconds(exc=last_error, attempt_index=attempt, default_backoff=self.config.retry_backoff_seconds)
+                if delay_seconds > 0:
+                    time.sleep(delay_seconds)
         if last_error is not None:
             raise last_error
         raise RuntimeError("LLM request failed before receiving a response")
@@ -397,19 +428,23 @@ class OpenAICompatibleProvider(AgentProvider):
             return f"{base}/responses"
         return f"{base}/chat/completions"
 
+    def _should_fallback_from_responses(self, payload: dict[str, Any], exc: RuntimeError) -> bool:
+        if not self.config.responses_fallback_to_chat_completions:
+            return False
+        if self.config.wire_api != "responses":
+            return False
+        message = str(exc)
+        if "Responses API returned no text output" not in message:
+            return False
+        return str(payload.get("status", "")).lower() == "completed"
+
     @staticmethod
     def _extract_text_from_chat_completions(payload: dict[str, Any]) -> str:
         choices = payload.get("choices") or []
         if not choices:
             raise RuntimeError(f"LLM response does not contain choices: {payload}")
         message = choices[0].get("message") or {}
-        content = message.get("content", "")
-        if isinstance(content, list):
-            text_parts = []
-            for item in content:
-                if isinstance(item, dict) and item.get("type") == "text":
-                    text_parts.append(item.get("text", ""))
-            content = "\n".join(text_parts)
+        content = OpenAICompatibleProvider._content_to_text(message.get("content", ""))
         if not isinstance(content, str) or not content.strip():
             raise RuntimeError(f"LLM response content is empty: {payload}")
         return content.strip()
@@ -418,23 +453,50 @@ class OpenAICompatibleProvider(AgentProvider):
     def _extract_text_from_responses(payload: dict[str, Any]) -> str:
         if isinstance(payload.get("output_text"), str) and payload["output_text"].strip():
             return payload["output_text"].strip()
+        top_level_content = OpenAICompatibleProvider._content_to_text(payload.get("content"))
+        if top_level_content:
+            return top_level_content
         collected: list[str] = []
         for item in payload.get("output", []) or []:
             if not isinstance(item, dict):
                 continue
-            if isinstance(item.get("content"), list):
-                for content_item in item["content"]:
-                    if not isinstance(content_item, dict):
-                        continue
-                    text = content_item.get("text")
-                    if isinstance(text, str) and text.strip():
-                        collected.append(text.strip())
+            content_text = OpenAICompatibleProvider._content_to_text(item.get("content"))
+            if content_text:
+                collected.append(content_text)
             text = item.get("text")
             if isinstance(text, str) and text.strip():
                 collected.append(text.strip())
+            message_text = OpenAICompatibleProvider._content_to_text((item.get("message") or {}).get("content"))
+            if message_text:
+                collected.append(message_text)
         if collected:
             return "\n".join(collected)
+        if payload.get("choices"):
+            return OpenAICompatibleProvider._extract_text_from_chat_completions(payload)
         raise RuntimeError(f"Responses API returned no text output: {payload}")
+
+    @staticmethod
+    def _content_to_text(content: Any) -> str:
+        if isinstance(content, str):
+            return content.strip()
+        if not isinstance(content, list):
+            return ""
+        text_parts: list[str] = []
+        for item in content:
+            if not isinstance(item, dict):
+                continue
+            item_type = str(item.get("type", "")).strip().lower()
+            text = item.get("text")
+            if isinstance(text, str) and text.strip():
+                if item_type in {"", "text", "output_text", "message"}:
+                    text_parts.append(text.strip())
+                    continue
+                if item_type == "input_text":
+                    continue
+            nested_text = OpenAICompatibleProvider._content_to_text(item.get("content"))
+            if nested_text:
+                text_parts.append(nested_text)
+        return "\n".join(part for part in text_parts if part).strip()
 
 
 def _snapshot_to_dict(snapshot) -> dict[str, Any]:
@@ -494,13 +556,10 @@ def _used_strategy_names(context: AgentContext) -> list[str]:
 
 def _parse_json_object(text: str) -> dict[str, Any]:
     cleaned = _strip_code_fences(text)
-    try:
-        return json.loads(cleaned)
-    except json.JSONDecodeError:
-        match = re.search(r"\{.*\}", cleaned, re.DOTALL)
-        if not match:
-            raise
-        return json.loads(match.group(0))
+    payload = parse_loose_json_dict(cleaned, allow_python_literal=True)
+    if payload is None:
+        raise json.JSONDecodeError("Unable to parse JSON object", cleaned, 0)
+    return payload
 
 
 def _strip_code_fences(text: str) -> str:
@@ -577,7 +636,7 @@ def _task_prompt_suffix(task: TaskSpec, role: str) -> str:
 def _kernelbench_anchor_hint(task: TaskSpec) -> str:
     anchors = extract_anchor_names(task.source_code)
     if is_native_cuda_backend(task.backend):
-        return "user_helpers/cuda_cpp/cuda_cu/init_body/forward_stmt_* anchors"
+        return "helpers/cuda_cpp/cuda_cu/init_body/forward_stmt_* anchors"
     if is_tilelang_backend(task.backend):
         if any(anchor.startswith("forward_stmt_") for anchor in anchors):
             return "helpers/tilelang_kernel/init_body/forward_stmt_* anchors"
@@ -634,12 +693,11 @@ def _kernelbench_profile_hint(task: TaskSpec, role: str) -> str:
         if role == "plan":
             return (
                 " Treat this as a native CUDA extension task: keep the scaffold intact, preserve the ModelNew interface, "
-                "and propose grounded edits that stay inside user_helpers/cuda_cpp/cuda_cu/init_body/forward_stmt_*. "
-                "CUDA framework loader helpers are protected and are not editable anchors."
+                "and propose grounded edits that stay inside helpers/cuda_cpp/cuda_cu/init_body/forward_stmt_*."
             )
         return (
             " Treat this as a native CUDA extension task: preserve the pybind binding surface, keep CUDA kernel launch assumptions explicit, "
-            "restrict edits to the grounded regions only, and use user_helpers only for optional Python helpers."
+            "and restrict edits to the grounded regions only."
         )
     if "level3" in tags:
         if "attention" in tags:
@@ -735,6 +793,25 @@ def _compact_payload_text(payload: dict[str, Any]) -> str:
     return json.dumps(_compact_payload(payload), ensure_ascii=False, separators=(",", ":"))
 
 
+def _normalize_patch_response(response_text: str, allowed_regions: dict[str, str]) -> str:
+    cleaned = _strip_code_fences(str(response_text or "")).strip()
+    payload = _parse_patch_payload_loose(cleaned)
+    if payload is None:
+        return cleaned
+    normalized = _canonicalize_region_patches(payload, allowed_regions)
+    if normalized is None:
+        return cleaned
+    return json.dumps({"region_patches": normalized}, ensure_ascii=False)
+
+
+def _parse_patch_payload_loose(text: str) -> dict[str, Any] | None:
+    return parse_loose_json_dict(text, allow_python_literal=True)
+
+
+def _canonicalize_region_patches(payload: dict[str, Any], allowed_regions: dict[str, str]) -> list[dict[str, str]] | None:
+    return canonicalize_region_patches(payload, allowed_regions)
+
+
 def _env_override(key: str, default: str | None) -> str | None:
     if key not in os.environ:
         return default
@@ -758,14 +835,19 @@ def _optional_string(value: Any) -> str | None:
 def _is_retryable_llm_error(exc: RuntimeError) -> bool:
     message = str(exc).lower()
     retryable_tokens = (
+        "http 408",
         "http 429",
         "http 500",
         "http 502",
         "http 503",
         "http 504",
+        "http 524",
         "upstream_error",
+        "origin_response_timeout",
+        "timeout occurred",
         "temporarily unavailable",
         "timed out",
+        "\"retryable\":true",
         "unexpected_eof_while_reading",
         "eof occurred in violation of protocol",
         "remote end closed connection",
@@ -775,6 +857,33 @@ def _is_retryable_llm_error(exc: RuntimeError) -> bool:
         "ssl",
     )
     return any(token in message for token in retryable_tokens)
+
+
+def _retry_delay_seconds(exc: Exception | None, attempt_index: int, default_backoff: float) -> float:
+    delay = max(0.0, default_backoff * (attempt_index + 1))
+    if exc is None:
+        return delay
+    message = str(exc)
+    retry_after = _extract_retry_after_seconds(message)
+    if retry_after is None:
+        return delay
+    return max(delay, retry_after)
+
+
+def _extract_retry_after_seconds(message: str) -> float | None:
+    patterns = (
+        r'"retry_after"\s*:\s*([0-9]+(?:\.[0-9]+)?)',
+        r"retry-after[^0-9]*([0-9]+(?:\.[0-9]+)?)",
+    )
+    for pattern in patterns:
+        match = re.search(pattern, message, re.IGNORECASE)
+        if not match:
+            continue
+        try:
+            return float(match.group(1))
+        except ValueError:
+            return None
+    return None
 
 
 def _env_bool(value: str | None, default: bool = False) -> bool:

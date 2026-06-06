@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 import re
+import textwrap
 import hashlib
 from typing import Any
 
@@ -25,6 +26,40 @@ def preserve_anchor_scaffold(original_code: str, candidate_code: str) -> bool:
     candidate_parts = _split_anchor_scaffold(candidate_code)
     return original_parts == candidate_parts
 
+
+def apply_anchor_edit(source_code: str, anchor_name: str, new_body: str, operation: str = "replace") -> str:
+    match = None
+    for candidate in _ANCHOR_PATTERN.finditer(source_code):
+        if candidate.group("name") == anchor_name:
+            match = candidate
+            break
+    if match is None:
+        raise ValueError(f"Anchor '{anchor_name}' not found in source.")
+    if operation not in {"replace", "append"}:
+        raise ValueError(f"Unsupported anchor operation: {operation}")
+
+    indent = re.match(r"^([ \t]*)", match.group(1)).group(1)
+    current_body = textwrap.dedent(match.group("body")).strip("\n")
+    incoming_body = textwrap.dedent(new_body).strip("\n")
+    if operation == "replace":
+        logical_body = incoming_body
+    else:
+        pieces = [piece for piece in [current_body, incoming_body] if piece]
+        logical_body = "\n".join(pieces)
+    if logical_body:
+        lines = logical_body.splitlines()
+        rendered_body = "\n".join(f"{indent}{line}" if line else "" for line in lines) + "\n"
+    else:
+        rendered_body = ""
+    return (
+        f"{source_code[:match.start()]}"
+        f"{match.group(1)}{rendered_body}{match.group(4)}"
+        f"{source_code[match.end():]}"
+    )
+
+
+def replace_anchor_body(source_code: str, anchor_name: str, new_body: str) -> str:
+    return apply_anchor_edit(source_code, anchor_name, new_body, operation="replace")
 
 
 def compare_values(actual: Any, expected: Any, tolerance: float = 1e-5) -> bool:

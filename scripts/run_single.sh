@@ -21,6 +21,9 @@ Options:
   --session-name NAME       tmux session name for --detach mode
   --reuse-output-dir        Reuse an existing non-empty output directory
   -h, --help                Show this help
+
+Environment helpers:
+  KERNELWEAVER_ENV_FILE     Env file passed to '--env-file'
 EOF
 }
 
@@ -97,6 +100,9 @@ COMMAND=(
   --backend "$BACKEND"
   --output-dir "$OUTPUT_DIR"
 )
+if [[ -n "${KERNELWEAVER_ENV_FILE:-}" ]]; then
+  COMMAND+=(--env-file "$KERNELWEAVER_ENV_FILE")
+fi
 COMMAND+=("${EXTRA_ARGS[@]}")
 
 LAUNCH_SCRIPT="$OUTPUT_DIR/start_single.sh"

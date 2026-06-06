@@ -170,6 +170,7 @@ class AgentContext:
     related: list[NodeSnapshot] = field(default_factory=list)
     leaders: list[NodeSnapshot] = field(default_factory=list)
     failure: NodeSnapshot | None = None
+    strategy_history: list[dict] = field(default_factory=list)
 
 
 @dataclass

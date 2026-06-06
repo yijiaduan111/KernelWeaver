@@ -17,6 +17,7 @@ from .openai_provider import (
     _env_override,
     _is_retryable_llm_error,
     _optional_string,
+    _retry_delay_seconds,
 )
 
 
@@ -130,8 +131,14 @@ class GeminiCompatibleProvider(OpenAICompatibleProvider):
                 last_error = exc
                 if not _is_retryable_llm_error(exc):
                     raise
-            if attempt + 1 < attempts and self.config.retry_backoff_seconds > 0:
-                time.sleep(self.config.retry_backoff_seconds * (attempt + 1))
+            if attempt + 1 < attempts:
+                delay_seconds = _retry_delay_seconds(
+                    exc=last_error,
+                    attempt_index=attempt,
+                    default_backoff=self.config.retry_backoff_seconds,
+                )
+                if delay_seconds > 0:
+                    time.sleep(delay_seconds)
         if last_error is not None:
             raise last_error
         raise RuntimeError("Gemini request failed before receiving a response")

@@ -17,6 +17,7 @@ from .openai_provider import (
     _env_override,
     _is_retryable_llm_error,
     _optional_string,
+    _retry_delay_seconds,
 )
 
 
@@ -124,8 +125,14 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
                 last_error = exc
                 if not _is_retryable_llm_error(exc):
                     raise
-            if attempt + 1 < attempts and self.config.retry_backoff_seconds > 0:
-                time.sleep(self.config.retry_backoff_seconds * (attempt + 1))
+            if attempt + 1 < attempts:
+                delay_seconds = _retry_delay_seconds(
+                    exc=last_error,
+                    attempt_index=attempt,
+                    default_backoff=self.config.retry_backoff_seconds,
+                )
+                if delay_seconds > 0:
+                    time.sleep(delay_seconds)
         if last_error is not None:
             raise last_error
         raise RuntimeError("Claude request failed before receiving a response")
@@ -181,17 +188,14 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
 
     @staticmethod
     def _extract_text_from_messages(payload: dict[str, Any]) -> str:
-        content = payload.get("content")
-        if isinstance(content, list):
-            text_parts = []
-            for item in content:
-                if not isinstance(item, dict):
-                    continue
-                text = item.get("text")
-                if isinstance(text, str) and text.strip():
-                    text_parts.append(text.strip())
-            if text_parts:
-                return "\n".join(text_parts)
+        content_text = OpenAICompatibleProvider._content_to_text(payload.get("content"))
+        if content_text:
+            return content_text
+        message_text = OpenAICompatibleProvider._content_to_text((payload.get("message") or {}).get("content"))
+        if message_text:
+            return message_text
         if isinstance(payload.get("output_text"), str) and payload["output_text"].strip():
             return payload["output_text"].strip()
+        if payload.get("choices"):
+            return OpenAICompatibleProvider._extract_text_from_chat_completions(payload)
         raise RuntimeError(f"Claude response does not contain text content: {payload}")

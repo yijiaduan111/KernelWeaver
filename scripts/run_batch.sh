@@ -24,6 +24,7 @@ Environment helpers:
   KERNELWEAVER_CONDA_ENV    Conda env name to activate before launch
   KERNELWEAVER_CONDA_PREFIX Conda env prefix to activate before launch
   KERNELWEAVER_CONDA_SH     Path to conda.sh if it is not under \$HOME/miniconda3
+  KERNELWEAVER_ENV_FILE     Env file passed to '--env-file'
 
 Notes:
   - This wrapper avoids 'conda run ... | tee ...' because that pattern is brittle for long CUDA jobs.
@@ -87,6 +88,9 @@ OUTPUT_DIR="$(kw_abs_path "$REPO_ROOT" "$OUTPUT_DIR")"
 kw_prepare_output_dir "$OUTPUT_DIR" "$ALLOW_REUSE"
 
 COMMAND=("$PYTHON_BIN" -u stark_cli.py run-kernelbench-batch --experiment "$EXPERIMENT" --output-dir "$OUTPUT_DIR")
+if [[ -n "${KERNELWEAVER_ENV_FILE:-}" ]]; then
+  COMMAND+=(--env-file "$KERNELWEAVER_ENV_FILE")
+fi
 if [[ -n "$TASK_CONFIG" ]]; then
   COMMAND+=(--task-config "$TASK_CONFIG")
 fi

@@ -42,6 +42,7 @@ kw_write_launch_script() {
     KERNELWEAVER_CONDA_PREFIX
     KERNELWEAVER_CONDA_ENV
     KERNELWEAVER_CONDA_SH
+    KERNELWEAVER_ENV_FILE
     CUDA_VISIBLE_DEVICES
     CUDALLM_DEVICE
     CUDALLM_MODEL_PATH
@@ -157,6 +158,7 @@ echo [KernelWeaver] started_at: $(date '+%Y-%m-%d %H:%M:%S')
 echo [KernelWeaver] CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-<unset>}
 echo [KernelWeaver] CUDALLM_DEVICE=${CUDALLM_DEVICE:-<unset>}
 echo [KernelWeaver] KERNELWEAVER_CONDA_ENV=${KERNELWEAVER_CONDA_ENV:-<unset>}
+echo [KernelWeaver] KERNELWEAVER_ENV_FILE=${KERNELWEAVER_ENV_FILE:-<unset>}
 echo [KernelWeaver] CUDA_HOME=${CUDA_HOME:-<unset>}
 echo [KernelWeaver] NVCC_PATH=$(command -v nvcc || printf '%s' '<missing>')
 

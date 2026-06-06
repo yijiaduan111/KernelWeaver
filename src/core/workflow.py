@@ -96,14 +96,33 @@ def _guard_failure(failure_type: str, logs: list[str]) -> EvaluationResult:
     )
 
 
-def _prepare_candidate_for_evaluation(task: TaskSpec, parent_code: str, raw_candidate: str) -> tuple[str, EvaluationResult | None]:
+def _merge_logs(*groups: list[str]) -> list[str]:
+    merged: list[str] = []
+    for group in groups:
+        for entry in group or []:
+            if entry and entry not in merged:
+                merged.append(entry)
+    return merged
+
+
+def _attach_logs(evaluation: EvaluationResult, prefix_logs: list[str]) -> EvaluationResult:
+    if not prefix_logs:
+        return evaluation
+    evaluation.logs = _merge_logs(prefix_logs, evaluation.logs)
+    return evaluation
+
+
+def _prepare_candidate_for_evaluation(task: TaskSpec, parent_code: str, raw_candidate: str) -> tuple[str, list[str], EvaluationResult | None]:
     normalized = normalize_candidate(parent_code, raw_candidate)
     if not normalized.ok:
-        return normalized.code, _guard_failure(normalized.failure_type or "invalid_candidate", normalized.logs)
+        return normalized.code, [], _guard_failure(normalized.failure_type or "invalid_candidate", normalized.logs)
     static_result = check_candidate_static(normalized.code, backend=task.backend)
     if not static_result.ok:
-        return normalized.code, _guard_failure(static_result.failure_type or "static_check_failed", static_result.logs)
-    return normalized.code, None
+        return normalized.code, normalized.logs, _guard_failure(
+            static_result.failure_type or "static_check_failed",
+            _merge_logs(normalized.logs, static_result.logs),
+        )
+    return normalized.code, normalized.logs, None
 
 
 def _broken_anchor_evaluation(parent_code: str, candidate_code: str) -> EvaluationResult:
@@ -224,12 +243,15 @@ def _evaluate_plan_code(
         stats["invalid_proposals"] += 1
         return selected_node.code, _invalid_anchor_evaluation(selected_node.code, proposal)
     raw_candidate = code_agent.run(task, selected_node, proposal, code_context)
-    candidate_code, guard_evaluation = _prepare_candidate_for_evaluation(task, selected_node.code, raw_candidate)
+    candidate_code, candidate_logs, guard_evaluation = _prepare_candidate_for_evaluation(task, selected_node.code, raw_candidate)
     if guard_evaluation is not None:
         return candidate_code, guard_evaluation
     if not _anchors_preserved(selected_node.code, candidate_code):
-        return candidate_code, _evaluate_marker_drift(task, config, evaluator, selected_node.code, candidate_code)
-    return candidate_code, evaluator.evaluate(task, candidate_code, config)
+        return candidate_code, _attach_logs(
+            _evaluate_marker_drift(task, config, evaluator, selected_node.code, candidate_code),
+            candidate_logs,
+        )
+    return candidate_code, _attach_logs(evaluator.evaluate(task, candidate_code, config), candidate_logs)
 
 
 def _evaluate_debug(
@@ -242,12 +264,15 @@ def _evaluate_debug(
 ) -> tuple[PlanProposal, str, EvaluationResult]:
     raw_candidate = debug_agent.run(task, selected_node, debug_context)
     proposal = _build_debug_proposal(selected_node)
-    candidate_code, guard_evaluation = _prepare_candidate_for_evaluation(task, selected_node.code, raw_candidate)
+    candidate_code, candidate_logs, guard_evaluation = _prepare_candidate_for_evaluation(task, selected_node.code, raw_candidate)
     if guard_evaluation is not None:
         return proposal, candidate_code, guard_evaluation
     if not _anchors_preserved(selected_node.code, candidate_code):
-        return proposal, candidate_code, _evaluate_marker_drift(task, config, evaluator, selected_node.code, candidate_code)
-    return proposal, candidate_code, evaluator.evaluate(task, candidate_code, config)
+        return proposal, candidate_code, _attach_logs(
+            _evaluate_marker_drift(task, config, evaluator, selected_node.code, candidate_code),
+            candidate_logs,
+        )
+    return proposal, candidate_code, _attach_logs(evaluator.evaluate(task, candidate_code, config), candidate_logs)
 
 
 def _finalize_run(

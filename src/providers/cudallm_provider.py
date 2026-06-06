@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import gc
 import json
-import re
 import time
 from dataclasses import dataclass, replace
 from typing import Any
 
+from ..core.patch_payload import canonicalize_region_patches, parse_loose_json_dict
 from ..models import AgentContext, PlanProposal, SearchNode, TaskSpec
 from ..utils import extract_anchor_names
 
@@ -265,50 +265,14 @@ def _compose_local_chat_prompt(tokenizer, messages: list[dict[str, str]], use_ch
 
 def _normalize_patch_response(response_text: str, proposal: PlanProposal) -> str:
     cleaned = _strip_code_fences(response_text).strip()
-    patches = _parse_region_patches(cleaned)
-    if not patches:
+    payload = parse_loose_json_dict(cleaned, allow_python_literal=True)
+    if payload is None:
         return cleaned
     allowed = {edit.anchor_name: edit.operation for edit in proposal.anchor_edits}
-    normalized: list[dict[str, str]] = []
-    for patch in patches:
-        region = str(patch.get("region") or "").strip()
-        if region not in allowed:
-            raise RuntimeError(f"Local cudaLLM returned patch for unexpected region: {region}")
-        body = patch.get("body")
-        if body is None:
-            body = patch.get("code") or patch.get("replacement") or patch.get("new_body")
-        if not isinstance(body, str) or not body.strip():
-            raise RuntimeError(f"Local cudaLLM returned empty patch body for region: {region}")
-        operation = str(patch.get("operation") or allowed[region] or "replace").strip().lower()
-        if operation not in {"replace", "append"}:
-            operation = allowed[region]
-        normalized.append({"region": region, "operation": operation, "body": _strip_anchor_markers_from_body(body)})
+    normalized = canonicalize_region_patches(payload, allowed)
+    if normalized is None:
+        return cleaned
     return json.dumps({"region_patches": normalized})
-
-def _parse_region_patches(text: str) -> list[dict[str, Any]]:
-    candidates = [text]
-    match = re.search(r"\{.*\}", text, re.DOTALL)
-    if match:
-        candidates.append(match.group(0))
-    for candidate in candidates:
-        try:
-            payload = json.loads(candidate)
-        except json.JSONDecodeError:
-            continue
-        if isinstance(payload, dict):
-            patches = payload.get("region_patches")
-            if isinstance(patches, list):
-                return [item for item in patches if isinstance(item, dict)]
-    return []
-
-
-def _strip_anchor_markers_from_body(body: str) -> str:
-    lines = []
-    for line in body.strip().splitlines():
-        if re.search(r"#\s*<<<(?:END_)?IMPROVE", line):
-            continue
-        lines.append(line)
-    return "\n".join(lines).strip("\n")
 
 def _looks_like_full_python_module(text: str) -> bool:
     return "class ModelNew" in text or "def forward" in text or "load_inline" in text

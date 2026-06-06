@@ -1,9 +1,11 @@
 import json
 
 from src.core.candidate import normalize_candidate
+from src.core.patch_payload import parse_loose_json_dict
 from src.core.static_check import check_candidate_static
 from src.core.tree import TreeMemory
-from src.models import EvaluationResult, PlanProposal, SearchNode, StarkConfig
+from src.core.workflow import _prepare_candidate_for_evaluation
+from src.models import EvaluationResult, PlanProposal, SearchNode, StarkConfig, TaskSpec
 
 
 PARENT = '''
@@ -33,6 +35,20 @@ class ModelNew(nn.Module):
 '''
 
 
+def _task(source_code: str = PARENT, backend: str = "cuda") -> TaskSpec:
+    return TaskSpec(
+        name="guard-test",
+        description="",
+        source_code=source_code,
+        reference_code=source_code,
+        function_name="forward",
+        reference_function_name="forward",
+        test_cases=[],
+        benchmark_cases=[],
+        backend=backend,
+    )
+
+
 def test_normalize_rejects_anchor_patch_payload():
     raw = '{"anchor_patches":[{"anchor_name":"forward_stmt_1","operation":"replace","body":"return x + 1"}]}'
     result = normalize_candidate(PARENT, raw)
@@ -45,6 +61,17 @@ def test_normalize_rejects_bad_patch_payload():
     result = normalize_candidate(PARENT, '{"anchor_patches":')
     assert not result.ok
     assert result.failure_type == "invalid_patch_format"
+
+
+def test_parse_loose_json_dict_handles_wrapped_patch_with_cpp_braces():
+    raw = (
+        "Here is the patch payload you requested.\n"
+        '{"region_patches":[{"region":"cuda_cu","operation":"replace","body":"extern \\"C\\" __global__ void kernel(){ int i = threadIdx.x; if (i < 1) { return; } }"}]}\n'
+        "Trailing note {ignore_me}"
+    )
+    payload = parse_loose_json_dict(raw, allow_python_literal=True)
+    assert payload is not None
+    assert payload["region_patches"][0]["region"] == "cuda_cu"
 
 
 def test_normalize_applies_region_patch_and_preserves_scaffold():
@@ -121,6 +148,47 @@ def test_region_patch_normalizes_forward_indent_and_is_cuda_property():
     assert check_candidate_static(result.code, backend="cuda").ok
 
 
+def test_region_patch_normalizes_try_except_indent_stack():
+    raw = json.dumps({
+        "region_patches": [
+            {
+                "region": "forward_stmt_1",
+                "operation": "replace",
+                "body": "if x.is_cuda:\n                    try:\n                        return x + 1\n                    except RuntimeError:\n                        pass\n                return x",
+            }
+        ]
+    })
+    result = normalize_candidate(PARENT, raw)
+    assert result.ok
+    assert "if x.is_cuda:" in result.code
+    assert "        try:" in result.code
+    assert "            return x + 1" in result.code
+    assert "        except RuntimeError:" in result.code
+    assert "            pass" in result.code
+    assert check_candidate_static(result.code, backend="cuda").ok
+
+
+def test_prepare_candidate_preserves_normalization_logs_on_static_failure():
+    raw = json.dumps({
+        "region_patches": [
+            {
+                "region": "forward_stmt_1",
+                "operation": "replace",
+                "body": "if x.is_cuda() and x.dtype == torch.float32:\n                    try:\n                        return _stark_get_extension().missing(x)\n                    except RuntimeError:\n                        pass\n                return x",
+            }
+        ]
+    })
+    candidate_code, candidate_logs, guard = _prepare_candidate_for_evaluation(_task(), PARENT, raw)
+    assert guard is not None
+    assert candidate_logs
+    assert any(log == "normalized_python_region_indent:forward_stmt_1" for log in candidate_logs)
+    assert any(log == "autofix_tensor_property_call" for log in candidate_logs)
+    assert any(log == "normalized_python_region_indent:forward_stmt_1" for log in guard.logs)
+    assert any(log == "autofix_tensor_property_call" for log in guard.logs)
+    assert guard.failure_type in {"extension_missing_helper", "extension_missing_pybind_export", "extension_entrypoint_mismatch"}
+    assert "_stark_get_extension().missing(x)" in candidate_code
+
+
 def test_region_patch_rejects_anchor_name_alias():
     raw = json.dumps({
         "region_patches": [
@@ -160,6 +228,17 @@ def test_region_patch_does_not_rewrite_cuda_body_api_names():
     result = normalize_candidate(PARENT, raw)
     assert result.ok
     assert "x.is_cuda()" in result.code
+
+
+def test_normalize_accepts_wrapped_region_patch_payload():
+    raw = (
+        "Patch result:\n"
+        '{"region_patches":[{"region":"forward_stmt_1","operation":"replace","body":"return x + 4"}]}\n'
+        "Done {ignored}"
+    )
+    result = normalize_candidate(PARENT, raw)
+    assert result.ok
+    assert "return x + 4" in result.code
 
 
 def test_static_check_reports_python_region_syntax_error():
