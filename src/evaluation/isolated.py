@@ -47,6 +47,11 @@ class IsolatedEvaluator(Evaluator):
                 str(input_path),
                 str(output_path),
             ]
+            if getattr(config, "verbose", False):
+                print(
+                    f"[evaluator] isolated_worker_start timeout={self.timeout_seconds}s task={task.name}",
+                    flush=True,
+                )
             try:
                 completed = subprocess.run(
                     command,
@@ -94,6 +99,11 @@ class IsolatedEvaluator(Evaluator):
                         _tail_log("isolated_worker_stdout_tail", completed.stdout),
                         _tail_log("isolated_worker_stderr_tail", completed.stderr),
                     ],
+                )
+            if getattr(config, "verbose", False):
+                print(
+                    f"[evaluator] isolated_worker_done exit_code={completed.returncode} task={task.name}",
+                    flush=True,
                 )
             result.logs.append("isolated_evaluator=candidate_subprocess")
             if completed.stderr.strip():

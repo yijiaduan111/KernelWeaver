@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -398,7 +399,26 @@ def _build_deliberation_runner(args: argparse.Namespace, run_name: str, config: 
 def _apply_deliberation(task, config: StarkConfig, runner: MultiModelDeliberationRunner | None) -> None:
     if runner is None or not config.deliberation_enabled:
         return
+    if config.verbose:
+        print(
+            f"[deliberation] start mode={config.deliberation_mode} providers={','.join(config.deliberation_providers)}",
+            flush=True,
+        )
+    started = time.time()
     task.strategy_portfolio = runner.run(task, config)
+    if config.verbose:
+        for event in runner.last_events:
+            elapsed = "" if event.elapsed_seconds is None else f" elapsed={event.elapsed_seconds:.3f}s"
+            detail = f" {event.detail}" if event.detail else ""
+            print(
+                f"[deliberation] phase={event.phase} provider={event.provider_name} status={event.status}{elapsed}{detail}",
+                flush=True,
+            )
+        strategy_count = len(task.strategy_portfolio.strategies) if task.strategy_portfolio else 0
+        print(
+            f"[deliberation] done elapsed={time.time() - started:.3f}s strategies={strategy_count}",
+            flush=True,
+        )
 
 def _close_provider(provider) -> None:
     close_fn = getattr(provider, "close", None)

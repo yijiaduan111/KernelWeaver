@@ -327,7 +327,15 @@ def _finalize_run(
 
 def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunResult:
     """Run the main STARK search loop with tree memory and debug routing."""
+    if config.verbose:
+        print(f"[workflow] root_evaluation_start task={task.name}", flush=True)
     tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
+    if config.verbose:
+        print(
+            f"[workflow] root_evaluation_done status={tree.get_node(tree.root_id).status} "
+            f"runtime={shorten_runtime(root_eval.runtime)}",
+            flush=True,
+        )
     plan_agent = PlanAgent(provider)
     code_agent = CodeAgent(provider)
     debug_agent = DebugAgent(provider)

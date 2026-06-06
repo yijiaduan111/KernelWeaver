@@ -6,8 +6,6 @@ import json
 import os
 import re
 import time
-import urllib.error
-import urllib.request
 from dataclasses import dataclass, replace
 from typing import Any
 
@@ -18,6 +16,7 @@ from ..models import AgentContext, AnchorEdit, PlanProposal, SearchNode, TaskSpe
 from ..semantics import semantic_profile_to_prompt_dict
 from ..utils import extract_anchor_names
 from .base_provider import AgentProvider
+from .http_utils import post_json_request
 
 
 @dataclass
@@ -56,13 +55,10 @@ class OpenAICompatibleProvider(AgentProvider):
 
     @staticmethod
     def _normalize_config(config: OpenAICompatibleConfig) -> OpenAICompatibleConfig:
-        if config.wire_api == "chat_completions" and not config.responses_fallback_to_chat_completions:
-            return config
-        return replace(
-            config,
-            wire_api="chat_completions",
-            responses_fallback_to_chat_completions=False,
-        )
+        wire_api = str(config.wire_api or "chat_completions").strip().lower()
+        if wire_api not in {"chat_completions", "responses"}:
+            wire_api = "chat_completions"
+        return replace(config, wire_api=wire_api)
 
     def generate_text(
         self,
@@ -330,10 +326,20 @@ class OpenAICompatibleProvider(AgentProvider):
                         return self._extract_text_from_responses(payload)
                     except RuntimeError as exc:
                         if self._should_fallback_from_responses(payload, exc):
-                            payload = self._chat_completions_request(system_prompt, user_payload, temperature)
+                            payload = self._chat_completions_request(
+                                system_prompt,
+                                user_payload,
+                                temperature,
+                                reasoning_effort,
+                            )
                             return self._extract_text_from_chat_completions(payload)
                         raise
-                payload = self._chat_completions_request(system_prompt, user_payload, temperature)
+                payload = self._chat_completions_request(
+                    system_prompt,
+                    user_payload,
+                    temperature,
+                    reasoning_effort,
+                )
                 return self._extract_text_from_chat_completions(payload)
             except TimeoutError as exc:
                 last_error = exc
@@ -349,8 +355,14 @@ class OpenAICompatibleProvider(AgentProvider):
             raise last_error
         raise RuntimeError("LLM request failed before receiving a response")
 
-    def _chat_completions_request(self, system_prompt: str, user_payload: dict[str, Any], temperature: float) -> dict[str, Any]:
-        request_body = {
+    def _chat_completions_request(
+        self,
+        system_prompt: str,
+        user_payload: dict[str, Any],
+        temperature: float,
+        reasoning_effort: str | None,
+    ) -> dict[str, Any]:
+        request_body: dict[str, Any] = {
             "model": self.config.model,
             "temperature": temperature,
             "messages": [
@@ -358,6 +370,8 @@ class OpenAICompatibleProvider(AgentProvider):
                 {"role": "user", "content": _compact_payload_text(user_payload)},
             ],
         }
+        if reasoning_effort:
+            request_body["reasoning_effort"] = reasoning_effort
         return self._post_json(self._build_endpoint("chat_completions"), request_body)
 
     def _responses_request(
@@ -400,25 +414,18 @@ class OpenAICompatibleProvider(AgentProvider):
         raise RuntimeError("LLM request failed before receiving a response")
 
     def _post_json(self, url: str, request_body: dict[str, Any]) -> dict[str, Any]:
-        request = urllib.request.Request(
+        return post_json_request(
             url=url,
-            data=json.dumps(request_body, ensure_ascii=False, separators=(",", ":")).encode("utf-8"),
+            request_body=request_body,
             headers={
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "Authorization": f"Bearer {self.config.api_key}",
                 "User-Agent": self.config.user_agent,
             },
-            method="POST",
+            timeout_seconds=self.config.timeout_seconds,
+            error_prefix="LLM request failed",
         )
-        try:
-            with urllib.request.urlopen(request, timeout=self.config.timeout_seconds) as response:
-                return json.loads(response.read().decode("utf-8"))
-        except urllib.error.HTTPError as exc:
-            detail = exc.read().decode("utf-8", errors="replace")
-            raise RuntimeError(f"LLM request failed: HTTP {exc.code}: {detail}") from exc
-        except urllib.error.URLError as exc:
-            raise RuntimeError(f"LLM request failed: {exc}") from exc
 
     def _build_endpoint(self, wire_api: str) -> str:
         base = self.config.base_url.rstrip("/")
@@ -436,18 +443,31 @@ class OpenAICompatibleProvider(AgentProvider):
         message = str(exc)
         if "Responses API returned no text output" not in message:
             return False
-        return str(payload.get("status", "")).lower() == "completed"
+        if str(payload.get("status", "")).lower() != "completed":
+            return False
+        return bool(payload.get("output") or payload.get("choices"))
 
     @staticmethod
     def _extract_text_from_chat_completions(payload: dict[str, Any]) -> str:
         choices = payload.get("choices") or []
         if not choices:
             raise RuntimeError(f"LLM response does not contain choices: {payload}")
-        message = choices[0].get("message") or {}
+        choice = choices[0] if isinstance(choices[0], dict) else {}
+        message = choice.get("message") or {}
         content = OpenAICompatibleProvider._content_to_text(message.get("content", ""))
-        if not isinstance(content, str) or not content.strip():
-            raise RuntimeError(f"LLM response content is empty: {payload}")
-        return content.strip()
+        if isinstance(content, str) and content.strip():
+            return content.strip()
+        delta_text = OpenAICompatibleProvider._content_to_text(choice.get("delta"))
+        if delta_text:
+            return delta_text
+        text = choice.get("text")
+        if isinstance(text, str) and text.strip():
+            return text.strip()
+        finish_reason = choice.get("finish_reason")
+        raise RuntimeError(
+            "LLM response content is empty "
+            f"(finish_reason={finish_reason}, has_message={bool(message)}): {payload}"
+        )
 
     @staticmethod
     def _extract_text_from_responses(payload: dict[str, Any]) -> str:
@@ -855,6 +875,9 @@ def _is_retryable_llm_error(exc: RuntimeError) -> bool:
         "connection aborted",
         "connection closed",
         "ssl",
+        "response is not valid json",
+        "response content is empty",
+        "empty reply from server",
     )
     return any(token in message for token in retryable_tokens)
 

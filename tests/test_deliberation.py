@@ -1,4 +1,5 @@
 import shutil
+import time
 import unittest
 from pathlib import Path
 
@@ -106,3 +107,34 @@ class DeliberationTests(unittest.TestCase):
         result = run_stark(task, config, MockProvider(), DemoEvaluator())
         used = [node.plan_strategy_name for node in result.nodes.values() if node.plan_strategy_name]
         self.assertTrue(any(name and name.startswith("strategy_") for name in used))
+    def test_runner_collects_in_parallel(self):
+        class SlowMock(MockProvider):
+            def __init__(self, delay: float) -> None:
+                super().__init__()
+                self.delay = delay
+
+            def generate_text(self, *args, **kwargs):
+                time.sleep(self.delay)
+                return super().generate_text(*args, **kwargs)
+
+        task = build_demo_tasks()[0]
+        config = StarkConfig(deliberation_enabled=True, deliberation_providers=["mock_a", "mock_b", "mock_c"])
+        runner = MultiModelDeliberationRunner(
+            providers={
+                "mock_a": SlowMock(0.2),
+                "mock_b": SlowMock(0.2),
+                "mock_c": SlowMock(0.2),
+            },
+            max_strategies=3,
+            strategies_per_model=1,
+        )
+        started = time.time()
+        portfolio = runner.run(task, config)
+        elapsed = time.time() - started
+        self.assertTrue(portfolio.enabled)
+        self.assertLess(elapsed, 1.0)
+        starts = [event for event in runner.last_events if event.status == "start"]
+        oks = [event for event in runner.last_events if event.status == "ok"]
+        self.assertEqual(len(starts), 6)
+        self.assertEqual(len(oks), 6)
+

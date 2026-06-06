@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 import re
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
 from ..models import StarkConfig, TaskSpec
@@ -12,6 +14,7 @@ from ..utils import extract_anchor_names
 from .merge import apply_strategy_reviews, merge_strategy_proposals
 from .schema import DeliberationStrategy, ModelProposal, ModelReview, StrategyPortfolio
 from .render import strategy_portfolio_to_prompt_dict
+from .telemetry import DeliberationEvent
 
 
 class MultiModelDeliberationRunner:
@@ -32,16 +35,69 @@ class MultiModelDeliberationRunner:
         self.proposal_temperature = proposal_temperature
         self.review_temperature = review_temperature
         self.mode = mode
+        self.last_events: list[DeliberationEvent] = []
 
     def run(self, task: TaskSpec, config: StarkConfig) -> StrategyPortfolio:
         del config
-        proposals = [self._propose(provider_name, provider, task) for provider_name, provider in self.providers.items()]
+        self.last_events = []
+        proposals = self._collect_parallel(
+            phase="propose",
+            action=lambda provider_name, provider: self._propose(provider_name, provider, task),
+        )
         portfolio = merge_strategy_proposals(proposals, max_strategies=self.max_strategies, mode=self.mode)
         if not portfolio.strategies:
             portfolio.enabled = False
             return portfolio
-        reviews = [self._review(provider_name, provider, task, portfolio) for provider_name, provider in self.providers.items()]
+        reviews = self._collect_parallel(
+            phase="review",
+            action=lambda provider_name, provider: self._review(provider_name, provider, task, portfolio),
+        )
         return apply_strategy_reviews(portfolio, reviews)
+
+    def _collect_parallel(self, phase: str, action):
+        provider_items = list(self.providers.items())
+        if not provider_items:
+            return []
+        results_by_name: dict[str, Any] = {}
+        with ThreadPoolExecutor(max_workers=max(1, len(provider_items)), thread_name_prefix=f"delib_{phase}") as executor:
+            futures = {}
+            for provider_name, provider in provider_items:
+                self.last_events.append(DeliberationEvent(phase=phase, provider_name=provider_name, status="start"))
+                futures[executor.submit(self._timed_action, provider_name, provider, action)] = provider_name
+            for future in as_completed(futures):
+                provider_name = futures[future]
+                try:
+                    result, elapsed_seconds = future.result()
+                    self.last_events.append(
+                        DeliberationEvent(
+                            phase=phase,
+                            provider_name=provider_name,
+                            status="ok",
+                            elapsed_seconds=elapsed_seconds,
+                            detail=_result_detail(result),
+                        )
+                    )
+                    results_by_name[provider_name] = result
+                except Exception as exc:
+                    self.last_events.append(
+                        DeliberationEvent(
+                            phase=phase,
+                            provider_name=provider_name,
+                            status="error",
+                            detail=str(exc),
+                        )
+                    )
+                    if phase == "propose":
+                        results_by_name[provider_name] = ModelProposal(provider_name=provider_name, status="error", error=str(exc))
+                    else:
+                        results_by_name[provider_name] = ModelReview(provider_name=provider_name, status="error", error=str(exc))
+        return [results_by_name[provider_name] for provider_name, _provider in provider_items]
+
+    @staticmethod
+    def _timed_action(provider_name: str, provider: Any, action):
+        started = time.time()
+        result = action(provider_name, provider)
+        return result, time.time() - started
 
     def close(self) -> None:
         seen: set[int] = set()
@@ -207,3 +263,11 @@ def _score(value: Any) -> float:
         return max(0.0, min(5.0, float(value)))
     except (TypeError, ValueError):
         return 0.0
+
+
+def _result_detail(result: Any) -> str:
+    if isinstance(result, ModelProposal):
+        return f"status={result.status} strategies={len(result.strategies)}"
+    if isinstance(result, ModelReview):
+        return f"status={result.status} scores={len(result.scores)}"
+    return type(result).__name__

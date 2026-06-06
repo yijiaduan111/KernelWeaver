@@ -91,7 +91,9 @@ class MockProvider(AgentProvider):
             raise ValueError("Cannot debug a node without a plan strategy.")
         strategy = task.strategy_map().get(node.plan_strategy_name)
         if strategy is None:
-            return json.dumps({"region_patches": [{"region": edit.anchor_name, "operation": edit.operation, "body": _region_body(node.code, edit.anchor_name)}]})
+            anchors = extract_anchor_names(node.code)
+            fallback_anchor = node.anchor_edits[0] if node.anchor_edits else AnchorEdit(anchor_name=(anchors[0] if anchors else "helpers"), instruction="repair", operation="replace")
+            return json.dumps({"region_patches": [{"region": fallback_anchor.anchor_name, "operation": fallback_anchor.operation, "body": _region_body(node.code, fallback_anchor.anchor_name)}]})
         edit = node.anchor_edits[0] if node.anchor_edits else AnchorEdit(anchor_name=strategy.anchor_name, instruction="repair", operation="replace")
         body = strategy.debug_body or strategy.good_body
         return json.dumps({"region_patches": [{"region": edit.anchor_name, "operation": edit.operation, "body": body}]})

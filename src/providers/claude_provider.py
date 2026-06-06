@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import json
 import time
-import urllib.error
-import urllib.request
 from dataclasses import dataclass, replace
 from typing import Any
 
@@ -19,6 +17,7 @@ from .openai_provider import (
     _optional_string,
     _retry_delay_seconds,
 )
+from .http_utils import post_json_request
 
 
 @dataclass
@@ -165,9 +164,9 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
         return f"{base}/messages"
 
     def _post_json(self, url: str, request_body: dict[str, Any]) -> dict[str, Any]:
-        request = urllib.request.Request(
+        return post_json_request(
             url=url,
-            data=json.dumps(request_body, ensure_ascii=False, separators=(",", ":")).encode("utf-8"),
+            request_body=request_body,
             headers={
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -175,16 +174,9 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
                 "anthropic-version": self.config.api_version,
                 "User-Agent": self.config.user_agent,
             },
-            method="POST",
+            timeout_seconds=self.config.timeout_seconds,
+            error_prefix="Claude request failed",
         )
-        try:
-            with urllib.request.urlopen(request, timeout=self.config.timeout_seconds) as response:
-                return json.loads(response.read().decode("utf-8"))
-        except urllib.error.HTTPError as exc:
-            detail = exc.read().decode("utf-8", errors="replace")
-            raise RuntimeError(f"Claude request failed: HTTP {exc.code}: {detail}") from exc
-        except urllib.error.URLError as exc:
-            raise RuntimeError(f"Claude request failed: {exc}") from exc
 
     @staticmethod
     def _extract_text_from_messages(payload: dict[str, Any]) -> str:

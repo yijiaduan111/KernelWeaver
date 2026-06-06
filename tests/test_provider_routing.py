@@ -11,6 +11,7 @@ class ProviderRoutingTests(unittest.TestCase):
             'run_profile': 'main',
             'provider': None,
             'agent_provider_profile': None,
+            'route_config': None,
             'plan_provider': None,
             'code_provider': None,
             'debug_provider': None,
