@@ -16,6 +16,7 @@ validation, and batch reporting stay compatible across modes.
 from __future__ import annotations
 
 from ..agents import CodeAgent, DebugAgent, PlanAgent
+from ..feedback.collector import collect_feedback_state
 from .candidate import normalize_candidate
 from .context import build_code_context, build_debug_context, build_plan_context, snapshot_node
 from .static_check import check_candidate_static
@@ -205,9 +206,9 @@ def _initialize_tree(task: TaskSpec, config: StarkConfig, evaluator) -> tuple[Tr
     return tree, root_eval, stats, debug_stats
 
 
-def _root_only_context(tree: TreeMemory, role: str) -> AgentContext:
+def _root_only_context(tree: TreeMemory, role: str, feedback_state=None) -> AgentContext:
     root = snapshot_node(tree, tree.root_id)
-    return AgentContext(role=role, current=root, root=root, related=[], leaders=[], failure=None)
+    return AgentContext(role=role, current=root, root=root, related=[], leaders=[], failure=None, feedback_state=feedback_state)
 
 
 def _release_provider(provider) -> None:
@@ -285,6 +286,7 @@ def _finalize_run(
     selection_reasons: list[str],
     selection_exclusions: list[dict[str, str]],
     workflow: str,
+    feedback_state,
 ) -> RunResult:
     best_node_id = tree.leaderboard[0] if tree.leaderboard else tree.root_id
     best_node = tree.get_node(best_node_id)
@@ -319,6 +321,7 @@ def _finalize_run(
         grounded_regions=list(task.grounded_regions),
         semantic_profile=task.semantic_profile,
         strategy_portfolio=task.strategy_portfolio,
+        feedback_state=feedback_state,
         reference_runtimes=dict(best_node.reference_runtimes),
         speedups=dict(best_node.speedups),
         primary_reference=best_node.primary_reference,
@@ -330,6 +333,7 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
     if config.verbose:
         print(f"[workflow] root_evaluation_start task={task.name}", flush=True)
     tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
+    feedback_state = collect_feedback_state(tree)
     if config.verbose:
         print(
             f"[workflow] root_evaluation_done status={tree.get_node(tree.root_id).status} "
@@ -383,7 +387,7 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
             origin = "debug"
         else:
             stats["plan_attempts"] += 1
-            proposal = plan_agent.run(task, selected_node, build_plan_context(tree, selected_id, config))
+            proposal = plan_agent.run(task, selected_node, build_plan_context(tree, selected_id, config, feedback_state))
             candidate_code, evaluation = _evaluate_plan_code(
                 task,
                 config,
@@ -400,6 +404,7 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
         tree.update_leaderboard(child.node_id, config)
         tree.refresh_pruned_nodes(config)
         _record_failure(stats, evaluation)
+        feedback_state = collect_feedback_state(tree)
 
         if config.verbose:
             print(
@@ -417,6 +422,7 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
         selection_reasons,
         selection_exclusions,
         workflow="stark",
+        feedback_state=feedback_state,
     )
 
 
@@ -428,6 +434,7 @@ def run_sampling(task: TaskSpec, config: StarkConfig, provider, evaluator) -> Ru
     for future selection or a separate debug branch.
     """
     tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
+    feedback_state = collect_feedback_state(tree)
     root_node = tree.get_node(tree.root_id)
     plan_agent = PlanAgent(provider)
     code_agent = CodeAgent(provider)
@@ -454,7 +461,7 @@ def run_sampling(task: TaskSpec, config: StarkConfig, provider, evaluator) -> Ru
         if config.verbose:
             print(f"[attempt {attempt_index}] workflow=sampling selected=root reason=sampling_root")
 
-        proposal = plan_agent.run(task, root_node, _root_only_context(tree, "plan"))
+        proposal = plan_agent.run(task, root_node, _root_only_context(tree, "plan", feedback_state))
         candidate_code, evaluation = _evaluate_plan_code(
             task,
             config,
@@ -462,12 +469,13 @@ def run_sampling(task: TaskSpec, config: StarkConfig, provider, evaluator) -> Ru
             code_agent,
             root_node,
             proposal,
-            _root_only_context(tree, "code"),
+            _root_only_context(tree, "code", feedback_state),
             stats,
         )
         child = tree.add_child(tree.root_id, candidate_code, proposal, evaluation, "plan_code")
         tree.update_leaderboard(child.node_id, config)
         _record_failure(stats, evaluation)
+        feedback_state = collect_feedback_state(tree)
 
         if config.verbose:
             print(
@@ -485,6 +493,7 @@ def run_sampling(task: TaskSpec, config: StarkConfig, provider, evaluator) -> Ru
         selection_reasons,
         selection_exclusions,
         workflow="sampling",
+        feedback_state=feedback_state,
     )
 
 
@@ -496,6 +505,7 @@ def run_search_agent(task: TaskSpec, config: StarkConfig, provider, evaluator) -
     and no role-specific dynamic context window.
     """
     tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
+    feedback_state = collect_feedback_state(tree)
 
     selection_history: list[str] = []
     selection_reasons: list[str] = []
@@ -532,6 +542,7 @@ def run_search_agent(task: TaskSpec, config: StarkConfig, provider, evaluator) -
         tree.update_leaderboard(child.node_id, config)
         tree.refresh_pruned_nodes(config)
         _record_failure(stats, evaluation)
+        feedback_state = collect_feedback_state(tree)
 
         if config.verbose:
             print(
@@ -549,6 +560,7 @@ def run_search_agent(task: TaskSpec, config: StarkConfig, provider, evaluator) -
         selection_reasons,
         selection_exclusions,
         workflow="search-agent",
+        feedback_state=feedback_state,
     )
 
 
@@ -561,6 +573,7 @@ def run_ma_only(task: TaskSpec, config: StarkConfig, provider, evaluator) -> Run
     removing strategic node selection.
     """
     tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
+    feedback_state = collect_feedback_state(tree)
     root_node = tree.get_node(tree.root_id)
     plan_agent = PlanAgent(provider)
     code_agent = CodeAgent(provider)
@@ -587,7 +600,7 @@ def run_ma_only(task: TaskSpec, config: StarkConfig, provider, evaluator) -> Run
         if config.verbose:
             print(f"[attempt {attempt_index}] workflow=ma-only selected=root reason=ma_only_root")
 
-        proposal = plan_agent.run(task, root_node, build_plan_context(tree, tree.root_id, config))
+        proposal = plan_agent.run(task, root_node, build_plan_context(tree, tree.root_id, config, feedback_state))
         candidate_code, evaluation = _evaluate_plan_code(
             task,
             config,
@@ -601,6 +614,7 @@ def run_ma_only(task: TaskSpec, config: StarkConfig, provider, evaluator) -> Run
         child = tree.add_child(tree.root_id, candidate_code, proposal, evaluation, "plan_code")
         tree.update_leaderboard(child.node_id, config)
         _record_failure(stats, evaluation)
+        feedback_state = collect_feedback_state(tree)
 
         if config.verbose:
             print(
@@ -618,6 +632,7 @@ def run_ma_only(task: TaskSpec, config: StarkConfig, provider, evaluator) -> Run
         selection_reasons,
         selection_exclusions,
         workflow="ma-only",
+        feedback_state=feedback_state,
     )
 
 
@@ -629,6 +644,7 @@ def run_reflexion(task: TaskSpec, config: StarkConfig, provider, evaluator) -> R
     debug path until the retry budget is exhausted.
     """
     tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
+    feedback_state = collect_feedback_state(tree)
     plan_agent = PlanAgent(provider)
     code_agent = CodeAgent(provider)
     debug_agent = DebugAgent(provider)
@@ -677,7 +693,7 @@ def run_reflexion(task: TaskSpec, config: StarkConfig, provider, evaluator) -> R
             current.selection_reason = selection_reason
             selection_reasons.append(selection_reason)
             stats["plan_attempts"] += 1
-            proposal = plan_agent.run(task, current, build_plan_context(tree, current_id, config))
+            proposal = plan_agent.run(task, current, build_plan_context(tree, current_id, config, feedback_state))
             candidate_code, evaluation = _evaluate_plan_code(
                 task,
                 config,
@@ -699,6 +715,7 @@ def run_reflexion(task: TaskSpec, config: StarkConfig, provider, evaluator) -> R
         child = tree.add_child(current_id, candidate_code, proposal, evaluation, origin)
         tree.update_leaderboard(child.node_id, config)
         _record_failure(stats, evaluation)
+        feedback_state = collect_feedback_state(tree)
         current_id = child.node_id
 
         if config.verbose:
@@ -717,6 +734,7 @@ def run_reflexion(task: TaskSpec, config: StarkConfig, provider, evaluator) -> R
         selection_reasons,
         selection_exclusions,
         workflow="reflexion",
+        feedback_state=feedback_state,
     )
 
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from .feedback.schema import FeedbackState
 from .deliberation.schema import StrategyPortfolio
 from .semantics.schema import SemanticProfile
 
@@ -171,6 +172,7 @@ class AgentContext:
     leaders: list[NodeSnapshot] = field(default_factory=list)
     failure: NodeSnapshot | None = None
     strategy_history: list[dict] = field(default_factory=list)
+    feedback_state: FeedbackState | None = None
 
 
 @dataclass
@@ -254,3 +256,4 @@ class RunResult:
     primary_reference: str | None = None
     semantic_profile: SemanticProfile | None = None
     strategy_portfolio: StrategyPortfolio | None = None
+    feedback_state: FeedbackState | None = None

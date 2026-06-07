@@ -40,6 +40,9 @@ class KernelbenchFlowTests(unittest.TestCase):
                 shutil.rmtree(tmpdir)
         self.assertEqual(reloaded.task_name, task.name)
         self.assertIn(reloaded.best_node_id, reloaded.nodes)
+        self.assertIsNotNone(result.feedback_state)
+        self.assertIsNotNone(reloaded.feedback_state)
+        self.assertEqual(reloaded.feedback_state.total_attempts, result.feedback_state.total_attempts)
 
 
 class KernelbenchLoaderTests(unittest.TestCase):

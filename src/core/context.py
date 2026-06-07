@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 
+from ..feedback.schema import FeedbackState
 from ..models import AgentContext, NodeSnapshot, StarkConfig
 from .tree import TreeMemory
 from ..utils import last_log_excerpt, normalized_code_hash
@@ -101,7 +102,7 @@ def _ancestors(tree: TreeMemory, node_id: str) -> set[str]:
     return ancestors
 
 
-def build_plan_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> AgentContext:
+def build_plan_context(tree: TreeMemory, node_id: str, config: StarkConfig, feedback_state: FeedbackState | None = None) -> AgentContext:
     current = snapshot_node(tree, node_id)
     root = snapshot_node(tree, tree.root_id)
     node = tree.get_node(node_id)
@@ -119,6 +120,7 @@ def build_plan_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> A
         related=_limit(_sort_snapshots(_dedupe(related)), config.context_limit),
         leaders=_limit(_dedupe_distinct_kernels(_sort_snapshots(_dedupe(leaders))), config.context_limit),
         failure=None,
+        feedback_state=feedback_state,
     )
 
 
