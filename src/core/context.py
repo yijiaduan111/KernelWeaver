@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import math
 
-from ..models import AgentContext, NodeSnapshot, SearchNode, StarkConfig
+from ..models import AgentContext, NodeSnapshot, StarkConfig
 from .tree import TreeMemory
 from ..utils import last_log_excerpt, normalized_code_hash
 
@@ -92,42 +92,14 @@ def _limit(items: list[NodeSnapshot], limit: int) -> list[NodeSnapshot]:
     return items[:limit]
 
 
+def _ancestors(tree: TreeMemory, node_id: str) -> set[str]:
+    ancestors: set[str] = set()
+    current = tree.get_node(node_id)
+    while current.parent_id is not None:
+        ancestors.add(current.parent_id)
+        current = tree.get_node(current.parent_id)
+    return ancestors
 
-
-def _build_strategy_history(tree: TreeMemory) -> list[dict]:
-    by_strategy: dict[str, list[SearchNode]] = {}
-    for node_id, node in tree.nodes.items():
-        if node_id == tree.root_id or not node.plan_strategy_name:
-            continue
-        by_strategy.setdefault(node.plan_strategy_name, []).append(node)
-
-    history: list[dict] = []
-    for strategy_name, nodes in by_strategy.items():
-        best_speedup: float | None = None
-        outcomes: list[dict] = []
-        for node in sorted(nodes, key=lambda n: n.node_id):
-            entry: dict = {"status": node.node_status}
-            if node.speedup is not None and math.isfinite(node.speedup):
-                entry["speedup"] = round(node.speedup, 3)
-                if best_speedup is None or node.speedup > best_speedup:
-                    best_speedup = node.speedup
-            if node.failure_type:
-                entry["failure_type"] = node.failure_type
-            outcomes.append(entry)
-        history.append({
-            "strategy": strategy_name,
-            "attempts": len(nodes),
-            "best_speedup": round(best_speedup, 3) if best_speedup is not None else None,
-            "outcomes": outcomes,
-        })
-
-    def _sort_key(item: dict) -> tuple:
-        sp = item["best_speedup"]
-        if sp is None:
-            return (2, 0.0)
-        return (0 if sp > 1.0 else 1, -sp)
-
-    return sorted(history, key=_sort_key)
 
 def build_plan_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> AgentContext:
     current = snapshot_node(tree, node_id)
@@ -147,7 +119,6 @@ def build_plan_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> A
         related=_limit(_sort_snapshots(_dedupe(related)), config.context_limit),
         leaders=_limit(_dedupe_distinct_kernels(_sort_snapshots(_dedupe(leaders))), config.context_limit),
         failure=None,
-        strategy_history=_build_strategy_history(tree),
     )
 
 
@@ -157,12 +128,18 @@ def build_code_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> A
     node = tree.get_node(node_id)
     related_ids = list(node.child_ids) + tree.cousin_child_ids(node_id)
     related = [snapshot_node(tree, related_id) for related_id in related_ids]
+    current_ancestors = _ancestors(tree, node_id)
+    code_leaders = [
+        snapshot_node(tree, leader_id)
+        for leader_id in tree.leaderboard
+        if leader_id != node_id and leader_id not in current_ancestors
+    ]
     return AgentContext(
         role="code",
         current=current,
         root=root,
         related=_limit(_sort_snapshots(_dedupe(related)), config.context_limit),
-        leaders=[],
+        leaders=_limit(_dedupe_distinct_kernels(_sort_snapshots(_dedupe(code_leaders))), 2),
         failure=None,
     )
 
