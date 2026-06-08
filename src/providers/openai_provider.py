@@ -134,27 +134,37 @@ class OpenAICompatibleProvider(AgentProvider):
         anchors = extract_anchor_names(node.code)
         if not anchors:
             raise ValueError("No grounded instruction anchors found in source code.")
+        active_anchors = list(context.active_anchors) or anchors
+        frozen_anchors = [name for name in context.frozen_anchors if name in anchors and name not in active_anchors]
+        best_speedup = (context.best_node.speedup if context.best_node else None) or 0.0
+        best_kernel_code = context.best_kernel_code if best_speedup > 1.5 else None
         prompt = (
             "You are the planning agent in a STARK-style workflow. Return JSON only.\n"
             "Choose one optimization strategy and decide which code region should be edited.\n"
             "The loader provides generic structural anchors plus a semantic_profile and execution_facts; use them to choose the optimization intent and edit target.\n"
             "Required JSON schema: "
-            '{"strategy_name":"...","strategy_summary":"...","expected_gain":"...","risk_notes":"...","anchor_edits":[{"anchor_name":"...","instruction":"...","operation":"replace"}]}\n'
+            '{"strategy_name":"...","strategy_summary":"...","expected_gain":"...","risk_notes":"...","mode":"explore|refine","target_node_id":"...","target_anchors":["..."],"frozen_anchors":["..."],"change_budget":"small|medium","must_preserve":["..."],"reason_against_rewrite":"...","anchor_edits":[{"anchor_name":"...","instruction":"...","operation":"replace"}]}\n'
             "Use only anchor names from the provided anchors. operation must be replace or append. "
             "Each instruction must be concrete enough for the coding agent to implement without changing unrelated scaffold. "
             "If task_metadata.strategy_portfolio is present, set strategy_name to one selected strategy_id from it, "
-            "Use feedback_state to guide selection: prefer strategies not yet attempted; if a strategy achieved speedup > 1.0, consider refinement variants; avoid strategies with only compile failures unless you have a concrete fix."
+            "Use feedback_state to guide selection: prefer strategies not yet attempted; if a strategy achieved speedup > 1.0, consider refinement variants; avoid strategies with only compile failures unless you have a concrete fix. "
+            "If best_kernel_summary is present and best speedup > 1.5, default to refinement: preserve the working kernel structure, edit only active anchors, and keep frozen anchors unchanged."
         ) + _task_prompt_suffix(task, role="plan")
         user = {
             "task_name": task.name,
             "task_description": task.description,
             "task_metadata": _task_metadata(task),
-            "available_anchors": anchors,
+            "available_anchors": active_anchors,
+            "all_anchors": anchors,
+            "frozen_anchors": frozen_anchors,
             "feedback_state": feedback_state_to_prompt_dict(context.feedback_state),
             "current_node": _snapshot_to_dict(context.current),
             "root_node": _snapshot_to_dict(context.root),
             "leader_nodes": [_snapshot_to_dict(item) for item in context.leaders],
             "related_nodes": [_snapshot_to_dict(item) for item in context.related],
+            "best_node": _snapshot_to_dict(context.best_node) if context.best_node else None,
+            "best_kernel_summary": context.best_kernel_summary,
+            "best_kernel_code": best_kernel_code,
             "current_code": node.code,
         }
         content = self._chat(
@@ -178,6 +188,13 @@ class OpenAICompatibleProvider(AgentProvider):
             anchor_edits=edits,
             expected_gain=data["expected_gain"],
             risk_notes=data.get("risk_notes", ""),
+            mode=str(data.get("mode", "explore")),
+            target_node_id=data.get("target_node_id") or node.node_id,
+            target_anchors=list(data.get("target_anchors") or [edit.anchor_name for edit in edits]),
+            frozen_anchors=list(data.get("frozen_anchors") or frozen_anchors),
+            change_budget=str(data.get("change_budget", "medium")),
+            must_preserve=[str(item) for item in (data.get("must_preserve") or [])],
+            reason_against_rewrite=str(data.get("reason_against_rewrite", "")),
         )
 
     def generate_search_candidate(
@@ -224,6 +241,12 @@ class OpenAICompatibleProvider(AgentProvider):
         proposal: PlanProposal,
         context: AgentContext,
     ) -> str:
+        requested_regions = list(proposal.target_anchors or [edit.anchor_name for edit in proposal.anchor_edits])
+        filtered_best_excerpt = {
+            anchor: body
+            for anchor, body in (context.best_kernel_excerpt or {}).items()
+            if not requested_regions or anchor in requested_regions
+        }
         prompt = (
             "You are the coding agent in a STARK-style workflow. Return JSON only.\n"
             "Do not return a full Python file and do not include markdown fences.\n"
@@ -233,7 +256,8 @@ class OpenAICompatibleProvider(AgentProvider):
             "Never include # <<<IMPROVE:...>>> or # <<<END_IMPROVE>>> marker comments in a body.\n"
             "You may write complete CUDA kernels, helper functions, launchers, pybind bindings, and fallback logic inside their regions.\n"
             "Preserve task semantics, ModelNew/forward signatures, evaluator I/O, and protected scaffold.\n"
-            "Use semantic_profile and strategy_portfolio only as implementation hints."
+            "Use semantic_profile and strategy_portfolio only as implementation hints. "
+            "If plan.mode is refine, preserve the current working kernel structure, only edit plan.target_anchors, never touch plan.frozen_anchors, and prefer minimal delta patches over rewrites."
         ) + _task_prompt_suffix(task, role="code")
         user = {
             "task_name": task.name,
@@ -241,12 +265,23 @@ class OpenAICompatibleProvider(AgentProvider):
             "task_metadata": _task_metadata(task),
             "available_anchors": extract_anchor_names(node.code),
             "available_regions": extract_anchor_names(node.code),
-            "requested_regions": [edit.anchor_name for edit in proposal.anchor_edits],
+            "requested_regions": requested_regions,
+            "best_kernel_excerpt": filtered_best_excerpt,
+            "best_kernel_summary": context.best_kernel_summary,
+            "active_anchors": list(context.active_anchors),
+            "frozen_anchors": list(context.frozen_anchors),
             "plan": {
                 "strategy_name": proposal.strategy_name,
                 "strategy_summary": proposal.strategy_summary,
                 "expected_gain": proposal.expected_gain,
                 "risk_notes": proposal.risk_notes,
+                "mode": proposal.mode,
+                "target_node_id": proposal.target_node_id,
+                "target_anchors": list(proposal.target_anchors),
+                "frozen_anchors": list(proposal.frozen_anchors),
+                "change_budget": proposal.change_budget,
+                "must_preserve": list(proposal.must_preserve),
+                "reason_against_rewrite": proposal.reason_against_rewrite,
                 "anchor_edits": [
                     {
                         "anchor_name": edit.anchor_name,
@@ -269,7 +304,7 @@ class OpenAICompatibleProvider(AgentProvider):
         )
         return _normalize_patch_response(
             response_text=content,
-            allowed_regions={edit.anchor_name: edit.operation for edit in proposal.anchor_edits},
+            allowed_regions={name: "replace" for name in requested_regions},
         )
 
     def debug_code(self, task: TaskSpec, node: SearchNode, context: AgentContext) -> str:
@@ -600,6 +635,11 @@ def _task_prompt_suffix(task: TaskSpec, role: str) -> str:
                 "\nThis task comes from the real KernelBench benchmark and is evaluated on CUDA. "
                 "Return the requested planning JSON only and do not include markdown fences or prose."
             )
+        elif role in {"code", "debug"}:
+            base = (
+                "\nThis task comes from the real KernelBench benchmark and is evaluated on CUDA. "
+                "Return the requested region-patch JSON only and do not include markdown fences or prose."
+            )
         elif role == "search":
             base = (
                 "\nThis task comes from the real KernelBench benchmark and is evaluated on CUDA. "
@@ -626,6 +666,14 @@ def _task_prompt_suffix(task: TaskSpec, role: str) -> str:
                 + f" Select the most relevant edit target from the provided structural anchors ({anchor_hint}). "
                 + "Do not assume any handwritten adapter has pre-selected the target; infer the best region from the raw KernelBench ModelNew code and current feedback. "
                 + "Preserve the generated scaffold and keep ModelNew as the entry class."
+                + backend_hint
+                + profile_hint
+            )
+        if role in {"code", "debug"}:
+            return (
+                base
+                + " Restrict edits to the requested anchored regions, keep the scaffold outside those regions unchanged, "
+                + "preserve the ModelNew interface and evaluator contract, and never emit a full-module rewrite."
                 + backend_hint
                 + profile_hint
             )

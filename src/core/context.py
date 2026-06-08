@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import math
+import re
 
 from ..feedback.schema import FeedbackState
 from ..models import AgentContext, NodeSnapshot, StarkConfig
+from .anchor_policy import compute_anchor_policy
+from .regions import extract_region_names
 from .tree import TreeMemory
 from ..utils import last_log_excerpt, normalized_code_hash
 
@@ -102,7 +105,59 @@ def _ancestors(tree: TreeMemory, node_id: str) -> set[str]:
     return ancestors
 
 
-def build_plan_context(tree: TreeMemory, node_id: str, config: StarkConfig, feedback_state: FeedbackState | None = None) -> AgentContext:
+def _best_node_id(tree: TreeMemory, node_id: str) -> str | None:
+    candidates = [leader_id for leader_id in tree.leaderboard if leader_id != node_id]
+    if candidates:
+        return candidates[0]
+    return tree.root_id if tree.root_id != node_id else None
+
+
+def _extract_region_excerpt(source_code: str, region: str, max_chars: int = 1200) -> str | None:
+    pattern = re.compile(
+        r"(?ms)^[ \t]*#\s*<<<IMPROVE:" + re.escape(region) + r">>>(?:\r?\n)(?P<body>.*?)(^[ \t]*#\s*<<<END_IMPROVE>>>)"
+    )
+    match = pattern.search(source_code)
+    if not match:
+        return None
+    body = match.group("body").strip("\n")
+    return body[:max_chars]
+
+
+def _build_best_kernel_summary(snapshot: NodeSnapshot | None, code: str | None) -> dict | None:
+    if snapshot is None or code is None:
+        return None
+    return {
+        "node_id": snapshot.node_id,
+        "speedup": snapshot.speedup,
+        "plan_strategy_name": snapshot.plan_strategy_name,
+        "status": snapshot.status,
+        "edited_anchors": extract_region_names(code),
+    }
+
+
+def _context_best_kernel(
+    tree: TreeMemory,
+    task,
+    node_id: str,
+    feedback_state: FeedbackState | None,
+) -> tuple[NodeSnapshot | None, str | None, dict[str, str], dict | None, list[str], list[str]]:
+    best_id = _best_node_id(tree, node_id)
+    if best_id is None:
+        return None, None, {}, None, [], []
+    best_node = tree.get_node(best_id)
+    best_snapshot = snapshot_node(tree, best_id)
+    best_code = best_node.code
+    policy = compute_anchor_policy(task, tree.get_node(node_id), feedback_state)
+    excerpts = {
+        anchor: excerpt
+        for anchor in policy.active
+        if (excerpt := _extract_region_excerpt(best_code, anchor))
+    }
+    summary = _build_best_kernel_summary(best_snapshot, best_code)
+    return best_snapshot, best_code, excerpts, summary, list(policy.active), list(policy.frozen)
+
+
+def build_plan_context(tree: TreeMemory, task, node_id: str, config: StarkConfig, feedback_state: FeedbackState | None = None) -> AgentContext:
     current = snapshot_node(tree, node_id)
     root = snapshot_node(tree, tree.root_id)
     node = tree.get_node(node_id)
@@ -113,6 +168,12 @@ def build_plan_context(tree: TreeMemory, node_id: str, config: StarkConfig, feed
         for leader_id in tree.leaderboard
         if leader_id not in subtree
     ]
+    best_node, best_code, best_excerpt, best_summary, active_anchors, frozen_anchors = _context_best_kernel(
+        tree,
+        task,
+        node_id,
+        feedback_state,
+    )
     return AgentContext(
         role="plan",
         current=current,
@@ -121,10 +182,16 @@ def build_plan_context(tree: TreeMemory, node_id: str, config: StarkConfig, feed
         leaders=_limit(_dedupe_distinct_kernels(_sort_snapshots(_dedupe(leaders))), config.context_limit),
         failure=None,
         feedback_state=feedback_state,
+        best_node=best_node,
+        best_kernel_code=best_code,
+        best_kernel_excerpt=best_excerpt,
+        best_kernel_summary=best_summary,
+        active_anchors=active_anchors,
+        frozen_anchors=frozen_anchors,
     )
 
 
-def build_code_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> AgentContext:
+def build_code_context(tree: TreeMemory, task, node_id: str, config: StarkConfig, feedback_state: FeedbackState | None = None) -> AgentContext:
     current = snapshot_node(tree, node_id)
     root = snapshot_node(tree, tree.root_id)
     node = tree.get_node(node_id)
@@ -136,6 +203,12 @@ def build_code_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> A
         for leader_id in tree.leaderboard
         if leader_id != node_id and leader_id not in current_ancestors
     ]
+    best_node, best_code, best_excerpt, best_summary, active_anchors, frozen_anchors = _context_best_kernel(
+        tree,
+        task,
+        node_id,
+        feedback_state,
+    )
     return AgentContext(
         role="code",
         current=current,
@@ -143,13 +216,26 @@ def build_code_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> A
         related=_limit(_sort_snapshots(_dedupe(related)), config.context_limit),
         leaders=_limit(_dedupe_distinct_kernels(_sort_snapshots(_dedupe(code_leaders))), 2),
         failure=None,
+        feedback_state=feedback_state,
+        best_node=best_node,
+        best_kernel_code=best_code,
+        best_kernel_excerpt=best_excerpt,
+        best_kernel_summary=best_summary,
+        active_anchors=active_anchors,
+        frozen_anchors=frozen_anchors,
     )
 
 
-def build_debug_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> AgentContext:
+def build_debug_context(tree: TreeMemory, task, node_id: str, config: StarkConfig, feedback_state: FeedbackState | None = None) -> AgentContext:
     current = snapshot_node(tree, node_id)
     root = snapshot_node(tree, tree.root_id)
     siblings = [snapshot_node(tree, sibling_id) for sibling_id in tree.sibling_ids(node_id)]
+    best_node, best_code, best_excerpt, best_summary, active_anchors, frozen_anchors = _context_best_kernel(
+        tree,
+        task,
+        node_id,
+        feedback_state,
+    )
     return AgentContext(
         role="debug",
         current=current,
@@ -157,4 +243,11 @@ def build_debug_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> 
         related=_limit(_sort_snapshots(_dedupe(siblings)), config.context_limit),
         leaders=[],
         failure=current if current.latest_failure_stage is not None else None,
+        feedback_state=feedback_state,
+        best_node=best_node,
+        best_kernel_code=best_code,
+        best_kernel_excerpt=best_excerpt,
+        best_kernel_summary=best_summary,
+        active_anchors=active_anchors,
+        frozen_anchors=frozen_anchors,
     )

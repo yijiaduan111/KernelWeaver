@@ -5,6 +5,7 @@ from .render import semantic_profile_to_prompt_dict
 from .schema import (
     OptimizationIntent,
     SemanticAnchorProfile,
+    SemanticFactProfile,
     SemanticProfile,
     semantic_profile_from_dict,
     semantic_profile_to_dict,
@@ -14,6 +15,7 @@ __all__ = [
     "OptimizationIntent",
     "SemanticAnchorProfile",
     "SemanticAnalyzer",
+    "SemanticFactProfile",
     "SemanticProfile",
     "semantic_profile_from_dict",
     "semantic_profile_to_dict",

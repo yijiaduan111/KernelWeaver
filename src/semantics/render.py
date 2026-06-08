@@ -15,8 +15,7 @@ def semantic_profile_to_prompt_dict(profile: SemanticProfile | None, max_anchor_
         "mode": profile.mode,
         "op_type": profile.op_type,
         "summary": profile.summary,
-        "workload_tag": profile.workload_tag,
-        "bottleneck_hint": profile.bottleneck_hint,
+        "exact_facts": _exact_facts_to_prompt_dict(profile.exact_facts),
         "recommended_anchors": list(profile.recommended_anchors[:limit]),
         "optimization_intents": [
             {
@@ -41,4 +40,15 @@ def semantic_profile_to_prompt_dict(profile: SemanticProfile | None, max_anchor_
             for anchor in profile.anchors[:limit]
         ],
         "risk_notes": profile.risk_notes[:5],
+    }
+
+
+def _exact_facts_to_prompt_dict(profile) -> dict[str, Any] | None:
+    if profile is None or profile.kind == "unknown":
+        return None
+    return {
+        "kind": profile.kind,
+        "details": dict(profile.details),
+        "confidence": profile.confidence,
+        "notes": list(profile.notes[:6]),
     }

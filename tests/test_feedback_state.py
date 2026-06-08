@@ -41,3 +41,4 @@ class FeedbackStateTests(unittest.TestCase):
         self.assertIsNotNone(reloaded.feedback_state)
         self.assertEqual(reloaded.feedback_state.total_attempts, result.feedback_state.total_attempts)
         self.assertEqual(reloaded.feedback_state.phase, result.feedback_state.phase)
+        self.assertEqual(reloaded.feedback_state.best_strategy_name, result.feedback_state.best_strategy_name)

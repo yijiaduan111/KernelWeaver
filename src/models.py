@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Literal
 
 from .core.execution_facts import ExecutionFacts
 from .feedback.schema import FeedbackState
@@ -83,6 +83,13 @@ class PlanProposal:
     anchor_edits: list[AnchorEdit]
     expected_gain: str
     risk_notes: str = ""
+    mode: Literal["explore", "refine"] = "explore"
+    target_node_id: str | None = None
+    target_anchors: list[str] = field(default_factory=list)
+    frozen_anchors: list[str] = field(default_factory=list)
+    change_budget: Literal["small", "medium"] = "medium"
+    must_preserve: list[str] = field(default_factory=list)
+    reason_against_rewrite: str = ""
 
 
 @dataclass
@@ -175,6 +182,12 @@ class AgentContext:
     failure: NodeSnapshot | None = None
     strategy_history: list[dict] = field(default_factory=list)
     feedback_state: FeedbackState | None = None
+    best_node: NodeSnapshot | None = None
+    best_kernel_code: str | None = None
+    best_kernel_excerpt: dict[str, str] = field(default_factory=dict)
+    best_kernel_summary: dict[str, Any] | None = None
+    active_anchors: list[str] = field(default_factory=list)
+    frozen_anchors: list[str] = field(default_factory=list)
 
 
 @dataclass

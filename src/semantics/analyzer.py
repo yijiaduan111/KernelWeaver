@@ -4,9 +4,10 @@ from __future__ import annotations
 
 from typing import Any
 
-from ..core.execution_facts import ExecutionFacts, infer_workload_profile
+from ..core.execution_facts import ExecutionFacts
+from .exact_facts import derive_exact_semantic_facts
 from .patterns import classify_statement
-from .schema import OptimizationIntent, SemanticAnchorProfile, SemanticProfile
+from .schema import OptimizationIntent, SemanticAnchorProfile, SemanticFactProfile, SemanticProfile
 
 
 class SemanticAnalyzer:
@@ -36,17 +37,16 @@ class SemanticAnalyzer:
         forward_anchors = [anchor for anchor in anchors if anchor.region_role == "forward"]
         task_op_type = self._task_op_type(forward_anchors, task_hint)
         recommended = self._recommended_anchors(anchors, backend, max_anchor_hints)
+        exact_facts = derive_exact_semantic_facts(problem_info, task_op_type, execution_facts)
         intents = _intents_for(task_op_type, recommended, backend)
-        risks = _risk_notes_for(task_op_type)
-        workload_tag, bottleneck_hint = infer_workload_profile(task_op_type, execution_facts)
+        risks = _risk_notes_for(task_op_type, exact_facts)
         return SemanticProfile(
             enabled=True,
             mode="rule",
             op_type=task_op_type,
-            summary=_summary_for(task_op_type),
+            summary=_summary_for(task_op_type, exact_facts),
             source=str(getattr(problem_info, "path", "")) or None,
-            workload_tag=workload_tag,
-            bottleneck_hint=bottleneck_hint,
+            exact_facts=exact_facts,
             recommended_anchors=recommended,
             anchors=anchors[:max_anchor_hints],
             optimization_intents=intents,
@@ -73,7 +73,7 @@ class SemanticAnalyzer:
                     op_names=match.op_names[:12],
                     optimization_intents=_anchor_intent_names(semantic_type),
                     backend_hints=_anchor_backend_hints(semantic_type, backend),
-                    risk_notes=_risk_notes_for(semantic_type),
+                    risk_notes=_risk_notes_for(semantic_type, None),
                     priority=_anchor_priority(name, role, semantic_type),
                 )
             )
@@ -175,7 +175,7 @@ def _intents_for(op_type: str, target_anchors: list[str], backend: str) -> list[
             summary=_intent_summary(name),
             target_anchors=list(target_anchors),
             backend_hints=hints,
-            risk_notes=_risk_notes_for(op_type),
+            risk_notes=_risk_notes_for(op_type, None),
             priority=max(1, 5 - index),
         )
         for index, name in enumerate(names)
@@ -207,7 +207,7 @@ def _backend_hints_for(op_type: str) -> dict[str, list[str]]:
     return common
 
 
-def _risk_notes_for(op_type: str) -> list[str]:
+def _risk_notes_for(op_type: str, exact_facts: SemanticFactProfile | None) -> list[str]:
     mapping = {
         "elementwise": ["preserve exact activation math and broadcasting", "check fast-math numerical tolerance"],
         "reduction": ["preserve reduction dimension and keepdim behavior", "handle non-divisible sizes and boundary masks"],
@@ -218,13 +218,16 @@ def _risk_notes_for(op_type: str) -> list[str]:
         "attention": ["preserve Q/K/V order, scaling, mask, and softmax axis", "watch numerical stability"],
         "loss": ["preserve reduction mode and label semantics", "watch numerical stability"],
     }
-    return mapping.get(op_type, ["inspect shape, dtype, and broadcasting assumptions before editing"])
+    notes = list(mapping.get(op_type, ["inspect shape, dtype, and broadcasting assumptions before editing"]))
+    if exact_facts is not None and exact_facts.kind != "unknown":
+        notes.extend(exact_facts.notes[:2])
+    return notes
 
 
-def _summary_for(op_type: str) -> str:
+def _summary_for(op_type: str, exact_facts: SemanticFactProfile | None) -> str:
     summaries = {
         "elementwise": "Elementwise computation; likely optimization is fusing pointwise math and avoiding intermediate tensors.",
-        "reduction": "Reduction computation; likely optimization is preserving the reduced axis while using block/warp reductions.",
+        "reduction": "Reduction computation; preserve the reduced axis while using block/warp reductions.",
         "normalization": "Normalization computation; preserve statistics axes, epsilon, and affine state while fusing where safe.",
         "matmul": "Matrix multiplication style computation; preserve dimensions and consider tiled implementations.",
         "convolution": "Convolution style computation; preserve module state and spatial layout.",
@@ -232,7 +235,10 @@ def _summary_for(op_type: str) -> str:
         "attention": "Attention computation; preserve Q/K/V, scaling, masks, and softmax semantics.",
         "loss": "Loss computation; preserve label semantics and reduction mode.",
     }
-    return summaries.get(op_type, "No strong semantic pattern was recognized; inspect the forward code before editing.")
+    summary = summaries.get(op_type, "No strong semantic pattern was recognized; inspect the forward code before editing.")
+    if exact_facts is not None and exact_facts.kind != "unknown":
+        summary += f" Exact operator facts available: {exact_facts.kind}."
+    return summary
 
 
 def _intent_summary(name: str) -> str:

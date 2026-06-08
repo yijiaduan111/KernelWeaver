@@ -34,6 +34,16 @@ class SemanticAnchorProfile:
 
 
 @dataclass
+class SemanticFactProfile:
+    """Operator-specific exact facts derived from raw execution facts when provable."""
+
+    kind: str = "unknown"
+    details: dict[str, Any] = field(default_factory=dict)
+    confidence: str = "unknown"
+    notes: list[str] = field(default_factory=list)
+
+
+@dataclass
 class SemanticProfile:
     """Compact task-level semantic summary used by planning prompts."""
 
@@ -42,8 +52,7 @@ class SemanticProfile:
     op_type: str = "unknown"
     summary: str = "No semantic pattern was recognized."
     source: str | None = None
-    workload_tag: str | None = None
-    bottleneck_hint: str | None = None
+    exact_facts: SemanticFactProfile | None = None
     recommended_anchors: list[str] = field(default_factory=list)
     anchors: list[SemanticAnchorProfile] = field(default_factory=list)
     optimization_intents: list[OptimizationIntent] = field(default_factory=list)
@@ -86,14 +95,22 @@ def semantic_profile_from_dict(payload: dict[str, Any] | None) -> SemanticProfil
         for item in payload.get("optimization_intents", [])
         if isinstance(item, dict)
     ]
+    exact_payload = payload.get("exact_facts") if isinstance(payload.get("exact_facts"), dict) else None
+    exact_facts = None
+    if exact_payload is not None:
+        exact_facts = SemanticFactProfile(
+            kind=str(exact_payload.get("kind", "unknown")),
+            details=dict(exact_payload.get("details") or {}),
+            confidence=str(exact_payload.get("confidence", "unknown")),
+            notes=list(exact_payload.get("notes") or []),
+        )
     return SemanticProfile(
         enabled=bool(payload.get("enabled", True)),
         mode=str(payload.get("mode", "rule")),
         op_type=str(payload.get("op_type", "unknown")),
         summary=str(payload.get("summary", "No semantic pattern was recognized.")),
         source=payload.get("source"),
-        workload_tag=payload.get("workload_tag"),
-        bottleneck_hint=payload.get("bottleneck_hint"),
+        exact_facts=exact_facts,
         recommended_anchors=list(payload.get("recommended_anchors") or []),
         anchors=anchors,
         optimization_intents=intents,

@@ -13,7 +13,7 @@ import torch
 import torch.nn as nn
 from torch.utils.cpp_extension import load_inline
 
-# <<<IMPROVE:helpers>>>
+# <<<IMPROVE:user_helpers>>>
 # helper
 # <<<END_IMPROVE>>>
 CUDA_CPP_SRC = r"""
@@ -205,7 +205,7 @@ def test_region_patch_rejects_anchor_name_alias():
 
 
 def test_user_helpers_region_uses_python_hygiene():
-    parent = PARENT.replace("# <<<IMPROVE:helpers>>>", "# <<<IMPROVE:user_helpers>>>")
+    parent = PARENT
     raw = json.dumps({
         "region_patches": [
             {
@@ -221,6 +221,38 @@ def test_user_helpers_region_uses_python_hygiene():
     assert "x.is_cuda()" not in result.code
     assert "applied_region_patch:user_helpers:replace" in result.logs
     assert check_candidate_static(result.code, backend="cuda").ok
+
+
+def test_region_patch_rejects_inactive_region():
+    raw = json.dumps({
+        "region_patches": [
+            {
+                "region": "forward_stmt_1",
+                "operation": "replace",
+                "body": "return x + 1",
+            }
+        ]
+    })
+    result = normalize_candidate(PARENT, raw, allowed_regions={"cuda_cu"}, frozen_regions=set())
+    assert not result.ok
+    assert result.failure_type == "region_apply_failed"
+    assert "not active" in result.logs[0]
+
+
+def test_region_patch_rejects_frozen_region():
+    raw = json.dumps({
+        "region_patches": [
+            {
+                "region": "cuda_cpp",
+                "operation": "replace",
+                "body": "#include <torch/extension.h>",
+            }
+        ]
+    })
+    result = normalize_candidate(PARENT, raw, allowed_regions={"cuda_cpp"}, frozen_regions={"cuda_cpp"})
+    assert not result.ok
+    assert result.failure_type == "region_apply_failed"
+    assert "frozen" in result.logs[0]
 
 
 def test_region_patch_does_not_rewrite_cuda_body_api_names():

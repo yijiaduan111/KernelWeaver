@@ -41,7 +41,13 @@ def region_exists(source_code: str, region: str) -> bool:
     return region in extract_region_names(source_code)
 
 
-def apply_region_patches(source_code: str, patches: list[RegionPatch]) -> RegionApplyResult:
+def apply_region_patches(
+    source_code: str,
+    patches: list[RegionPatch],
+    *,
+    allowed_regions: set[str] | None = None,
+    frozen_regions: set[str] | None = None,
+) -> RegionApplyResult:
     """Apply region-body patches while preserving all marker comments."""
     if not patches:
         raise ValueError("region_patches must be a non-empty list")
@@ -60,6 +66,10 @@ def apply_region_patches(source_code: str, patches: list[RegionPatch]) -> Region
         seen.add(name)
         if name not in available:
             raise ValueError(f"editable region '{name}' not found; available={available}")
+        if allowed_regions is not None and name not in allowed_regions:
+            raise ValueError(f"region '{name}' is not active in current refinement policy")
+        if frozen_regions is not None and name in frozen_regions:
+            raise ValueError(f"region '{name}' is frozen in current refinement policy")
         operation = patch.operation.strip().lower() or "replace"
         if operation not in {"replace", "append"}:
             raise ValueError(f"unsupported region operation for {name}: {operation}")

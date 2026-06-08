@@ -113,8 +113,20 @@ def _attach_logs(evaluation: EvaluationResult, prefix_logs: list[str]) -> Evalua
     return evaluation
 
 
-def _prepare_candidate_for_evaluation(task: TaskSpec, parent_code: str, raw_candidate: str) -> tuple[str, list[str], EvaluationResult | None]:
-    normalized = normalize_candidate(parent_code, raw_candidate)
+def _prepare_candidate_for_evaluation(
+    task: TaskSpec,
+    parent_code: str,
+    raw_candidate: str,
+    *,
+    allowed_regions: set[str] | None = None,
+    frozen_regions: set[str] | None = None,
+) -> tuple[str, list[str], EvaluationResult | None]:
+    normalized = normalize_candidate(
+        parent_code,
+        raw_candidate,
+        allowed_regions=allowed_regions,
+        frozen_regions=frozen_regions,
+    )
     if not normalized.ok:
         return normalized.code, [], _guard_failure(normalized.failure_type or "invalid_candidate", normalized.logs)
     static_result = check_candidate_static(normalized.code, backend=task.backend)
@@ -166,6 +178,13 @@ def _build_debug_proposal(node: SearchNode) -> PlanProposal:
         anchor_edits=list(node.anchor_edits),
         expected_gain="Recover a failing candidate with a local fix.",
         risk_notes="Debug route applies the smallest viable local repair.",
+        mode="refine",
+        target_node_id=node.node_id,
+        target_anchors=[edit.anchor_name for edit in node.anchor_edits],
+        frozen_anchors=[],
+        change_budget="small",
+        must_preserve=["Keep the current working structure intact while repairing the failure."],
+        reason_against_rewrite="Debug should make the smallest local fix.",
     )
 
 
@@ -244,7 +263,13 @@ def _evaluate_plan_code(
         stats["invalid_proposals"] += 1
         return selected_node.code, _invalid_anchor_evaluation(selected_node.code, proposal)
     raw_candidate = code_agent.run(task, selected_node, proposal, code_context)
-    candidate_code, candidate_logs, guard_evaluation = _prepare_candidate_for_evaluation(task, selected_node.code, raw_candidate)
+    candidate_code, candidate_logs, guard_evaluation = _prepare_candidate_for_evaluation(
+        task,
+        selected_node.code,
+        raw_candidate,
+        allowed_regions=set(proposal.target_anchors or [edit.anchor_name for edit in proposal.anchor_edits]),
+        frozen_regions=set(proposal.frozen_anchors),
+    )
     if guard_evaluation is not None:
         return candidate_code, guard_evaluation
     if not _anchors_preserved(selected_node.code, candidate_code):
@@ -265,7 +290,13 @@ def _evaluate_debug(
 ) -> tuple[PlanProposal, str, EvaluationResult]:
     raw_candidate = debug_agent.run(task, selected_node, debug_context)
     proposal = _build_debug_proposal(selected_node)
-    candidate_code, candidate_logs, guard_evaluation = _prepare_candidate_for_evaluation(task, selected_node.code, raw_candidate)
+    candidate_code, candidate_logs, guard_evaluation = _prepare_candidate_for_evaluation(
+        task,
+        selected_node.code,
+        raw_candidate,
+        allowed_regions=set(edit.anchor_name for edit in proposal.anchor_edits),
+        frozen_regions=set(),
+    )
     if guard_evaluation is not None:
         return proposal, candidate_code, guard_evaluation
     if not _anchors_preserved(selected_node.code, candidate_code):
@@ -382,12 +413,12 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
                 evaluator,
                 debug_agent,
                 selected_node,
-                build_debug_context(tree, selected_id, config),
+                build_debug_context(tree, task, selected_id, config, feedback_state),
             )
             origin = "debug"
         else:
             stats["plan_attempts"] += 1
-            proposal = plan_agent.run(task, selected_node, build_plan_context(tree, selected_id, config, feedback_state))
+            proposal = plan_agent.run(task, selected_node, build_plan_context(tree, task, selected_id, config, feedback_state))
             candidate_code, evaluation = _evaluate_plan_code(
                 task,
                 config,
@@ -395,7 +426,7 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
                 code_agent,
                 selected_node,
                 proposal,
-                build_code_context(tree, selected_id, config),
+                build_code_context(tree, task, selected_id, config, feedback_state),
                 stats,
             )
             origin = "plan_code"
@@ -600,7 +631,7 @@ def run_ma_only(task: TaskSpec, config: StarkConfig, provider, evaluator) -> Run
         if config.verbose:
             print(f"[attempt {attempt_index}] workflow=ma-only selected=root reason=ma_only_root")
 
-        proposal = plan_agent.run(task, root_node, build_plan_context(tree, tree.root_id, config, feedback_state))
+        proposal = plan_agent.run(task, root_node, build_plan_context(tree, task, tree.root_id, config, feedback_state))
         candidate_code, evaluation = _evaluate_plan_code(
             task,
             config,
@@ -608,7 +639,7 @@ def run_ma_only(task: TaskSpec, config: StarkConfig, provider, evaluator) -> Run
             code_agent,
             root_node,
             proposal,
-            build_code_context(tree, tree.root_id, config),
+            build_code_context(tree, task, tree.root_id, config, feedback_state),
             stats,
         )
         child = tree.add_child(tree.root_id, candidate_code, proposal, evaluation, "plan_code")
@@ -685,7 +716,7 @@ def run_reflexion(task: TaskSpec, config: StarkConfig, provider, evaluator) -> R
                 evaluator,
                 debug_agent,
                 current,
-                build_debug_context(tree, current_id, config),
+                build_debug_context(tree, task, current_id, config, feedback_state),
             )
             origin = "debug"
         else:
@@ -693,7 +724,7 @@ def run_reflexion(task: TaskSpec, config: StarkConfig, provider, evaluator) -> R
             current.selection_reason = selection_reason
             selection_reasons.append(selection_reason)
             stats["plan_attempts"] += 1
-            proposal = plan_agent.run(task, current, build_plan_context(tree, current_id, config, feedback_state))
+            proposal = plan_agent.run(task, current, build_plan_context(tree, task, current_id, config, feedback_state))
             candidate_code, evaluation = _evaluate_plan_code(
                 task,
                 config,
@@ -701,7 +732,7 @@ def run_reflexion(task: TaskSpec, config: StarkConfig, provider, evaluator) -> R
                 code_agent,
                 current,
                 proposal,
-                build_code_context(tree, current_id, config),
+                build_code_context(tree, task, current_id, config, feedback_state),
                 stats,
             )
             origin = "plan_code"

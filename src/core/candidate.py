@@ -11,7 +11,6 @@ import re
 from dataclasses import dataclass, field
 from typing import Any
 
-from ..utils import apply_anchor_edit
 from .patch_payload import parse_loose_json_dict
 from .regions import RegionPatch, apply_region_patches
 
@@ -24,7 +23,13 @@ class CandidateNormalizeResult:
     logs: list[str] = field(default_factory=list)
 
 
-def normalize_candidate(parent_code: str, raw_output: str) -> CandidateNormalizeResult:
+def normalize_candidate(
+    parent_code: str,
+    raw_output: str,
+    *,
+    allowed_regions: set[str] | None = None,
+    frozen_regions: set[str] | None = None,
+) -> CandidateNormalizeResult:
     """Return source code from JSON region/anchor patches or full-file output."""
     text = _strip_code_fences(str(raw_output or "")).strip()
     if not text:
@@ -32,24 +37,50 @@ def normalize_candidate(parent_code: str, raw_output: str) -> CandidateNormalize
 
     patch_payload = _try_parse_patch_payload(text)
     if patch_payload is not None:
-        return _apply_patch_payload(parent_code, patch_payload)
+        return _apply_patch_payload(
+            parent_code,
+            patch_payload,
+            allowed_regions=allowed_regions,
+            frozen_regions=frozen_regions,
+        )
 
     if _looks_like_unapplied_patch(text):
         return _invalid(parent_code, "invalid_patch_format", "candidate looks like patch JSON but could not be parsed")
 
     if _looks_like_python_module(text):
-        return CandidateNormalizeResult(code=text, ok=True)
+        return _invalid(parent_code, "full_module_region_task", "region workflow requires region_patches JSON, not a full Python module")
 
     return _invalid(parent_code, "invalid_candidate_format", "candidate is neither Python source nor valid patch JSON")
 
 
-def _apply_patch_payload(parent_code: str, payload: dict[str, Any]) -> CandidateNormalizeResult:
+def _apply_patch_payload(
+    parent_code: str,
+    payload: dict[str, Any],
+    *,
+    allowed_regions: set[str] | None = None,
+    frozen_regions: set[str] | None = None,
+) -> CandidateNormalizeResult:
     if "region_patches" in payload:
-        return _apply_region_patch_payload(parent_code, payload)
-    return _apply_anchor_patch_payload(parent_code, payload)
+        return _apply_region_patch_payload(
+            parent_code,
+            payload,
+            allowed_regions=allowed_regions,
+            frozen_regions=frozen_regions,
+        )
+    return _invalid(
+        parent_code,
+        "invalid_patch_format",
+        "anchor_patches are no longer accepted; use region_patches with explicit region names",
+    )
 
 
-def _apply_region_patch_payload(parent_code: str, payload: dict[str, Any]) -> CandidateNormalizeResult:
+def _apply_region_patch_payload(
+    parent_code: str,
+    payload: dict[str, Any],
+    *,
+    allowed_regions: set[str] | None = None,
+    frozen_regions: set[str] | None = None,
+) -> CandidateNormalizeResult:
     patches = payload.get("region_patches")
     if not isinstance(patches, list) or not patches:
         return _invalid(parent_code, "invalid_region_patch_format", "region_patches must be a non-empty list")
@@ -57,7 +88,7 @@ def _apply_region_patch_payload(parent_code: str, payload: dict[str, Any]) -> Ca
     for item in patches:
         if not isinstance(item, dict):
             return _invalid(parent_code, "invalid_region_patch_format", "each region patch must be an object")
-        region = str(item.get("region") or item.get("anchor_name") or "").strip()
+        region = str(item.get("region") or "").strip()
         body = item.get("body")
         operation = str(item.get("operation") or "replace").strip().lower()
         if not region or body is None:
@@ -66,34 +97,15 @@ def _apply_region_patch_payload(parent_code: str, payload: dict[str, Any]) -> Ca
             return _invalid(parent_code, "invalid_region_patch_format", f"unsupported region patch operation: {operation}")
         region_patches.append(RegionPatch(region=region, body=str(body), operation=operation))
     try:
-        result = apply_region_patches(parent_code, region_patches)
+        result = apply_region_patches(
+            parent_code,
+            region_patches,
+            allowed_regions=allowed_regions,
+            frozen_regions=frozen_regions,
+        )
     except Exception as exc:
         return _invalid(parent_code, "region_apply_failed", f"failed to apply region patch: {exc}")
     return CandidateNormalizeResult(code=result.code, ok=True, logs=result.logs)
-
-
-def _apply_anchor_patch_payload(parent_code: str, payload: dict[str, Any]) -> CandidateNormalizeResult:
-    patches = payload.get("anchor_patches")
-    if not isinstance(patches, list) or not patches:
-        return _invalid(parent_code, "invalid_patch_format", "anchor_patches must be a non-empty list")
-    code = parent_code
-    logs: list[str] = []
-    try:
-        for item in patches:
-            if not isinstance(item, dict):
-                return _invalid(parent_code, "invalid_patch_format", "each anchor patch must be an object")
-            name = str(item.get("anchor_name") or item.get("region") or "").strip()
-            body = item.get("body")
-            operation = str(item.get("operation") or "replace").strip().lower()
-            if not name or body is None:
-                return _invalid(parent_code, "invalid_patch_format", "anchor patch requires anchor_name and body")
-            if operation not in {"replace", "append"}:
-                return _invalid(parent_code, "invalid_patch_format", f"unsupported anchor patch operation: {operation}")
-            code = apply_anchor_edit(code, name, str(body), operation=operation)
-            logs.append(f"applied_anchor_patch:{name}:{operation}")
-    except Exception as exc:
-        return _invalid(parent_code, "anchor_apply_failed", f"failed to apply anchor patch: {exc}")
-    return CandidateNormalizeResult(code=code, ok=True, logs=logs)
 
 
 def _try_parse_patch_payload(text: str) -> dict[str, Any] | None:
@@ -105,7 +117,9 @@ def _try_parse_patch_payload(text: str) -> dict[str, Any] | None:
     patches = payload.get("patches") or payload.get("edits")
     if isinstance(patches, list) and patches:
         return {"region_patches": patches}
-    if payload.get("anchor_name") or payload.get("region"):
+    if payload.get("region"):
+        return {"region_patches": [payload]}
+    if payload.get("anchor_name"):
         return {"anchor_patches": [payload]}
     return None
 

@@ -9,12 +9,7 @@ from __future__ import annotations
 
 import ast
 import hashlib
-import json
-import os
 import re
-import shutil
-import subprocess
-import sys
 import textwrap
 from dataclasses import dataclass
 from pathlib import Path
@@ -22,6 +17,7 @@ from typing import Any
 
 from ..backends import is_cute_backend, is_native_cuda_backend, is_supported_kernelbench_backend, is_tilelang_backend, supported_kernelbench_backends_text
 from .execution_facts import ExecutionFacts
+from .static_facts import extract_execution_facts_from_path
 from ..models import GroundedRegion, TaskSpec, TestCase
 from ..semantics import SemanticAnalyzer, SemanticProfile
 
@@ -123,165 +119,7 @@ class KernelBenchLoader:
 
     @staticmethod
     def _extract_execution_facts(path: Path) -> ExecutionFacts | None:
-        script = textwrap.dedent(
-            """
-            import importlib.util
-            import json
-            import sys
-            from pathlib import Path
-
-            def _walk(label, value, out):
-                try:
-                    import torch
-                except Exception:
-                    return
-                if isinstance(value, torch.Tensor):
-                    out.append(
-                        {
-                            "name": str(label),
-                            "shape": [int(dim) for dim in value.shape],
-                            "dtype": str(value.dtype).replace("torch.", ""),
-                            "device": str(value.device),
-                            "numel": int(value.numel()),
-                        }
-                    )
-                    return
-                if isinstance(value, (list, tuple)):
-                    for index, item in enumerate(value):
-                        _walk(f"{label}_{index}", item, out)
-                    return
-                if isinstance(value, dict):
-                    for key in sorted(value):
-                        _walk(f"{label}_{key}", value[key], out)
-
-            def _serialize_value(value):
-                try:
-                    import torch
-                except Exception:
-                    torch = None
-                if torch is not None and isinstance(value, torch.Tensor):
-                    return {
-                        "kind": "tensor",
-                        "shape": [int(dim) for dim in value.shape],
-                        "dtype": str(value.dtype).replace("torch.", ""),
-                        "device": str(value.device),
-                        "numel": int(value.numel()),
-                    }
-                if value is None or isinstance(value, (str, int, float, bool)):
-                    return value
-                if isinstance(value, (list, tuple)):
-                    return [_serialize_value(item) for item in value]
-                if isinstance(value, dict):
-                    return {str(key): _serialize_value(value[key]) for key in sorted(value)}
-                return repr(value)
-
-            def _shape_outer_inner(shape):
-                if not shape:
-                    return None, None
-                if len(shape) == 1:
-                    return 1, int(shape[0])
-                outer = 1
-                for dim in shape[:-1]:
-                    outer *= int(dim)
-                return int(outer), int(shape[-1])
-
-            def _has_broadcast_inputs(items):
-                shapes = [tuple(item.get("shape") or []) for item in items if item.get("shape")]
-                if len(shapes) < 2:
-                    return False
-                return any(shape != shapes[0] for shape in shapes[1:])
-
-            problem_path = Path(sys.argv[1]).resolve()
-            sys.path.insert(0, str(problem_path.parent))
-            sys.path.insert(0, str(problem_path.parent.parent))
-            sys.path.insert(0, str(problem_path.parent.parent.parent))
-            spec = importlib.util.spec_from_file_location("_kw_problem_probe", problem_path)
-            module = importlib.util.module_from_spec(spec)
-            assert spec and spec.loader
-            spec.loader.exec_module(module)
-
-            input_tensors = []
-            init_tensors = []
-            raw_init_inputs = module.get_init_inputs()
-            init_args = _serialize_value(raw_init_inputs)
-            _walk("input", module.get_inputs(), input_tensors)
-            _walk("init", raw_init_inputs, init_tensors)
-            primary = input_tensors[0] if input_tensors else (init_tensors[0] if init_tensors else None)
-            primary_shape = list(primary.get("shape") or []) if primary else []
-            outer_size, inner_size = _shape_outer_inner(primary_shape)
-            payload = {
-                "input_tensors": input_tensors,
-                "init_tensors": init_tensors,
-                "init_args": init_args if isinstance(init_args, list) else [init_args],
-                "derived": {
-                    "primary_shape": primary_shape,
-                    "tensor_count": len(input_tensors) + len(init_tensors),
-                    "has_broadcast_inputs": _has_broadcast_inputs(input_tensors),
-                    "outer_size": outer_size,
-                    "inner_size": inner_size,
-                },
-            }
-            print(json.dumps(payload))
-            """
-        )
-        for python_executable in KernelBenchLoader._probe_python_candidates():
-            try:
-                completed = subprocess.run(
-                    [python_executable, "-c", script, str(path)],
-                    capture_output=True,
-                    text=True,
-                    timeout=10,
-                    check=False,
-                )
-            except Exception:
-                continue
-            if completed.returncode != 0:
-                continue
-            stdout = completed.stdout.strip()
-            if not stdout:
-                continue
-            try:
-                payload = json.loads(stdout)
-            except json.JSONDecodeError:
-                continue
-            facts = ExecutionFacts.from_dict(payload)
-            if facts is not None:
-                return facts
-        return None
-
-    @staticmethod
-    def _probe_python_candidates() -> list[str]:
-        candidates: list[str] = []
-        explicit = os.environ.get("KERNELWEAVER_PROBE_PYTHON", "").strip()
-        if explicit:
-            candidates.append(explicit)
-        for env_name in ("CONDA_PREFIX", "VIRTUAL_ENV"):
-            prefix = os.environ.get(env_name, "").strip()
-            if prefix:
-                candidates.extend(KernelBenchLoader._python_candidates_from_prefix(prefix))
-        if sys.executable:
-            candidates.append(sys.executable)
-        for program in ("python", "python3"):
-            resolved = shutil.which(program)
-            if resolved:
-                candidates.append(resolved)
-        deduped: list[str] = []
-        seen: set[str] = set()
-        for candidate in candidates:
-            normalized = str(candidate).strip()
-            if normalized and normalized not in seen:
-                seen.add(normalized)
-                deduped.append(normalized)
-        return deduped
-
-    @staticmethod
-    def _python_candidates_from_prefix(prefix: str) -> list[str]:
-        root = Path(prefix)
-        return [
-            str(root / "bin" / "python"),
-            str(root / "Scripts" / "python.exe"),
-            str(root / "python.exe"),
-        ]
+        return extract_execution_facts_from_path(path)
 
     def _resolve_problem_path(self, kernelbench_root: Path, level: int, problem_id: int) -> Path:
         candidate_dirs = [

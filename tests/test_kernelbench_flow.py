@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from stark.core.loader import KernelBenchLoader
+from stark.core.context import build_code_context
 from stark.core.workflow import run_stark
 from stark.demo import build_demo_tasks
 from stark.evaluation import DemoEvaluator
@@ -43,6 +44,45 @@ class KernelbenchFlowTests(unittest.TestCase):
         self.assertIsNotNone(result.feedback_state)
         self.assertIsNotNone(reloaded.feedback_state)
         self.assertEqual(reloaded.feedback_state.total_attempts, result.feedback_state.total_attempts)
+
+
+class ContextRefinementTests(unittest.TestCase):
+    def test_run_records_feedback_and_best_code(self):
+        task = build_demo_tasks()[0]
+        config = StarkConfig(
+            max_attempts=2,
+            benchmark_loops=1,
+            warmup_loops=0,
+            run_profile="quick",
+            search_profile="quick",
+            evaluator_profile="quick",
+            measurement_profile="quick",
+        )
+        result = run_stark(task, config, MockProvider(), DemoEvaluator())
+        self.assertIsNotNone(result.feedback_state)
+        self.assertIsInstance(result.nodes, dict)
+        self.assertIn(result.best_node_id, result.nodes)
+
+    def test_build_code_context_exposes_best_kernel_fields(self):
+        task = build_demo_tasks()[0]
+        config = StarkConfig(
+            max_attempts=2,
+            benchmark_loops=1,
+            warmup_loops=0,
+            run_profile="quick",
+            search_profile="quick",
+            evaluator_profile="quick",
+            measurement_profile="quick",
+        )
+        result = run_stark(task, config, MockProvider(), DemoEvaluator())
+        from stark.core.tree import TreeMemory
+
+        tree = TreeMemory(result.nodes["root"], config)
+        tree.nodes = result.nodes
+        tree.leaderboard = result.leaderboard
+        context = build_code_context(tree, task, result.best_node_id, config, result.feedback_state)
+        self.assertTrue(hasattr(context, "best_kernel_summary"))
+        self.assertTrue(hasattr(context, "active_anchors"))
 
 
 class KernelbenchLoaderTests(unittest.TestCase):

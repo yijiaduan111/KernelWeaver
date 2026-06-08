@@ -26,6 +26,13 @@ class MockProvider(AgentProvider):
                 return PlanProposal(
                     strategy_name=strategy.name,
                     strategy_summary=strategy.strategy_summary,
+                    mode="explore",
+                    target_node_id=node.node_id,
+                    target_anchors=[strategy.anchor_name],
+                    frozen_anchors=[],
+                    change_budget="medium",
+                    must_preserve=["Keep edits local to the chosen anchored region."],
+                    reason_against_rewrite="Mock strategy should stay local.",
                     anchor_edits=[
                         AnchorEdit(
                             anchor_name=strategy.anchor_name,
@@ -47,6 +54,13 @@ class MockProvider(AgentProvider):
                 return PlanProposal(
                     strategy_name=strategy.strategy_id,
                     strategy_summary=strategy.summary,
+                    mode="explore",
+                    target_node_id=node.node_id,
+                    target_anchors=[target],
+                    frozen_anchors=[],
+                    change_budget="medium",
+                    must_preserve=["Keep edits local to the chosen grounded anchor."],
+                    reason_against_rewrite="Mock portfolio strategy should stay local.",
                     anchor_edits=[
                         AnchorEdit(
                             anchor_name=target,
@@ -64,6 +78,13 @@ class MockProvider(AgentProvider):
             anchor_edits=[AnchorEdit(anchor_name=anchor_name, instruction="Keep the baseline implementation unchanged.", operation="replace")],
             expected_gain="Smoke-test the loader and workflow without handwritten task strategies.",
             risk_notes="No task-specific strategy catalog is available.",
+            mode="explore",
+            target_node_id=node.node_id,
+            target_anchors=[anchor_name],
+            frozen_anchors=[],
+            change_budget="medium",
+            must_preserve=["Keep the scaffold unchanged outside the requested region."],
+            reason_against_rewrite="Mock fallback should stay structural and local.",
         )
 
     def generate_code(
