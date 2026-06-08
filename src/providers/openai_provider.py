@@ -1,4 +1,4 @@
-"""OpenAI-compatible provider and shared prompt helpers."""
+﻿"""OpenAI-compatible provider and shared prompt helpers."""
 
 from __future__ import annotations
 
@@ -158,6 +158,7 @@ class OpenAICompatibleProvider(AgentProvider):
             "all_anchors": anchors,
             "frozen_anchors": frozen_anchors,
             "feedback_state": feedback_state_to_prompt_dict(context.feedback_state),
+            "attempt_mode": context.attempt_mode,
             "current_node": _snapshot_to_dict(context.current),
             "root_node": _snapshot_to_dict(context.root),
             "leader_nodes": [_snapshot_to_dict(item) for item in context.leaders],
@@ -165,6 +166,10 @@ class OpenAICompatibleProvider(AgentProvider):
             "best_node": _snapshot_to_dict(context.best_node) if context.best_node else None,
             "best_kernel_summary": context.best_kernel_summary,
             "best_kernel_code": best_kernel_code,
+            "champion_node": _snapshot_to_dict(context.champion) if context.champion else None,
+            "champion_summary": context.champion_summary,
+            "recent_positive_mutations": context.recent_positive_mutations,
+            "recent_negative_mutations": context.recent_negative_mutations,
             "current_code": node.code,
         }
         content = self._chat(
@@ -189,12 +194,17 @@ class OpenAICompatibleProvider(AgentProvider):
             expected_gain=data["expected_gain"],
             risk_notes=data.get("risk_notes", ""),
             mode=str(data.get("mode", "explore")),
+            attempt_mode=context.attempt_mode or str(data.get("mode", "explore")),
             target_node_id=data.get("target_node_id") or node.node_id,
             target_anchors=list(data.get("target_anchors") or [edit.anchor_name for edit in edits]),
             frozen_anchors=list(data.get("frozen_anchors") or frozen_anchors),
             change_budget=str(data.get("change_budget", "medium")),
             must_preserve=[str(item) for item in (data.get("must_preserve") or [])],
             reason_against_rewrite=str(data.get("reason_against_rewrite", "")),
+            performance_hypothesis=str(data.get("performance_hypothesis", "")),
+            single_change_focus=str(data.get("single_change_focus", "")),
+            mutation_family=data.get("mutation_family"),
+            target_metric=str(data.get("target_metric", "speedup")),
         )
 
     def generate_search_candidate(
@@ -270,18 +280,27 @@ class OpenAICompatibleProvider(AgentProvider):
             "best_kernel_summary": context.best_kernel_summary,
             "active_anchors": list(context.active_anchors),
             "frozen_anchors": list(context.frozen_anchors),
+            "attempt_mode": context.attempt_mode,
+            "champion_node": _snapshot_to_dict(context.champion) if context.champion else None,
+            "champion_summary": context.champion_summary,
+            "champion_code": context.champion_code,
             "plan": {
                 "strategy_name": proposal.strategy_name,
                 "strategy_summary": proposal.strategy_summary,
                 "expected_gain": proposal.expected_gain,
                 "risk_notes": proposal.risk_notes,
                 "mode": proposal.mode,
+                "attempt_mode": proposal.attempt_mode,
                 "target_node_id": proposal.target_node_id,
                 "target_anchors": list(proposal.target_anchors),
                 "frozen_anchors": list(proposal.frozen_anchors),
                 "change_budget": proposal.change_budget,
                 "must_preserve": list(proposal.must_preserve),
                 "reason_against_rewrite": proposal.reason_against_rewrite,
+                "performance_hypothesis": proposal.performance_hypothesis,
+                "single_change_focus": proposal.single_change_focus,
+                "mutation_family": proposal.mutation_family,
+                "target_metric": proposal.target_metric,
                 "anchor_edits": [
                     {
                         "anchor_name": edit.anchor_name,
@@ -556,9 +575,9 @@ class OpenAICompatibleProvider(AgentProvider):
 
 
 def _snapshot_to_dict(snapshot) -> dict[str, Any]:
-    return {
-        "node_id": snapshot.node_id,
-        "parent_id": snapshot.parent_id,
+        return {
+            "node_id": snapshot.node_id,
+            "parent_id": snapshot.parent_id,
         "depth": snapshot.depth,
         "score": snapshot.score,
         "status": snapshot.status,
@@ -572,10 +591,13 @@ def _snapshot_to_dict(snapshot) -> dict[str, Any]:
         "reference_runtime": getattr(snapshot, "reference_runtime", None),
         "speedup": getattr(snapshot, "speedup", None),
         "delta_vs_root": getattr(snapshot, "delta_vs_root", None),
-        "delta_vs_parent": getattr(snapshot, "delta_vs_parent", None),
-        "failure_log_excerpt": getattr(snapshot, "failure_log_excerpt", None),
-        "code_hash": getattr(snapshot, "code_hash", None),
-    }
+            "delta_vs_parent": getattr(snapshot, "delta_vs_parent", None),
+            "failure_log_excerpt": getattr(snapshot, "failure_log_excerpt", None),
+            "code_hash": getattr(snapshot, "code_hash", None),
+            "plan_mode": getattr(snapshot, "plan_mode", None),
+            "mutation_family": getattr(snapshot, "mutation_family", None),
+            "single_change_focus": getattr(snapshot, "single_change_focus", None),
+        }
 
 
 def _task_metadata(task: TaskSpec) -> dict[str, Any]:

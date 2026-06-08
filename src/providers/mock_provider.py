@@ -1,4 +1,4 @@
-"""Deterministic provider used for tests and smoke runs."""
+﻿"""Deterministic provider used for tests and smoke runs."""
 
 from __future__ import annotations
 
@@ -27,6 +27,7 @@ class MockProvider(AgentProvider):
                     strategy_name=strategy.name,
                     strategy_summary=strategy.strategy_summary,
                     mode="explore",
+                    attempt_mode=context.attempt_mode or "explore",
                     target_node_id=node.node_id,
                     target_anchors=[strategy.anchor_name],
                     frozen_anchors=[],
@@ -79,6 +80,7 @@ class MockProvider(AgentProvider):
             expected_gain="Smoke-test the loader and workflow without handwritten task strategies.",
             risk_notes="No task-specific strategy catalog is available.",
             mode="explore",
+            attempt_mode=context.attempt_mode or "explore",
             target_node_id=node.node_id,
             target_anchors=[anchor_name],
             frozen_anchors=[],

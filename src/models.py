@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Any, Literal
@@ -84,12 +84,17 @@ class PlanProposal:
     expected_gain: str
     risk_notes: str = ""
     mode: Literal["explore", "refine"] = "explore"
+    attempt_mode: str | None = None
     target_node_id: str | None = None
     target_anchors: list[str] = field(default_factory=list)
     frozen_anchors: list[str] = field(default_factory=list)
     change_budget: Literal["small", "medium"] = "medium"
     must_preserve: list[str] = field(default_factory=list)
     reason_against_rewrite: str = ""
+    performance_hypothesis: str = ""
+    single_change_focus: str = ""
+    mutation_family: str | None = None
+    target_metric: str = "speedup"
 
 
 @dataclass
@@ -140,6 +145,11 @@ class SearchNode:
     reference_runtimes: dict[str, float | None] = field(default_factory=dict)
     speedups: dict[str, float | None] = field(default_factory=dict)
     primary_reference: str | None = None
+    plan_mode: str = "explore"
+    performance_hypothesis: str | None = None
+    single_change_focus: str | None = None
+    mutation_family: str | None = None
+    target_metric: str | None = None
 
     @property
     def is_failure(self) -> bool:
@@ -170,6 +180,9 @@ class NodeSnapshot:
     delta_vs_parent: float | None = None
     failure_log_excerpt: str | None = None
     code_hash: str | None = None
+    plan_mode: str | None = None
+    mutation_family: str | None = None
+    single_change_focus: str | None = None
 
 
 @dataclass
@@ -188,6 +201,13 @@ class AgentContext:
     best_kernel_summary: dict[str, Any] | None = None
     active_anchors: list[str] = field(default_factory=list)
     frozen_anchors: list[str] = field(default_factory=list)
+    attempt_mode: str | None = None
+    champion: NodeSnapshot | None = None
+    champion_code: str | None = None
+    champion_summary: dict[str, Any] | None = None
+    champion_lineage: list[NodeSnapshot] = field(default_factory=list)
+    recent_positive_mutations: list[dict[str, Any]] = field(default_factory=list)
+    recent_negative_mutations: list[dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass
@@ -235,6 +255,10 @@ class StarkConfig:
     deliberation_review_temperature: float = 0.1
     evaluator_isolation: str = "off"
     evaluator_timeout_seconds: int = 900
+    explore_fraction: float = 0.4
+    challenger_fraction: float = 0.2
+    plateau_delta_threshold: float = 0.03
+    plateau_window: int = 3
 
 
 @dataclass

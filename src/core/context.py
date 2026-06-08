@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import math
 import re
@@ -41,6 +41,9 @@ def snapshot_node(tree: TreeMemory, node_id: str) -> NodeSnapshot:
         delta_vs_parent=delta_vs_parent,
         failure_log_excerpt=last_log_excerpt(node.logs),
         code_hash=normalized_code_hash(node.code),
+        plan_mode=node.plan_mode,
+        mutation_family=node.mutation_family,
+        single_change_focus=node.single_change_focus,
     )
 
 
@@ -157,7 +160,40 @@ def _context_best_kernel(
     return best_snapshot, best_code, excerpts, summary, list(policy.active), list(policy.frozen)
 
 
-def build_plan_context(tree: TreeMemory, task, node_id: str, config: StarkConfig, feedback_state: FeedbackState | None = None) -> AgentContext:
+def _champion_context(
+    tree: TreeMemory,
+    node_id: str,
+    feedback_state: FeedbackState | None,
+) -> tuple[NodeSnapshot | None, str | None, dict | None, list[NodeSnapshot], list[dict], list[dict]]:
+    best_id = (feedback_state.current_champion_id if feedback_state is not None else None) or _best_node_id(tree, node_id)
+    if best_id is None or best_id not in tree.nodes:
+        return None, None, None, [], [], []
+    champion = tree.get_node(best_id)
+    champion_snapshot = snapshot_node(tree, best_id)
+    lineage = [snapshot_node(tree, item) for item in (feedback_state.champion.lineage if feedback_state else []) if item in tree.nodes]
+    summary = {
+        "node_id": champion_snapshot.node_id,
+        "speedup": champion_snapshot.speedup,
+        "strategy_name": champion.plan_strategy_name,
+        "plan_mode": champion.plan_mode,
+        "mutation_family": champion.mutation_family,
+        "single_change_focus": champion.single_change_focus,
+        "anchor_names": [edit.anchor_name for edit in champion.anchor_edits],
+        "failure_log_excerpt": champion_snapshot.failure_log_excerpt,
+    }
+    positives = list(feedback_state.champion.recent_positive_mutations) if feedback_state else []
+    negatives = list(feedback_state.champion.recent_negative_mutations) if feedback_state else []
+    return champion_snapshot, champion.code, summary, lineage, positives, negatives
+
+
+def build_plan_context(
+    tree: TreeMemory,
+    task,
+    node_id: str,
+    config: StarkConfig,
+    feedback_state: FeedbackState | None = None,
+    attempt_mode: str | None = None,
+) -> AgentContext:
     current = snapshot_node(tree, node_id)
     root = snapshot_node(tree, tree.root_id)
     node = tree.get_node(node_id)
@@ -174,6 +210,7 @@ def build_plan_context(tree: TreeMemory, task, node_id: str, config: StarkConfig
         node_id,
         feedback_state,
     )
+    champion, champion_code, champion_summary, champion_lineage, positives, negatives = _champion_context(tree, node_id, feedback_state)
     return AgentContext(
         role="plan",
         current=current,
@@ -188,10 +225,24 @@ def build_plan_context(tree: TreeMemory, task, node_id: str, config: StarkConfig
         best_kernel_summary=best_summary,
         active_anchors=active_anchors,
         frozen_anchors=frozen_anchors,
+        attempt_mode=attempt_mode,
+        champion=champion,
+        champion_code=champion_code,
+        champion_summary=champion_summary,
+        champion_lineage=champion_lineage,
+        recent_positive_mutations=positives,
+        recent_negative_mutations=negatives,
     )
 
 
-def build_code_context(tree: TreeMemory, task, node_id: str, config: StarkConfig, feedback_state: FeedbackState | None = None) -> AgentContext:
+def build_code_context(
+    tree: TreeMemory,
+    task,
+    node_id: str,
+    config: StarkConfig,
+    feedback_state: FeedbackState | None = None,
+    attempt_mode: str | None = None,
+) -> AgentContext:
     current = snapshot_node(tree, node_id)
     root = snapshot_node(tree, tree.root_id)
     node = tree.get_node(node_id)
@@ -209,6 +260,7 @@ def build_code_context(tree: TreeMemory, task, node_id: str, config: StarkConfig
         node_id,
         feedback_state,
     )
+    champion, champion_code, champion_summary, champion_lineage, positives, negatives = _champion_context(tree, node_id, feedback_state)
     return AgentContext(
         role="code",
         current=current,
@@ -223,10 +275,24 @@ def build_code_context(tree: TreeMemory, task, node_id: str, config: StarkConfig
         best_kernel_summary=best_summary,
         active_anchors=active_anchors,
         frozen_anchors=frozen_anchors,
+        attempt_mode=attempt_mode,
+        champion=champion,
+        champion_code=champion_code,
+        champion_summary=champion_summary,
+        champion_lineage=champion_lineage,
+        recent_positive_mutations=positives,
+        recent_negative_mutations=negatives,
     )
 
 
-def build_debug_context(tree: TreeMemory, task, node_id: str, config: StarkConfig, feedback_state: FeedbackState | None = None) -> AgentContext:
+def build_debug_context(
+    tree: TreeMemory,
+    task,
+    node_id: str,
+    config: StarkConfig,
+    feedback_state: FeedbackState | None = None,
+    attempt_mode: str | None = None,
+) -> AgentContext:
     current = snapshot_node(tree, node_id)
     root = snapshot_node(tree, tree.root_id)
     siblings = [snapshot_node(tree, sibling_id) for sibling_id in tree.sibling_ids(node_id)]
@@ -236,6 +302,7 @@ def build_debug_context(tree: TreeMemory, task, node_id: str, config: StarkConfi
         node_id,
         feedback_state,
     )
+    champion, champion_code, champion_summary, champion_lineage, positives, negatives = _champion_context(tree, node_id, feedback_state)
     return AgentContext(
         role="debug",
         current=current,
@@ -250,4 +317,11 @@ def build_debug_context(tree: TreeMemory, task, node_id: str, config: StarkConfi
         best_kernel_summary=best_summary,
         active_anchors=active_anchors,
         frozen_anchors=frozen_anchors,
+        attempt_mode=attempt_mode,
+        champion=champion,
+        champion_code=champion_code,
+        champion_summary=champion_summary,
+        champion_lineage=champion_lineage,
+        recent_positive_mutations=positives,
+        recent_negative_mutations=negatives,
     )

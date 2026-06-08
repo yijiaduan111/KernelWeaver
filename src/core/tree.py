@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import math
 import random
@@ -81,6 +81,11 @@ class TreeMemory:
             reference_runtimes=dict(evaluation.reference_runtimes),
             speedups=dict(evaluation.speedups),
             primary_reference=evaluation.primary_reference,
+            plan_mode=proposal.attempt_mode or proposal.mode,
+            performance_hypothesis=proposal.performance_hypothesis or None,
+            single_change_focus=proposal.single_change_focus or None,
+            mutation_family=proposal.mutation_family,
+            target_metric=proposal.target_metric or None,
         )
         self.nodes[node_id] = child
         parent.child_ids.append(node_id)

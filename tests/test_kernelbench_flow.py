@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 from stark.core.loader import KernelBenchLoader
-from stark.core.context import build_code_context
+from stark.core.context import build_code_context, build_plan_context
 from stark.core.workflow import run_stark
 from stark.demo import build_demo_tasks
 from stark.evaluation import DemoEvaluator
@@ -47,10 +47,10 @@ class KernelbenchFlowTests(unittest.TestCase):
 
 
 class ContextRefinementTests(unittest.TestCase):
-    def test_run_records_feedback_and_best_code(self):
+    def test_run_records_feedback_and_champion(self):
         task = build_demo_tasks()[0]
         config = StarkConfig(
-            max_attempts=2,
+            max_attempts=4,
             benchmark_loops=1,
             warmup_loops=0,
             run_profile="quick",
@@ -60,13 +60,14 @@ class ContextRefinementTests(unittest.TestCase):
         )
         result = run_stark(task, config, MockProvider(), DemoEvaluator())
         self.assertIsNotNone(result.feedback_state)
-        self.assertIsInstance(result.nodes, dict)
-        self.assertIn(result.best_node_id, result.nodes)
+        self.assertIsNotNone(result.feedback_state.current_champion_id)
+        self.assertIn(result.feedback_state.current_champion_id, result.nodes)
+        self.assertIn("attempt_mode_counts", result.stats)
 
-    def test_build_code_context_exposes_best_kernel_fields(self):
+    def test_build_context_exposes_best_and_champion_fields(self):
         task = build_demo_tasks()[0]
         config = StarkConfig(
-            max_attempts=2,
+            max_attempts=4,
             benchmark_loops=1,
             warmup_loops=0,
             run_profile="quick",
@@ -80,9 +81,14 @@ class ContextRefinementTests(unittest.TestCase):
         tree = TreeMemory(result.nodes["root"], config)
         tree.nodes = result.nodes
         tree.leaderboard = result.leaderboard
-        context = build_code_context(tree, task, result.best_node_id, config, result.feedback_state)
-        self.assertTrue(hasattr(context, "best_kernel_summary"))
-        self.assertTrue(hasattr(context, "active_anchors"))
+        plan_context = build_plan_context(tree, task, result.best_node_id, config, result.feedback_state, "mutate_champion")
+        code_context = build_code_context(tree, task, result.best_node_id, config, result.feedback_state, "mutate_champion")
+        self.assertIsNotNone(plan_context.champion_summary)
+        self.assertIsNotNone(code_context.champion_summary)
+        self.assertTrue(hasattr(plan_context, "best_kernel_summary"))
+        self.assertTrue(hasattr(code_context, "best_kernel_summary"))
+        self.assertEqual(plan_context.attempt_mode, "mutate_champion")
+        self.assertEqual(code_context.attempt_mode, "mutate_champion")
 
 
 class KernelbenchLoaderTests(unittest.TestCase):

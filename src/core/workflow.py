@@ -1,4 +1,4 @@
-"""Workflow runners for the STARK prototype.
+﻿"""Workflow runners for the STARK prototype.
 
 This module hosts the main STARK workflow plus several paper-aligned
 baselines and ablations:
@@ -16,7 +16,7 @@ validation, and batch reporting stay compatible across modes.
 from __future__ import annotations
 
 from ..agents import CodeAgent, DebugAgent, PlanAgent
-from ..feedback.collector import collect_feedback_state
+from ..feedback import collect_feedback_state
 from .candidate import normalize_candidate
 from .context import build_code_context, build_debug_context, build_plan_context, snapshot_node
 from .static_check import check_candidate_static
@@ -179,12 +179,16 @@ def _build_debug_proposal(node: SearchNode) -> PlanProposal:
         expected_gain="Recover a failing candidate with a local fix.",
         risk_notes="Debug route applies the smallest viable local repair.",
         mode="refine",
+        attempt_mode="mutate_champion",
         target_node_id=node.node_id,
         target_anchors=[edit.anchor_name for edit in node.anchor_edits],
         frozen_anchors=[],
         change_budget="small",
         must_preserve=["Keep the current working structure intact while repairing the failure."],
         reason_against_rewrite="Debug should make the smallest local fix.",
+        performance_hypothesis="Fix the local failure without changing the successful structure.",
+        single_change_focus="small_local_repair",
+        mutation_family="debug_local_repair",
     )
 
 
@@ -205,6 +209,7 @@ def _new_stats() -> dict:
         "failure_counts": {},
         "failure_stage_counts": {},
         "invalid_proposals": 0,
+        "attempt_mode_counts": {},
     }
 
 
@@ -228,6 +233,67 @@ def _initialize_tree(task: TaskSpec, config: StarkConfig, evaluator) -> tuple[Tr
 def _root_only_context(tree: TreeMemory, role: str, feedback_state=None) -> AgentContext:
     root = snapshot_node(tree, tree.root_id)
     return AgentContext(role=role, current=root, root=root, related=[], leaders=[], failure=None, feedback_state=feedback_state)
+
+
+def _record_attempt_mode(stats: dict, mode: str) -> None:
+    counts = stats.setdefault("attempt_mode_counts", {})
+    counts[mode] = counts.get(mode, 0) + 1
+
+
+def _attempt_mode_for_index(attempt_index: int, config: StarkConfig, feedback_state) -> str:
+    max_attempts = max(1, config.max_attempts)
+    explore_cutoff = max(1, int(round(max_attempts * config.explore_fraction)))
+    challenger_budget = max(1, int(round(max_attempts * config.challenger_fraction)))
+    mutation_end = max_attempts - challenger_budget
+    if attempt_index <= explore_cutoff:
+        return "explore"
+    if feedback_state is not None and getattr(feedback_state, "plateau_detected", False):
+        if attempt_index < max_attempts:
+            return "challenger"
+    if attempt_index <= mutation_end:
+        return "mutate_champion"
+    if attempt_index < max_attempts:
+        return "challenger"
+    return "best_lineage_push"
+
+
+def _select_node_for_mode(tree: TreeMemory, config: StarkConfig, attempt_mode: str, feedback_state) -> tuple[str, str] | None:
+    if attempt_mode in {"mutate_champion", "best_lineage_push"} and feedback_state is not None:
+        champion_id = getattr(feedback_state, "current_champion_id", None)
+        if champion_id and champion_id in tree.nodes and tree.is_eligible(champion_id, config):
+            node = tree.get_node(champion_id)
+            node.selected_count += 1
+            node.selection_reason = attempt_mode
+            tree.last_exclusions = {}
+            tree.selection_exclusion_history.append({})
+            return champion_id, attempt_mode
+    if attempt_mode == "challenger":
+        eligible = tree.eligible_leaf_nodes(config)
+        champion_lineage = set(getattr(getattr(feedback_state, "champion", None), "lineage", []) or [])
+        challengers = [node_id for node_id in eligible if node_id not in champion_lineage]
+        pool = challengers or eligible
+        if pool:
+            selected = min(
+                pool,
+                key=lambda node_id: (
+                    tree.nodes[node_id].selected_count,
+                    tree.nodes[node_id].depth,
+                    node_id,
+                ),
+            )
+            tree.nodes[selected].selected_count += 1
+            tree.nodes[selected].selection_reason = "challenger"
+            tree.last_exclusions = {}
+            tree.selection_exclusion_history.append({})
+            return selected, "challenger"
+    selected = tree.select_node(config)
+    if selected is None:
+        return None
+    selected_id, reason = selected
+    if attempt_mode == "explore" and reason == "exploit_best_score":
+        tree.get_node(selected_id).selection_reason = "explore"
+        return selected_id, "explore"
+    return selected_id, reason
 
 
 def _release_provider(provider) -> None:
@@ -322,6 +388,11 @@ def _finalize_run(
     best_node_id = tree.leaderboard[0] if tree.leaderboard else tree.root_id
     best_node = tree.get_node(best_node_id)
     stats["pruned_count"] = len(tree.pruned_nodes)
+    feedback_state = collect_feedback_state(
+        tree,
+        plateau_delta_threshold=config.plateau_delta_threshold,
+        plateau_window=config.plateau_window,
+    )
     return RunResult(
         task_name=task.name,
         config=config,
@@ -386,7 +457,14 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
         )
 
     for attempt_index in range(1, config.max_attempts + 1):
-        selected = tree.select_node(config)
+        feedback_state = collect_feedback_state(
+            tree,
+            plateau_delta_threshold=config.plateau_delta_threshold,
+            plateau_window=config.plateau_window,
+        )
+        attempt_mode = _attempt_mode_for_index(attempt_index, config, feedback_state)
+        _record_attempt_mode(stats, attempt_mode)
+        selected = _select_node_for_mode(tree, config, attempt_mode, feedback_state)
         if selected is None:
             break
         selected_id, selection_reason = selected
@@ -399,7 +477,7 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
         if config.verbose:
             print(
                 f"[attempt {attempt_index}] workflow=stark selected={selected_id} status={selected_node.status} "
-                f"reason={selection_reason}"
+                f"reason={selection_reason} mode={attempt_mode}"
             )
 
         if selected_node.is_failure and selected_id != tree.root_id:
@@ -413,12 +491,12 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
                 evaluator,
                 debug_agent,
                 selected_node,
-                build_debug_context(tree, task, selected_id, config, feedback_state),
+                build_debug_context(tree, task, selected_id, config, feedback_state, attempt_mode),
             )
             origin = "debug"
         else:
             stats["plan_attempts"] += 1
-            proposal = plan_agent.run(task, selected_node, build_plan_context(tree, task, selected_id, config, feedback_state))
+            proposal = plan_agent.run(task, selected_node, build_plan_context(tree, task, selected_id, config, feedback_state, attempt_mode))
             candidate_code, evaluation = _evaluate_plan_code(
                 task,
                 config,
@@ -426,7 +504,7 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
                 code_agent,
                 selected_node,
                 proposal,
-                build_code_context(tree, task, selected_id, config, feedback_state),
+                build_code_context(tree, task, selected_id, config, feedback_state, attempt_mode),
                 stats,
             )
             origin = "plan_code"
@@ -631,7 +709,7 @@ def run_ma_only(task: TaskSpec, config: StarkConfig, provider, evaluator) -> Run
         if config.verbose:
             print(f"[attempt {attempt_index}] workflow=ma-only selected=root reason=ma_only_root")
 
-        proposal = plan_agent.run(task, root_node, build_plan_context(tree, task, tree.root_id, config, feedback_state))
+        proposal = plan_agent.run(task, root_node, build_plan_context(tree, task, tree.root_id, config, feedback_state, "explore"))
         candidate_code, evaluation = _evaluate_plan_code(
             task,
             config,
@@ -639,7 +717,7 @@ def run_ma_only(task: TaskSpec, config: StarkConfig, provider, evaluator) -> Run
             code_agent,
             root_node,
             proposal,
-            build_code_context(tree, task, tree.root_id, config, feedback_state),
+            build_code_context(tree, task, tree.root_id, config, feedback_state, "explore"),
             stats,
         )
         child = tree.add_child(tree.root_id, candidate_code, proposal, evaluation, "plan_code")
@@ -716,7 +794,7 @@ def run_reflexion(task: TaskSpec, config: StarkConfig, provider, evaluator) -> R
                 evaluator,
                 debug_agent,
                 current,
-                build_debug_context(tree, task, current_id, config, feedback_state),
+                build_debug_context(tree, task, current_id, config, feedback_state, "mutate_champion"),
             )
             origin = "debug"
         else:
@@ -724,7 +802,7 @@ def run_reflexion(task: TaskSpec, config: StarkConfig, provider, evaluator) -> R
             current.selection_reason = selection_reason
             selection_reasons.append(selection_reason)
             stats["plan_attempts"] += 1
-            proposal = plan_agent.run(task, current, build_plan_context(tree, task, current_id, config, feedback_state))
+            proposal = plan_agent.run(task, current, build_plan_context(tree, task, current_id, config, feedback_state, "explore"))
             candidate_code, evaluation = _evaluate_plan_code(
                 task,
                 config,
@@ -732,7 +810,7 @@ def run_reflexion(task: TaskSpec, config: StarkConfig, provider, evaluator) -> R
                 code_agent,
                 current,
                 proposal,
-                build_code_context(tree, task, current_id, config, feedback_state),
+                build_code_context(tree, task, current_id, config, feedback_state, "explore"),
                 stats,
             )
             origin = "plan_code"

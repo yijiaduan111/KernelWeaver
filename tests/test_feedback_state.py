@@ -1,4 +1,4 @@
-import shutil
+﻿import shutil
 import unittest
 from pathlib import Path
 
@@ -42,3 +42,5 @@ class FeedbackStateTests(unittest.TestCase):
         self.assertEqual(reloaded.feedback_state.total_attempts, result.feedback_state.total_attempts)
         self.assertEqual(reloaded.feedback_state.phase, result.feedback_state.phase)
         self.assertEqual(reloaded.feedback_state.best_strategy_name, result.feedback_state.best_strategy_name)
+        self.assertEqual(reloaded.feedback_state.current_champion_id, result.feedback_state.current_champion_id)
+        self.assertEqual(reloaded.feedback_state.champion.node_id, result.feedback_state.champion.node_id)

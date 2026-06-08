@@ -1,4 +1,4 @@
-import json
+﻿import json
 import unittest
 from unittest.mock import patch
 
@@ -43,6 +43,9 @@ def _snapshot(node_id: str, speedup: float | None = None) -> NodeSnapshot:
         runtime=1.0,
         latest_failure_stage=None,
         speedup=speedup,
+        plan_mode="explore",
+        mutation_family="baseline",
+        single_change_focus="none",
     )
 
 
@@ -55,11 +58,16 @@ class OpenAIProviderStage3Tests(unittest.TestCase):
             role="plan",
             current=_snapshot("n1", 1.7),
             root=_snapshot("root", 1.0),
+            attempt_mode="mutate_champion",
             best_node=_snapshot("n0", 2.0),
             best_kernel_summary={"speedup": 2.0},
             best_kernel_code=task.source_code,
             active_anchors=["cuda_cu"],
             frozen_anchors=["user_helpers"],
+            champion=_snapshot("n0", 2.0),
+            champion_summary={"node_id": "n0", "speedup": 2.0},
+            recent_positive_mutations=[{"mutation_family": "family_a"}],
+            recent_negative_mutations=[{"mutation_family": "family_b"}],
         )
         response = {
             "strategy_name": "strategy_01",
@@ -73,6 +81,10 @@ class OpenAIProviderStage3Tests(unittest.TestCase):
             "change_budget": "small",
             "must_preserve": ["keep launch structure"],
             "reason_against_rewrite": "preserve working kernel",
+            "performance_hypothesis": "memory access dominates",
+            "single_change_focus": "tune block size",
+            "mutation_family": "launch_tuning",
+            "target_metric": "speedup",
             "anchor_edits": [
                 {"anchor_name": "cuda_cu", "instruction": "tune block size", "operation": "replace"}
             ],
@@ -85,6 +97,9 @@ class OpenAIProviderStage3Tests(unittest.TestCase):
         self.assertEqual(proposal.frozen_anchors, ["user_helpers"])
         self.assertEqual(proposal.change_budget, "small")
         self.assertEqual(proposal.must_preserve, ["keep launch structure"])
+        self.assertEqual(proposal.attempt_mode, "mutate_champion")
+        self.assertEqual(proposal.single_change_focus, "tune block size")
+        self.assertEqual(proposal.mutation_family, "launch_tuning")
 
     def test_generate_code_normalizes_requested_regions_only(self):
         provider = OpenAICompatibleProvider(OpenAICompatibleConfig(api_key="x"))
@@ -96,19 +111,27 @@ class OpenAIProviderStage3Tests(unittest.TestCase):
             anchor_edits=[AnchorEdit(anchor_name="cuda_cu", instruction="refine", operation="replace")],
             expected_gain="small",
             mode="refine",
+            attempt_mode="mutate_champion",
             target_node_id="n1",
             target_anchors=["cuda_cu"],
             frozen_anchors=["user_helpers"],
             change_budget="small",
+            performance_hypothesis="memory access dominates",
+            single_change_focus="tune block size",
+            mutation_family="launch_tuning",
         )
         context = AgentContext(
             role="code",
             current=_snapshot("n1", 1.7),
             root=_snapshot("root", 1.0),
+            attempt_mode="mutate_champion",
             active_anchors=["cuda_cu"],
             frozen_anchors=["user_helpers"],
             best_kernel_excerpt={"cuda_cu": "return x"},
             best_kernel_summary={"speedup": 2.0},
+            champion=_snapshot("n0", 2.0),
+            champion_code=task.source_code,
+            champion_summary={"node_id": "n0", "speedup": 2.0},
         )
         with patch.object(
             provider,

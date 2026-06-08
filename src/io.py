@@ -1,4 +1,4 @@
-"""Persistence helpers for STARK run artifacts.
+﻿"""Persistence helpers for STARK run artifacts.
 
 Saved runs are the contract between execution, replay, validation, and
 reporting. Backward compatibility matters here, so loading code keeps
@@ -146,6 +146,11 @@ def save_run(run: RunResult, output_dir: str | Path) -> Path:
                 "reference_runtimes": {key: _dump_float(value) for key, value in node.reference_runtimes.items()},
                 "speedups": {key: _dump_float(value) for key, value in node.speedups.items()},
                 "primary_reference": node.primary_reference,
+                "plan_mode": node.plan_mode,
+                "performance_hypothesis": node.performance_hypothesis,
+                "single_change_focus": node.single_change_focus,
+                "mutation_family": node.mutation_family,
+                "target_metric": node.target_metric,
             }
             for node_id, node in run.nodes.items()
         },
@@ -207,6 +212,11 @@ def load_run(path: str | Path) -> RunResult:
             reference_runtimes=node_reference_runtimes,
             speedups=node_speedups,
             primary_reference=node_payload.get("primary_reference", "torch_eager" if node_reference_runtimes else None),
+            plan_mode=node_payload.get("plan_mode", "explore"),
+            performance_hypothesis=node_payload.get("performance_hypothesis"),
+            single_change_focus=node_payload.get("single_change_focus"),
+            mutation_family=node_payload.get("mutation_family"),
+            target_metric=node_payload.get("target_metric"),
         )
     leaderboard = list(payload.get("leaderboard", []))
     leaderboard_history = payload.get("leaderboard_history") or [leaderboard]
