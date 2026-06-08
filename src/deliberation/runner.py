@@ -188,6 +188,7 @@ def _proposal_payload(task: TaskSpec, provider_name: str, strategies_per_model: 
         "problem_id": task.problem_id,
         "available_anchors": anchors,
         "semantic_profile": semantic_profile_to_prompt_dict(task.semantic_profile),
+        "execution_facts": task.execution_facts.to_prompt_dict() if task.execution_facts else None,
         "grounded_regions": [
             {
                 "anchor_name": region.anchor_name,

@@ -137,7 +137,7 @@ class OpenAICompatibleProvider(AgentProvider):
         prompt = (
             "You are the planning agent in a STARK-style workflow. Return JSON only.\n"
             "Choose one optimization strategy and decide which code region should be edited.\n"
-            "The loader provides generic structural anchors plus a semantic_profile; use the semantic_profile to choose the optimization intent and edit target.\n"
+            "The loader provides generic structural anchors plus a semantic_profile and execution_facts; use them to choose the optimization intent and edit target.\n"
             "Required JSON schema: "
             '{"strategy_name":"...","strategy_summary":"...","expected_gain":"...","risk_notes":"...","anchor_edits":[{"anchor_name":"...","instruction":"...","operation":"replace"}]}\n'
             "Use only anchor names from the provided anchors. operation must be replace or append. "
@@ -551,6 +551,7 @@ def _task_metadata(task: TaskSpec) -> dict[str, Any]:
         "problem_id": task.problem_id,
         "backend": task.backend,
         "source_origin": task.source_origin,
+        "execution_facts": task.execution_facts.to_prompt_dict() if task.execution_facts else None,
         "semantic_profile": semantic_profile_to_prompt_dict(task.semantic_profile),
         "strategy_portfolio": strategy_portfolio_to_prompt_dict(task.strategy_portfolio),
         "grounded_regions": [
@@ -657,7 +658,7 @@ def _task_prompt_suffix(task: TaskSpec, role: str) -> str:
 def _kernelbench_anchor_hint(task: TaskSpec) -> str:
     anchors = extract_anchor_names(task.source_code)
     if is_native_cuda_backend(task.backend):
-        return "helpers/cuda_cpp/cuda_cu/init_body/forward_stmt_* anchors"
+        return "user_helpers/cuda_cpp/cuda_cu/init_body/forward_stmt_* anchors"
     if is_tilelang_backend(task.backend):
         if any(anchor.startswith("forward_stmt_") for anchor in anchors):
             return "helpers/tilelang_kernel/init_body/forward_stmt_* anchors"
@@ -714,7 +715,7 @@ def _kernelbench_profile_hint(task: TaskSpec, role: str) -> str:
         if role == "plan":
             return (
                 " Treat this as a native CUDA extension task: keep the scaffold intact, preserve the ModelNew interface, "
-                "and propose grounded edits that stay inside helpers/cuda_cpp/cuda_cu/init_body/forward_stmt_*."
+                "and propose grounded edits that stay inside user_helpers/cuda_cpp/cuda_cu/init_body/forward_stmt_*."
             )
         return (
             " Treat this as a native CUDA extension task: preserve the pybind binding surface, keep CUDA kernel launch assumptions explicit, "

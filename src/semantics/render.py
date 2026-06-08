@@ -15,6 +15,8 @@ def semantic_profile_to_prompt_dict(profile: SemanticProfile | None, max_anchor_
         "mode": profile.mode,
         "op_type": profile.op_type,
         "summary": profile.summary,
+        "workload_tag": profile.workload_tag,
+        "bottleneck_hint": profile.bottleneck_hint,
         "recommended_anchors": list(profile.recommended_anchors[:limit]),
         "optimization_intents": [
             {

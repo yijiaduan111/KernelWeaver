@@ -42,6 +42,8 @@ class SemanticProfile:
     op_type: str = "unknown"
     summary: str = "No semantic pattern was recognized."
     source: str | None = None
+    workload_tag: str | None = None
+    bottleneck_hint: str | None = None
     recommended_anchors: list[str] = field(default_factory=list)
     anchors: list[SemanticAnchorProfile] = field(default_factory=list)
     optimization_intents: list[OptimizationIntent] = field(default_factory=list)
@@ -90,6 +92,8 @@ def semantic_profile_from_dict(payload: dict[str, Any] | None) -> SemanticProfil
         op_type=str(payload.get("op_type", "unknown")),
         summary=str(payload.get("summary", "No semantic pattern was recognized.")),
         source=payload.get("source"),
+        workload_tag=payload.get("workload_tag"),
+        bottleneck_hint=payload.get("bottleneck_hint"),
         recommended_anchors=list(payload.get("recommended_anchors") or []),
         anchors=anchors,
         optimization_intents=intents,

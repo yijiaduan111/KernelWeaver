@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from ..core.execution_facts import ExecutionFacts, infer_workload_profile
 from .patterns import classify_statement
 from .schema import OptimizationIntent, SemanticAnchorProfile, SemanticProfile
 
@@ -16,6 +17,7 @@ class SemanticAnalyzer:
         problem_info: Any,
         grounded_regions: list[Any],
         backend: str,
+        execution_facts: ExecutionFacts | None = None,
         mode: str = "rule",
         max_anchor_hints: int = 6,
     ) -> SemanticProfile:
@@ -36,12 +38,15 @@ class SemanticAnalyzer:
         recommended = self._recommended_anchors(anchors, backend, max_anchor_hints)
         intents = _intents_for(task_op_type, recommended, backend)
         risks = _risk_notes_for(task_op_type)
+        workload_tag, bottleneck_hint = infer_workload_profile(task_op_type, execution_facts)
         return SemanticProfile(
             enabled=True,
             mode="rule",
             op_type=task_op_type,
             summary=_summary_for(task_op_type),
             source=str(getattr(problem_info, "path", "")) or None,
+            workload_tag=workload_tag,
+            bottleneck_hint=bottleneck_hint,
             recommended_anchors=recommended,
             anchors=anchors[:max_anchor_hints],
             optimization_intents=intents,
@@ -124,7 +129,7 @@ def _forward_step_source(anchor_name: str, forward_steps: list[str]) -> str:
 def _non_forward_type(anchor_name: str) -> str:
     if anchor_name.startswith("cuda_") or anchor_name.endswith("_kernel"):
         return "backend_kernel_region"
-    if anchor_name == "helpers":
+    if anchor_name in {"helpers", "user_helpers"}:
         return "helper_region"
     if anchor_name == "init_body":
         return "state_initialization"

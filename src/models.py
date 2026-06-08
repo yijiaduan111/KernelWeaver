@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from .core.execution_facts import ExecutionFacts
 from .feedback.schema import FeedbackState
 from .deliberation.schema import StrategyPortfolio
 from .semantics.schema import SemanticProfile
@@ -60,6 +61,7 @@ class TaskSpec:
     backend: str | None = None
     source_root: str | None = None
     grounded_regions: list[GroundedRegion] = field(default_factory=list)
+    execution_facts: ExecutionFacts | None = None
     semantic_profile: SemanticProfile | None = None
     strategy_portfolio: StrategyPortfolio | None = None
 
