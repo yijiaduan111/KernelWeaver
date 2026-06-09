@@ -136,19 +136,23 @@ class OpenAICompatibleProvider(AgentProvider):
             raise ValueError("No grounded instruction anchors found in source code.")
         active_anchors = list(context.active_anchors) or anchors
         frozen_anchors = [name for name in context.frozen_anchors if name in anchors and name not in active_anchors]
+        attempt_mode = context.attempt_mode or "explore"
         best_speedup = (context.best_node.speedup if context.best_node else None) or 0.0
-        best_kernel_code = context.best_kernel_code if best_speedup > 1.5 else None
         prompt = (
             "You are the planning agent in a STARK-style workflow. Return JSON only.\n"
             "Choose one optimization strategy and decide which code region should be edited.\n"
             "The loader provides generic structural anchors plus a semantic_profile and execution_facts; use them to choose the optimization intent and edit target.\n"
             "Required JSON schema: "
-            '{"strategy_name":"...","strategy_summary":"...","expected_gain":"...","risk_notes":"...","mode":"explore|refine","target_node_id":"...","target_anchors":["..."],"frozen_anchors":["..."],"change_budget":"small|medium","must_preserve":["..."],"reason_against_rewrite":"...","anchor_edits":[{"anchor_name":"...","instruction":"...","operation":"replace"}]}\n'
+            '{"strategy_name":"...","strategy_summary":"...","expected_gain":"...","risk_notes":"...","mode":"explore|refine","target_node_id":"...","target_anchors":["..."],"frozen_anchors":["..."],"change_budget":"small|medium","must_preserve":["..."],"reason_against_rewrite":"...","performance_hypothesis":"...","single_change_focus":"...","mutation_family":"...","target_metric":"speedup|compile_rate|correct_rate","anchor_edits":[{"anchor_name":"...","instruction":"...","operation":"replace"}]}\n'
             "Use only anchor names from the provided anchors. operation must be replace or append. "
             "Each instruction must be concrete enough for the coding agent to implement without changing unrelated scaffold. "
-            "If task_metadata.strategy_portfolio is present, set strategy_name to one selected strategy_id from it, "
+            "If task_metadata.strategy_portfolio is present, set strategy_name to one selected strategy_id from it. "
             "Use feedback_state to guide selection: prefer strategies not yet attempted; if a strategy achieved speedup > 1.0, consider refinement variants; avoid strategies with only compile failures unless you have a concrete fix. "
-            "If best_kernel_summary is present and best speedup > 1.5, default to refinement: preserve the working kernel structure, edit only active anchors, and keep frozen anchors unchanged."
+            "If best_kernel_summary is present and best speedup > 1.5, default to refinement: preserve the working kernel structure, edit only active anchors, and keep frozen anchors unchanged. "
+            "If attempt_mode is mutate_champion, you must behave like a mutation planner rather than a fresh explorer: keep mode=refine, change_budget=small, preserve the current champion structure, propose exactly one concrete performance_hypothesis, choose exactly one single_change_focus, set a short mutation_family label, and describe the smallest local change that tests that hypothesis. "
+            "In mutate_champion mode, do not propose a full rewrite, a new kernel family, or multiple unrelated edits. "
+            "If attempt_mode is best_lineage_push, continue the best existing refinement lineage with one additional focused change instead of restarting from scratch. "
+            "If attempt_mode is challenger, intentionally explore a materially different family or strategy than the current champion."
         ) + _task_prompt_suffix(task, role="plan")
         user = {
             "task_name": task.name,
@@ -158,18 +162,20 @@ class OpenAICompatibleProvider(AgentProvider):
             "all_anchors": anchors,
             "frozen_anchors": frozen_anchors,
             "feedback_state": feedback_state_to_prompt_dict(context.feedback_state),
-            "attempt_mode": context.attempt_mode,
+            "attempt_mode": attempt_mode,
             "current_node": _snapshot_to_dict(context.current),
             "root_node": _snapshot_to_dict(context.root),
             "leader_nodes": [_snapshot_to_dict(item) for item in context.leaders],
             "related_nodes": [_snapshot_to_dict(item) for item in context.related],
             "best_node": _snapshot_to_dict(context.best_node) if context.best_node else None,
             "best_kernel_summary": context.best_kernel_summary,
-            "best_kernel_code": best_kernel_code,
+            "best_kernel_excerpt": context.best_kernel_excerpt,
             "champion_node": _snapshot_to_dict(context.champion) if context.champion else None,
             "champion_summary": context.champion_summary,
+            "champion_lineage": [_snapshot_to_dict(item) for item in context.champion_lineage],
             "recent_positive_mutations": context.recent_positive_mutations,
             "recent_negative_mutations": context.recent_negative_mutations,
+            "used_strategy_names": _used_strategy_names(context),
             "current_code": node.code,
         }
         content = self._chat(
@@ -187,25 +193,43 @@ class OpenAICompatibleProvider(AgentProvider):
             )
             for item in data.get("anchor_edits") or []
         ]
+        normalized_attempt_mode = attempt_mode
+        normalized_mode = str(data.get("mode", "explore"))
+        if normalized_attempt_mode in {"mutate_champion", "best_lineage_push"}:
+            normalized_mode = "refine"
+        target_anchors = list(data.get("target_anchors") or [edit.anchor_name for edit in edits])
+        change_budget = str(data.get("change_budget", "medium"))
+        performance_hypothesis = str(data.get("performance_hypothesis", "")).strip()
+        single_change_focus = str(data.get("single_change_focus", "")).strip()
+        mutation_family = data.get("mutation_family")
+        if normalized_attempt_mode in {"mutate_champion", "best_lineage_push"}:
+            change_budget = "small"
+            if not performance_hypothesis:
+                performance_hypothesis = str(data.get("strategy_summary", "focused refinement")).strip()
+            if not single_change_focus:
+                single_change_focus = f"one focused refinement in {target_anchors[0]}" if target_anchors else "one focused refinement"
+            if not mutation_family:
+                mutation_family = "focused_refinement"
         return PlanProposal(
             strategy_name=data["strategy_name"],
             strategy_summary=data["strategy_summary"],
             anchor_edits=edits,
             expected_gain=data["expected_gain"],
             risk_notes=data.get("risk_notes", ""),
-            mode=str(data.get("mode", "explore")),
-            attempt_mode=context.attempt_mode or str(data.get("mode", "explore")),
+            mode=normalized_mode,
+            attempt_mode=normalized_attempt_mode,
             target_node_id=data.get("target_node_id") or node.node_id,
-            target_anchors=list(data.get("target_anchors") or [edit.anchor_name for edit in edits]),
+            target_anchors=target_anchors,
             frozen_anchors=list(data.get("frozen_anchors") or frozen_anchors),
-            change_budget=str(data.get("change_budget", "medium")),
+            change_budget=change_budget,
             must_preserve=[str(item) for item in (data.get("must_preserve") or [])],
             reason_against_rewrite=str(data.get("reason_against_rewrite", "")),
-            performance_hypothesis=str(data.get("performance_hypothesis", "")),
-            single_change_focus=str(data.get("single_change_focus", "")),
-            mutation_family=data.get("mutation_family"),
+            performance_hypothesis=performance_hypothesis,
+            single_change_focus=single_change_focus,
+            mutation_family=mutation_family,
             target_metric=str(data.get("target_metric", "speedup")),
         )
+
 
     def generate_search_candidate(
         self,
@@ -267,7 +291,9 @@ class OpenAICompatibleProvider(AgentProvider):
             "You may write complete CUDA kernels, helper functions, launchers, pybind bindings, and fallback logic inside their regions.\n"
             "Preserve task semantics, ModelNew/forward signatures, evaluator I/O, and protected scaffold.\n"
             "Use semantic_profile and strategy_portfolio only as implementation hints. "
-            "If plan.mode is refine, preserve the current working kernel structure, only edit plan.target_anchors, never touch plan.frozen_anchors, and prefer minimal delta patches over rewrites."
+            "If plan.mode is refine, preserve the current working kernel structure, only edit plan.target_anchors, never touch plan.frozen_anchors, and prefer minimal delta patches over rewrites. "
+            "If plan.single_change_focus is provided and plan.attempt_mode is mutate_champion or best_lineage_push, you must implement exactly that one local change, keep all unrelated logic unchanged, and avoid full-region rewrites unless a tiny supporting edit is required for correctness. "
+            "In focused mutation modes, preserve launch structure, bindings, fallback paths, and unaffected constants unless the requested single_change_focus explicitly targets them."
         ) + _task_prompt_suffix(task, role="code")
         user = {
             "task_name": task.name,

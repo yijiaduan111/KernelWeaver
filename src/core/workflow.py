@@ -242,31 +242,84 @@ def _record_attempt_mode(stats: dict, mode: str) -> None:
 
 def _attempt_mode_for_index(attempt_index: int, config: StarkConfig, feedback_state) -> str:
     max_attempts = max(1, config.max_attempts)
-    explore_cutoff = max(1, int(round(max_attempts * config.explore_fraction)))
-    challenger_budget = max(1, int(round(max_attempts * config.challenger_fraction)))
-    mutation_end = max_attempts - challenger_budget
-    if attempt_index <= explore_cutoff:
+    if max_attempts == 1:
         return "explore"
+    final_push_index = max_attempts
+    prefinal_budget = max_attempts - 1
+    explore_budget = min(prefinal_budget, max(1, int(round(max_attempts * config.explore_fraction))))
+    remaining_budget = max(0, prefinal_budget - explore_budget)
+    if remaining_budget <= 0:
+        if attempt_index < final_push_index:
+            return "explore"
+        return "best_lineage_push"
+    challenger_budget = min(remaining_budget, max(1, int(round(max_attempts * config.challenger_fraction))))
+    mutation_budget = max(0, remaining_budget - challenger_budget)
+    mutation_end = explore_budget + mutation_budget
+    challenger_end = mutation_end + challenger_budget
+    if attempt_index <= explore_budget:
+        return "explore"
+    if attempt_index >= final_push_index:
+        return "best_lineage_push"
     if feedback_state is not None and getattr(feedback_state, "plateau_detected", False):
-        if attempt_index < max_attempts:
+        extra_mutations = max(0, getattr(config, "plateau_recovery_mutation_attempts", 0))
+        plateau_mutation_end = min(prefinal_budget, mutation_end + extra_mutations)
+        if attempt_index <= plateau_mutation_end:
+            return "mutate_champion"
+        if attempt_index <= challenger_end:
             return "challenger"
     if attempt_index <= mutation_end:
         return "mutate_champion"
-    if attempt_index < max_attempts:
+    if attempt_index <= challenger_end:
         return "challenger"
     return "best_lineage_push"
+
+
+def _champion_frontier_candidates(tree: TreeMemory, champion_id: str, config: StarkConfig) -> list[str]:
+    subtree = tree.subtree_ids(champion_id) - {champion_id}
+    leaves = [
+        node_id
+        for node_id in subtree
+        if tree.is_eligible(node_id, config) and not tree.get_node(node_id).child_ids
+    ]
+    correct_leaves = [node_id for node_id in leaves if tree.get_node(node_id).compile_ok and tree.get_node(node_id).correct]
+    return correct_leaves or leaves
+
+
+def _pick_lineage_frontier(tree: TreeMemory, candidates: list[str]) -> str | None:
+    if not candidates:
+        return None
+    return min(
+        candidates,
+        key=lambda node_id: (
+            tree.nodes[node_id].selected_count,
+            float("inf") if tree.nodes[node_id].speedup is None else -tree.nodes[node_id].speedup,
+            tree.nodes[node_id].depth,
+            node_id,
+        ),
+    )
 
 
 def _select_node_for_mode(tree: TreeMemory, config: StarkConfig, attempt_mode: str, feedback_state) -> tuple[str, str] | None:
     if attempt_mode in {"mutate_champion", "best_lineage_push"} and feedback_state is not None:
         champion_id = getattr(feedback_state, "current_champion_id", None)
-        if champion_id and champion_id in tree.nodes and tree.is_eligible(champion_id, config):
-            node = tree.get_node(champion_id)
-            node.selected_count += 1
-            node.selection_reason = attempt_mode
-            tree.last_exclusions = {}
-            tree.selection_exclusion_history.append({})
-            return champion_id, attempt_mode
+        if champion_id and champion_id in tree.nodes:
+            champion_node = tree.get_node(champion_id)
+            frontier = _champion_frontier_candidates(tree, champion_id, config)
+            should_push_lineage = attempt_mode == "best_lineage_push" or len(champion_node.child_ids) >= 2 or not tree.is_eligible(champion_id, config)
+            if should_push_lineage:
+                frontier_id = _pick_lineage_frontier(tree, frontier)
+                if frontier_id is not None:
+                    tree.nodes[frontier_id].selected_count += 1
+                    tree.nodes[frontier_id].selection_reason = "best_lineage_push"
+                    tree.last_exclusions = {}
+                    tree.selection_exclusion_history.append({})
+                    return frontier_id, "best_lineage_push"
+            if tree.is_eligible(champion_id, config):
+                champion_node.selected_count += 1
+                champion_node.selection_reason = attempt_mode
+                tree.last_exclusions = {}
+                tree.selection_exclusion_history.append({})
+                return champion_id, attempt_mode
     if attempt_mode == "challenger":
         eligible = tree.eligible_leaf_nodes(config)
         champion_lineage = set(getattr(getattr(feedback_state, "champion", None), "lineage", []) or [])

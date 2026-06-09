@@ -256,8 +256,9 @@ class StarkConfig:
     evaluator_isolation: str = "off"
     evaluator_timeout_seconds: int = 900
     explore_fraction: float = 0.4
-    challenger_fraction: float = 0.2
+    challenger_fraction: float = 0.3
     plateau_delta_threshold: float = 0.03
+    plateau_recovery_mutation_attempts: int = 2
     plateau_window: int = 3
 
 

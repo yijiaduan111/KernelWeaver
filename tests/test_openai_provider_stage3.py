@@ -143,5 +143,96 @@ class OpenAIProviderStage3Tests(unittest.TestCase):
         self.assertEqual(payload["region_patches"][0]["region"], "cuda_cu")
 
 
+    def test_propose_plan_mutation_prompt_uses_excerpt_not_full_code(self):
+        provider = OpenAICompatibleProvider(OpenAICompatibleConfig(api_key="x"))
+        task = _task()
+        node = SearchNode(node_id="n1", parent_id="root", depth=1, code=task.source_code, origin="plan_code")
+        context = AgentContext(
+            role="plan",
+            current=_snapshot("n1", 1.7),
+            root=_snapshot("root", 1.0),
+            attempt_mode="mutate_champion",
+            best_node=_snapshot("n0", 2.0),
+            best_kernel_summary={"speedup": 2.0},
+            best_kernel_code=task.source_code,
+            best_kernel_excerpt={"cuda_cu": "return x"},
+            active_anchors=["cuda_cu"],
+            frozen_anchors=["user_helpers"],
+            champion=_snapshot("n0", 2.0),
+            champion_summary={"node_id": "n0", "speedup": 2.0},
+        )
+        response = {
+            "strategy_name": "strategy_01",
+            "strategy_summary": "Refine cuda kernel",
+            "expected_gain": "small",
+            "risk_notes": "low",
+            "mode": "refine",
+            "target_node_id": "n0",
+            "target_anchors": ["cuda_cu"],
+            "frozen_anchors": ["user_helpers"],
+            "change_budget": "small",
+            "must_preserve": ["keep launch structure"],
+            "reason_against_rewrite": "preserve working kernel",
+            "performance_hypothesis": "memory access dominates",
+            "single_change_focus": "tune block size",
+            "mutation_family": "launch_tuning",
+            "target_metric": "speedup",
+            "anchor_edits": [{"anchor_name": "cuda_cu", "instruction": "tune block size", "operation": "replace"}],
+        }
+        def fake_chat(*, system_prompt, user_payload, temperature, reasoning_effort):
+            self.assertIn("If attempt_mode is mutate_champion", system_prompt)
+            self.assertIn("single_change_focus", system_prompt)
+            self.assertNotIn("best_kernel_code", user_payload)
+            self.assertEqual(user_payload["best_kernel_excerpt"], {"cuda_cu": "return x"})
+            return json.dumps(response)
+        with patch.object(provider, "_chat", side_effect=fake_chat):
+            proposal = provider.propose_plan(task, node, context)
+        self.assertEqual(proposal.attempt_mode, "mutate_champion")
+        self.assertEqual(proposal.single_change_focus, "tune block size")
+        self.assertEqual(proposal.mutation_family, "launch_tuning")
+
+    def test_generate_code_prompt_enforces_single_change_focus(self):
+        provider = OpenAICompatibleProvider(OpenAICompatibleConfig(api_key="x"))
+        task = _task()
+        node = SearchNode(node_id="n1", parent_id="root", depth=1, code=task.source_code, origin="plan_code")
+        proposal = PlanProposal(
+            strategy_name="strategy_01",
+            strategy_summary="Refine",
+            anchor_edits=[AnchorEdit(anchor_name="cuda_cu", instruction="refine", operation="replace")],
+            expected_gain="small",
+            mode="refine",
+            attempt_mode="mutate_champion",
+            target_node_id="n1",
+            target_anchors=["cuda_cu"],
+            frozen_anchors=["user_helpers"],
+            change_budget="small",
+            performance_hypothesis="memory access dominates",
+            single_change_focus="tune block size",
+            mutation_family="launch_tuning",
+        )
+        context = AgentContext(
+            role="code",
+            current=_snapshot("n1", 1.7),
+            root=_snapshot("root", 1.0),
+            attempt_mode="mutate_champion",
+            active_anchors=["cuda_cu"],
+            frozen_anchors=["user_helpers"],
+            best_kernel_excerpt={"cuda_cu": "return x"},
+            best_kernel_summary={"speedup": 2.0},
+            champion=_snapshot("n0", 2.0),
+            champion_code=task.source_code,
+            champion_summary={"node_id": "n0", "speedup": 2.0},
+        )
+        def fake_chat(*, system_prompt, user_payload, temperature, reasoning_effort):
+            self.assertIn("plan.single_change_focus", system_prompt)
+            self.assertIn("exactly that one local change", system_prompt)
+            self.assertEqual(user_payload["plan"]["single_change_focus"], "tune block size")
+            return '{"region_patches":[{"region":"cuda_cu","operation":"replace","body":"return x"}]}'
+        with patch.object(provider, "_chat", side_effect=fake_chat):
+            out = provider.generate_code(task, node, proposal, context)
+        payload = json.loads(out)
+        self.assertEqual(payload["region_patches"][0]["region"], "cuda_cu")
+
+
 if __name__ == "__main__":
     unittest.main()
