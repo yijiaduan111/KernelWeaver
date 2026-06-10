@@ -2,8 +2,12 @@
 import unittest
 from unittest.mock import patch
 
+from stark.diagnostics.schema import MachineCheckProfile, TaskDiagnostics
+from stark.deliberation.schema import DeliberationStrategy, StrategyPortfolio
+from stark.memory.schema import MemoryMethodCard, MemoryProfile
 from stark.models import AgentContext, AnchorEdit, NodeSnapshot, PlanProposal, SearchNode, TaskSpec
 from stark.providers import OpenAICompatibleConfig, OpenAICompatibleProvider
+from stark.providers.openai_provider import _task_metadata
 
 
 def _task() -> TaskSpec:
@@ -50,9 +54,98 @@ def _snapshot(node_id: str, speedup: float | None = None) -> NodeSnapshot:
 
 
 class OpenAIProviderStage3Tests(unittest.TestCase):
+    def test_task_metadata_includes_machine_check_profile(self):
+        task = _task()
+        task.diagnostics_profile = TaskDiagnostics(
+            enabled=True,
+            mode="machine_check_v1",
+            machine_check_profile=MachineCheckProfile(
+                enabled=True,
+                status="ok",
+                case_id="CASE_1",
+                allowed_methods=["Launch_Tuning"],
+                forbidden_methods=["RegisterBlocking"],
+            ),
+        )
+        metadata = _task_metadata(task)
+        self.assertIn("diagnostics_profile", metadata)
+        self.assertIn("machine_check_profile", metadata)
+        self.assertEqual(metadata["machine_check_profile"]["allowed_methods"], ["Launch_Tuning"])
+
+    def test_propose_plan_falls_back_to_selected_strategy_memory_family(self):
+        provider = OpenAICompatibleProvider(OpenAICompatibleConfig(api_key="x"))
+        task = _task()
+        task.diagnostics_profile = TaskDiagnostics(
+            enabled=True,
+            mode="machine_check_v1",
+            machine_check_profile=MachineCheckProfile(
+                enabled=True,
+                status="ok",
+                allowed_methods=["SharedMemoryTiling"],
+            ),
+        )
+        task.memory_profile = MemoryProfile(
+            enabled=True,
+            bootstrap_cards=[
+                MemoryMethodCard(
+                    method_id="SharedMemoryTiling",
+                    title="Shared Memory Tiling",
+                    summary="row-wise tiling",
+                )
+            ],
+        )
+        task.strategy_portfolio = StrategyPortfolio(
+            enabled=True,
+            strategies=[
+                DeliberationStrategy(
+                    strategy_id="strategy_01",
+                    intent="tiling",
+                    summary="rowwise tiling",
+                    memory_methods=["SharedMemoryTiling"],
+                )
+            ],
+        )
+        node = SearchNode(node_id="n1", parent_id="root", depth=1, code=task.source_code, origin="plan_code")
+        context = AgentContext(
+            role="plan",
+            current=_snapshot("n1", 1.7),
+            root=_snapshot("root", 1.0),
+            attempt_mode="explore",
+        )
+        response = {
+            "strategy_name": "strategy_01",
+            "strategy_summary": "Refine cuda kernel",
+            "expected_gain": "small",
+            "risk_notes": "low",
+            "mode": "explore",
+            "target_node_id": "n1",
+            "target_anchors": ["cuda_cu"],
+            "frozen_anchors": [],
+            "change_budget": "medium",
+            "must_preserve": [],
+            "reason_against_rewrite": "",
+            "performance_hypothesis": "tile rows",
+            "single_change_focus": "tile rows",
+            "target_metric": "speedup",
+            "anchor_edits": [{"anchor_name": "cuda_cu", "instruction": "tile rows", "operation": "replace"}],
+        }
+        with patch.object(provider, "_chat", return_value=json.dumps(response)):
+            proposal = provider.propose_plan(task, node, context)
+        self.assertEqual(proposal.mutation_family, "SharedMemoryTiling")
+
     def test_propose_plan_parses_stage3_fields(self):
         provider = OpenAICompatibleProvider(OpenAICompatibleConfig(api_key="x"))
         task = _task()
+        task.diagnostics_profile = TaskDiagnostics(
+            enabled=True,
+            mode="machine_check_v1",
+            machine_check_profile=MachineCheckProfile(
+                enabled=True,
+                status="ok",
+                allowed_methods=["Launch_Tuning"],
+                forbidden_methods=["RegisterBlocking"],
+            ),
+        )
         node = SearchNode(node_id="n1", parent_id="root", depth=1, code=task.source_code, origin="plan_code")
         context = AgentContext(
             role="plan",
@@ -146,6 +239,15 @@ class OpenAIProviderStage3Tests(unittest.TestCase):
     def test_propose_plan_mutation_prompt_uses_excerpt_not_full_code(self):
         provider = OpenAICompatibleProvider(OpenAICompatibleConfig(api_key="x"))
         task = _task()
+        task.diagnostics_profile = TaskDiagnostics(
+            enabled=True,
+            mode="machine_check_v1",
+            machine_check_profile=MachineCheckProfile(
+                enabled=True,
+                status="ok",
+                allowed_methods=["Launch_Tuning"],
+            ),
+        )
         node = SearchNode(node_id="n1", parent_id="root", depth=1, code=task.source_code, origin="plan_code")
         context = AgentContext(
             role="plan",
@@ -180,6 +282,8 @@ class OpenAIProviderStage3Tests(unittest.TestCase):
             "anchor_edits": [{"anchor_name": "cuda_cu", "instruction": "tune block size", "operation": "replace"}],
         }
         def fake_chat(*, system_prompt, user_payload, temperature, reasoning_effort):
+            self.assertIn("allowed_methods", system_prompt)
+            self.assertEqual(user_payload["task_metadata"]["machine_check_profile"]["allowed_methods"], ["Launch_Tuning"])
             self.assertIn("If attempt_mode is mutate_champion", system_prompt)
             self.assertIn("single_change_focus", system_prompt)
             self.assertNotIn("best_kernel_code", user_payload)

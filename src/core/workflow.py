@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from ..agents import CodeAgent, DebugAgent, PlanAgent
 from ..feedback import collect_feedback_state
+from ..memory import refresh_memory_profile
 from .candidate import normalize_candidate
 from .context import build_code_context, build_debug_context, build_plan_context, snapshot_node
 from .static_check import check_candidate_static
@@ -475,6 +476,8 @@ def _finalize_run(
         kernelbench_evaluator=config.kernelbench_evaluator,
         grounded_regions=list(task.grounded_regions),
         semantic_profile=task.semantic_profile,
+        diagnostics_profile=task.diagnostics_profile,
+        memory_profile=task.memory_profile,
         strategy_portfolio=task.strategy_portfolio,
         feedback_state=feedback_state,
         reference_runtimes=dict(best_node.reference_runtimes),
@@ -489,6 +492,7 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
         print(f"[workflow] root_evaluation_start task={task.name}", flush=True)
     tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
     feedback_state = collect_feedback_state(tree)
+    refresh_memory_profile(task, feedback_state, top_k=config.memory_feedback_top_k)
     if config.verbose:
         print(
             f"[workflow] root_evaluation_done status={tree.get_node(tree.root_id).status} "
@@ -567,6 +571,7 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
         tree.refresh_pruned_nodes(config)
         _record_failure(stats, evaluation)
         feedback_state = collect_feedback_state(tree)
+        refresh_memory_profile(task, feedback_state, top_k=config.memory_feedback_top_k)
 
         if config.verbose:
             print(

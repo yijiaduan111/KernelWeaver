@@ -24,6 +24,9 @@ def strategy_portfolio_to_prompt_dict(portfolio: StrategyPortfolio | None, max_s
                 "implementation_hints": strategy.implementation_hints[:6],
                 "expected_gain": strategy.expected_gain,
                 "risk_notes": strategy.risk_notes[:5],
+                "memory_methods": strategy.memory_methods[:3],
+                "mutation_axes": strategy.mutation_axes[:4],
+                "forbidden_patterns": strategy.forbidden_patterns[:4],
                 "source_models": strategy.source_models,
                 "model_scores": strategy.model_scores,
             }

@@ -150,6 +150,9 @@ class MockProvider(AgentProvider):
                         "implementation_hints": ["Keep the public task interface unchanged.", "Edit only the selected grounded anchor."],
                         "expected_gain": "Exercise deliberation wiring in tests.",
                         "risk_notes": ["Mock strategy does not optimize real performance."],
+                        "memory_methods": list(((user_payload.get("memory_profile") or {}).get("preferred_methods") or [])[:1]),
+                        "mutation_axes": ["local_anchor_refinement"],
+                        "forbidden_patterns": ["full_module_rewrite"],
                         "score": 4,
                     }
                 ]

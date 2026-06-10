@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from stark.core.workflow import run_stark
+from stark.diagnostics.schema import MachineCheckProfile, TaskDiagnostics
 from stark.deliberation.merge import apply_strategy_reviews, merge_strategy_proposals
 from stark.deliberation.runner import MultiModelDeliberationRunner
 from stark.deliberation.schema import DeliberationStrategy, ModelProposal, ModelReview
@@ -83,6 +84,16 @@ class DeliberationTests(unittest.TestCase):
         task = build_demo_tasks()[0]
         config = StarkConfig(max_attempts=1, deliberation_enabled=True, deliberation_profile="quick")
         runner = MultiModelDeliberationRunner(providers={"mock": MockProvider()}, max_strategies=2, strategies_per_model=1)
+        task.diagnostics_profile = TaskDiagnostics(
+            enabled=True,
+            mode="machine_check_v1",
+            machine_check_profile=MachineCheckProfile(
+                enabled=True,
+                status="ok",
+                case_id="DEMO_CASE",
+                allowed_methods=["Launch_Tuning"],
+            ),
+        )
         task.strategy_portfolio = runner.run(task, config)
         result = run_stark(task, config, MockProvider(), DemoEvaluator())
         tmpdir = Path(__file__).resolve().parents[1] / "runs" / ".tmp_test_deliberation"
@@ -97,6 +108,8 @@ class DeliberationTests(unittest.TestCase):
                 shutil.rmtree(tmpdir)
         self.assertIsNotNone(reloaded.strategy_portfolio)
         self.assertGreaterEqual(len(reloaded.strategy_portfolio.strategies), 1)
+        self.assertIsNotNone(reloaded.diagnostics_profile)
+        self.assertEqual(reloaded.diagnostics_profile.machine_check_profile.case_id, "DEMO_CASE")
 
     def test_mock_plan_uses_untried_portfolio_strategy(self):
         task = build_demo_tasks()[0]
@@ -137,4 +150,3 @@ class DeliberationTests(unittest.TestCase):
         oks = [event for event in runner.last_events if event.status == "ok"]
         self.assertEqual(len(starts), 6)
         self.assertEqual(len(oks), 6)
-

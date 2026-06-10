@@ -17,6 +17,9 @@ class DeliberationStrategy:
     implementation_hints: list[str] = field(default_factory=list)
     expected_gain: str = "unknown"
     risk_notes: list[str] = field(default_factory=list)
+    memory_methods: list[str] = field(default_factory=list)
+    mutation_axes: list[str] = field(default_factory=list)
+    forbidden_patterns: list[str] = field(default_factory=list)
     source_models: list[str] = field(default_factory=list)
     model_scores: dict[str, float] = field(default_factory=dict)
     review_notes: dict[str, str] = field(default_factory=dict)
@@ -75,6 +78,9 @@ def strategy_portfolio_from_dict(payload: dict[str, Any] | None) -> StrategyPort
             implementation_hints=list(item.get("implementation_hints") or []),
             expected_gain=str(item.get("expected_gain", "unknown")),
             risk_notes=list(item.get("risk_notes") or []),
+            memory_methods=list(item.get("memory_methods") or []),
+            mutation_axes=list(item.get("mutation_axes") or []),
+            forbidden_patterns=list(item.get("forbidden_patterns") or []),
             source_models=list(item.get("source_models") or []),
             model_scores={str(key): float(value) for key, value in dict(item.get("model_scores") or {}).items()},
             review_notes={str(key): str(value) for key, value in dict(item.get("review_notes") or {}).items()},

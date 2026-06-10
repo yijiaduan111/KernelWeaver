@@ -30,6 +30,9 @@ def merge_strategy_proposals(
                     implementation_hints=list(strategy.implementation_hints),
                     expected_gain=strategy.expected_gain,
                     risk_notes=list(strategy.risk_notes),
+                    memory_methods=list(strategy.memory_methods),
+                    mutation_axes=list(strategy.mutation_axes),
+                    forbidden_patterns=list(strategy.forbidden_patterns),
                     source_models=list(strategy.source_models),
                     model_scores=dict(strategy.model_scores),
                     review_notes=dict(strategy.review_notes),
@@ -40,6 +43,9 @@ def merge_strategy_proposals(
             current.target_anchors = _dedupe([*current.target_anchors, *strategy.target_anchors])
             current.implementation_hints = _dedupe([*current.implementation_hints, *strategy.implementation_hints])[:8]
             current.risk_notes = _dedupe([*current.risk_notes, *strategy.risk_notes])[:8]
+            current.memory_methods = _dedupe([*current.memory_methods, *strategy.memory_methods])[:4]
+            current.mutation_axes = _dedupe([*current.mutation_axes, *strategy.mutation_axes])[:6]
+            current.forbidden_patterns = _dedupe([*current.forbidden_patterns, *strategy.forbidden_patterns])[:6]
             current.source_models = _dedupe([*current.source_models, *strategy.source_models])
             current.model_scores.update(strategy.model_scores)
             current.review_notes.update(strategy.review_notes)

@@ -46,6 +46,7 @@ from .config import (
     workflow_choices,
 )
 from .core.loader import KernelBenchLoader
+from .diagnostics import build_task_diagnostics
 from .deliberation.runner import MultiModelDeliberationRunner
 from .core.workflow import run_stark, run_workflow
 from .demo import build_demo_tasks
@@ -70,6 +71,7 @@ from .experiment import (
     write_paper_summary_report,
 )
 from .io import load_run, save_run
+from .memory import build_memory_profile
 from .models import StarkConfig
 from .providers import ClaudeCompatibleConfig, ClaudeCompatibleProvider, GeminiCompatibleConfig, GeminiCompatibleProvider, LocalCudaLLMConfig, LocalCudaLLMProvider, MockProvider, OpenAICompatibleProvider, RoleRoutedProvider
 from .triton_tasks import build_triton_tasks
@@ -253,6 +255,34 @@ def _resolve_semantics_settings(run_name: str) -> dict[str, Any]:
     }
 
 
+def _resolve_memory_settings(run_name: str) -> dict[str, Any]:
+    experiment = experiment_profile(run_name)
+    raw = experiment.get("memory", {})
+    if not isinstance(raw, dict):
+        raw = {}
+    return {
+        "enabled": bool(raw.get("enabled", False)),
+        "mode": str(raw.get("mode", "expert_memory_v0")),
+        "bootstrap_cards": int(raw.get("bootstrap_cards", 4)),
+        "challenger_cards": int(raw.get("challenger_cards", 3)),
+        "feedback_top_k": int(raw.get("feedback_top_k", 3)),
+    }
+
+
+def _resolve_diagnostics_settings(run_name: str) -> dict[str, Any]:
+    experiment = experiment_profile(run_name)
+    raw = experiment.get("diagnostics", {})
+    if not isinstance(raw, dict):
+        raw = {}
+    return {
+        "enabled": bool(raw.get("enabled", False)),
+        "mode": str(raw.get("mode", "machine_check_v1")),
+        "timeout_seconds": int(raw.get("timeout_seconds", 300)),
+        "warmup_runs": int(raw.get("warmup_runs", 2)),
+        "profile_runs": int(raw.get("profile_runs", 3)),
+    }
+
+
 def _resolve_env_file(args: argparse.Namespace, run_name: str) -> str:
     if getattr(args, "env_file", None):
         return str(args.env_file)
@@ -420,6 +450,37 @@ def _apply_deliberation(task, config: StarkConfig, runner: MultiModelDeliberatio
             flush=True,
         )
 
+
+def _apply_diagnostics(task, config: StarkConfig) -> None:
+    task.diagnostics_profile = build_task_diagnostics(task, config)
+    if config.verbose and task.diagnostics_profile is not None:
+        machine_check = task.diagnostics_profile.machine_check_profile
+        allowed_count = len(machine_check.allowed_methods) if machine_check is not None else 0
+        case_id = machine_check.case_id if machine_check is not None else None
+        print(
+            f"[diagnostics] enabled={task.diagnostics_profile.enabled} mode={task.diagnostics_profile.mode} "
+            f"case={case_id or 'none'} allowed_methods={allowed_count}",
+            flush=True,
+        )
+
+
+def _apply_memory(task, config: StarkConfig) -> None:
+    task.memory_profile = build_memory_profile(
+        task,
+        enabled=config.memory_enabled,
+        mode=config.memory_mode,
+        max_primary_cards=config.memory_bootstrap_cards,
+        max_challenger_cards=config.memory_challenger_cards,
+    )
+    if config.verbose and task.memory_profile is not None:
+        primary = len(task.memory_profile.bootstrap_cards)
+        challenger = len(task.memory_profile.challenger_cards)
+        print(
+            f"[memory] enabled={task.memory_profile.enabled} mode={task.memory_profile.mode} "
+            f"primary={primary} challenger={challenger}",
+            flush=True,
+        )
+
 def _close_provider(provider) -> None:
     close_fn = getattr(provider, "close", None)
     if callable(close_fn):
@@ -435,6 +496,8 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
     evaluator_settings = evaluator_profile(evaluator_name)
     measure_settings = measurement_profile(measurement_name)
     semantics_settings = _resolve_semantics_settings(run_name)
+    diagnostics_settings = _resolve_diagnostics_settings(run_name)
+    memory_settings = _resolve_memory_settings(run_name)
     deliberation_name = _resolve_deliberation_name(args, run_name)
     deliberation_settings = deliberation_profile(deliberation_name)
     max_attempts = int(getattr(args, "max_attempts", None) or search_settings.get("max_attempts", 6))
@@ -471,6 +534,16 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
         semantics_enabled=semantics_settings["enabled"],
         semantics_mode=semantics_settings["mode"],
         semantics_max_anchor_hints=semantics_settings["max_anchor_hints"],
+        diagnostics_enabled=diagnostics_settings["enabled"],
+        diagnostics_mode=diagnostics_settings["mode"],
+        diagnostics_timeout_seconds=diagnostics_settings["timeout_seconds"],
+        diagnostics_warmup_runs=diagnostics_settings["warmup_runs"],
+        diagnostics_profile_runs=diagnostics_settings["profile_runs"],
+        memory_enabled=memory_settings["enabled"],
+        memory_mode=memory_settings["mode"],
+        memory_bootstrap_cards=memory_settings["bootstrap_cards"],
+        memory_challenger_cards=memory_settings["challenger_cards"],
+        memory_feedback_top_k=memory_settings["feedback_top_k"],
         deliberation_enabled=bool(deliberation_settings.get("enabled", False)),
         deliberation_profile=deliberation_name,
         deliberation_mode=str(deliberation_settings.get("mode", "multi_model_v0")),
@@ -500,6 +573,8 @@ def _run_demo(args: argparse.Namespace) -> int:
     deliberation_runner = _build_deliberation_runner(args, run_name, config)
     provider = _build_provider(args, run_name)
     try:
+        _apply_diagnostics(task, config)
+        _apply_memory(task, config)
         _apply_deliberation(task, config, deliberation_runner)
         result = run_stark(task, config, provider, DemoEvaluator())
         return _save_and_print(result, args.output_dir)
@@ -519,6 +594,8 @@ def _run_triton(args: argparse.Namespace) -> int:
     deliberation_runner = _build_deliberation_runner(args, run_name, config)
     provider = _build_provider(args, run_name)
     try:
+        _apply_diagnostics(task, config)
+        _apply_memory(task, config)
         _apply_deliberation(task, config, deliberation_runner)
         result = run_stark(task, config, provider, TritonEvaluator())
         return _save_and_print(result, args.output_dir)
@@ -546,6 +623,8 @@ def _run_kernelbench(args: argparse.Namespace) -> int:
     deliberation_runner = _build_deliberation_runner(args, run_name, config)
     provider = _build_provider(args, run_name)
     try:
+        _apply_diagnostics(task, config)
+        _apply_memory(task, config)
         _apply_deliberation(task, config, deliberation_runner)
         result = run_workflow(task, config, provider, _kernelbench_evaluator(backend, config.evaluator_profile or "quick", config), workflow=workflow)
         return _save_and_print(result, args.output_dir)
@@ -599,6 +678,8 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
                     semantics_mode=config.semantics_mode,
                     semantics_max_anchor_hints=config.semantics_max_anchor_hints,
                 )
+                _apply_diagnostics(task, config)
+                _apply_memory(task, config)
                 _apply_deliberation(task, config, deliberation_runner)
                 task_output_dir = output_root / batch_output_dir_name(alias, level, problem_id)
                 result = run_workflow(
@@ -795,4 +876,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

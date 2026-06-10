@@ -8,6 +8,9 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
+from ..diagnostics import machine_check_profile_to_prompt_dict
+from ..memory import card_map as memory_card_map
+from ..memory import memory_profile_to_prompt_dict
 from ..models import StarkConfig, TaskSpec
 from ..semantics import semantic_profile_to_prompt_dict
 from ..utils import extract_anchor_names
@@ -132,6 +135,10 @@ class MultiModelDeliberationRunner:
                     "task_name": task.name,
                     "backend": task.backend,
                     "semantic_profile": semantic_profile_to_prompt_dict(task.semantic_profile),
+                    "machine_check_profile": machine_check_profile_to_prompt_dict(
+                        getattr(getattr(task, "diagnostics_profile", None), "machine_check_profile", None)
+                    ),
+                    "memory_profile": memory_profile_to_prompt_dict(task.memory_profile),
                     "strategy_portfolio": strategy_portfolio_to_prompt_dict(portfolio),
                 },
                 temperature=self.review_temperature,
@@ -159,10 +166,13 @@ def _proposal_system_prompt(strategies_per_model: int) -> str:
     return (
         "You are one independent model in a multi-model kernel optimization deliberation. "
         "Propose backend-specific optimization strategies, but do not write code. "
+        "If machine_check_profile is provided, its allowed_methods are the legal method-family set; only use method IDs from that set and avoid forbidden_methods. "
+        "If retrieved long-term memory cards are provided, ground each proposal in one or two of those method IDs instead of inventing an unrelated family. "
         "Use only provided anchors. Return JSON only. "
         f"Return at most {strategies_per_model} strategies with schema: "
         '{"strategies":[{"intent":"...","summary":"...","target_anchors":["..."],'
-        '"implementation_hints":["..."],"expected_gain":"...","risk_notes":["..."],"score":1-5}]}.'
+        '"implementation_hints":["..."],"expected_gain":"...","risk_notes":["..."],'
+        '"memory_methods":["..."],"mutation_axes":["..."],"forbidden_patterns":["..."],"score":1-5}]}.'
     )
 
 
@@ -188,6 +198,10 @@ def _proposal_payload(task: TaskSpec, provider_name: str, strategies_per_model: 
         "problem_id": task.problem_id,
         "available_anchors": anchors,
         "semantic_profile": semantic_profile_to_prompt_dict(task.semantic_profile),
+        "machine_check_profile": machine_check_profile_to_prompt_dict(
+            getattr(getattr(task, "diagnostics_profile", None), "machine_check_profile", None)
+        ),
+        "memory_profile": memory_profile_to_prompt_dict(task.memory_profile),
         "execution_facts": task.execution_facts.to_prompt_dict() if task.execution_facts else None,
         "grounded_regions": [
             {
@@ -203,6 +217,7 @@ def _proposal_payload(task: TaskSpec, provider_name: str, strategies_per_model: 
 
 def _parse_strategies(data: dict[str, Any], provider_name: str, task: TaskSpec, limit: int) -> list[DeliberationStrategy]:
     available = set(extract_anchor_names(task.source_code))
+    allowed_methods = set(getattr(getattr(task, "memory_profile", None), "allowed_methods", []) or [])
     strategies: list[DeliberationStrategy] = []
     for item in data.get("strategies", []) or []:
         if not isinstance(item, dict):
@@ -210,20 +225,24 @@ def _parse_strategies(data: dict[str, Any], provider_name: str, task: TaskSpec, 
         target_anchors = [str(anchor).strip() for anchor in item.get("target_anchors", []) if str(anchor).strip() in available]
         if not target_anchors and task.semantic_profile is not None:
             target_anchors = [anchor for anchor in task.semantic_profile.recommended_anchors if anchor in available][:2]
-        strategies.append(
-            DeliberationStrategy(
-                strategy_id="",
-                intent=str(item.get("intent") or item.get("name") or "optimization_strategy"),
-                summary=str(item.get("summary") or item.get("strategy_summary") or "Model-proposed optimization strategy."),
-                target_anchors=target_anchors,
-                implementation_hints=_string_list(item.get("implementation_hints") or item.get("hints")),
-                expected_gain=str(item.get("expected_gain") or "unknown"),
-                risk_notes=_string_list(item.get("risk_notes") or item.get("risks")),
-                source_models=[provider_name],
-                model_scores={provider_name: _score(item.get("score", 3))},
-                priority=int(_score(item.get("score", 3))),
-            )
+        raw_memory_methods = _string_list(item.get("memory_methods") or item.get("method_ids"))
+        memory_methods = [method_id for method_id in raw_memory_methods if not allowed_methods or method_id in allowed_methods][:2]
+        strategy = DeliberationStrategy(
+            strategy_id="",
+            intent=str(item.get("intent") or item.get("name") or "optimization_strategy"),
+            summary=str(item.get("summary") or item.get("strategy_summary") or "Model-proposed optimization strategy."),
+            target_anchors=target_anchors,
+            implementation_hints=_string_list(item.get("implementation_hints") or item.get("hints")),
+            expected_gain=str(item.get("expected_gain") or "unknown"),
+            risk_notes=_string_list(item.get("risk_notes") or item.get("risks")),
+            memory_methods=memory_methods[:2],
+            mutation_axes=_string_list(item.get("mutation_axes") or item.get("mutation_focuses") or item.get("focuses")),
+            forbidden_patterns=_string_list(item.get("forbidden_patterns") or item.get("anti_patterns")),
+            source_models=[provider_name],
+            model_scores={provider_name: _score(item.get("score", 3))},
+            priority=int(_score(item.get("score", 3))),
         )
+        strategies.append(_augment_strategy_from_memory(strategy, task))
         if len(strategies) >= limit:
             break
     return strategies
@@ -264,6 +283,39 @@ def _score(value: Any) -> float:
         return max(0.0, min(5.0, float(value)))
     except (TypeError, ValueError):
         return 0.0
+
+
+def _augment_strategy_from_memory(strategy: DeliberationStrategy, task: TaskSpec) -> DeliberationStrategy:
+    cards = memory_card_map(task.memory_profile)
+    target_anchors = list(strategy.target_anchors)
+    hints = list(strategy.implementation_hints)
+    risks = list(strategy.risk_notes)
+    forbidden = list(strategy.forbidden_patterns)
+    for method_id in strategy.memory_methods:
+        card = cards.get(method_id)
+        if card is None:
+            continue
+        target_anchors = _dedupe_text([*target_anchors, *card.target_anchors])[:4]
+        hints = _dedupe_text([*hints, *card.implementation_hints, *card.why_now])[:8]
+        risks = _dedupe_text([*risks, *card.expected_metric_change])[:8]
+        forbidden = _dedupe_text([*forbidden, *card.forbidden_patterns])[:6]
+    strategy.target_anchors = target_anchors
+    strategy.implementation_hints = hints
+    strategy.risk_notes = risks
+    strategy.forbidden_patterns = forbidden
+    return strategy
+
+
+def _dedupe_text(items: list[str]) -> list[str]:
+    seen: set[str] = set()
+    output: list[str] = []
+    for item in items:
+        text = str(item).strip()
+        if not text or text in seen:
+            continue
+        seen.add(text)
+        output.append(text)
+    return output
 
 
 def _result_detail(result: Any) -> str:

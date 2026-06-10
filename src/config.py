@@ -468,6 +468,7 @@ def _fallback_experiment(name: str) -> dict[str, Any]:
             "measurement": "paper",
             "runtime": "gpu_single",
             "semantics": {"enabled": True, "mode": "rule", "max_anchor_hints": 6},
+            "diagnostics": {"enabled": False, "mode": "disabled", "timeout_seconds": 300, "warmup_runs": 2, "profile_runs": 3},
             "output_root": "runs",
         }
     if name == "main":
@@ -484,6 +485,7 @@ def _fallback_experiment(name: str) -> dict[str, Any]:
             "measurement": "main",
             "runtime": "gpu_single",
             "semantics": {"enabled": True, "mode": "rule", "max_anchor_hints": 6},
+            "diagnostics": {"enabled": True, "mode": "machine_check_v1", "timeout_seconds": 300, "warmup_runs": 2, "profile_runs": 3},
             "output_root": "runs",
         }
     return {
@@ -499,5 +501,6 @@ def _fallback_experiment(name: str) -> dict[str, Any]:
         "measurement": "quick",
         "runtime": "gpu_single",
         "semantics": {"enabled": True, "mode": "rule", "max_anchor_hints": 6},
+        "diagnostics": {"enabled": False, "mode": "disabled", "timeout_seconds": 120, "warmup_runs": 1, "profile_runs": 1},
         "output_root": "runs",
     }
