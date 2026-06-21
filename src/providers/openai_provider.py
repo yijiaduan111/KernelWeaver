@@ -14,8 +14,6 @@ from ..feedback.render import feedback_state_to_prompt_dict
 from ..core.patch_payload import canonicalize_region_patches, parse_loose_json_dict
 from ..diagnostics import machine_check_profile_to_prompt_dict, task_diagnostics_to_prompt_dict
 from ..deliberation import strategy_portfolio_to_prompt_dict
-from ..memory import card_map as memory_card_map
-from ..memory import memory_profile_to_prompt_dict
 from ..models import AgentContext, AnchorEdit, PlanProposal, SearchNode, TaskSpec
 from ..semantics import semantic_profile_to_prompt_dict
 from ..utils import extract_anchor_names
@@ -152,7 +150,6 @@ class OpenAICompatibleProvider(AgentProvider):
             "If task_metadata.strategy_portfolio is present, set strategy_name to one selected strategy_id from it. "
             "If task_metadata.machine_check_profile is present, treat its allowed_methods as the legal method-family set and do not choose a mutation_family outside that set. "
             "Avoid any method in task_metadata.machine_check_profile.forbidden_methods unless you are explicitly repairing correctness. "
-            "If task_metadata.memory_profile is present, prefer its primary methods early, switch to challenger methods after plateau, and set mutation_family to one concrete memory method id whenever possible. "
             "Use feedback_state to guide selection: prefer strategies not yet attempted; if a strategy achieved speedup > 1.0, consider refinement variants; avoid strategies with only compile failures unless you have a concrete fix. "
             "If best_kernel_summary is present and best speedup > 1.5, default to refinement: preserve the working kernel structure, edit only active anchors, and keep frozen anchors unchanged. "
             "If attempt_mode is mutate_champion, you must behave like a mutation planner rather than a fresh explorer: keep mode=refine, change_budget=small, preserve the current champion structure, propose exactly one concrete performance_hypothesis, choose exactly one single_change_focus, set a short mutation_family label, and describe the smallest local change that tests that hypothesis. "
@@ -302,7 +299,6 @@ class OpenAICompatibleProvider(AgentProvider):
             "You may write complete CUDA kernels, helper functions, launchers, pybind bindings, and fallback logic inside their regions.\n"
             "Preserve task semantics, ModelNew/forward signatures, evaluator I/O, and protected scaffold.\n"
             "Use semantic_profile and strategy_portfolio only as implementation hints. "
-            "If selected_strategy is present, treat selected_strategy.memory_methods as the active expert family, follow selected_strategy.implementation_hints, and avoid selected_strategy.forbidden_patterns unless correctness requires a minimal exception. "
             "If plan.mode is refine, preserve the current working kernel structure, only edit plan.target_anchors, never touch plan.frozen_anchors, and prefer minimal delta patches over rewrites. "
             "If plan.single_change_focus is provided and plan.attempt_mode is mutate_champion or best_lineage_push, you must implement exactly that one local change, keep all unrelated logic unchanged, and avoid full-region rewrites unless a tiny supporting edit is required for correctness. "
             "In focused mutation modes, preserve launch structure, bindings, fallback paths, and unaffected constants unless the requested single_change_focus explicitly targets them."
@@ -653,7 +649,6 @@ def _task_metadata(task: TaskSpec) -> dict[str, Any]:
         "semantic_profile": semantic_profile_to_prompt_dict(task.semantic_profile),
         "diagnostics_profile": task_diagnostics_to_prompt_dict(diagnostics),
         "machine_check_profile": machine_check_profile_to_prompt_dict(machine_check),
-        "memory_profile": memory_profile_to_prompt_dict(task.memory_profile),
         "strategy_portfolio": strategy_portfolio_to_prompt_dict(task.strategy_portfolio),
         "grounded_regions": [
             {
@@ -684,18 +679,6 @@ def _selected_strategy_payload(task: TaskSpec, strategy_name: str) -> dict[str, 
     selected = next((item for item in portfolio.strategies if item.strategy_id == strategy_name), None)
     if selected is None:
         return None
-    cards = memory_card_map(getattr(task, "memory_profile", None))
-    memory_cards = [
-        {
-            "method_id": card.method_id,
-            "summary": card.summary,
-            "why_now": list(card.why_now[:4]),
-            "implementation_hints": list(card.implementation_hints[:6]),
-            "forbidden_patterns": list(card.forbidden_patterns[:4]),
-        }
-        for method_id in selected.memory_methods
-        if (card := cards.get(method_id)) is not None
-    ]
     return {
         "strategy_id": selected.strategy_id,
         "intent": selected.intent,
@@ -704,10 +687,8 @@ def _selected_strategy_payload(task: TaskSpec, strategy_name: str) -> dict[str, 
         "implementation_hints": list(selected.implementation_hints[:6]),
         "expected_gain": selected.expected_gain,
         "risk_notes": list(selected.risk_notes[:5]),
-        "memory_methods": list(selected.memory_methods[:3]),
         "mutation_axes": list(selected.mutation_axes[:4]),
         "forbidden_patterns": list(selected.forbidden_patterns[:4]),
-        "memory_cards": memory_cards,
     }
 
 

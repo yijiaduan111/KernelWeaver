@@ -24,7 +24,6 @@ from .config import (
 from .diagnostics import task_diagnostics_from_dict, task_diagnostics_to_dict
 from .deliberation import strategy_portfolio_from_dict, strategy_portfolio_to_dict
 from .feedback import feedback_state_from_dict, feedback_state_to_dict
-from .memory import memory_profile_from_dict, memory_profile_to_dict
 from .models import AnchorEdit, GroundedRegion, RunResult, SearchNode, StarkConfig
 from .semantics import semantic_profile_from_dict, semantic_profile_to_dict
 
@@ -101,7 +100,6 @@ def save_run(run: RunResult, output_dir: str | Path) -> Path:
         "primary_reference": run.primary_reference,
         "semantic_profile": semantic_profile_to_dict(run.semantic_profile),
         "diagnostics_profile": task_diagnostics_to_dict(run.diagnostics_profile),
-        "memory_profile": memory_profile_to_dict(run.memory_profile),
         "strategy_portfolio": strategy_portfolio_to_dict(run.strategy_portfolio),
         "feedback_state": feedback_state_to_dict(run.feedback_state),
         "grounded_regions": [
@@ -295,7 +293,6 @@ def load_run(path: str | Path) -> RunResult:
         primary_reference=payload.get("primary_reference", "torch_eager" if run_reference_runtimes else None),
         semantic_profile=semantic_profile_from_dict(payload.get("semantic_profile")),
         diagnostics_profile=task_diagnostics_from_dict(payload.get("diagnostics_profile")),
-        memory_profile=memory_profile_from_dict(payload.get("memory_profile")),
         strategy_portfolio=strategy_portfolio_from_dict(payload.get("strategy_portfolio")),
         feedback_state=feedback_state_from_dict(payload.get("feedback_state")),
         grounded_regions=[

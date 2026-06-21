@@ -1,3 +1,4 @@
+import json
 import shutil
 import time
 import unittest
@@ -8,6 +9,7 @@ from stark.diagnostics.schema import MachineCheckProfile, TaskDiagnostics
 from stark.deliberation.merge import apply_strategy_reviews, merge_strategy_proposals
 from stark.deliberation.runner import MultiModelDeliberationRunner
 from stark.deliberation.schema import DeliberationStrategy, ModelProposal, ModelReview
+from stark.feedback.schema import FeedbackState
 from stark.demo import build_demo_tasks
 from stark.evaluation import DemoEvaluator
 from stark.io import load_run, save_run
@@ -108,6 +110,7 @@ class DeliberationTests(unittest.TestCase):
                 shutil.rmtree(tmpdir)
         self.assertIsNotNone(reloaded.strategy_portfolio)
         self.assertGreaterEqual(len(reloaded.strategy_portfolio.strategies), 1)
+        self.assertEqual(reloaded.strategy_portfolio.deliberation_round, 1)
         self.assertIsNotNone(reloaded.diagnostics_profile)
         self.assertEqual(reloaded.diagnostics_profile.machine_check_profile.case_id, "DEMO_CASE")
 
@@ -120,6 +123,56 @@ class DeliberationTests(unittest.TestCase):
         result = run_stark(task, config, MockProvider(), DemoEvaluator())
         used = [node.plan_strategy_name for node in result.nodes.values() if node.plan_strategy_name]
         self.assertTrue(any(name and name.startswith("strategy_") for name in used))
+    def test_runner_upgrade_appends_new_strategies(self):
+        class UpgradeMock(MockProvider):
+            def generate_text(self, system_prompt, user_payload, temperature=0.2, purpose="generic"):
+                if purpose == "deliberation_review":
+                    portfolio = user_payload.get("strategy_portfolio") or {}
+                    scores = [
+                        {"strategy_id": item.get("strategy_id"), "score": 4, "notes": "upgrade review"}
+                        for item in portfolio.get("strategies", [])
+                        if item.get("strategy_id")
+                    ]
+                    return json.dumps({"scores": scores})
+                provider_name = str(user_payload.get("provider_name") or self.name)
+                anchors = list(user_payload.get("available_anchors") or [])
+                target = next((anchor for anchor in anchors if str(anchor).startswith("forward_stmt_")), anchors[0] if anchors else "helpers")
+                if purpose == "deliberation_propose_upgrade":
+                    return json.dumps(
+                        {
+                            "strategies": [
+                                {
+                                    "intent": f"{provider_name}_upgrade_tiling",
+                                    "summary": f"Introduce a new upgraded strategy on {target}.",
+                                    "target_anchors": [target],
+                                    "implementation_hints": ["Try a different upgraded strategy family."],
+                                    "expected_gain": "Push past the previous ceiling.",
+                                    "risk_notes": ["Keep the upgraded change local."],
+                                    "mutation_axes": ["new_family"],
+                                    "forbidden_patterns": ["full_module_rewrite"],
+                                    "score": 5,
+                                }
+                            ]
+                        }
+                    )
+                return super().generate_text(system_prompt, user_payload, temperature=temperature, purpose=purpose)
+
+        task = build_demo_tasks()[0]
+        config = StarkConfig(deliberation_enabled=True, deliberation_providers=["mock"])
+        runner = MultiModelDeliberationRunner(providers={"mock": UpgradeMock()}, max_strategies=1, strategies_per_model=1)
+        base_portfolio = runner.run(task, config)
+        upgraded = runner.run_upgrade(
+            task,
+            config,
+            FeedbackState(current_champion_speedup=1.5, best_strategy_name=base_portfolio.strategies[0].strategy_id),
+            base_portfolio,
+            2,
+        )
+        self.assertEqual(upgraded.deliberation_round, 2)
+        self.assertGreater(len(upgraded.strategies), len(base_portfolio.strategies))
+        self.assertEqual(upgraded.strategies[0].strategy_id, "strategy_01")
+        self.assertEqual(upgraded.strategies[-1].strategy_id, "strategy_02")
+
     def test_runner_collects_in_parallel(self):
         class SlowMock(MockProvider):
             def __init__(self, delay: float) -> None:

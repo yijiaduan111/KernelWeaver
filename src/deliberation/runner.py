@@ -9,14 +9,12 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
 from ..diagnostics import machine_check_profile_to_prompt_dict
-from ..memory import card_map as memory_card_map
-from ..memory import memory_profile_to_prompt_dict
 from ..models import StarkConfig, TaskSpec
 from ..semantics import semantic_profile_to_prompt_dict
 from ..utils import extract_anchor_names
 from .merge import apply_strategy_reviews, merge_strategy_proposals
-from .schema import DeliberationStrategy, ModelProposal, ModelReview, StrategyPortfolio
 from .render import strategy_portfolio_to_prompt_dict
+from .schema import DeliberationStrategy, ModelProposal, ModelReview, StrategyPortfolio
 from .telemetry import DeliberationEvent
 
 
@@ -57,6 +55,51 @@ class MultiModelDeliberationRunner:
         )
         return apply_strategy_reviews(portfolio, reviews)
 
+    def run_upgrade(
+        self,
+        task: TaskSpec,
+        config: StarkConfig,
+        feedback_state,
+        existing_portfolio: StrategyPortfolio,
+        current_round: int,
+        *,
+        champion_summary: dict[str, Any] | None = None,
+        champion_code: str | None = None,
+    ) -> StrategyPortfolio:
+        if existing_portfolio is None or not existing_portfolio.strategies:
+            return self.run(task, config)
+        del config
+        self.last_events = []
+        proposals = self._collect_parallel(
+            phase="propose_upgrade",
+            action=lambda provider_name, provider: self._propose_upgrade(
+                provider_name,
+                provider,
+                task,
+                feedback_state,
+                existing_portfolio,
+                current_round,
+                champion_summary=champion_summary,
+                champion_code=champion_code,
+            ),
+        )
+        upgrade_pool = merge_strategy_proposals(proposals, max_strategies=self.max_strategies, mode=self.mode)
+        if not upgrade_pool.strategies:
+            return existing_portfolio
+        upgrade_pool.strategies = _filter_novel_strategies(existing_portfolio, upgrade_pool.strategies)
+        if not upgrade_pool.strategies:
+            return existing_portfolio
+        upgrade_pool.enabled = True
+        upgrade_pool.deliberation_round = current_round
+        reviews = self._collect_parallel(
+            phase="review_upgrade",
+            action=lambda provider_name, provider: self._review(provider_name, provider, task, upgrade_pool),
+        )
+        reviewed = apply_strategy_reviews(upgrade_pool, reviews)
+        if not reviewed.strategies:
+            return existing_portfolio
+        return _merge_strategy_portfolios(existing_portfolio, reviewed, current_round)
+
     def _collect_parallel(self, phase: str, action):
         provider_items = list(self.providers.items())
         if not provider_items:
@@ -90,7 +133,7 @@ class MultiModelDeliberationRunner:
                             detail=str(exc),
                         )
                     )
-                    if phase == "propose":
+                    if phase.startswith("propose"):
                         results_by_name[provider_name] = ModelProposal(provider_name=provider_name, status="error", error=str(exc))
                     else:
                         results_by_name[provider_name] = ModelReview(provider_name=provider_name, status="error", error=str(exc))
@@ -126,6 +169,40 @@ class MultiModelDeliberationRunner:
         except Exception as exc:
             return ModelProposal(provider_name=provider_name, status="error", error=str(exc))
 
+    def _propose_upgrade(
+        self,
+        provider_name: str,
+        provider: Any,
+        task: TaskSpec,
+        feedback_state,
+        existing_portfolio: StrategyPortfolio,
+        current_round: int,
+        *,
+        champion_summary: dict[str, Any] | None = None,
+        champion_code: str | None = None,
+    ) -> ModelProposal:
+        try:
+            text = provider.generate_text(
+                system_prompt=_upgrade_proposal_system_prompt(self.strategies_per_model, current_round),
+                user_payload=_upgrade_proposal_payload(
+                    task,
+                    provider_name,
+                    self.strategies_per_model,
+                    feedback_state,
+                    existing_portfolio,
+                    current_round,
+                    champion_summary=champion_summary,
+                    champion_code=champion_code,
+                ),
+                temperature=self.proposal_temperature,
+                purpose="deliberation_propose_upgrade",
+            )
+            data = _parse_json_object(text)
+            strategies = _parse_strategies(data, provider_name, task, self.strategies_per_model)
+            return ModelProposal(provider_name=provider_name, strategies=strategies)
+        except Exception as exc:
+            return ModelProposal(provider_name=provider_name, status="error", error=str(exc))
+
     def _review(self, provider_name: str, provider: Any, task: TaskSpec, portfolio: StrategyPortfolio) -> ModelReview:
         try:
             text = provider.generate_text(
@@ -138,8 +215,10 @@ class MultiModelDeliberationRunner:
                     "machine_check_profile": machine_check_profile_to_prompt_dict(
                         getattr(getattr(task, "diagnostics_profile", None), "machine_check_profile", None)
                     ),
-                    "memory_profile": memory_profile_to_prompt_dict(task.memory_profile),
-                    "strategy_portfolio": strategy_portfolio_to_prompt_dict(portfolio),
+                    "strategy_portfolio": strategy_portfolio_to_prompt_dict(
+                        portfolio,
+                        max_strategies=max(len(portfolio.strategies), portfolio.max_strategies),
+                    ),
                 },
                 temperature=self.review_temperature,
                 purpose="deliberation_review",
@@ -167,7 +246,23 @@ def _proposal_system_prompt(strategies_per_model: int) -> str:
         "You are one independent model in a multi-model kernel optimization deliberation. "
         "Propose backend-specific optimization strategies, but do not write code. "
         "If machine_check_profile is provided, its allowed_methods are the legal method-family set; only use method IDs from that set and avoid forbidden_methods. "
-        "If retrieved long-term memory cards are provided, ground each proposal in one or two of those method IDs instead of inventing an unrelated family. "
+        "Use only provided anchors. Return JSON only. "
+        f"Return at most {strategies_per_model} strategies with schema: "
+        '{"strategies":[{"intent":"...","summary":"...","target_anchors":["..."],'
+        '"implementation_hints":["..."],"expected_gain":"...","risk_notes":["..."],'
+        '"memory_methods":["..."],"mutation_axes":["..."],"forbidden_patterns":["..."],"score":1-5}]}.'
+    )
+
+
+def _upgrade_proposal_system_prompt(strategies_per_model: int, current_round: int) -> str:
+    return (
+        f"You are one model in a multi-model kernel optimization deliberation, round {current_round}. "
+        "Previous strategies have already been explored and the search is plateauing. "
+        "You will receive the current champion summary, a compact champion code excerpt, the existing strategy portfolio, and recent search outcomes. "
+        "Propose strategies that are materially different from the explored directions. "
+        "Either refine the current champion with one new hypothesis, or propose a genuinely different algorithmic direction. "
+        "Do not repeat strategies that already exist in the portfolio or strategies that have clearly plateaued without a new concrete fix. "
+        "If a strategy family has compile-failed repeatedly, either repair the root cause concretely or avoid that family. "
         "Use only provided anchors. Return JSON only. "
         f"Return at most {strategies_per_model} strategies with schema: "
         '{"strategies":[{"intent":"...","summary":"...","target_anchors":["..."],'
@@ -201,7 +296,6 @@ def _proposal_payload(task: TaskSpec, provider_name: str, strategies_per_model: 
         "machine_check_profile": machine_check_profile_to_prompt_dict(
             getattr(getattr(task, "diagnostics_profile", None), "machine_check_profile", None)
         ),
-        "memory_profile": memory_profile_to_prompt_dict(task.memory_profile),
         "execution_facts": task.execution_facts.to_prompt_dict() if task.execution_facts else None,
         "grounded_regions": [
             {
@@ -215,9 +309,92 @@ def _proposal_payload(task: TaskSpec, provider_name: str, strategies_per_model: 
     }
 
 
+def _upgrade_proposal_payload(
+    task: TaskSpec,
+    provider_name: str,
+    strategies_per_model: int,
+    feedback_state,
+    existing_portfolio: StrategyPortfolio,
+    current_round: int,
+    *,
+    champion_summary: dict[str, Any] | None = None,
+    champion_code: str | None = None,
+) -> dict[str, Any]:
+    base = _proposal_payload(task, provider_name, strategies_per_model)
+    recent_attempts = list(getattr(feedback_state, "recent_attempts", []) or [])
+    strategy_outcomes: list[dict[str, Any]] = []
+    for strategy in existing_portfolio.strategies:
+        related = [attempt for attempt in recent_attempts if getattr(attempt, "strategy_name", None) == strategy.strategy_id]
+        speedups = [float(attempt.speedup) for attempt in related if isinstance(getattr(attempt, "speedup", None), (int, float))]
+        strategy_outcomes.append(
+            {
+                "strategy_id": strategy.strategy_id,
+                "intent": strategy.intent,
+                "summary": strategy.summary,
+                "best_speedup": max(speedups) if speedups else None,
+                "attempt_count": len(related),
+                "compile_fail_count": sum(1 for attempt in related if not bool(getattr(attempt, "compile_ok", False))),
+                "correctness_fail_count": sum(
+                    1
+                    for attempt in related
+                    if bool(getattr(attempt, "compile_ok", False)) and not bool(getattr(attempt, "correct", False))
+                ),
+                "mutation_axes": list(strategy.mutation_axes[:4]),
+                "risk_notes": list(strategy.risk_notes[:4]),
+            }
+        )
+    base["existing_strategy_portfolio"] = strategy_portfolio_to_prompt_dict(
+        existing_portfolio,
+        max_strategies=max(len(existing_portfolio.strategies), existing_portfolio.max_strategies),
+    )
+    base["iteration_context"] = {
+        "current_round": current_round,
+        "previous_round": getattr(existing_portfolio, "deliberation_round", 1),
+        "plateau_detected": bool(getattr(feedback_state, "plateau_detected", False)),
+        "champion_speedup": getattr(feedback_state, "current_champion_speedup", None),
+        "champion_strategy": getattr(feedback_state, "best_strategy_name", None),
+        "champion_summary": champion_summary,
+        "champion_code_excerpt": _trim_code_excerpt(champion_code),
+        "strategy_outcomes": strategy_outcomes,
+        "recent_attempts": _recent_attempts_payload(recent_attempts),
+        "recent_improvement_deltas": list(getattr(feedback_state, "recent_improvement_deltas", []) or []),
+        "recent_regression_deltas": list(getattr(feedback_state, "recent_regression_deltas", []) or []),
+        "recent_successful_mutation_families": list(getattr(feedback_state, "recent_successful_mutation_families", []) or []),
+        "recent_failed_mutation_families": list(getattr(feedback_state, "recent_failed_mutation_families", []) or []),
+        "recent_positive_mutations": list(getattr(getattr(feedback_state, "champion", None), "recent_positive_mutations", []) or []),
+        "recent_negative_mutations": list(getattr(getattr(feedback_state, "champion", None), "recent_negative_mutations", []) or []),
+        "instruction": (
+            "The search has plateaued. Propose new strategies that either push past the current ceiling or introduce a different optimization family. "
+            "Do not repeat the existing portfolio without a new concrete mechanism."
+        ),
+    }
+    return base
+
+
+def _recent_attempts_payload(recent_attempts: list[Any], limit: int = 8) -> list[dict[str, Any]]:
+    payload: list[dict[str, Any]] = []
+    for attempt in recent_attempts[-limit:]:
+        payload.append(
+            {
+                "attempt_id": getattr(attempt, "attempt_id", None),
+                "parent_id": getattr(attempt, "parent_id", None),
+                "strategy_name": getattr(attempt, "strategy_name", None),
+                "mode": getattr(attempt, "mode", None),
+                "mutation_family": getattr(attempt, "mutation_family", None),
+                "single_change_focus": getattr(attempt, "single_change_focus", None),
+                "speedup": getattr(attempt, "speedup", None),
+                "parent_speedup": getattr(attempt, "parent_speedup", None),
+                "compile_ok": bool(getattr(attempt, "compile_ok", False)),
+                "correct": bool(getattr(attempt, "correct", False)),
+                "failure_stage": getattr(attempt, "failure_stage", None),
+                "failure_type": getattr(attempt, "failure_type", None),
+            }
+        )
+    return payload
+
+
 def _parse_strategies(data: dict[str, Any], provider_name: str, task: TaskSpec, limit: int) -> list[DeliberationStrategy]:
     available = set(extract_anchor_names(task.source_code))
-    allowed_methods = set(getattr(getattr(task, "memory_profile", None), "allowed_methods", []) or [])
     strategies: list[DeliberationStrategy] = []
     for item in data.get("strategies", []) or []:
         if not isinstance(item, dict):
@@ -225,8 +402,7 @@ def _parse_strategies(data: dict[str, Any], provider_name: str, task: TaskSpec, 
         target_anchors = [str(anchor).strip() for anchor in item.get("target_anchors", []) if str(anchor).strip() in available]
         if not target_anchors and task.semantic_profile is not None:
             target_anchors = [anchor for anchor in task.semantic_profile.recommended_anchors if anchor in available][:2]
-        raw_memory_methods = _string_list(item.get("memory_methods") or item.get("method_ids"))
-        memory_methods = [method_id for method_id in raw_memory_methods if not allowed_methods or method_id in allowed_methods][:2]
+        memory_methods = _string_list(item.get("memory_methods") or item.get("method_ids"))[:2]
         strategy = DeliberationStrategy(
             strategy_id="",
             intent=str(item.get("intent") or item.get("name") or "optimization_strategy"),
@@ -242,7 +418,7 @@ def _parse_strategies(data: dict[str, Any], provider_name: str, task: TaskSpec, 
             model_scores={provider_name: _score(item.get("score", 3))},
             priority=int(_score(item.get("score", 3))),
         )
-        strategies.append(_augment_strategy_from_memory(strategy, task))
+        strategies.append(strategy)
         if len(strategies) >= limit:
             break
     return strategies
@@ -285,27 +461,6 @@ def _score(value: Any) -> float:
         return 0.0
 
 
-def _augment_strategy_from_memory(strategy: DeliberationStrategy, task: TaskSpec) -> DeliberationStrategy:
-    cards = memory_card_map(task.memory_profile)
-    target_anchors = list(strategy.target_anchors)
-    hints = list(strategy.implementation_hints)
-    risks = list(strategy.risk_notes)
-    forbidden = list(strategy.forbidden_patterns)
-    for method_id in strategy.memory_methods:
-        card = cards.get(method_id)
-        if card is None:
-            continue
-        target_anchors = _dedupe_text([*target_anchors, *card.target_anchors])[:4]
-        hints = _dedupe_text([*hints, *card.implementation_hints, *card.why_now])[:8]
-        risks = _dedupe_text([*risks, *card.expected_metric_change])[:8]
-        forbidden = _dedupe_text([*forbidden, *card.forbidden_patterns])[:6]
-    strategy.target_anchors = target_anchors
-    strategy.implementation_hints = hints
-    strategy.risk_notes = risks
-    strategy.forbidden_patterns = forbidden
-    return strategy
-
-
 def _dedupe_text(items: list[str]) -> list[str]:
     seen: set[str] = set()
     output: list[str] = []
@@ -316,6 +471,83 @@ def _dedupe_text(items: list[str]) -> list[str]:
         seen.add(text)
         output.append(text)
     return output
+
+
+def _trim_code_excerpt(code: str | None, max_chars: int = 2400) -> str | None:
+    if not code:
+        return None
+    text = str(code).strip()
+    if len(text) <= max_chars:
+        return text
+    return text[: max_chars - 3] + "..."
+
+
+def _normalize_text(text: str) -> str:
+    return re.sub(r"[^a-z0-9_]+", " ", str(text).lower()).strip()
+
+
+def _strategy_identity(strategy: DeliberationStrategy) -> str:
+    anchors = ",".join(sorted(strategy.target_anchors[:3]))
+    words = " ".join(_normalize_text(f"{strategy.intent} {strategy.summary}").split()[:10])
+    return f"{anchors}|{words}"
+
+
+def _filter_novel_strategies(existing_portfolio: StrategyPortfolio, strategies: list[DeliberationStrategy]) -> list[DeliberationStrategy]:
+    existing = {_strategy_identity(strategy) for strategy in existing_portfolio.strategies}
+    filtered: list[DeliberationStrategy] = []
+    seen_new: set[str] = set()
+    for strategy in strategies:
+        identity = _strategy_identity(strategy)
+        if identity in existing or identity in seen_new:
+            continue
+        seen_new.add(identity)
+        filtered.append(strategy)
+    return filtered
+
+
+def _clone_strategy(strategy: DeliberationStrategy) -> DeliberationStrategy:
+    return DeliberationStrategy(
+        strategy_id=strategy.strategy_id,
+        intent=strategy.intent,
+        summary=strategy.summary,
+        target_anchors=list(strategy.target_anchors),
+        implementation_hints=list(strategy.implementation_hints),
+        expected_gain=strategy.expected_gain,
+        risk_notes=list(strategy.risk_notes),
+        memory_methods=list(strategy.memory_methods),
+        mutation_axes=list(strategy.mutation_axes),
+        forbidden_patterns=list(strategy.forbidden_patterns),
+        source_models=list(strategy.source_models),
+        model_scores=dict(strategy.model_scores),
+        review_notes=dict(strategy.review_notes),
+        priority=strategy.priority,
+    )
+
+
+def _merge_strategy_portfolios(
+    existing_portfolio: StrategyPortfolio,
+    upgraded_portfolio: StrategyPortfolio,
+    current_round: int,
+) -> StrategyPortfolio:
+    strategies = [_clone_strategy(strategy) for strategy in existing_portfolio.strategies]
+    strategies.extend(_clone_strategy(strategy) for strategy in upgraded_portfolio.strategies)
+    for index, strategy in enumerate(strategies, start=1):
+        strategy.strategy_id = f"strategy_{index:02d}"
+    providers = list(dict.fromkeys([*existing_portfolio.providers, *upgraded_portfolio.providers]))
+    proposal_errors = dict(existing_portfolio.proposal_errors)
+    proposal_errors.update(upgraded_portfolio.proposal_errors)
+    review_errors = dict(existing_portfolio.review_errors)
+    review_errors.update(upgraded_portfolio.review_errors)
+    return StrategyPortfolio(
+        enabled=bool(strategies),
+        mode=existing_portfolio.mode,
+        max_strategies=max(len(strategies), existing_portfolio.max_strategies, upgraded_portfolio.max_strategies),
+        providers=providers,
+        strategies=strategies,
+        proposal_errors=proposal_errors,
+        review_errors=review_errors,
+        deliberation_round=current_round,
+    )
 
 
 def _result_detail(result: Any) -> str:

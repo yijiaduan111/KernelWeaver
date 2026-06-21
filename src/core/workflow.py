@@ -1,23 +1,9 @@
-﻿"""Workflow runners for the STARK prototype.
-
-This module hosts the main STARK workflow plus several paper-aligned
-baselines and ablations:
-
-- `run_stark`: multi-agent + grounded edits + dynamic context + search
-- `run_sampling`: root-only sampling baseline
-- `run_reflexion`: single-chain iterative refinement baseline
-- `run_search_agent`: single-agent style search ablation
-- `run_ma_only`: multi-agent best-of-K ablation without strategic search
-
-All workflows produce the same `RunResult` shape so replay, summaries,
-validation, and batch reporting stay compatible across modes.
-"""
+"""Main STARK workflow runner."""
 
 from __future__ import annotations
 
 from ..agents import CodeAgent, DebugAgent, PlanAgent
 from ..feedback import collect_feedback_state
-from ..memory import refresh_memory_profile
 from .candidate import normalize_candidate
 from .context import build_code_context, build_debug_context, build_plan_context, snapshot_node
 from .static_check import check_candidate_static
@@ -241,36 +227,58 @@ def _record_attempt_mode(stats: dict, mode: str) -> None:
     counts[mode] = counts.get(mode, 0) + 1
 
 
-def _attempt_mode_for_index(attempt_index: int, config: StarkConfig, feedback_state) -> str:
+def _phase_stage_ends(config: StarkConfig, explore_phase_start: int = 0) -> tuple[int, int, int]:
+    max_attempts = max(1, config.max_attempts)
+    prefinal_budget = max(0, max_attempts - max(0, explore_phase_start) - 1)
+    if prefinal_budget <= 0:
+        return 0, 0, 0
+    explore_budget = min(prefinal_budget, max(1, int(round(prefinal_budget * config.explore_fraction))))
+    remaining_budget = max(0, prefinal_budget - explore_budget)
+    if remaining_budget <= 0:
+        return explore_budget, explore_budget, explore_budget
+    challenger_budget = min(remaining_budget, max(1, int(round(prefinal_budget * config.challenger_fraction))))
+    mutation_budget = max(0, remaining_budget - challenger_budget)
+    mutation_end = explore_budget + mutation_budget
+    challenger_end = mutation_end + challenger_budget
+    return explore_budget, mutation_end, challenger_end
+
+
+def _phase_ready_for_deliberation_upgrade(attempt_index: int, config: StarkConfig, explore_phase_start: int = 0) -> bool:
+    explore_budget, _mutation_end, _challenger_end = _phase_stage_ends(config, explore_phase_start)
+    if explore_budget <= 0:
+        return False
+    relative_completed = max(0, attempt_index - max(0, explore_phase_start))
+    return relative_completed >= explore_budget
+
+
+def _attempt_mode_for_index(
+    attempt_index: int,
+    config: StarkConfig,
+    feedback_state,
+    explore_phase_start: int = 0,
+) -> str:
     max_attempts = max(1, config.max_attempts)
     if max_attempts == 1:
         return "explore"
     final_push_index = max_attempts
-    prefinal_budget = max_attempts - 1
-    explore_budget = min(prefinal_budget, max(1, int(round(max_attempts * config.explore_fraction))))
-    remaining_budget = max(0, prefinal_budget - explore_budget)
-    if remaining_budget <= 0:
-        if attempt_index < final_push_index:
-            return "explore"
-        return "best_lineage_push"
-    challenger_budget = min(remaining_budget, max(1, int(round(max_attempts * config.challenger_fraction))))
-    mutation_budget = max(0, remaining_budget - challenger_budget)
-    mutation_end = explore_budget + mutation_budget
-    challenger_end = mutation_end + challenger_budget
-    if attempt_index <= explore_budget:
-        return "explore"
     if attempt_index >= final_push_index:
         return "best_lineage_push"
+    relative_index = max(1, attempt_index - max(0, explore_phase_start))
+    explore_budget, mutation_end, challenger_end = _phase_stage_ends(config, explore_phase_start)
+    if explore_budget <= 0:
+        return "explore"
+    if relative_index <= explore_budget:
+        return "explore"
     if feedback_state is not None and getattr(feedback_state, "plateau_detected", False):
         extra_mutations = max(0, getattr(config, "plateau_recovery_mutation_attempts", 0))
-        plateau_mutation_end = min(prefinal_budget, mutation_end + extra_mutations)
-        if attempt_index <= plateau_mutation_end:
+        plateau_mutation_end = min(challenger_end, mutation_end + extra_mutations)
+        if relative_index <= plateau_mutation_end:
             return "mutate_champion"
-        if attempt_index <= challenger_end:
+        if relative_index <= challenger_end:
             return "challenger"
-    if attempt_index <= mutation_end:
+    if relative_index <= mutation_end:
         return "mutate_champion"
-    if attempt_index <= challenger_end:
+    if relative_index <= challenger_end:
         return "challenger"
     return "best_lineage_push"
 
@@ -298,6 +306,25 @@ def _pick_lineage_frontier(tree: TreeMemory, candidates: list[str]) -> str | Non
             node_id,
         ),
     )
+
+
+def _champion_upgrade_context(tree: TreeMemory, feedback_state) -> tuple[dict[str, object] | None, str | None]:
+    champion_id = getattr(feedback_state, "current_champion_id", None) if feedback_state is not None else None
+    if not champion_id or champion_id not in tree.nodes:
+        return None, None
+    champion = tree.get_node(champion_id)
+    champion_snapshot = snapshot_node(tree, champion_id)
+    summary = {
+        "node_id": champion_snapshot.node_id,
+        "speedup": champion_snapshot.speedup,
+        "strategy_name": champion.plan_strategy_name,
+        "plan_mode": champion.plan_mode,
+        "mutation_family": champion.mutation_family,
+        "single_change_focus": champion.single_change_focus,
+        "anchor_names": [edit.anchor_name for edit in champion.anchor_edits],
+        "failure_log_excerpt": champion_snapshot.failure_log_excerpt,
+    }
+    return summary, champion.code
 
 
 def _select_node_for_mode(tree: TreeMemory, config: StarkConfig, attempt_mode: str, feedback_state) -> tuple[str, str] | None:
@@ -373,7 +400,7 @@ def _evaluate_plan_code(
     task: TaskSpec,
     config: StarkConfig,
     evaluator,
-    code_agent: CodeAgent,
+    code_agent,
     selected_node: SearchNode,
     proposal: PlanProposal,
     code_context: AgentContext,
@@ -404,7 +431,7 @@ def _evaluate_debug(
     task: TaskSpec,
     config: StarkConfig,
     evaluator,
-    debug_agent: DebugAgent,
+    debug_agent,
     selected_node: SearchNode,
     debug_context: AgentContext,
 ) -> tuple[PlanProposal, str, EvaluationResult]:
@@ -477,7 +504,6 @@ def _finalize_run(
         grounded_regions=list(task.grounded_regions),
         semantic_profile=task.semantic_profile,
         diagnostics_profile=task.diagnostics_profile,
-        memory_profile=task.memory_profile,
         strategy_portfolio=task.strategy_portfolio,
         feedback_state=feedback_state,
         reference_runtimes=dict(best_node.reference_runtimes),
@@ -486,13 +512,12 @@ def _finalize_run(
     )
 
 
-def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunResult:
+def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator, deliberation_runner=None) -> RunResult:
     """Run the main STARK search loop with tree memory and debug routing."""
     if config.verbose:
         print(f"[workflow] root_evaluation_start task={task.name}", flush=True)
     tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
     feedback_state = collect_feedback_state(tree)
-    refresh_memory_profile(task, feedback_state, top_k=config.memory_feedback_top_k)
     if config.verbose:
         print(
             f"[workflow] root_evaluation_done status={tree.get_node(tree.root_id).status} "
@@ -502,6 +527,8 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
     plan_agent = PlanAgent(provider)
     code_agent = CodeAgent(provider)
     debug_agent = DebugAgent(provider)
+    deliberation_round = getattr(task.strategy_portfolio, "deliberation_round", 1) if task.strategy_portfolio else 1
+    explore_phase_start = 0
 
     selection_history: list[str] = []
     selection_reasons: list[str] = []
@@ -519,7 +546,7 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
             plateau_delta_threshold=config.plateau_delta_threshold,
             plateau_window=config.plateau_window,
         )
-        attempt_mode = _attempt_mode_for_index(attempt_index, config, feedback_state)
+        attempt_mode = _attempt_mode_for_index(attempt_index, config, feedback_state, explore_phase_start)
         _record_attempt_mode(stats, attempt_mode)
         selected = _select_node_for_mode(tree, config, attempt_mode, feedback_state)
         if selected is None:
@@ -571,7 +598,46 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
         tree.refresh_pruned_nodes(config)
         _record_failure(stats, evaluation)
         feedback_state = collect_feedback_state(tree)
-        refresh_memory_profile(task, feedback_state, top_k=config.memory_feedback_top_k)
+    
+        if (
+            config.deliberation_enabled
+            and getattr(config, "deliberation_upgrade_enabled", True)
+            and deliberation_runner is not None
+            and task.strategy_portfolio is not None
+            and getattr(feedback_state, "plateau_detected", False)
+            and deliberation_round < getattr(config, "deliberation_max_rounds", 3)
+            and (config.max_attempts - attempt_index) >= getattr(config, "deliberation_min_remaining_attempts", 8)
+            and _phase_ready_for_deliberation_upgrade(attempt_index, config, explore_phase_start)
+        ):
+            champion_summary, champion_code = _champion_upgrade_context(tree, feedback_state)
+            if config.verbose:
+                champion_speedup = getattr(feedback_state, "current_champion_speedup", None)
+                champion_text = f"{champion_speedup:.3f}x" if isinstance(champion_speedup, (int, float)) else "n/a"
+                print(
+                    f"[deliberation_upgrade] plateau detected at attempt={attempt_index} "
+                    f"round={deliberation_round} champion={champion_text}",
+                    flush=True,
+                )
+            upgraded_portfolio = deliberation_runner.run_upgrade(
+                task,
+                config,
+                feedback_state,
+                task.strategy_portfolio,
+                deliberation_round + 1,
+                champion_summary=champion_summary,
+                champion_code=champion_code,
+            )
+            if upgraded_portfolio is not task.strategy_portfolio:
+                task.strategy_portfolio = upgraded_portfolio
+                deliberation_round = getattr(upgraded_portfolio, "deliberation_round", deliberation_round + 1)
+                explore_phase_start = attempt_index
+                if config.verbose:
+                    print(
+                        f"[deliberation_upgrade] done round={deliberation_round} "
+                        f"total_strategies={len(upgraded_portfolio.strategies)} "
+                        f"explore_phase_reset_at={explore_phase_start}",
+                        flush=True,
+                    )
 
         if config.verbose:
             print(
@@ -593,328 +659,3 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
     )
 
 
-def run_sampling(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunResult:
-    """Run the sampling baseline.
-
-    Each attempt starts from the root candidate, proposes one fresh
-    grounded edit, and evaluates the result without using tree expansion
-    for future selection or a separate debug branch.
-    """
-    tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
-    feedback_state = collect_feedback_state(tree)
-    root_node = tree.get_node(tree.root_id)
-    plan_agent = PlanAgent(provider)
-    code_agent = CodeAgent(provider)
-
-    selection_history: list[str] = []
-    selection_reasons: list[str] = []
-    selection_exclusions: list[dict[str, str]] = []
-
-    if config.verbose:
-        print(
-            f"task={task.name} workflow=sampling root status={root_node.status} "
-            f"root runtime={shorten_runtime(root_eval.runtime)}"
-        )
-
-    for attempt_index in range(1, config.max_attempts + 1):
-        root_node.selected_count += 1
-        root_node.selection_reason = "sampling_root"
-        selection_history.append(tree.root_id)
-        selection_reasons.append("sampling_root")
-        selection_exclusions.append({})
-        stats["attempt_count"] += 1
-        stats["plan_attempts"] += 1
-
-        if config.verbose:
-            print(f"[attempt {attempt_index}] workflow=sampling selected=root reason=sampling_root")
-
-        proposal = plan_agent.run(task, root_node, _root_only_context(tree, "plan", feedback_state))
-        candidate_code, evaluation = _evaluate_plan_code(
-            task,
-            config,
-            evaluator,
-            code_agent,
-            root_node,
-            proposal,
-            _root_only_context(tree, "code", feedback_state),
-            stats,
-        )
-        child = tree.add_child(tree.root_id, candidate_code, proposal, evaluation, "plan_code")
-        tree.update_leaderboard(child.node_id, config)
-        _record_failure(stats, evaluation)
-        feedback_state = collect_feedback_state(tree)
-
-        if config.verbose:
-            print(
-                f"  -> child={child.node_id} origin=plan_code status={child.status} "
-                f"score={shorten_runtime(child.runtime)} strategy={child.plan_strategy_name}"
-            )
-
-    return _finalize_run(
-        task,
-        config,
-        tree,
-        stats,
-        debug_stats,
-        selection_history,
-        selection_reasons,
-        selection_exclusions,
-        workflow="sampling",
-        feedback_state=feedback_state,
-    )
-
-
-def run_search_agent(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunResult:
-    """Run the paper-style search ablation.
-
-    This keeps strategic search and tree memory, but collapses generation
-    into a single search-agent style step with no dedicated debug branch
-    and no role-specific dynamic context window.
-    """
-    tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
-    feedback_state = collect_feedback_state(tree)
-
-    selection_history: list[str] = []
-    selection_reasons: list[str] = []
-    selection_exclusions: list[dict[str, str]] = []
-
-    if config.verbose:
-        print(
-            f"task={task.name} workflow=search-agent root status={tree.get_node(tree.root_id).status} "
-            f"root runtime={shorten_runtime(root_eval.runtime)}"
-        )
-
-    for attempt_index in range(1, config.max_attempts + 1):
-        selected = tree.select_node(config)
-        if selected is None:
-            break
-        selected_id, selection_reason = selected
-        selection_history.append(selected_id)
-        selection_reasons.append(selection_reason)
-        selection_exclusions.append(dict(tree.last_exclusions))
-        selected_node = tree.get_node(selected_id)
-        stats["attempt_count"] += 1
-        stats["plan_attempts"] += 1
-
-        if config.verbose:
-            print(
-                f"[attempt {attempt_index}] workflow=search-agent selected={selected_id} "
-                f"status={selected_node.status} reason={selection_reason}"
-            )
-
-        context = _search_only_context(tree, selected_id)
-        proposal, candidate_code = provider.generate_search_candidate(task, selected_node, context)
-        evaluation = evaluator.evaluate(task, candidate_code, config)
-        child = tree.add_child(selected_id, candidate_code, proposal, evaluation, "plan_code")
-        tree.update_leaderboard(child.node_id, config)
-        tree.refresh_pruned_nodes(config)
-        _record_failure(stats, evaluation)
-        feedback_state = collect_feedback_state(tree)
-
-        if config.verbose:
-            print(
-                f"  -> child={child.node_id} origin=plan_code status={child.status} "
-                f"score={shorten_runtime(child.runtime)} strategy={child.plan_strategy_name}"
-            )
-
-    return _finalize_run(
-        task,
-        config,
-        tree,
-        stats,
-        debug_stats,
-        selection_history,
-        selection_reasons,
-        selection_exclusions,
-        workflow="search-agent",
-        feedback_state=feedback_state,
-    )
-
-
-def run_ma_only(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunResult:
-    """Run the paper-style multi-agent-only ablation.
-
-    Each attempt starts from the root candidate, but the root sees the
-    accumulated history of its children through the standard plan/code
-    dynamic contexts. This preserves multi-agent coordination while
-    removing strategic node selection.
-    """
-    tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
-    feedback_state = collect_feedback_state(tree)
-    root_node = tree.get_node(tree.root_id)
-    plan_agent = PlanAgent(provider)
-    code_agent = CodeAgent(provider)
-
-    selection_history: list[str] = []
-    selection_reasons: list[str] = []
-    selection_exclusions: list[dict[str, str]] = []
-
-    if config.verbose:
-        print(
-            f"task={task.name} workflow=ma-only root status={root_node.status} "
-            f"root runtime={shorten_runtime(root_eval.runtime)}"
-        )
-
-    for attempt_index in range(1, config.max_attempts + 1):
-        root_node.selected_count += 1
-        root_node.selection_reason = "ma_only_root"
-        selection_history.append(tree.root_id)
-        selection_reasons.append("ma_only_root")
-        selection_exclusions.append({})
-        stats["attempt_count"] += 1
-        stats["plan_attempts"] += 1
-
-        if config.verbose:
-            print(f"[attempt {attempt_index}] workflow=ma-only selected=root reason=ma_only_root")
-
-        proposal = plan_agent.run(task, root_node, build_plan_context(tree, task, tree.root_id, config, feedback_state, "explore"))
-        candidate_code, evaluation = _evaluate_plan_code(
-            task,
-            config,
-            evaluator,
-            code_agent,
-            root_node,
-            proposal,
-            build_code_context(tree, task, tree.root_id, config, feedback_state, "explore"),
-            stats,
-        )
-        child = tree.add_child(tree.root_id, candidate_code, proposal, evaluation, "plan_code")
-        tree.update_leaderboard(child.node_id, config)
-        _record_failure(stats, evaluation)
-        feedback_state = collect_feedback_state(tree)
-
-        if config.verbose:
-            print(
-                f"  -> child={child.node_id} origin=plan_code status={child.status} "
-                f"score={shorten_runtime(child.runtime)} strategy={child.plan_strategy_name}"
-            )
-
-    return _finalize_run(
-        task,
-        config,
-        tree,
-        stats,
-        debug_stats,
-        selection_history,
-        selection_reasons,
-        selection_exclusions,
-        workflow="ma-only",
-        feedback_state=feedback_state,
-    )
-
-
-def run_reflexion(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunResult:
-    """Run the reflexion baseline.
-
-    This keeps a single active branch. Successful nodes continue with a
-    fresh plan/code step, while failing nodes are repaired through the
-    debug path until the retry budget is exhausted.
-    """
-    tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
-    feedback_state = collect_feedback_state(tree)
-    plan_agent = PlanAgent(provider)
-    code_agent = CodeAgent(provider)
-    debug_agent = DebugAgent(provider)
-
-    selection_history: list[str] = []
-    selection_reasons: list[str] = []
-    selection_exclusions: list[dict[str, str]] = []
-    current_id = tree.root_id
-
-    if config.verbose:
-        print(
-            f"task={task.name} workflow=reflexion root status={tree.get_node(tree.root_id).status} "
-            f"root runtime={shorten_runtime(root_eval.runtime)}"
-        )
-
-    for attempt_index in range(1, config.max_attempts + 1):
-        current = tree.get_node(current_id)
-        if current.is_failure and current_id != tree.root_id and current.debug_attempts >= config.debug_retry_limit:
-            stats["stopped_reason"] = "debug_retry_limit_reached"
-            break
-
-        current.selected_count += 1
-        stats["attempt_count"] += 1
-        selection_history.append(current_id)
-        selection_exclusions.append({})
-
-        if current.is_failure and current_id != tree.root_id:
-            selection_reason = "reflexion_debug"
-            current.selection_reason = selection_reason
-            selection_reasons.append(selection_reason)
-            stats["debug_attempts"] += 1
-            debug_stats["total_attempts"] += 1
-            debug_stats["per_node"][current_id] = debug_stats["per_node"].get(current_id, 0) + 1
-            current.debug_attempts += 1
-            proposal, candidate_code, evaluation = _evaluate_debug(
-                task,
-                config,
-                evaluator,
-                debug_agent,
-                current,
-                build_debug_context(tree, task, current_id, config, feedback_state, "mutate_champion"),
-            )
-            origin = "debug"
-        else:
-            selection_reason = "reflexion_chain"
-            current.selection_reason = selection_reason
-            selection_reasons.append(selection_reason)
-            stats["plan_attempts"] += 1
-            proposal = plan_agent.run(task, current, build_plan_context(tree, task, current_id, config, feedback_state, "explore"))
-            candidate_code, evaluation = _evaluate_plan_code(
-                task,
-                config,
-                evaluator,
-                code_agent,
-                current,
-                proposal,
-                build_code_context(tree, task, current_id, config, feedback_state, "explore"),
-                stats,
-            )
-            origin = "plan_code"
-
-        if config.verbose:
-            print(
-                f"[attempt {attempt_index}] workflow=reflexion selected={current_id} "
-                f"status={current.status} reason={selection_reason}"
-            )
-
-        child = tree.add_child(current_id, candidate_code, proposal, evaluation, origin)
-        tree.update_leaderboard(child.node_id, config)
-        _record_failure(stats, evaluation)
-        feedback_state = collect_feedback_state(tree)
-        current_id = child.node_id
-
-        if config.verbose:
-            print(
-                f"  -> child={child.node_id} origin={origin} status={child.status} "
-                f"score={shorten_runtime(child.runtime)} strategy={child.plan_strategy_name}"
-            )
-
-    return _finalize_run(
-        task,
-        config,
-        tree,
-        stats,
-        debug_stats,
-        selection_history,
-        selection_reasons,
-        selection_exclusions,
-        workflow="reflexion",
-        feedback_state=feedback_state,
-    )
-
-
-def run_workflow(task: TaskSpec, config: StarkConfig, provider, evaluator, workflow: str = "stark") -> RunResult:
-    """Dispatch to one of the supported workflow modes."""
-    if workflow == "stark":
-        return run_stark(task, config, provider, evaluator)
-    if workflow == "sampling":
-        return run_sampling(task, config, provider, evaluator)
-    if workflow == "reflexion":
-        return run_reflexion(task, config, provider, evaluator)
-    if workflow == "search-agent":
-        return run_search_agent(task, config, provider, evaluator)
-    if workflow == "ma-only":
-        return run_ma_only(task, config, provider, evaluator)
-    raise ValueError(f"Unsupported workflow: {workflow}")

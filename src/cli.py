@@ -48,7 +48,7 @@ from .config import (
 from .core.loader import KernelBenchLoader
 from .diagnostics import build_task_diagnostics
 from .deliberation.runner import MultiModelDeliberationRunner
-from .core.workflow import run_stark, run_workflow
+from .core.workflow import run_stark
 from .demo import build_demo_tasks
 from .evaluation import (
     DemoEvaluator,
@@ -71,7 +71,6 @@ from .experiment import (
     write_paper_summary_report,
 )
 from .io import load_run, save_run
-from .memory import build_memory_profile
 from .models import StarkConfig
 from .providers import ClaudeCompatibleConfig, ClaudeCompatibleProvider, GeminiCompatibleConfig, GeminiCompatibleProvider, LocalCudaLLMConfig, LocalCudaLLMProvider, MockProvider, OpenAICompatibleProvider, RoleRoutedProvider
 from .triton_tasks import build_triton_tasks
@@ -254,19 +253,6 @@ def _resolve_semantics_settings(run_name: str) -> dict[str, Any]:
         "max_anchor_hints": int(raw.get("max_anchor_hints", 6)),
     }
 
-
-def _resolve_memory_settings(run_name: str) -> dict[str, Any]:
-    experiment = experiment_profile(run_name)
-    raw = experiment.get("memory", {})
-    if not isinstance(raw, dict):
-        raw = {}
-    return {
-        "enabled": bool(raw.get("enabled", False)),
-        "mode": str(raw.get("mode", "expert_memory_v0")),
-        "bootstrap_cards": int(raw.get("bootstrap_cards", 4)),
-        "challenger_cards": int(raw.get("challenger_cards", 3)),
-        "feedback_top_k": int(raw.get("feedback_top_k", 3)),
-    }
 
 
 def _resolve_diagnostics_settings(run_name: str) -> dict[str, Any]:
@@ -464,23 +450,6 @@ def _apply_diagnostics(task, config: StarkConfig) -> None:
         )
 
 
-def _apply_memory(task, config: StarkConfig) -> None:
-    task.memory_profile = build_memory_profile(
-        task,
-        enabled=config.memory_enabled,
-        mode=config.memory_mode,
-        max_primary_cards=config.memory_bootstrap_cards,
-        max_challenger_cards=config.memory_challenger_cards,
-    )
-    if config.verbose and task.memory_profile is not None:
-        primary = len(task.memory_profile.bootstrap_cards)
-        challenger = len(task.memory_profile.challenger_cards)
-        print(
-            f"[memory] enabled={task.memory_profile.enabled} mode={task.memory_profile.mode} "
-            f"primary={primary} challenger={challenger}",
-            flush=True,
-        )
-
 def _close_provider(provider) -> None:
     close_fn = getattr(provider, "close", None)
     if callable(close_fn):
@@ -497,7 +466,6 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
     measure_settings = measurement_profile(measurement_name)
     semantics_settings = _resolve_semantics_settings(run_name)
     diagnostics_settings = _resolve_diagnostics_settings(run_name)
-    memory_settings = _resolve_memory_settings(run_name)
     deliberation_name = _resolve_deliberation_name(args, run_name)
     deliberation_settings = deliberation_profile(deliberation_name)
     max_attempts = int(getattr(args, "max_attempts", None) or search_settings.get("max_attempts", 6))
@@ -539,11 +507,6 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
         diagnostics_timeout_seconds=diagnostics_settings["timeout_seconds"],
         diagnostics_warmup_runs=diagnostics_settings["warmup_runs"],
         diagnostics_profile_runs=diagnostics_settings["profile_runs"],
-        memory_enabled=memory_settings["enabled"],
-        memory_mode=memory_settings["mode"],
-        memory_bootstrap_cards=memory_settings["bootstrap_cards"],
-        memory_challenger_cards=memory_settings["challenger_cards"],
-        memory_feedback_top_k=memory_settings["feedback_top_k"],
         deliberation_enabled=bool(deliberation_settings.get("enabled", False)),
         deliberation_profile=deliberation_name,
         deliberation_mode=str(deliberation_settings.get("mode", "multi_model_v0")),
@@ -574,9 +537,8 @@ def _run_demo(args: argparse.Namespace) -> int:
     provider = _build_provider(args, run_name)
     try:
         _apply_diagnostics(task, config)
-        _apply_memory(task, config)
         _apply_deliberation(task, config, deliberation_runner)
-        result = run_stark(task, config, provider, DemoEvaluator())
+        result = run_stark(task, config, provider, DemoEvaluator(), deliberation_runner=deliberation_runner)
         return _save_and_print(result, args.output_dir)
     finally:
         _close_provider(provider)
@@ -595,9 +557,8 @@ def _run_triton(args: argparse.Namespace) -> int:
     provider = _build_provider(args, run_name)
     try:
         _apply_diagnostics(task, config)
-        _apply_memory(task, config)
         _apply_deliberation(task, config, deliberation_runner)
-        result = run_stark(task, config, provider, TritonEvaluator())
+        result = run_stark(task, config, provider, TritonEvaluator(), deliberation_runner=deliberation_runner)
         return _save_and_print(result, args.output_dir)
     finally:
         _close_provider(provider)
@@ -624,9 +585,8 @@ def _run_kernelbench(args: argparse.Namespace) -> int:
     provider = _build_provider(args, run_name)
     try:
         _apply_diagnostics(task, config)
-        _apply_memory(task, config)
         _apply_deliberation(task, config, deliberation_runner)
-        result = run_workflow(task, config, provider, _kernelbench_evaluator(backend, config.evaluator_profile or "quick", config), workflow=workflow)
+        result = run_stark(task, config, provider, _kernelbench_evaluator(backend, config.evaluator_profile or "quick", config), deliberation_runner=deliberation_runner)
         return _save_and_print(result, args.output_dir)
     finally:
         _close_provider(provider)
@@ -679,15 +639,14 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
                     semantics_max_anchor_hints=config.semantics_max_anchor_hints,
                 )
                 _apply_diagnostics(task, config)
-                _apply_memory(task, config)
                 _apply_deliberation(task, config, deliberation_runner)
                 task_output_dir = output_root / batch_output_dir_name(alias, level, problem_id)
-                result = run_workflow(
+                result = run_stark(
                     task,
                     config,
                     provider,
                     _kernelbench_evaluator(item_backend, _resolve_evaluator_name(args, run_name), config),
-                    workflow=workflow,
+                    deliberation_runner=deliberation_runner,
                 )
                 run_path = save_run(result, task_output_dir)
                 validation_path = None

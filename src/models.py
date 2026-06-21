@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Any, Literal
@@ -7,7 +7,6 @@ from .core.execution_facts import ExecutionFacts
 from .diagnostics.schema import TaskDiagnostics
 from .feedback.schema import FeedbackState
 from .deliberation.schema import StrategyPortfolio
-from .memory.schema import MemoryProfile
 from .semantics.schema import SemanticProfile
 
 
@@ -66,7 +65,6 @@ class TaskSpec:
     execution_facts: ExecutionFacts | None = None
     semantic_profile: SemanticProfile | None = None
     diagnostics_profile: TaskDiagnostics | None = None
-    memory_profile: MemoryProfile | None = None
     strategy_portfolio: StrategyPortfolio | None = None
 
     def strategy_map(self) -> dict[str, StrategySpec]:
@@ -254,11 +252,6 @@ class StarkConfig:
     diagnostics_timeout_seconds: int = 300
     diagnostics_warmup_runs: int = 2
     diagnostics_profile_runs: int = 3
-    memory_enabled: bool = False
-    memory_mode: str = "expert_memory_v0"
-    memory_bootstrap_cards: int = 4
-    memory_challenger_cards: int = 3
-    memory_feedback_top_k: int = 3
     deliberation_enabled: bool = False
     deliberation_profile: str | None = None
     deliberation_mode: str = "multi_model_v0"
@@ -274,6 +267,9 @@ class StarkConfig:
     plateau_delta_threshold: float = 0.03
     plateau_recovery_mutation_attempts: int = 2
     plateau_window: int = 3
+    deliberation_upgrade_enabled: bool = True
+    deliberation_max_rounds: int = 3
+    deliberation_min_remaining_attempts: int = 8
 
 
 @dataclass
@@ -310,6 +306,5 @@ class RunResult:
     primary_reference: str | None = None
     semantic_profile: SemanticProfile | None = None
     diagnostics_profile: TaskDiagnostics | None = None
-    memory_profile: MemoryProfile | None = None
     strategy_portfolio: StrategyPortfolio | None = None
     feedback_state: FeedbackState | None = None

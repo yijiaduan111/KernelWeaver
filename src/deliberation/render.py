@@ -13,6 +13,7 @@ def strategy_portfolio_to_prompt_dict(portfolio: StrategyPortfolio | None, max_s
     limit = max_strategies or portfolio.max_strategies
     return {
         "mode": portfolio.mode,
+        "deliberation_round": portfolio.deliberation_round,
         "providers": list(portfolio.providers),
         "strategy_ids": [strategy.strategy_id for strategy in portfolio.strategies[:limit]],
         "strategies": [

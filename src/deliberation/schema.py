@@ -58,6 +58,7 @@ class StrategyPortfolio:
     strategies: list[DeliberationStrategy] = field(default_factory=list)
     proposal_errors: dict[str, str] = field(default_factory=dict)
     review_errors: dict[str, str] = field(default_factory=dict)
+    deliberation_round: int = 1
 
 
 def strategy_portfolio_to_dict(portfolio: StrategyPortfolio | None) -> dict[str, Any] | None:
@@ -97,4 +98,5 @@ def strategy_portfolio_from_dict(payload: dict[str, Any] | None) -> StrategyPort
         strategies=strategies,
         proposal_errors={str(key): str(value) for key, value in dict(payload.get("proposal_errors") or {}).items()},
         review_errors={str(key): str(value) for key, value in dict(payload.get("review_errors") or {}).items()},
+        deliberation_round=int(payload.get("deliberation_round", 1)),
     )
