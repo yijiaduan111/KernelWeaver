@@ -227,85 +227,40 @@ def _record_attempt_mode(stats: dict, mode: str) -> None:
     counts[mode] = counts.get(mode, 0) + 1
 
 
-def _phase_stage_ends(config: StarkConfig, explore_phase_start: int = 0) -> tuple[int, int, int]:
-    max_attempts = max(1, config.max_attempts)
-    prefinal_budget = max(0, max_attempts - max(0, explore_phase_start) - 1)
-    if prefinal_budget <= 0:
-        return 0, 0, 0
-    explore_budget = min(prefinal_budget, max(1, int(round(prefinal_budget * config.explore_fraction))))
-    remaining_budget = max(0, prefinal_budget - explore_budget)
-    if remaining_budget <= 0:
-        return explore_budget, explore_budget, explore_budget
-    challenger_budget = min(remaining_budget, max(1, int(round(prefinal_budget * config.challenger_fraction))))
-    mutation_budget = max(0, remaining_budget - challenger_budget)
-    mutation_end = explore_budget + mutation_budget
-    challenger_end = mutation_end + challenger_budget
-    return explore_budget, mutation_end, challenger_end
-
-
-def _phase_ready_for_deliberation_upgrade(attempt_index: int, config: StarkConfig, explore_phase_start: int = 0) -> bool:
-    explore_budget, _mutation_end, _challenger_end = _phase_stage_ends(config, explore_phase_start)
-    if explore_budget <= 0:
-        return False
-    relative_completed = max(0, attempt_index - max(0, explore_phase_start))
-    return relative_completed >= explore_budget
-
-
-def _attempt_mode_for_index(
-    attempt_index: int,
-    config: StarkConfig,
+def _attempt_mode_for_selected_node(
+    tree: TreeMemory,
+    selected_id: str,
+    selection_reason: str,
     feedback_state,
-    explore_phase_start: int = 0,
 ) -> str:
-    max_attempts = max(1, config.max_attempts)
-    if max_attempts == 1:
+    if selected_id == tree.root_id:
         return "explore"
-    final_push_index = max_attempts
-    if attempt_index >= final_push_index:
-        return "best_lineage_push"
-    relative_index = max(1, attempt_index - max(0, explore_phase_start))
-    explore_budget, mutation_end, challenger_end = _phase_stage_ends(config, explore_phase_start)
-    if explore_budget <= 0:
-        return "explore"
-    if relative_index <= explore_budget:
-        return "explore"
-    if feedback_state is not None and getattr(feedback_state, "plateau_detected", False):
-        extra_mutations = max(0, getattr(config, "plateau_recovery_mutation_attempts", 0))
-        plateau_mutation_end = min(challenger_end, mutation_end + extra_mutations)
-        if relative_index <= plateau_mutation_end:
-            return "mutate_champion"
-        if relative_index <= challenger_end:
-            return "challenger"
-    if relative_index <= mutation_end:
-        return "mutate_champion"
-    if relative_index <= challenger_end:
-        return "challenger"
-    return "best_lineage_push"
+    node = tree.get_node(selected_id)
+    if node.is_failure:
+        return "debug"
 
+    champion_id = getattr(feedback_state, "current_champion_id", None) if feedback_state is not None else None
+    champion_speedup = getattr(feedback_state, "current_champion_speedup", None) if feedback_state is not None else None
+    if champion_id and champion_id in tree.nodes and champion_speedup is None:
+        champion_speedup = tree.get_node(champion_id).speedup
 
-def _champion_frontier_candidates(tree: TreeMemory, champion_id: str, config: StarkConfig) -> list[str]:
-    subtree = tree.subtree_ids(champion_id) - {champion_id}
-    leaves = [
-        node_id
-        for node_id in subtree
-        if tree.is_eligible(node_id, config) and not tree.get_node(node_id).child_ids
-    ]
-    correct_leaves = [node_id for node_id in leaves if tree.get_node(node_id).compile_ok and tree.get_node(node_id).correct]
-    return correct_leaves or leaves
-
-
-def _pick_lineage_frontier(tree: TreeMemory, candidates: list[str]) -> str | None:
-    if not candidates:
-        return None
-    return min(
-        candidates,
-        key=lambda node_id: (
-            tree.nodes[node_id].selected_count,
-            float("inf") if tree.nodes[node_id].speedup is None else -tree.nodes[node_id].speedup,
-            tree.nodes[node_id].depth,
-            node_id,
-        ),
+    actionable_champion = (
+        champion_id is not None
+        and champion_id in tree.nodes
+        and champion_id != tree.root_id
+        and champion_speedup is not None
+        and champion_speedup > 1.0
     )
+    if not actionable_champion:
+        return "explore"
+
+    champion_subtree = tree.subtree_ids(champion_id)
+    champion_lineage = set(getattr(getattr(feedback_state, "champion", None), "lineage", []) or [])
+    if selected_id == champion_id:
+        return "best_lineage_push" if node.child_ids else "mutate_champion"
+    if selected_id in champion_subtree or selected_id in champion_lineage:
+        return "mutate_champion"
+    return "challenger"
 
 
 def _champion_upgrade_context(tree: TreeMemory, feedback_state) -> tuple[dict[str, object] | None, str | None]:
@@ -325,56 +280,6 @@ def _champion_upgrade_context(tree: TreeMemory, feedback_state) -> tuple[dict[st
         "failure_log_excerpt": champion_snapshot.failure_log_excerpt,
     }
     return summary, champion.code
-
-
-def _select_node_for_mode(tree: TreeMemory, config: StarkConfig, attempt_mode: str, feedback_state) -> tuple[str, str] | None:
-    if attempt_mode in {"mutate_champion", "best_lineage_push"} and feedback_state is not None:
-        champion_id = getattr(feedback_state, "current_champion_id", None)
-        if champion_id and champion_id in tree.nodes:
-            champion_node = tree.get_node(champion_id)
-            frontier = _champion_frontier_candidates(tree, champion_id, config)
-            should_push_lineage = attempt_mode == "best_lineage_push" or len(champion_node.child_ids) >= 2 or not tree.is_eligible(champion_id, config)
-            if should_push_lineage:
-                frontier_id = _pick_lineage_frontier(tree, frontier)
-                if frontier_id is not None:
-                    tree.nodes[frontier_id].selected_count += 1
-                    tree.nodes[frontier_id].selection_reason = "best_lineage_push"
-                    tree.last_exclusions = {}
-                    tree.selection_exclusion_history.append({})
-                    return frontier_id, "best_lineage_push"
-            if tree.is_eligible(champion_id, config):
-                champion_node.selected_count += 1
-                champion_node.selection_reason = attempt_mode
-                tree.last_exclusions = {}
-                tree.selection_exclusion_history.append({})
-                return champion_id, attempt_mode
-    if attempt_mode == "challenger":
-        eligible = tree.eligible_leaf_nodes(config)
-        champion_lineage = set(getattr(getattr(feedback_state, "champion", None), "lineage", []) or [])
-        challengers = [node_id for node_id in eligible if node_id not in champion_lineage]
-        pool = challengers or eligible
-        if pool:
-            selected = min(
-                pool,
-                key=lambda node_id: (
-                    tree.nodes[node_id].selected_count,
-                    tree.nodes[node_id].depth,
-                    node_id,
-                ),
-            )
-            tree.nodes[selected].selected_count += 1
-            tree.nodes[selected].selection_reason = "challenger"
-            tree.last_exclusions = {}
-            tree.selection_exclusion_history.append({})
-            return selected, "challenger"
-    selected = tree.select_node(config)
-    if selected is None:
-        return None
-    selected_id, reason = selected
-    if attempt_mode == "explore" and reason == "exploit_best_score":
-        tree.get_node(selected_id).selection_reason = "explore"
-        return selected_id, "explore"
-    return selected_id, reason
 
 
 def _release_provider(provider) -> None:
@@ -528,7 +433,7 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator, delibera
     code_agent = CodeAgent(provider)
     debug_agent = DebugAgent(provider)
     deliberation_round = getattr(task.strategy_portfolio, "deliberation_round", 1) if task.strategy_portfolio else 1
-    explore_phase_start = 0
+    last_upgrade_champion_id: str | None = None
 
     selection_history: list[str] = []
     selection_reasons: list[str] = []
@@ -546,12 +451,12 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator, delibera
             plateau_delta_threshold=config.plateau_delta_threshold,
             plateau_window=config.plateau_window,
         )
-        attempt_mode = _attempt_mode_for_index(attempt_index, config, feedback_state, explore_phase_start)
-        _record_attempt_mode(stats, attempt_mode)
-        selected = _select_node_for_mode(tree, config, attempt_mode, feedback_state)
+        selected = tree.select_node(config)
         if selected is None:
             break
         selected_id, selection_reason = selected
+        attempt_mode = _attempt_mode_for_selected_node(tree, selected_id, selection_reason, feedback_state)
+        _record_attempt_mode(stats, attempt_mode)
         selection_history.append(selected_id)
         selection_reasons.append(selection_reason)
         selection_exclusions.append(dict(tree.last_exclusions))
@@ -599,6 +504,7 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator, delibera
         _record_failure(stats, evaluation)
         feedback_state = collect_feedback_state(tree)
     
+        champion_id = getattr(feedback_state, "current_champion_id", None)
         if (
             config.deliberation_enabled
             and getattr(config, "deliberation_upgrade_enabled", True)
@@ -607,7 +513,8 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator, delibera
             and getattr(feedback_state, "plateau_detected", False)
             and deliberation_round < getattr(config, "deliberation_max_rounds", 3)
             and (config.max_attempts - attempt_index) >= getattr(config, "deliberation_min_remaining_attempts", 8)
-            and _phase_ready_for_deliberation_upgrade(attempt_index, config, explore_phase_start)
+            and champion_id is not None
+            and champion_id != last_upgrade_champion_id
         ):
             champion_summary, champion_code = _champion_upgrade_context(tree, feedback_state)
             if config.verbose:
@@ -630,14 +537,13 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator, delibera
             if upgraded_portfolio is not task.strategy_portfolio:
                 task.strategy_portfolio = upgraded_portfolio
                 deliberation_round = getattr(upgraded_portfolio, "deliberation_round", deliberation_round + 1)
-                explore_phase_start = attempt_index
                 if config.verbose:
                     print(
                         f"[deliberation_upgrade] done round={deliberation_round} "
-                        f"total_strategies={len(upgraded_portfolio.strategies)} "
-                        f"explore_phase_reset_at={explore_phase_start}",
+                        f"total_strategies={len(upgraded_portfolio.strategies)}",
                         flush=True,
                     )
+            last_upgrade_champion_id = champion_id
 
         if config.verbose:
             print(

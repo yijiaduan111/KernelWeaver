@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import http.client
 import json
 import socket
+import ssl
 import urllib.error
 import urllib.request
 from typing import Any
@@ -42,4 +44,6 @@ def post_json_request(
         reason = getattr(exc, "reason", exc)
         if isinstance(reason, (TimeoutError, socket.timeout)):
             raise TimeoutError(f"{error_prefix}: timed out after {timeout_seconds}s: {url}") from exc
+        raise RuntimeError(f"{error_prefix}: {exc}") from exc
+    except (ConnectionError, http.client.HTTPException, ssl.SSLError) as exc:
         raise RuntimeError(f"{error_prefix}: {exc}") from exc

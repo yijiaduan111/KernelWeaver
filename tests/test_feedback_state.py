@@ -1,8 +1,8 @@
-﻿import shutil
+import shutil
 import unittest
 from pathlib import Path
 
-from stark.core.workflow import _attempt_mode_for_index, _select_node_for_mode, run_stark
+from stark.core.workflow import _attempt_mode_for_selected_node, run_stark
 from stark.demo import build_demo_tasks
 from stark.core.tree import TreeMemory
 from stark.evaluation import DemoEvaluator
@@ -48,31 +48,74 @@ class FeedbackStateTests(unittest.TestCase):
         self.assertEqual(reloaded.feedback_state.champion.node_id, result.feedback_state.champion.node_id)
 
 
-class WorkflowSchedulingTests(unittest.TestCase):
-    def test_attempt_schedule_reserves_three_challengers_and_final_push(self):
-        config = StarkConfig(max_attempts=10, explore_fraction=0.4, challenger_fraction=0.3)
-        modes = [_attempt_mode_for_index(i, config, None) for i in range(1, 11)]
-        self.assertEqual(
-            modes,
-            ["explore", "explore", "explore", "explore", "mutate_champion", "mutate_champion", "challenger", "challenger", "challenger", "best_lineage_push"],
+class WorkflowSelectionModeTests(unittest.TestCase):
+    def test_root_selection_stays_explore(self):
+        code = "# <<<IMPROVE:cuda_cu>>>\npass\n# <<<END_IMPROVE>>>\n"
+        config = StarkConfig(max_attempts=10)
+        root = SearchNode(node_id="root", parent_id=None, depth=0, code=code, origin="root", compile_ok=True, correct=True, node_status="correct")
+        tree = TreeMemory(root, config)
+        mode = _attempt_mode_for_selected_node(tree, "root", "exploit_best_score", FeedbackState())
+        self.assertEqual(mode, "explore")
+
+    def test_non_root_selection_stays_explore_while_root_is_champion(self):
+        code = "# <<<IMPROVE:cuda_cu>>>\npass\n# <<<END_IMPROVE>>>\n"
+        config = StarkConfig(max_attempts=10)
+        root = SearchNode(node_id="root", parent_id=None, depth=0, code=code, origin="root", compile_ok=True, correct=True, node_status="correct", speedup=0.99)
+        child = SearchNode(node_id="n1", parent_id="root", depth=1, code=code, origin="plan_code", compile_ok=True, correct=True, node_status="correct", speedup=0.85)
+        root.child_ids = ["n1"]
+        tree = TreeMemory(root, config)
+        tree.nodes = {"root": root, "n1": child}
+        feedback = FeedbackState(
+            current_champion_id="root",
+            current_champion_speedup=0.99,
+            champion=ChampionState(node_id="root", lineage=["root"]),
         )
+        mode = _attempt_mode_for_selected_node(tree, "n1", "explore_leaf", feedback)
+        self.assertEqual(mode, "explore")
 
-    def test_plateau_keeps_two_mutation_attempts_before_switching(self):
-        config = StarkConfig(max_attempts=10, explore_fraction=0.4, challenger_fraction=0.3, plateau_recovery_mutation_attempts=2)
-        feedback = FeedbackState(plateau_detected=True)
-        modes = [_attempt_mode_for_index(i, config, feedback) for i in range(5, 11)]
-        self.assertEqual(modes, ["mutate_champion", "mutate_champion", "mutate_champion", "mutate_champion", "challenger", "best_lineage_push"])
+    def test_non_root_selection_stays_explore_when_champion_is_not_above_baseline(self):
+        code = "# <<<IMPROVE:cuda_cu>>>\npass\n# <<<END_IMPROVE>>>\n"
+        config = StarkConfig(max_attempts=10)
+        root = SearchNode(node_id="root", parent_id=None, depth=0, code=code, origin="root", compile_ok=True, correct=True, node_status="correct", speedup=1.0)
+        champion = SearchNode(node_id="n1", parent_id="root", depth=1, code=code, origin="plan_code", compile_ok=True, correct=True, node_status="correct", speedup=0.97)
+        child = SearchNode(node_id="n2", parent_id="n1", depth=2, code=code, origin="plan_code", compile_ok=True, correct=True, node_status="correct", speedup=0.95)
+        root.child_ids = ["n1"]
+        champion.child_ids = ["n2"]
+        tree = TreeMemory(root, config)
+        tree.nodes = {"root": root, "n1": champion, "n2": child}
+        feedback = FeedbackState(
+            current_champion_id="n1",
+            current_champion_speedup=0.97,
+            champion=ChampionState(node_id="n1", lineage=["root", "n1"]),
+        )
+        mode = _attempt_mode_for_selected_node(tree, "n2", "explore_leaf", feedback)
+        self.assertEqual(mode, "explore")
 
-    def test_best_lineage_push_prefers_frontier_descendant_over_champion(self):
+    def test_champion_node_with_children_maps_to_best_lineage_push(self):
         code = "# <<<IMPROVE:cuda_cu>>>\npass\n# <<<END_IMPROVE>>>\n"
         config = StarkConfig(max_attempts=10)
         root = SearchNode(node_id="root", parent_id=None, depth=0, code=code, origin="root", compile_ok=True, correct=True, node_status="correct")
         champion = SearchNode(node_id="n5", parent_id="root", depth=1, code=code, origin="plan_code", compile_ok=True, correct=True, node_status="correct", speedup=4.8)
-        frontier = SearchNode(node_id="n7", parent_id="n5", depth=2, code=code, origin="plan_code", compile_ok=True, correct=True, node_status="correct", speedup=4.7)
+        child = SearchNode(node_id="n7", parent_id="n5", depth=2, code=code, origin="plan_code", compile_ok=True, correct=True, node_status="correct", speedup=4.7)
         root.child_ids = ["n5"]
         champion.child_ids = ["n7"]
         tree = TreeMemory(root, config)
-        tree.nodes = {"root": root, "n5": champion, "n7": frontier}
+        tree.nodes = {"root": root, "n5": champion, "n7": child}
         feedback = FeedbackState(current_champion_id="n5", champion=ChampionState(node_id="n5", lineage=["root", "n5"]))
-        selected = _select_node_for_mode(tree, config, "best_lineage_push", feedback)
-        self.assertEqual(selected, ("n7", "best_lineage_push"))
+        mode = _attempt_mode_for_selected_node(tree, "n5", "exploit_best_score", feedback)
+        self.assertEqual(mode, "best_lineage_push")
+        descendant_mode = _attempt_mode_for_selected_node(tree, "n7", "explore_leaf", feedback)
+        self.assertEqual(descendant_mode, "mutate_champion")
+
+    def test_non_champion_branch_maps_to_challenger(self):
+        code = "# <<<IMPROVE:cuda_cu>>>\npass\n# <<<END_IMPROVE>>>\n"
+        config = StarkConfig(max_attempts=10)
+        root = SearchNode(node_id="root", parent_id=None, depth=0, code=code, origin="root", compile_ok=True, correct=True, node_status="correct")
+        champion = SearchNode(node_id="n5", parent_id="root", depth=1, code=code, origin="plan_code", compile_ok=True, correct=True, node_status="correct", speedup=4.8)
+        sibling = SearchNode(node_id="n6", parent_id="root", depth=1, code=code, origin="plan_code", compile_ok=True, correct=True, node_status="correct", speedup=4.2)
+        root.child_ids = ["n5", "n6"]
+        tree = TreeMemory(root, config)
+        tree.nodes = {"root": root, "n5": champion, "n6": sibling}
+        feedback = FeedbackState(current_champion_id="n5", champion=ChampionState(node_id="n5", lineage=["root", "n5"]))
+        mode = _attempt_mode_for_selected_node(tree, "n6", "explore_leaf", feedback)
+        self.assertEqual(mode, "challenger")
