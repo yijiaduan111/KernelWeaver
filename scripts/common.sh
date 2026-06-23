@@ -67,12 +67,21 @@ set -euo pipefail
 cd $(printf '%q' $repo_root)
 SCRIPT_HEAD
 
+    local python_bin_dir=""
+    if [[ ${#command_ref[@]} -gt 0 && ${command_ref[0]} == */* ]]; then
+      python_bin_dir=$(cd $(dirname ${command_ref[0]}) && pwd)
+    fi
+
     local var_name
     for var_name in ${forwarded_vars[@]}; do
       if [[ -n ${!var_name:-} ]]; then
         printf 'export %s=%q\n' $var_name ${!var_name}
       fi
     done
+
+    if [[ -n $python_bin_dir ]]; then
+      printf 'export PATH=%q:$PATH\n' $python_bin_dir
+    fi
 
     cat <<'''SCRIPT_BODY'''
 

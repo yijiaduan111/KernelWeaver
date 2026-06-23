@@ -207,7 +207,10 @@ def _new_debug_stats() -> dict:
     }
 
 
-def _initialize_tree(task: TaskSpec, config: StarkConfig, evaluator) -> tuple[TreeMemory, EvaluationResult, dict, dict]:
+WorkflowInitialState = tuple[TreeMemory, EvaluationResult, dict, dict]
+
+
+def _initialize_tree(task: TaskSpec, config: StarkConfig, evaluator) -> WorkflowInitialState:
     root_eval = evaluator.evaluate(task, task.source_code, config)
     tree = TreeMemory(_evaluation_to_root_node(task.source_code, root_eval), config)
     tree.update_leaderboard(tree.root_id, config)
@@ -220,6 +223,19 @@ def _initialize_tree(task: TaskSpec, config: StarkConfig, evaluator) -> tuple[Tr
 def _root_only_context(tree: TreeMemory, role: str, feedback_state=None) -> AgentContext:
     root = snapshot_node(tree, tree.root_id)
     return AgentContext(role=role, current=root, root=root, related=[], leaders=[], failure=None, feedback_state=feedback_state)
+
+
+def bootstrap_stark_root(task: TaskSpec, config: StarkConfig, evaluator) -> WorkflowInitialState:
+    if config.verbose:
+        print(f"[workflow] root_evaluation_start task={task.name}", flush=True)
+    tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
+    if config.verbose:
+        print(
+            f"[workflow] root_evaluation_done status={tree.get_node(tree.root_id).status} "
+            f"runtime={shorten_runtime(root_eval.runtime)}",
+            flush=True,
+        )
+    return tree, root_eval, stats, debug_stats
 
 
 def _record_attempt_mode(stats: dict, mode: str) -> None:
@@ -417,18 +433,20 @@ def _finalize_run(
     )
 
 
-def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator, deliberation_runner=None) -> RunResult:
+def run_stark(
+    task: TaskSpec,
+    config: StarkConfig,
+    provider,
+    evaluator,
+    deliberation_runner=None,
+    initial_state: WorkflowInitialState | None = None,
+) -> RunResult:
     """Run the main STARK search loop with tree memory and debug routing."""
-    if config.verbose:
-        print(f"[workflow] root_evaluation_start task={task.name}", flush=True)
-    tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
+    if initial_state is None:
+        tree, root_eval, stats, debug_stats = bootstrap_stark_root(task, config, evaluator)
+    else:
+        tree, root_eval, stats, debug_stats = initial_state
     feedback_state = collect_feedback_state(tree)
-    if config.verbose:
-        print(
-            f"[workflow] root_evaluation_done status={tree.get_node(tree.root_id).status} "
-            f"runtime={shorten_runtime(root_eval.runtime)}",
-            flush=True,
-        )
     plan_agent = PlanAgent(provider)
     code_agent = CodeAgent(provider)
     debug_agent = DebugAgent(provider)

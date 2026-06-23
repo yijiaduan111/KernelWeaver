@@ -2,9 +2,8 @@
 import unittest
 from unittest.mock import patch
 
-from stark.diagnostics.schema import MachineCheckProfile, TaskDiagnostics
+from stark.diagnostics.schema import NcuProfile, TaskDiagnostics
 from stark.deliberation.schema import DeliberationStrategy, StrategyPortfolio
-from stark.memory.schema import MemoryMethodCard, MemoryProfile
 from stark.models import AgentContext, AnchorEdit, NodeSnapshot, PlanProposal, SearchNode, TaskSpec
 from stark.providers import OpenAICompatibleConfig, OpenAICompatibleProvider
 from stark.providers.openai_provider import _task_metadata
@@ -54,46 +53,25 @@ def _snapshot(node_id: str, speedup: float | None = None) -> NodeSnapshot:
 
 
 class OpenAIProviderStage3Tests(unittest.TestCase):
-    def test_task_metadata_includes_machine_check_profile(self):
+    def test_task_metadata_includes_ncu_profile_only(self):
         task = _task()
         task.diagnostics_profile = TaskDiagnostics(
             enabled=True,
-            mode="machine_check_v1",
-            machine_check_profile=MachineCheckProfile(
+            mode="root_ncu_v1",
+            ncu_profile=NcuProfile(
                 enabled=True,
                 status="ok",
-                case_id="CASE_1",
-                allowed_methods=["Launch_Tuning"],
-                forbidden_methods=["RegisterBlocking"],
+                kernel_name="demo_kernel",
+                raw_metrics={"gpu__time_duration.avg": 1234.0},
             ),
         )
         metadata = _task_metadata(task)
         self.assertIn("diagnostics_profile", metadata)
-        self.assertIn("machine_check_profile", metadata)
-        self.assertEqual(metadata["machine_check_profile"]["allowed_methods"], ["Launch_Tuning"])
+        self.assertEqual(metadata["diagnostics_profile"]["ncu_profile"]["kernel_name"], "demo_kernel")
 
     def test_propose_plan_falls_back_to_selected_strategy_memory_family(self):
         provider = OpenAICompatibleProvider(OpenAICompatibleConfig(api_key="x"))
         task = _task()
-        task.diagnostics_profile = TaskDiagnostics(
-            enabled=True,
-            mode="machine_check_v1",
-            machine_check_profile=MachineCheckProfile(
-                enabled=True,
-                status="ok",
-                allowed_methods=["SharedMemoryTiling"],
-            ),
-        )
-        task.memory_profile = MemoryProfile(
-            enabled=True,
-            bootstrap_cards=[
-                MemoryMethodCard(
-                    method_id="SharedMemoryTiling",
-                    title="Shared Memory Tiling",
-                    summary="row-wise tiling",
-                )
-            ],
-        )
         task.strategy_portfolio = StrategyPortfolio(
             enabled=True,
             strategies=[
@@ -136,16 +114,6 @@ class OpenAIProviderStage3Tests(unittest.TestCase):
     def test_propose_plan_parses_stage3_fields(self):
         provider = OpenAICompatibleProvider(OpenAICompatibleConfig(api_key="x"))
         task = _task()
-        task.diagnostics_profile = TaskDiagnostics(
-            enabled=True,
-            mode="machine_check_v1",
-            machine_check_profile=MachineCheckProfile(
-                enabled=True,
-                status="ok",
-                allowed_methods=["Launch_Tuning"],
-                forbidden_methods=["RegisterBlocking"],
-            ),
-        )
         node = SearchNode(node_id="n1", parent_id="root", depth=1, code=task.source_code, origin="plan_code")
         context = AgentContext(
             role="plan",
@@ -235,17 +203,17 @@ class OpenAIProviderStage3Tests(unittest.TestCase):
         payload = json.loads(out)
         self.assertEqual(payload["region_patches"][0]["region"], "cuda_cu")
 
-
     def test_propose_plan_mutation_prompt_uses_excerpt_not_full_code(self):
         provider = OpenAICompatibleProvider(OpenAICompatibleConfig(api_key="x"))
         task = _task()
         task.diagnostics_profile = TaskDiagnostics(
             enabled=True,
-            mode="machine_check_v1",
-            machine_check_profile=MachineCheckProfile(
+            mode="root_ncu_v1",
+            ncu_profile=NcuProfile(
                 enabled=True,
                 status="ok",
-                allowed_methods=["Launch_Tuning"],
+                kernel_name="demo_kernel",
+                raw_metrics={"gpu__time_duration.avg": 1234.0},
             ),
         )
         node = SearchNode(node_id="n1", parent_id="root", depth=1, code=task.source_code, origin="plan_code")
@@ -281,14 +249,15 @@ class OpenAIProviderStage3Tests(unittest.TestCase):
             "target_metric": "speedup",
             "anchor_edits": [{"anchor_name": "cuda_cu", "instruction": "tune block size", "operation": "replace"}],
         }
+
         def fake_chat(*, system_prompt, user_payload, temperature, reasoning_effort):
-            self.assertIn("allowed_methods", system_prompt)
-            self.assertEqual(user_payload["task_metadata"]["machine_check_profile"]["allowed_methods"], ["Launch_Tuning"])
+            self.assertIn("diagnostics_profile", user_payload["task_metadata"])
             self.assertIn("If attempt_mode is mutate_champion", system_prompt)
             self.assertIn("single_change_focus", system_prompt)
             self.assertNotIn("best_kernel_code", user_payload)
             self.assertEqual(user_payload["best_kernel_excerpt"], {"cuda_cu": "return x"})
             return json.dumps(response)
+
         with patch.object(provider, "_chat", side_effect=fake_chat):
             proposal = provider.propose_plan(task, node, context)
         self.assertEqual(proposal.attempt_mode, "mutate_champion")
@@ -327,16 +296,14 @@ class OpenAIProviderStage3Tests(unittest.TestCase):
             champion_code=task.source_code,
             champion_summary={"node_id": "n0", "speedup": 2.0},
         )
+
         def fake_chat(*, system_prompt, user_payload, temperature, reasoning_effort):
             self.assertIn("plan.single_change_focus", system_prompt)
             self.assertIn("exactly that one local change", system_prompt)
             self.assertEqual(user_payload["plan"]["single_change_focus"], "tune block size")
             return '{"region_patches":[{"region":"cuda_cu","operation":"replace","body":"return x"}]}'
+
         with patch.object(provider, "_chat", side_effect=fake_chat):
             out = provider.generate_code(task, node, proposal, context)
         payload = json.loads(out)
         self.assertEqual(payload["region_patches"][0]["region"], "cuda_cu")
-
-
-if __name__ == "__main__":
-    unittest.main()

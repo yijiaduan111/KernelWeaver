@@ -1,40 +1,64 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import csv
-import importlib.util
 import os
 import shutil
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from typing import Any
 
-from ..km_machine_check import load_yaml_rules
 from .schema import NcuProfile
 
 
-DEFAULT_RULEBOOK_PATH = Path(__file__).resolve().parents[1] / "km_bottleneck.yaml"
 _NCU_FALLBACK_PATH = "/usr/local/cuda-12.8/nsight-compute-2025.1.0/target/linux-desktop-glibc_2_11_3-x64/ncu"
 _STARK_PYTHON = "/data/dyj/miniconda3/envs/stark/bin/python3"
+_NCU_METRICS = [
+    "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed",
+    "lts__throughput.avg.pct_of_peak_sustained_elapsed",
+    "l1tex__throughput.avg.pct_of_peak_sustained_active",
+    "sm__throughput.avg.pct_of_peak_sustained_elapsed",
+    "sm__warps_active.avg.pct_of_peak_sustained_active",
+    "launch__registers_per_thread",
+    "launch__occupancy_limit_registers",
+    "launch__occupancy_limit_shared_mem",
+    "launch__occupancy_limit_warps",
+    "gpu__time_duration.avg",
+    "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio",
+    "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio",
+    "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio",
+    "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio",
+    "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate",
+    "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate",
+    "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate",
+    "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate",
+    "smsp__sass_branch_targets_threads_divergent.avg",
+    "smsp__sass_branch_targets_threads_uniform.avg",
+    "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate",
+    "smsp__warps_eligible.avg",
+]
 
 
-def profile_reference_with_ncu(
+def profile_candidate_with_ncu(
     task,
+    candidate_code: str,
     *,
     timeout_seconds: int = 300,
     warmup_runs: int = 2,
     profile_runs: int = 3,
 ) -> tuple[NcuProfile, Path | None]:
-    source_origin = Path(str(getattr(task, "source_origin", "") or "")).resolve()
-    if not source_origin.exists():
+    candidate_text = str(candidate_code or "")
+    if not candidate_text.strip():
         return (
             NcuProfile(
                 enabled=False,
                 status="unsupported",
-                notes=["Reference source path is unavailable for diagnostics profiling."],
+                notes=["Candidate source code is unavailable for diagnostics profiling."],
             ),
             None,
         )
+
     ncu_bin = _resolve_ncu_bin()
     if ncu_bin is None:
         return (
@@ -46,12 +70,35 @@ def profile_reference_with_ncu(
             ),
             None,
         )
-    with tempfile.TemporaryDirectory(prefix="kw_diag_") as tmp_dir:
+
+    metrics = list(_NCU_METRICS)
+    with tempfile.TemporaryDirectory(prefix="kw_diag_", ignore_cleanup_errors=True) as tmp_dir:
         tmp_path = Path(tmp_dir)
-        script_path = tmp_path / "profile_reference.py"
+        candidate_module_path = tmp_path / "candidate_model.py"
+        candidate_module_path.write_text(candidate_text, encoding="utf-8")
+        reference_module_path = _materialize_reference_module(task, tmp_path)
+        if reference_module_path is None:
+            return (
+                NcuProfile(
+                    enabled=False,
+                    status="unsupported",
+                    notes=["Reference KernelBench program is unavailable for diagnostics profiling."],
+                ),
+                None,
+            )
+
+        script_path = tmp_path / "profile_target.py"
         csv_path = tmp_path / "ncu_raw.csv"
-        script_path.write_text(_profile_script(source_origin, warmup_runs, profile_runs), encoding="utf-8")
-        metrics = _metric_names_from_rulebook(DEFAULT_RULEBOOK_PATH)
+        script_path.write_text(
+            _profile_script(
+                reference_module_path=reference_module_path,
+                candidate_module_path=candidate_module_path,
+                source_root=str(getattr(task, "source_root", "") or ""),
+                warmup_runs=warmup_runs,
+                profile_runs=profile_runs,
+            ),
+            encoding="utf-8",
+        )
         cmd = [
             "sudo",
             ncu_bin,
@@ -65,14 +112,17 @@ def profile_reference_with_ncu(
             "--metrics",
             ",".join(metrics),
             _STARK_PYTHON if Path(_STARK_PYTHON).exists() else sys.executable,
+            "-B",
             str(script_path),
         ]
+        env = os.environ.copy()
+        env["PYTHONDONTWRITEBYTECODE"] = "1"
         result = subprocess.run(
             cmd,
             capture_output=True,
             text=True,
             timeout=timeout_seconds,
-            env=os.environ.copy(),
+            env=env,
             cwd=str(tmp_path),
         )
         stdout = result.stdout or ""
@@ -82,16 +132,32 @@ def profile_reference_with_ncu(
                     enabled=False,
                     status="error",
                     profiler=Path(ncu_bin).name,
-                    notes=["NCU profiling failed for the reference program."],
+                    notes=["NCU profiling failed for the root candidate program."],
                     error=(result.stderr or stdout or f"ncu exited with code {result.returncode}").strip()[:1000],
                 ),
                 None,
             )
-        csv_lines = [l for l in stdout.splitlines(keepends=True) if not l.startswith("==")]
+
+        csv_lines = [line for line in stdout.splitlines(keepends=True) if not line.startswith("==")]
         csv_path.write_text("".join(csv_lines), encoding="utf-8")
         persisted = Path(tempfile.mkdtemp(prefix="kw_diag_csv_")) / "ncu_raw.csv"
         shutil.copyfile(csv_path, persisted)
-        kernel_name, row_count = _select_dominant_kernel(persisted)
+        kernel_name, row_count, raw_metrics = _select_dominant_kernel_metrics(persisted, metrics)
+        if row_count <= 0:
+            cleanup_profile_artifact(persisted)
+            return (
+                NcuProfile(
+                    enabled=False,
+                    status="error",
+                    profiler=Path(ncu_bin).name,
+                    notes=[
+                        "NCU profiling failed for the root candidate program.",
+                        "NCU CSV did not contain any kernel rows.",
+                    ],
+                    error="ncu_empty_csv",
+                ),
+                None,
+            )
         return (
             NcuProfile(
                 enabled=True,
@@ -100,10 +166,23 @@ def profile_reference_with_ncu(
                 kernel_name=kernel_name,
                 row_count=row_count,
                 kernel_launch_count=row_count,
-                notes=["Profiled the reference KernelBench program with Nsight Compute."],
+                raw_metrics=raw_metrics,
+                notes=["Profiled the root candidate program with Nsight Compute."],
             ),
             persisted,
         )
+
+
+def _materialize_reference_module(task, workdir: Path) -> Path | None:
+    source_origin = Path(str(getattr(task, "source_origin", "") or "")).resolve()
+    if source_origin.exists():
+        return source_origin
+    reference_code = str(getattr(task, "reference_code", "") or "")
+    if not reference_code.strip():
+        return None
+    reference_path = workdir / "reference_problem.py"
+    reference_path.write_text(reference_code, encoding="utf-8")
+    return reference_path
 
 
 def cleanup_profile_artifact(csv_path: Path | None) -> None:
@@ -128,38 +207,71 @@ def _resolve_ncu_bin() -> str | None:
     return shutil.which("ncu")
 
 
-def _metric_names_from_rulebook(rulebook_path: Path) -> list[str]:
-    payload = load_yaml_rules(rulebook_path)
-    mapping = ((payload.get("machine_check") or {}).get("input_normalization") or {}).get("field_mapping") or {}
-    names: list[str] = []
-    for value in mapping.values():
-        name = str(value).strip()
-        if name and name not in names:
-            names.append(name)
-    return names
-
-
-def _select_dominant_kernel(csv_path: Path) -> tuple[str | None, int]:
+def _select_dominant_kernel_metrics(csv_path: Path, metric_names: list[str]) -> tuple[str | None, int, dict[str, Any]]:
     with csv_path.open("r", encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
     if not rows:
-        return None, 0
+        return None, 0, {}
+
     duration_key = "gpu__time_duration.avg"
+
     def _duration(row: dict[str, str]) -> float:
         raw = str(row.get(duration_key, "")).strip().replace(",", "")
         try:
             return float(raw)
         except ValueError:
             return float("-inf")
+
     best_row = max(rows, key=_duration)
-    return (best_row.get("Kernel Name") or "").strip() or None, len(rows)
+    raw_metrics: dict[str, Any] = {}
+    for metric_name in metric_names:
+        value = _parse_metric_value(best_row.get(metric_name))
+        if value is not None:
+            raw_metrics[metric_name] = value
+    kernel_name = (best_row.get("Kernel Name") or "").strip() or None
+    return kernel_name, len(rows), raw_metrics
 
 
-def _profile_script(problem_path: Path, warmup_runs: int, profile_runs: int) -> str:
+def _parse_metric_value(value: Any) -> Any:
+    text = "" if value is None else str(value).strip()
+    if not text:
+        return None
+    normalized = text.replace(",", "")
+    lowered = normalized.lower()
+    if lowered in {"nan", "n/a", "none", "null", "--"}:
+        return None
+    try:
+        number = float(normalized)
+    except ValueError:
+        return normalized
+    if number.is_integer() and all(token not in normalized for token in (".", "e", "E")):
+        return int(number)
+    return number
+
+
+def _profile_script(
+    *,
+    reference_module_path: Path,
+    candidate_module_path: Path,
+    source_root: str,
+    warmup_runs: int,
+    profile_runs: int,
+) -> str:
     return f"""
 import importlib.util
+import sys
 from pathlib import Path
 import torch
+
+
+def _load_module(module_path: Path, name: str):
+    spec = importlib.util.spec_from_file_location(name, module_path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec is not None and spec.loader is not None
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
 
 def _to_cuda(value):
     if isinstance(value, torch.Tensor):
@@ -172,18 +284,65 @@ def _to_cuda(value):
         return {{key: _to_cuda(item) for key, item in value.items()}}
     return value
 
-problem_path = Path(r\"{str(problem_path)}\")
-spec = importlib.util.spec_from_file_location("kb_problem", problem_path)
-module = importlib.util.module_from_spec(spec)
-assert spec is not None and spec.loader is not None
-spec.loader.exec_module(module)
-model = module.Model(*_to_cuda(module.get_init_inputs())).cuda().eval()
-inputs = _to_cuda(module.get_inputs())
+
+def _resolve_callable(module, name: str):
+    fn = getattr(module, name, None)
+    if fn is None or not callable(fn):
+        raise AttributeError(f"module '{{module.__name__}}' is missing callable {{name}}")
+    return fn
+
+
+def _resolve_model_cls(module):
+    for name in ("ModelNew", "Model"):
+        cls = getattr(module, name, None)
+        if cls is not None:
+            return cls
+    raise AttributeError(f"module '{{module.__name__}}' is missing ModelNew/Model class")
+
+
+def _instantiate_model(model_cls, init_inputs):
+    init_inputs = _to_cuda(init_inputs)
+    if isinstance(init_inputs, dict):
+        return model_cls(**init_inputs).cuda().eval()
+    if isinstance(init_inputs, tuple):
+        return model_cls(*init_inputs).cuda().eval()
+    if isinstance(init_inputs, list):
+        return model_cls(*init_inputs).cuda().eval()
+    return model_cls(init_inputs).cuda().eval()
+
+
+def _call_model(model, inputs):
+    inputs = _to_cuda(inputs)
+    if isinstance(inputs, dict):
+        return model(**inputs)
+    if isinstance(inputs, tuple):
+        return model(*inputs)
+    if isinstance(inputs, list):
+        return model(*inputs)
+    return model(inputs)
+
+
+source_root_text = r"{source_root}"
+if source_root_text:
+    source_root = Path(source_root_text)
+    for candidate in (source_root / "src", source_root):
+        if candidate.exists():
+            candidate_text = str(candidate)
+            if candidate_text not in sys.path:
+                sys.path.insert(0, candidate_text)
+
+reference_module = _load_module(Path(r"{str(reference_module_path)}"), "kb_reference")
+candidate_module = _load_module(Path(r"{str(candidate_module_path)}"), "kb_candidate")
+get_init_inputs = _resolve_callable(reference_module, "get_init_inputs")
+get_inputs = _resolve_callable(reference_module, "get_inputs")
+model_cls = _resolve_model_cls(candidate_module)
+model = _instantiate_model(model_cls, get_init_inputs())
+inputs = get_inputs()
 with torch.no_grad():
     for _ in range({int(warmup_runs)}):
-        model(*inputs)
+        _call_model(model, inputs)
     torch.cuda.synchronize()
     for _ in range({int(profile_runs)}):
-        model(*inputs)
+        _call_model(model, inputs)
     torch.cuda.synchronize()
 """.strip() + "\n"

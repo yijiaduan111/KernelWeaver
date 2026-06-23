@@ -48,7 +48,7 @@ from .config import (
 from .core.loader import KernelBenchLoader
 from .diagnostics import build_task_diagnostics
 from .deliberation.runner import MultiModelDeliberationRunner
-from .core.workflow import run_stark
+from .core.workflow import bootstrap_stark_root, run_stark
 from .demo import build_demo_tasks
 from .evaluation import (
     DemoEvaluator,
@@ -262,7 +262,7 @@ def _resolve_diagnostics_settings(run_name: str) -> dict[str, Any]:
         raw = {}
     return {
         "enabled": bool(raw.get("enabled", False)),
-        "mode": str(raw.get("mode", "machine_check_v1")),
+        "mode": str(raw.get("mode", "root_ncu_v1")),
         "timeout_seconds": int(raw.get("timeout_seconds", 300)),
         "warmup_runs": int(raw.get("warmup_runs", 2)),
         "profile_runs": int(raw.get("profile_runs", 3)),
@@ -437,17 +437,38 @@ def _apply_deliberation(task, config: StarkConfig, runner: MultiModelDeliberatio
         )
 
 
-def _apply_diagnostics(task, config: StarkConfig) -> None:
-    task.diagnostics_profile = build_task_diagnostics(task, config)
+def _apply_diagnostics(task, config: StarkConfig, *, candidate_code: str | None = None, root_evaluation=None) -> None:
+    task.diagnostics_profile = build_task_diagnostics(
+        task,
+        config,
+        candidate_code=candidate_code,
+        root_evaluation=root_evaluation,
+    )
     if config.verbose and task.diagnostics_profile is not None:
-        machine_check = task.diagnostics_profile.machine_check_profile
-        allowed_count = len(machine_check.allowed_methods) if machine_check is not None else 0
-        case_id = machine_check.case_id if machine_check is not None else None
+        ncu_profile = task.diagnostics_profile.ncu_profile
+        raw_metric_count = len(getattr(ncu_profile, "raw_metrics", {}) or {}) if ncu_profile is not None else 0
+        kernel_name = getattr(ncu_profile, "kernel_name", None) if ncu_profile is not None else None
         print(
             f"[diagnostics] enabled={task.diagnostics_profile.enabled} mode={task.diagnostics_profile.mode} "
-            f"case={case_id or 'none'} allowed_methods={allowed_count}",
+            f"kernel={kernel_name or 'none'} raw_metrics={raw_metric_count}",
             flush=True,
         )
+
+
+def _prepare_kernelbench_root_state(task, config: StarkConfig, evaluator, deliberation_runner: MultiModelDeliberationRunner | None):
+    needs_root_guidance = bool(getattr(config, "diagnostics_enabled", False) or deliberation_runner is not None)
+    if not needs_root_guidance:
+        return None
+    initial_state = bootstrap_stark_root(task, config, evaluator)
+    tree, root_eval, _stats, _debug_stats = initial_state
+    _apply_diagnostics(
+        task,
+        config,
+        candidate_code=tree.get_node(tree.root_id).code,
+        root_evaluation=root_eval,
+    )
+    _apply_deliberation(task, config, deliberation_runner)
+    return initial_state
 
 
 def _close_provider(provider) -> None:
@@ -583,10 +604,17 @@ def _run_kernelbench(args: argparse.Namespace) -> int:
     )
     deliberation_runner = _build_deliberation_runner(args, run_name, config)
     provider = _build_provider(args, run_name)
+    evaluator = _kernelbench_evaluator(backend, config.evaluator_profile or "quick", config)
     try:
-        _apply_diagnostics(task, config)
-        _apply_deliberation(task, config, deliberation_runner)
-        result = run_stark(task, config, provider, _kernelbench_evaluator(backend, config.evaluator_profile or "quick", config), deliberation_runner=deliberation_runner)
+        initial_state = _prepare_kernelbench_root_state(task, config, evaluator, deliberation_runner)
+        result = run_stark(
+            task,
+            config,
+            provider,
+            evaluator,
+            deliberation_runner=deliberation_runner,
+            initial_state=initial_state,
+        )
         return _save_and_print(result, args.output_dir)
     finally:
         _close_provider(provider)
@@ -638,15 +666,16 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
                     semantics_mode=config.semantics_mode,
                     semantics_max_anchor_hints=config.semantics_max_anchor_hints,
                 )
-                _apply_diagnostics(task, config)
-                _apply_deliberation(task, config, deliberation_runner)
+                evaluator = _kernelbench_evaluator(item_backend, _resolve_evaluator_name(args, run_name), config)
+                initial_state = _prepare_kernelbench_root_state(task, config, evaluator, deliberation_runner)
                 task_output_dir = output_root / batch_output_dir_name(alias, level, problem_id)
                 result = run_stark(
                     task,
                     config,
                     provider,
-                    _kernelbench_evaluator(item_backend, _resolve_evaluator_name(args, run_name), config),
+                    evaluator,
                     deliberation_runner=deliberation_runner,
+                    initial_state=initial_state,
                 )
                 run_path = save_run(result, task_output_dir)
                 validation_path = None

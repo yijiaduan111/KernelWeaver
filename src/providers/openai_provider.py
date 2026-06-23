@@ -12,7 +12,7 @@ from typing import Any
 from ..backends import is_cute_backend, is_native_cuda_backend, is_tilelang_backend, normalize_backend
 from ..feedback.render import feedback_state_to_prompt_dict
 from ..core.patch_payload import canonicalize_region_patches, parse_loose_json_dict
-from ..diagnostics import machine_check_profile_to_prompt_dict, task_diagnostics_to_prompt_dict
+from ..diagnostics import task_diagnostics_to_prompt_dict
 from ..deliberation import strategy_portfolio_to_prompt_dict
 from ..models import AgentContext, AnchorEdit, PlanProposal, SearchNode, TaskSpec
 from ..semantics import semantic_profile_to_prompt_dict
@@ -148,8 +148,6 @@ class OpenAICompatibleProvider(AgentProvider):
             "Use only anchor names from the provided anchors. operation must be replace or append. "
             "Each instruction must be concrete enough for the coding agent to implement without changing unrelated scaffold. "
             "If task_metadata.strategy_portfolio is present, set strategy_name to one selected strategy_id from it. "
-            "If task_metadata.machine_check_profile is present, treat its allowed_methods as the legal method-family set and do not choose a mutation_family outside that set. "
-            "Avoid any method in task_metadata.machine_check_profile.forbidden_methods unless you are explicitly repairing correctness. "
             "Use feedback_state to guide selection: prefer strategies not yet attempted; if a strategy achieved speedup > 1.0, consider refinement variants; avoid strategies with only compile failures unless you have a concrete fix. "
             "If best_kernel_summary is present and best speedup > 1.5, default to refinement: preserve the working kernel structure, edit only active anchors, and keep frozen anchors unchanged. "
             "If attempt_mode is mutate_champion, you must behave like a mutation planner rather than a fresh explorer: keep mode=refine, change_budget=small, preserve the current champion structure, propose exactly one concrete performance_hypothesis, choose exactly one single_change_focus, set a short mutation_family label, and describe the smallest local change that tests that hypothesis. "
@@ -637,7 +635,6 @@ def _snapshot_to_dict(snapshot) -> dict[str, Any]:
 
 def _task_metadata(task: TaskSpec) -> dict[str, Any]:
     diagnostics = getattr(task, "diagnostics_profile", None)
-    machine_check = getattr(diagnostics, "machine_check_profile", None)
     return {
         "benchmark_family": task.benchmark_family,
         "entry_kind": task.entry_kind,
@@ -648,7 +645,6 @@ def _task_metadata(task: TaskSpec) -> dict[str, Any]:
         "execution_facts": task.execution_facts.to_prompt_dict() if task.execution_facts else None,
         "semantic_profile": semantic_profile_to_prompt_dict(task.semantic_profile),
         "diagnostics_profile": task_diagnostics_to_prompt_dict(diagnostics),
-        "machine_check_profile": machine_check_profile_to_prompt_dict(machine_check),
         "strategy_portfolio": strategy_portfolio_to_prompt_dict(task.strategy_portfolio),
         "grounded_regions": [
             {
@@ -687,6 +683,7 @@ def _selected_strategy_payload(task: TaskSpec, strategy_name: str) -> dict[str, 
         "implementation_hints": list(selected.implementation_hints[:6]),
         "expected_gain": selected.expected_gain,
         "risk_notes": list(selected.risk_notes[:5]),
+        "memory_methods": list(selected.memory_methods[:4]),
         "mutation_axes": list(selected.mutation_axes[:4]),
         "forbidden_patterns": list(selected.forbidden_patterns[:4]),
     }

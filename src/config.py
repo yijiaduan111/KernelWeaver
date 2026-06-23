@@ -485,7 +485,7 @@ def _fallback_experiment(name: str) -> dict[str, Any]:
             "measurement": "main",
             "runtime": "gpu_single",
             "semantics": {"enabled": True, "mode": "rule", "max_anchor_hints": 6},
-            "diagnostics": {"enabled": True, "mode": "machine_check_v1", "timeout_seconds": 300, "warmup_runs": 2, "profile_runs": 3},
+            "diagnostics": {"enabled": True, "mode": "root_ncu_v1", "timeout_seconds": 300, "warmup_runs": 2, "profile_runs": 3},
             "output_root": "runs",
         }
     return {

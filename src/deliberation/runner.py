@@ -8,7 +8,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
-from ..diagnostics import machine_check_profile_to_prompt_dict
+from ..diagnostics import ncu_profile_to_prompt_dict
 from ..models import StarkConfig, TaskSpec
 from ..semantics import semantic_profile_to_prompt_dict
 from ..utils import extract_anchor_names
@@ -212,9 +212,6 @@ class MultiModelDeliberationRunner:
                     "task_name": task.name,
                     "backend": task.backend,
                     "semantic_profile": semantic_profile_to_prompt_dict(task.semantic_profile),
-                    "machine_check_profile": machine_check_profile_to_prompt_dict(
-                        getattr(getattr(task, "diagnostics_profile", None), "machine_check_profile", None)
-                    ),
                     "strategy_portfolio": strategy_portfolio_to_prompt_dict(
                         portfolio,
                         max_strategies=max(len(portfolio.strategies), portfolio.max_strategies),
@@ -245,7 +242,7 @@ def _proposal_system_prompt(strategies_per_model: int) -> str:
     return (
         "You are one independent model in a multi-model kernel optimization deliberation. "
         "Propose backend-specific optimization strategies, but do not write code. "
-        "If machine_check_profile is provided, its allowed_methods are the legal method-family set; only use method IDs from that set and avoid forbidden_methods. "
+        "If root_ncu_profile is provided, use its raw_metrics as runtime evidence about the current root candidate when deciding strategies. "
         "Use only provided anchors. Return JSON only. "
         f"Return at most {strategies_per_model} strategies with schema: "
         '{"strategies":[{"intent":"...","summary":"...","target_anchors":["..."],'
@@ -263,6 +260,7 @@ def _upgrade_proposal_system_prompt(strategies_per_model: int, current_round: in
         "Either refine the current champion with one new hypothesis, or propose a genuinely different algorithmic direction. "
         "Do not repeat strategies that already exist in the portfolio or strategies that have clearly plateaued without a new concrete fix. "
         "If a strategy family has compile-failed repeatedly, either repair the root cause concretely or avoid that family. "
+        "If root_ncu_profile is provided, use its raw_metrics as runtime evidence about the current root candidate when proposing new strategies. "
         "Use only provided anchors. Return JSON only. "
         f"Return at most {strategies_per_model} strategies with schema: "
         '{"strategies":[{"intent":"...","summary":"...","target_anchors":["..."],'
@@ -293,8 +291,8 @@ def _proposal_payload(task: TaskSpec, provider_name: str, strategies_per_model: 
         "problem_id": task.problem_id,
         "available_anchors": anchors,
         "semantic_profile": semantic_profile_to_prompt_dict(task.semantic_profile),
-        "machine_check_profile": machine_check_profile_to_prompt_dict(
-            getattr(getattr(task, "diagnostics_profile", None), "machine_check_profile", None)
+        "root_ncu_profile": ncu_profile_to_prompt_dict(
+            getattr(getattr(task, "diagnostics_profile", None), "ncu_profile", None)
         ),
         "execution_facts": task.execution_facts.to_prompt_dict() if task.execution_facts else None,
         "grounded_regions": [

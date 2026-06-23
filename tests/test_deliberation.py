@@ -1,11 +1,11 @@
-import json
+﻿import json
 import shutil
 import time
 import unittest
 from pathlib import Path
 
 from stark.core.workflow import run_stark
-from stark.diagnostics.schema import MachineCheckProfile, TaskDiagnostics
+from stark.diagnostics.schema import NcuProfile, TaskDiagnostics
 from stark.deliberation.merge import apply_strategy_reviews, merge_strategy_proposals
 from stark.deliberation.runner import MultiModelDeliberationRunner
 from stark.deliberation.schema import DeliberationStrategy, ModelProposal, ModelReview
@@ -88,12 +88,12 @@ class DeliberationTests(unittest.TestCase):
         runner = MultiModelDeliberationRunner(providers={"mock": MockProvider()}, max_strategies=2, strategies_per_model=1)
         task.diagnostics_profile = TaskDiagnostics(
             enabled=True,
-            mode="machine_check_v1",
-            machine_check_profile=MachineCheckProfile(
+            mode="root_ncu_v1",
+            ncu_profile=NcuProfile(
                 enabled=True,
                 status="ok",
-                case_id="DEMO_CASE",
-                allowed_methods=["Launch_Tuning"],
+                kernel_name="demo_kernel",
+                raw_metrics={"gpu__time_duration.avg": 321.0},
             ),
         )
         task.strategy_portfolio = runner.run(task, config)
@@ -112,7 +112,7 @@ class DeliberationTests(unittest.TestCase):
         self.assertGreaterEqual(len(reloaded.strategy_portfolio.strategies), 1)
         self.assertEqual(reloaded.strategy_portfolio.deliberation_round, 1)
         self.assertIsNotNone(reloaded.diagnostics_profile)
-        self.assertEqual(reloaded.diagnostics_profile.machine_check_profile.case_id, "DEMO_CASE")
+        self.assertEqual(reloaded.diagnostics_profile.ncu_profile.kernel_name, "demo_kernel")
 
     def test_mock_plan_uses_untried_portfolio_strategy(self):
         task = build_demo_tasks()[0]
@@ -123,6 +123,7 @@ class DeliberationTests(unittest.TestCase):
         result = run_stark(task, config, MockProvider(), DemoEvaluator())
         used = [node.plan_strategy_name for node in result.nodes.values() if node.plan_strategy_name]
         self.assertTrue(any(name and name.startswith("strategy_") for name in used))
+
     def test_runner_upgrade_appends_new_strategies(self):
         class UpgradeMock(MockProvider):
             def generate_text(self, system_prompt, user_payload, temperature=0.2, purpose="generic"):
