@@ -12,12 +12,16 @@ from .openai_provider import (
     OpenAICompatibleProvider,
     _compact_payload_text,
     _env_or_default,
+    _env_bool,
     _env_override,
     _is_retryable_llm_error,
     _optional_string,
     _retry_delay_seconds,
+    _should_fallback_from_streaming,
+    _stream_text_parts,
 )
-from .http_utils import post_json_request
+from .errors import is_transient_provider_error
+from .http_utils import post_json_request, stream_json_events_request
 
 
 @dataclass
@@ -29,6 +33,7 @@ class ClaudeCompatibleConfig:
     model: str = "claude-3-5-sonnet-20241022"
     api_version: str = "2023-06-01"
     timeout_seconds: int = 300
+    stream: bool = True
     max_tokens: int = 4096
     plan_temperature: float = 0.7
     code_temperature: float = 0.2
@@ -37,6 +42,9 @@ class ClaudeCompatibleConfig:
     plan_reasoning_effort: str | None = None
     code_reasoning_effort: str | None = None
     debug_reasoning_effort: str | None = None
+    thinking_mode: str | None = "disabled"
+    thinking_budget_tokens: int | None = None
+    tool_choice: str | None = "none"
     max_retries: int = 3
     retry_backoff_seconds: float = 1.0
     user_agent: str = "curl/8.5.0"
@@ -61,6 +69,7 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
         model = str(_env_or_default("CLAUDE_MODEL", defaults.get("model", "claude-3-5-sonnet-20241022"))).strip()
         api_version = str(_env_or_default("CLAUDE_API_VERSION", defaults.get("api_version", "2023-06-01"))).strip() or "2023-06-01"
         timeout_seconds = int(str(_env_or_default("CLAUDE_TIMEOUT_SECONDS", defaults.get("timeout_seconds", 300))).strip() or "300")
+        stream = _env_bool(_env_or_default("CLAUDE_STREAM", defaults.get("stream", True)), default=bool(defaults.get("stream", True)))
         max_tokens = int(str(_env_or_default("CLAUDE_MAX_TOKENS", defaults.get("max_tokens", 4096))).strip() or "4096")
         plan_temperature = float(str(_env_or_default("CLAUDE_PLAN_TEMPERATURE", defaults.get("plan_temperature", 0.7))).strip() or "0.7")
         code_temperature = float(str(_env_or_default("CLAUDE_CODE_TEMPERATURE", defaults.get("code_temperature", 0.2))).strip() or "0.2")
@@ -78,6 +87,12 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
             "CLAUDE_DEBUG_REASONING_EFFORT",
             _optional_string(defaults.get("debug_reasoning_effort")) or reasoning_effort,
         )
+        thinking_mode = _optional_string(_env_or_default("CLAUDE_THINKING_MODE", defaults.get("thinking_mode", "disabled")))
+        thinking_budget_raw = _env_or_default("CLAUDE_THINKING_BUDGET_TOKENS", defaults.get("thinking_budget_tokens"))
+        thinking_budget_tokens = None
+        if thinking_budget_raw is not None and str(thinking_budget_raw).strip():
+            thinking_budget_tokens = max(1, int(str(thinking_budget_raw).strip()))
+        tool_choice = _optional_string(_env_or_default("CLAUDE_TOOL_CHOICE", defaults.get("tool_choice", "none")))
         max_retries = max(1, int(str(_env_or_default("CLAUDE_MAX_RETRIES", defaults.get("max_retries", 3))).strip() or "3"))
         retry_backoff_seconds = max(0.0, float(str(_env_or_default("CLAUDE_RETRY_BACKOFF_SECONDS", defaults.get("retry_backoff_seconds", 1.0))).strip() or "1"))
         user_agent = str(_env_or_default("CLAUDE_USER_AGENT", defaults.get("user_agent", "curl/8.5.0"))).strip() or "curl/8.5.0"
@@ -90,6 +105,7 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
                 model=model,
                 api_version=api_version,
                 timeout_seconds=timeout_seconds,
+                stream=stream,
                 max_tokens=max_tokens,
                 plan_temperature=plan_temperature,
                 code_temperature=code_temperature,
@@ -98,6 +114,9 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
                 plan_reasoning_effort=plan_reasoning_effort,
                 code_reasoning_effort=code_reasoning_effort,
                 debug_reasoning_effort=debug_reasoning_effort,
+                thinking_mode=thinking_mode,
+                thinking_budget_tokens=thinking_budget_tokens,
+                tool_choice=tool_choice,
                 max_retries=max_retries,
                 retry_backoff_seconds=retry_backoff_seconds,
                 user_agent=user_agent,
@@ -111,12 +130,11 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
         temperature: float,
         reasoning_effort: str | None = None,
     ) -> str:
-        del reasoning_effort
         last_error: Exception | None = None
         attempts = max(1, self.config.max_retries)
         for attempt in range(attempts):
             try:
-                payload = self._messages_request(system_prompt, user_payload, temperature)
+                payload = self._messages_request(system_prompt, user_payload, temperature, reasoning_effort)
                 return self._extract_text_from_messages(payload)
             except TimeoutError as exc:
                 last_error = exc
@@ -141,27 +159,88 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
         system_prompt: str,
         user_payload: dict[str, Any],
         temperature: float,
+        reasoning_effort: str | None,
     ) -> dict[str, Any]:
+        claude_system_prompt = (
+            system_prompt.rstrip()
+            + chr(10) + "Return plain text only. Do not call, request, or emit tools, Bash commands, function calls, or workspace/file exploration."
+        )
         request_body: dict[str, Any] = {
             "model": self.config.model,
-            "system": system_prompt,
+            "system": claude_system_prompt,
             "messages": [
                 {
                     "role": "user",
                     "content": _compact_payload_text(user_payload),
                 }
             ],
-            "stream": False,
+            "stream": bool(self.config.stream),
             "max_tokens": self.config.max_tokens,
             "temperature": temperature,
         }
+        self._apply_reasoning_controls(request_body, reasoning_effort)
+        self._apply_tool_controls(request_body)
+        if self.config.stream:
+            try:
+                return self._stream_messages_request(self._messages_endpoint(), request_body)
+            except RuntimeError as exc:
+                if is_transient_provider_error(exc) or not _should_fallback_from_streaming(exc):
+                    raise
+                request_body["stream"] = False
         return self._post_json(self._messages_endpoint(), request_body)
+
+    def _apply_reasoning_controls(self, request_body: dict[str, Any], reasoning_effort: str | None) -> None:
+        thinking_mode = (self.config.thinking_mode or "").strip().lower()
+        if thinking_mode in {"disabled", "disable", "off", "false", "none", "0"}:
+            request_body["thinking"] = {"type": "disabled"}
+        elif thinking_mode in {"enabled", "enable", "on", "true", "1"}:
+            thinking: dict[str, Any] = {"type": "enabled"}
+            if self.config.thinking_budget_tokens is not None:
+                thinking["budget_tokens"] = self.config.thinking_budget_tokens
+            request_body["thinking"] = thinking
+        elif thinking_mode:
+            thinking = {"type": thinking_mode}
+            if self.config.thinking_budget_tokens is not None:
+                thinking["budget_tokens"] = self.config.thinking_budget_tokens
+            request_body["thinking"] = thinking
+
+        if reasoning_effort:
+            request_body["output_config"] = {"effort": reasoning_effort}
+
+    def _apply_tool_controls(self, request_body: dict[str, Any]) -> None:
+        tool_choice = (self.config.tool_choice or "").strip().lower()
+        if not tool_choice:
+            return
+        if tool_choice in {"none", "disable", "disabled", "off", "false", "0"}:
+            request_body["tool_choice"] = {"type": "none"}
+        else:
+            request_body["tool_choice"] = {"type": tool_choice}
 
     def _messages_endpoint(self) -> str:
         base = self.config.base_url.rstrip("/")
         if not base.endswith("/v1"):
             base = f"{base}/v1"
         return f"{base}/messages"
+
+    def _stream_messages_request(self, url: str, request_body: dict[str, Any]) -> dict[str, Any]:
+        events = self._post_stream_events(url, request_body)
+        text = _extract_claude_stream_text(events)
+        return {"content": [{"type": "text", "text": text}]}
+
+    def _post_stream_events(self, url: str, request_body: dict[str, Any]) -> list[dict[str, Any]]:
+        return stream_json_events_request(
+            url=url,
+            request_body=request_body,
+            headers={
+                "Content-Type": "application/json",
+                "Accept": "text/event-stream",
+                "Authorization": f"Bearer {self.config.api_key}",
+                "anthropic-version": self.config.api_version,
+                "User-Agent": self.config.user_agent,
+            },
+            timeout_seconds=self.config.timeout_seconds,
+            error_prefix="Claude request failed",
+        )
 
     def _post_json(self, url: str, request_body: dict[str, Any]) -> dict[str, Any]:
         return post_json_request(
@@ -191,3 +270,40 @@ class ClaudeCompatibleProvider(OpenAICompatibleProvider):
         if payload.get("choices"):
             return OpenAICompatibleProvider._extract_text_from_chat_completions(payload)
         raise RuntimeError(f"Claude response does not contain text content: {payload}")
+
+def _extract_claude_stream_text(events: list[dict[str, Any]]) -> str:
+    parts: list[str] = []
+    for event in events:
+        delta = event.get("delta") or {}
+        if isinstance(delta, dict):
+            text = delta.get("text")
+            if isinstance(text, str):
+                parts.append(text)
+            parts.extend(_stream_text_parts(delta.get("content")))
+        content_block = event.get("content_block") or {}
+        if isinstance(content_block, dict):
+            text = content_block.get("text")
+            if isinstance(text, str):
+                parts.append(text)
+            parts.extend(_stream_text_parts(content_block.get("content")))
+        parts.extend(_stream_text_parts(event.get("content")))
+        top_text = event.get("text") or event.get("completion")
+        if isinstance(top_text, str):
+            parts.append(top_text)
+        for choice in event.get("choices") or []:
+            if not isinstance(choice, dict):
+                continue
+            choice_delta = choice.get("delta") or {}
+            if isinstance(choice_delta, dict):
+                parts.extend(_stream_text_parts(choice_delta.get("content")))
+            message = choice.get("message") or {}
+            if isinstance(message, dict):
+                parts.extend(_stream_text_parts(message.get("content")))
+            text = choice.get("text")
+            if isinstance(text, str):
+                parts.append(text)
+    text = "".join(parts).strip()
+    if not text:
+        raise RuntimeError(f"Claude response content is empty in stream events: {events[-3:]}")
+    return text
+

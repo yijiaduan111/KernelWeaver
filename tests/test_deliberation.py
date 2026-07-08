@@ -204,3 +204,34 @@ class DeliberationTests(unittest.TestCase):
         oks = [event for event in runner.last_events if event.status == "ok"]
         self.assertEqual(len(starts), 6)
         self.assertEqual(len(oks), 6)
+
+    def test_collect_parallel_returns_partial_results_after_timeout(self):
+        class TimedProvider:
+            def __init__(self, delay: float, result) -> None:
+                self.delay = delay
+                self.result = result
+
+        def action(provider_name, provider):
+            del provider_name
+            time.sleep(provider.delay)
+            return provider.result
+
+        runner = MultiModelDeliberationRunner(
+            providers={
+                "fast": TimedProvider(0.01, ModelProposal(provider_name="fast", strategies=[])),
+                "slow": TimedProvider(0.35, ModelProposal(provider_name="slow", strategies=[])),
+            },
+            max_strategies=2,
+            strategies_per_model=1,
+            phase_timeout_seconds=0.1,
+        )
+        started = time.time()
+        results = runner._collect_parallel("propose", action)
+        elapsed = time.time() - started
+        self.assertLess(elapsed, 0.25)
+        self.assertEqual(results[0].provider_name, "fast")
+        self.assertEqual(results[0].status, "ok")
+        self.assertEqual(results[1].provider_name, "slow")
+        self.assertEqual(results[1].status, "error")
+        self.assertIn("timeout", results[1].error)
+        self.assertTrue(any(event.provider_name == "slow" and event.status == "timeout" for event in runner.last_events))

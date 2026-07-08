@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -386,7 +387,7 @@ def _build_deliberation_runner(args: argparse.Namespace, run_name: str, config: 
     if not config.deliberation_enabled:
         return None
     _prepare_runtime_and_env(args, run_name)
-    timeout_seconds = _provider_overrides(args, run_name).get("timeout_seconds", 300)
+    timeout_seconds = max(1, int(getattr(config, "deliberation_provider_timeout_seconds", 180)))
     providers = {}
     for name in config.deliberation_providers:
         try:
@@ -409,6 +410,7 @@ def _build_deliberation_runner(args: argparse.Namespace, run_name: str, config: 
         proposal_temperature=config.deliberation_proposal_temperature,
         review_temperature=config.deliberation_review_temperature,
         mode=config.deliberation_mode,
+        phase_timeout_seconds=config.deliberation_phase_timeout_seconds,
     )
 
 
@@ -536,6 +538,10 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
         deliberation_strategies_per_model=int(deliberation_settings.get("strategies_per_model", 4)),
         deliberation_proposal_temperature=float(deliberation_settings.get("proposal_temperature", 0.4)),
         deliberation_review_temperature=float(deliberation_settings.get("review_temperature", 0.1)),
+        deliberation_provider_timeout_seconds=int(deliberation_settings.get("provider_timeout_seconds", 180)),
+        deliberation_phase_timeout_seconds=int(deliberation_settings.get("phase_timeout_seconds", 240)),
+        phase_two_enabled=bool(search_settings.get('phase_two_enabled', False)),
+        phase_two_split_attempts=int(search_settings.get('phase_two_split_attempts', 5)),
         evaluator_isolation=str(evaluator_settings.get("evaluator_isolation", "off")),
         evaluator_timeout_seconds=int(evaluator_settings.get("evaluator_timeout_seconds", 900)),
     )
@@ -605,6 +611,9 @@ def _run_kernelbench(args: argparse.Namespace) -> int:
     deliberation_runner = _build_deliberation_runner(args, run_name, config)
     provider = _build_provider(args, run_name)
     evaluator = _kernelbench_evaluator(backend, config.evaluator_profile or "quick", config)
+    trace_env_key = "KERNELWEAVER_EVAL_TRACE_DIR"
+    previous_trace_dir = os.environ.get(trace_env_key)
+    os.environ[trace_env_key] = str(Path(args.output_dir) / "eval_traces")
     try:
         initial_state = _prepare_kernelbench_root_state(task, config, evaluator, deliberation_runner)
         result = run_stark(
@@ -617,6 +626,10 @@ def _run_kernelbench(args: argparse.Namespace) -> int:
         )
         return _save_and_print(result, args.output_dir)
     finally:
+        if previous_trace_dir is None:
+            os.environ.pop(trace_env_key, None)
+        else:
+            os.environ[trace_env_key] = previous_trace_dir
         _close_provider(provider)
         if deliberation_runner is not None:
             deliberation_runner.close()

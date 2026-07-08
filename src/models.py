@@ -7,6 +7,7 @@ from .core.execution_facts import ExecutionFacts
 from .diagnostics.schema import TaskDiagnostics
 from .feedback.schema import FeedbackState
 from .deliberation.schema import StrategyPortfolio
+from .phases.schema import PhaseTransitionSummary
 from .semantics.schema import SemanticProfile
 
 
@@ -66,6 +67,7 @@ class TaskSpec:
     semantic_profile: SemanticProfile | None = None
     diagnostics_profile: TaskDiagnostics | None = None
     strategy_portfolio: StrategyPortfolio | None = None
+    phase_transition: PhaseTransitionSummary | None = None
 
     def strategy_map(self) -> dict[str, StrategySpec]:
         return {strategy.name: strategy for strategy in self.strategy_catalog}
@@ -260,6 +262,8 @@ class StarkConfig:
     deliberation_strategies_per_model: int = 4
     deliberation_proposal_temperature: float = 0.4
     deliberation_review_temperature: float = 0.1
+    deliberation_provider_timeout_seconds: int = 180
+    deliberation_phase_timeout_seconds: int = 240
     evaluator_isolation: str = "off"
     evaluator_timeout_seconds: int = 900
     explore_fraction: float = 0.4
@@ -270,6 +274,8 @@ class StarkConfig:
     deliberation_upgrade_enabled: bool = True
     deliberation_max_rounds: int = 3
     deliberation_min_remaining_attempts: int = 8
+    phase_two_enabled: bool = False
+    phase_two_split_attempts: int = 5
 
 
 @dataclass
@@ -307,4 +313,5 @@ class RunResult:
     semantic_profile: SemanticProfile | None = None
     diagnostics_profile: TaskDiagnostics | None = None
     strategy_portfolio: StrategyPortfolio | None = None
+    phase_transition: PhaseTransitionSummary | None = None
     feedback_state: FeedbackState | None = None

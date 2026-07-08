@@ -72,7 +72,7 @@ def profile_candidate_with_ncu(
         )
 
     metrics = list(_NCU_METRICS)
-    with tempfile.TemporaryDirectory(prefix="kw_diag_", ignore_cleanup_errors=True) as tmp_dir:
+    with _temporary_profile_dir() as tmp_dir:
         tmp_path = Path(tmp_dir)
         candidate_module_path = tmp_path / "candidate_model.py"
         candidate_module_path.write_text(candidate_text, encoding="utf-8")
@@ -89,6 +89,9 @@ def profile_candidate_with_ncu(
 
         script_path = tmp_path / "profile_target.py"
         csv_path = tmp_path / "ncu_raw.csv"
+        python_bin = _resolve_python_bin()
+        cuda_home = _resolve_cuda_home()
+        torch_extensions_dir = tmp_path / "torch_extensions"
         script_path.write_text(
             _profile_script(
                 reference_module_path=reference_module_path,
@@ -96,6 +99,9 @@ def profile_candidate_with_ncu(
                 source_root=str(getattr(task, "source_root", "") or ""),
                 warmup_runs=warmup_runs,
                 profile_runs=profile_runs,
+                python_bin=python_bin,
+                cuda_home=cuda_home,
+                torch_extensions_dir=torch_extensions_dir,
             ),
             encoding="utf-8",
         )
@@ -111,12 +117,15 @@ def profile_candidate_with_ncu(
             "base",
             "--metrics",
             ",".join(metrics),
-            _STARK_PYTHON if Path(_STARK_PYTHON).exists() else sys.executable,
+            python_bin,
             "-B",
             str(script_path),
         ]
-        env = os.environ.copy()
-        env["PYTHONDONTWRITEBYTECODE"] = "1"
+        env = _profile_subprocess_env(
+            python_bin=python_bin,
+            cuda_home=cuda_home,
+            torch_extensions_dir=torch_extensions_dir,
+        )
         result = subprocess.run(
             cmd,
             capture_output=True,
@@ -198,6 +207,19 @@ def cleanup_profile_artifact(csv_path: Path | None) -> None:
         return
 
 
+class _temporary_profile_dir:
+    def __enter__(self) -> str:
+        self.path = tempfile.mkdtemp(prefix="kw_diag_")
+        return self.path
+
+    def __exit__(self, exc_type, exc, traceback) -> bool:
+        try:
+            shutil.rmtree(self.path, ignore_errors=True)
+        except Exception:
+            pass
+        return False
+
+
 def _resolve_ncu_bin() -> str | None:
     override = os.environ.get("KERNELWEAVER_NCU_BIN", "").strip()
     if override:
@@ -205,6 +227,45 @@ def _resolve_ncu_bin() -> str | None:
     if Path(_NCU_FALLBACK_PATH).exists():
         return _NCU_FALLBACK_PATH
     return shutil.which("ncu")
+
+
+def _resolve_python_bin() -> str:
+    if Path(_STARK_PYTHON).exists():
+        return _STARK_PYTHON
+    return sys.executable
+
+
+def _resolve_cuda_home() -> str | None:
+    candidates = [os.environ.get("CUDA_HOME", "").strip(), "/usr/local/cuda-12.8", "/usr/local/cuda"]
+    for candidate in candidates:
+        if candidate and Path(candidate, "bin", "nvcc").exists():
+            return candidate
+    nvcc = shutil.which("nvcc")
+    if nvcc:
+        return str(Path(nvcc).resolve().parent.parent)
+    return None
+
+
+def _prepend_env_path(env: dict[str, str], name: str, path: str | None) -> None:
+    if not path:
+        return
+    current = env.get(name, "")
+    parts = [part for part in current.split(os.pathsep) if part]
+    if path not in parts:
+        env[name] = os.pathsep.join([path, *parts])
+
+
+def _profile_subprocess_env(*, python_bin: str, cuda_home: str | None, torch_extensions_dir: Path) -> dict[str, str]:
+    env = os.environ.copy()
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
+    env.setdefault("TORCH_EXTENSIONS_DIR", str(torch_extensions_dir))
+    _prepend_env_path(env, "PATH", str(Path(python_bin).resolve().parent))
+    if cuda_home:
+        env.setdefault("CUDA_HOME", cuda_home)
+        _prepend_env_path(env, "PATH", str(Path(cuda_home) / "bin"))
+        _prepend_env_path(env, "LD_LIBRARY_PATH", str(Path(cuda_home) / "lib64"))
+        _prepend_env_path(env, "LD_LIBRARY_PATH", str(Path(cuda_home) / "lib"))
+    return env
 
 
 def _select_dominant_kernel_metrics(csv_path: Path, metric_names: list[str]) -> tuple[str | None, int, dict[str, Any]]:
@@ -256,11 +317,37 @@ def _profile_script(
     source_root: str,
     warmup_runs: int,
     profile_runs: int,
+    python_bin: str,
+    cuda_home: str | None,
+    torch_extensions_dir: Path,
 ) -> str:
+    python_bin_dir = str(Path(python_bin).resolve().parent)
+    cuda_home_text = str(cuda_home or "")
     return f"""
 import importlib.util
+import os
 import sys
 from pathlib import Path
+
+
+def _prepend_env_path(name: str, value: str):
+    if not value:
+        return
+    current = os.environ.get(name, "")
+    parts = [part for part in current.split(os.pathsep) if part]
+    if value not in parts:
+        os.environ[name] = os.pathsep.join([value, *parts])
+
+
+_prepend_env_path("PATH", r"{python_bin_dir}")
+if r"{cuda_home_text}":
+    os.environ.setdefault("CUDA_HOME", r"{cuda_home_text}")
+    _prepend_env_path("PATH", str(Path(r"{cuda_home_text}") / "bin"))
+    _prepend_env_path("LD_LIBRARY_PATH", str(Path(r"{cuda_home_text}") / "lib64"))
+    _prepend_env_path("LD_LIBRARY_PATH", str(Path(r"{cuda_home_text}") / "lib"))
+os.environ.setdefault("TORCH_EXTENSIONS_DIR", r"{str(torch_extensions_dir)}")
+os.makedirs(os.environ["TORCH_EXTENSIONS_DIR"], exist_ok=True)
+
 import torch
 
 

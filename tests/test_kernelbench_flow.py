@@ -16,6 +16,25 @@ from stark.core.regions import RegionPatch, apply_region_patches
 from stark.utils import extract_anchor_names
 
 
+class FlakyTransientProvider(MockProvider):
+    def __init__(self, *, plan_failures: int = 0, code_failures: int = 0):
+        super().__init__()
+        self.plan_failures = plan_failures
+        self.code_failures = code_failures
+
+    def propose_plan(self, task, node, context):
+        if self.plan_failures > 0:
+            self.plan_failures -= 1
+            raise RuntimeError("LLM request failed: HTTP 522: origin_response_timeout")
+        return super().propose_plan(task, node, context)
+
+    def generate_code(self, task, node, proposal, context):
+        if self.code_failures > 0:
+            self.code_failures -= 1
+            raise RuntimeError("Claude request failed: HTTP 522: origin_response_timeout")
+        return super().generate_code(task, node, proposal, context)
+
+
 class KernelbenchFlowTests(unittest.TestCase):
     def test_demo_flow_can_save_and_reload(self):
         task = build_demo_tasks()[0]
@@ -44,6 +63,26 @@ class KernelbenchFlowTests(unittest.TestCase):
         self.assertIsNotNone(result.feedback_state)
         self.assertIsNotNone(reloaded.feedback_state)
         self.assertEqual(reloaded.feedback_state.total_attempts, result.feedback_state.total_attempts)
+
+
+
+    def test_transient_provider_error_does_not_consume_attempt(self):
+        task = build_demo_tasks()[0]
+        config = StarkConfig(
+            max_attempts=2,
+            benchmark_loops=1,
+            warmup_loops=0,
+            run_profile="quick",
+            search_profile="quick",
+            evaluator_profile="quick",
+            measurement_profile="quick",
+        )
+        result = run_stark(task, config, FlakyTransientProvider(plan_failures=1, code_failures=1), DemoEvaluator())
+
+        self.assertEqual(result.stats["attempt_count"], 2)
+        self.assertEqual(result.stats["provider_transient_error_count"], 2)
+        self.assertEqual(len([node_id for node_id in result.nodes if node_id != "root"]), 2)
+        self.assertEqual(result.nodes["root"].selected_count, 1)
 
 
 class ContextRefinementTests(unittest.TestCase):

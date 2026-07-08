@@ -1,7 +1,8 @@
 import argparse
 import unittest
 
-from stark.cli import _resolve_provider_routing
+from stark.cli import _build_deliberation_runner, _resolve_provider_routing
+from stark.models import StarkConfig
 
 
 class ProviderRoutingTests(unittest.TestCase):
@@ -54,6 +55,42 @@ class ProviderRoutingTests(unittest.TestCase):
         self.assertEqual(routing['code_provider'], 'gemini-compatible')
         self.assertEqual(routing['search_provider'], 'gemini-compatible')
 
+
+    def test_deliberation_runner_uses_deliberation_timeout_not_search_timeout(self):
+        import stark.cli as cli
+
+        captured = {}
+        original_prepare = cli._prepare_runtime_and_env
+        original_instantiate = cli._instantiate_single_provider
+
+        def fake_prepare(args, run_name):
+            del args, run_name
+
+        def fake_instantiate(name, overrides=None):
+            captured[name] = dict(overrides or {})
+            from stark.providers import MockProvider
+
+            return MockProvider()
+
+        try:
+            cli._prepare_runtime_and_env = fake_prepare
+            cli._instantiate_single_provider = fake_instantiate
+            args = self._args(search_profile='quick')
+            config = StarkConfig(
+                deliberation_enabled=True,
+                deliberation_providers=['mock'],
+                deliberation_provider_timeout_seconds=180,
+                deliberation_phase_timeout_seconds=240,
+            )
+            runner = _build_deliberation_runner(args, 'main', config)
+        finally:
+            cli._prepare_runtime_and_env = original_prepare
+            cli._instantiate_single_provider = original_instantiate
+
+        self.assertIsNotNone(runner)
+        self.assertEqual(captured['mock']['timeout_seconds'], 180)
+        self.assertEqual(runner.phase_timeout_seconds, 240.0)
+
     def test_all_gemini_route_is_resolved(self):
         args = self._args(provider='gemini-compatible', agent_provider_profile='all_gemini')
         routing = _resolve_provider_routing(args, 'main')
@@ -61,3 +98,9 @@ class ProviderRoutingTests(unittest.TestCase):
         self.assertEqual(routing['code_provider'], 'gemini-compatible')
         self.assertEqual(routing['debug_provider'], 'gemini-compatible')
 
+
+def test_http_522_is_retryable():
+    from src.providers.openai_provider import _is_retryable_llm_error
+
+    message = 'LLM request failed: HTTP 522: '
+    assert _is_retryable_llm_error(RuntimeError(message))

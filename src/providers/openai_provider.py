@@ -1,4 +1,4 @@
-﻿"""OpenAI-compatible provider and shared prompt helpers."""
+"""OpenAI-compatible provider and shared prompt helpers."""
 
 from __future__ import annotations
 
@@ -15,10 +15,12 @@ from ..core.patch_payload import canonicalize_region_patches, parse_loose_json_d
 from ..diagnostics import task_diagnostics_to_prompt_dict
 from ..deliberation import strategy_portfolio_to_prompt_dict
 from ..models import AgentContext, AnchorEdit, PlanProposal, SearchNode, TaskSpec
+from ..phases import phase_transition_to_prompt_dict
 from ..semantics import semantic_profile_to_prompt_dict
 from ..utils import extract_anchor_names
 from .base_provider import AgentProvider
-from .http_utils import post_json_request
+from .errors import is_transient_provider_error
+from .http_utils import post_json_request, stream_json_events_request
 
 
 @dataclass
@@ -30,6 +32,7 @@ class OpenAICompatibleConfig:
     model: str = "gpt-5.4"
     wire_api: str = "chat_completions"
     timeout_seconds: int = 300
+    stream: bool = True
     plan_temperature: float = 0.7
     code_temperature: float = 0.2
     debug_temperature: float = 0.1
@@ -80,6 +83,7 @@ class OpenAICompatibleProvider(AgentProvider):
         model = str(_env_or_default("OPENAI_MODEL", defaults.get("model", "gpt-5.4"))).strip()
         wire_api = str(_env_or_default("OPENAI_WIRE_API", defaults.get("wire_api", "chat_completions"))).strip().lower()
         timeout_seconds = int(str(_env_or_default("OPENAI_TIMEOUT_SECONDS", defaults.get("timeout_seconds", 300))).strip() or "300")
+        stream = _env_bool(os.environ.get("OPENAI_STREAM"), default=bool(defaults.get("stream", True)))
         plan_temperature = float(str(_env_or_default("OPENAI_PLAN_TEMPERATURE", defaults.get("plan_temperature", 0.7))).strip() or "0.7")
         code_temperature = float(str(_env_or_default("OPENAI_CODE_TEMPERATURE", defaults.get("code_temperature", 0.2))).strip() or "0.2")
         debug_temperature = float(str(_env_or_default("OPENAI_DEBUG_TEMPERATURE", defaults.get("debug_temperature", 0.1))).strip() or "0.1")
@@ -116,6 +120,7 @@ class OpenAICompatibleProvider(AgentProvider):
                 model=model,
                 wire_api=wire_api,
                 timeout_seconds=timeout_seconds,
+                stream=stream,
                 plan_temperature=plan_temperature,
                 code_temperature=code_temperature,
                 debug_temperature=debug_temperature,
@@ -149,6 +154,7 @@ class OpenAICompatibleProvider(AgentProvider):
             "Each instruction must be concrete enough for the coding agent to implement without changing unrelated scaffold. "
             "If task_metadata.strategy_portfolio is present, set strategy_name to one selected strategy_id from it. "
             "Use feedback_state to guide selection: prefer strategies not yet attempted; if a strategy achieved speedup > 1.0, consider refinement variants; avoid strategies with only compile failures unless you have a concrete fix. "
+            "If task_metadata.phase_transition is present, you are in phase-2 reroot search: the current root is already the best phase-1 candidate, so use the phase-1 trace and NCU delta as evidence, avoid repeating failed directions, and push a materially stronger next step. "
             "If best_kernel_summary is present and best speedup > 1.5, default to refinement: preserve the working kernel structure, edit only active anchors, and keep frozen anchors unchanged. "
             "If attempt_mode is mutate_champion, you must behave like a mutation planner rather than a fresh explorer: keep mode=refine, change_budget=small, preserve the current champion structure, propose exactly one concrete performance_hypothesis, choose exactly one single_change_focus, set a short mutation_family label, and describe the smallest local change that tests that hypothesis. "
             "In mutate_champion mode, do not propose a full rewrite, a new kernel family, or multiple unrelated edits. "
@@ -460,6 +466,14 @@ class OpenAICompatibleProvider(AgentProvider):
         }
         if reasoning_effort:
             request_body["reasoning_effort"] = reasoning_effort
+        if self.config.stream:
+            request_body["stream"] = True
+            try:
+                return self._stream_chat_completions_request(self._build_endpoint("chat_completions"), request_body)
+            except RuntimeError as exc:
+                if is_transient_provider_error(exc) or not _should_fallback_from_streaming(exc):
+                    raise
+                request_body.pop("stream", None)
         return self._post_json(self._build_endpoint("chat_completions"), request_body)
 
     def _responses_request(
@@ -500,6 +514,26 @@ class OpenAICompatibleProvider(AgentProvider):
         if last_error is not None:
             raise last_error
         raise RuntimeError("LLM request failed before receiving a response")
+
+    def _stream_chat_completions_request(self, url: str, request_body: dict[str, Any]) -> dict[str, Any]:
+        events = self._post_stream_events(url, request_body)
+        text = _extract_openai_stream_text(events)
+        finish_reason = _last_stream_finish_reason(events)
+        return {"choices": [{"message": {"content": text}, "finish_reason": finish_reason}]}
+
+    def _post_stream_events(self, url: str, request_body: dict[str, Any]) -> list[dict[str, Any]]:
+        return stream_json_events_request(
+            url=url,
+            request_body=request_body,
+            headers={
+                "Content-Type": "application/json",
+                "Accept": "text/event-stream",
+                "Authorization": f"Bearer {self.config.api_key}",
+                "User-Agent": self.config.user_agent,
+            },
+            timeout_seconds=self.config.timeout_seconds,
+            error_prefix="LLM request failed",
+        )
 
     def _post_json(self, url: str, request_body: dict[str, Any]) -> dict[str, Any]:
         return post_json_request(
@@ -646,6 +680,7 @@ def _task_metadata(task: TaskSpec) -> dict[str, Any]:
         "semantic_profile": semantic_profile_to_prompt_dict(task.semantic_profile),
         "diagnostics_profile": task_diagnostics_to_prompt_dict(diagnostics),
         "strategy_portfolio": strategy_portfolio_to_prompt_dict(task.strategy_portfolio),
+        "phase_transition": phase_transition_to_prompt_dict(task.phase_transition),
         "grounded_regions": [
             {
                 "anchor_name": region.anchor_name,
@@ -981,33 +1016,65 @@ def _optional_string(value: Any) -> str | None:
 
 
 def _is_retryable_llm_error(exc: RuntimeError) -> bool:
+    return is_transient_provider_error(exc)
+
+
+def _should_fallback_from_streaming(exc: RuntimeError) -> bool:
     message = str(exc).lower()
-    retryable_tokens = (
-        "http 408",
-        "http 429",
-        "http 500",
-        "http 502",
-        "http 503",
-        "http 504",
-        "http 524",
-        "upstream_error",
-        "origin_response_timeout",
-        "timeout occurred",
-        "temporarily unavailable",
-        "timed out",
-        "\"retryable\":true",
-        "unexpected_eof_while_reading",
-        "eof occurred in violation of protocol",
-        "remote end closed connection",
-        "connection reset by peer",
-        "connection aborted",
-        "connection closed",
-        "ssl",
-        "response is not valid json",
-        "response content is empty",
-        "empty reply from server",
-    )
-    return any(token in message for token in retryable_tokens)
+    if "stream" not in message:
+        return False
+    fallback_tokens = ("unsupported", "not support", "unknown parameter", "invalid parameter", "unrecognized", "not allowed")
+    return any(token in message for token in fallback_tokens)
+
+
+def _extract_openai_stream_text(events: list[dict[str, Any]]) -> str:
+    parts: list[str] = []
+    for event in events:
+        for choice in event.get("choices") or []:
+            if not isinstance(choice, dict):
+                continue
+            delta = choice.get("delta") or {}
+            message = choice.get("message") or {}
+            parts.extend(_stream_text_parts(delta.get("content")))
+            parts.extend(_stream_text_parts(message.get("content")))
+            text = choice.get("text")
+            if isinstance(text, str):
+                parts.append(text)
+        parts.extend(_stream_text_parts(event.get("content")))
+        output_text = event.get("output_text")
+        if isinstance(output_text, str):
+            parts.append(output_text)
+    text = "".join(parts).strip()
+    if not text:
+        raise RuntimeError(f"LLM response content is empty in stream events: {events[-3:]}")
+    return text
+
+
+def _stream_text_parts(content: Any) -> list[str]:
+    if isinstance(content, str):
+        return [content]
+    if not isinstance(content, list):
+        return []
+    parts: list[str] = []
+    for item in content:
+        if isinstance(item, str):
+            parts.append(item)
+            continue
+        if not isinstance(item, dict):
+            continue
+        text = item.get("text")
+        if isinstance(text, str):
+            parts.append(text)
+        parts.extend(_stream_text_parts(item.get("content")))
+    return parts
+
+
+def _last_stream_finish_reason(events: list[dict[str, Any]]) -> str | None:
+    for event in reversed(events):
+        for choice in reversed(event.get("choices") or []):
+            if isinstance(choice, dict) and choice.get("finish_reason") is not None:
+                return str(choice.get("finish_reason"))
+    return None
 
 
 def _retry_delay_seconds(exc: Exception | None, attempt_index: int, default_backoff: float) -> float:
@@ -1037,10 +1104,12 @@ def _extract_retry_after_seconds(message: str) -> float | None:
     return None
 
 
-def _env_bool(value: str | None, default: bool = False) -> bool:
+def _env_bool(value: Any, default: bool = False) -> bool:
     if value is None:
         return default
-    normalized = value.strip().lower()
+    if isinstance(value, bool):
+        return value
+    normalized = str(value).strip().lower()
     if normalized in {"1", "true", "yes", "on"}:
         return True
     if normalized in {"0", "false", "no", "off"}:

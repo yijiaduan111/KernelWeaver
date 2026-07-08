@@ -3,13 +3,15 @@
 from __future__ import annotations
 
 import json
+import queue
 import re
+import threading
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
 from ..diagnostics import ncu_profile_to_prompt_dict
 from ..models import StarkConfig, TaskSpec
+from ..phases import phase_transition_to_prompt_dict
 from ..semantics import semantic_profile_to_prompt_dict
 from ..utils import extract_anchor_names
 from .merge import apply_strategy_reviews, merge_strategy_proposals
@@ -29,6 +31,7 @@ class MultiModelDeliberationRunner:
         proposal_temperature: float = 0.4,
         review_temperature: float = 0.1,
         mode: str = "multi_model_v0",
+        phase_timeout_seconds: float | None = None,
     ) -> None:
         self.providers = providers
         self.max_strategies = max_strategies
@@ -36,6 +39,7 @@ class MultiModelDeliberationRunner:
         self.proposal_temperature = proposal_temperature
         self.review_temperature = review_temperature
         self.mode = mode
+        self.phase_timeout_seconds = None if phase_timeout_seconds is None else max(0.0, float(phase_timeout_seconds))
         self.last_events: list[DeliberationEvent] = []
 
     def run(self, task: TaskSpec, config: StarkConfig) -> StrategyPortfolio:
@@ -105,39 +109,86 @@ class MultiModelDeliberationRunner:
         if not provider_items:
             return []
         results_by_name: dict[str, Any] = {}
-        with ThreadPoolExecutor(max_workers=max(1, len(provider_items)), thread_name_prefix=f"delib_{phase}") as executor:
-            futures = {}
-            for provider_name, provider in provider_items:
-                self.last_events.append(DeliberationEvent(phase=phase, provider_name=provider_name, status="start"))
-                futures[executor.submit(self._timed_action, provider_name, provider, action)] = provider_name
-            for future in as_completed(futures):
-                provider_name = futures[future]
-                try:
-                    result, elapsed_seconds = future.result()
-                    self.last_events.append(
-                        DeliberationEvent(
-                            phase=phase,
-                            provider_name=provider_name,
-                            status="ok",
-                            elapsed_seconds=elapsed_seconds,
-                            detail=_result_detail(result),
-                        )
+        result_queue: queue.Queue[tuple[str, str, Any, float | None, str | None]] = queue.Queue()
+        remaining = {provider_name for provider_name, _provider in provider_items}
+
+        def run_provider(provider_name: str, provider: Any) -> None:
+            try:
+                result, elapsed_seconds = self._timed_action(provider_name, provider, action)
+                result_queue.put((provider_name, "ok", result, elapsed_seconds, None))
+            except Exception as exc:
+                result_queue.put((provider_name, "error", None, None, str(exc)))
+
+        for provider_name, provider in provider_items:
+            self.last_events.append(DeliberationEvent(phase=phase, provider_name=provider_name, status="start"))
+            thread = threading.Thread(
+                target=run_provider,
+                args=(provider_name, provider),
+                name=f"delib_{phase}_{provider_name}",
+                daemon=True,
+            )
+            thread.start()
+
+        deadline = None if self.phase_timeout_seconds is None else time.monotonic() + self.phase_timeout_seconds
+        while remaining:
+            timeout = None
+            if deadline is not None:
+                timeout = max(0.0, deadline - time.monotonic())
+                if timeout <= 0.0:
+                    break
+            try:
+                provider_name, status, result, elapsed_seconds, detail = result_queue.get(timeout=timeout)
+            except queue.Empty:
+                break
+            if provider_name not in remaining:
+                continue
+            remaining.remove(provider_name)
+            if status == "ok":
+                self.last_events.append(
+                    DeliberationEvent(
+                        phase=phase,
+                        provider_name=provider_name,
+                        status="ok",
+                        elapsed_seconds=elapsed_seconds,
+                        detail=_result_detail(result),
                     )
-                    results_by_name[provider_name] = result
-                except Exception as exc:
-                    self.last_events.append(
-                        DeliberationEvent(
-                            phase=phase,
-                            provider_name=provider_name,
-                            status="error",
-                            detail=str(exc),
-                        )
+                )
+                results_by_name[provider_name] = result
+            else:
+                error_detail = detail or "unknown_error"
+                self.last_events.append(
+                    DeliberationEvent(
+                        phase=phase,
+                        provider_name=provider_name,
+                        status="error",
+                        detail=error_detail,
                     )
-                    if phase.startswith("propose"):
-                        results_by_name[provider_name] = ModelProposal(provider_name=provider_name, status="error", error=str(exc))
-                    else:
-                        results_by_name[provider_name] = ModelReview(provider_name=provider_name, status="error", error=str(exc))
+                )
+                results_by_name[provider_name] = self._phase_error_result(phase, provider_name, error_detail)
+
+        if remaining:
+            timeout_label = self.phase_timeout_seconds if self.phase_timeout_seconds is not None else 0.0
+            detail = f"deliberation_phase_timeout>{timeout_label:.1f}s"
+            for provider_name in sorted(remaining):
+                self.last_events.append(
+                    DeliberationEvent(
+                        phase=phase,
+                        provider_name=provider_name,
+                        status="timeout",
+                        detail=detail,
+                    )
+                )
+                results_by_name[provider_name] = self._phase_error_result(phase, provider_name, detail)
+
+        for provider_name, _provider in provider_items:
+            results_by_name.setdefault(provider_name, self._phase_error_result(phase, provider_name, "missing_result"))
         return [results_by_name[provider_name] for provider_name, _provider in provider_items]
+
+    @staticmethod
+    def _phase_error_result(phase: str, provider_name: str, detail: str):
+        if phase.startswith("propose"):
+            return ModelProposal(provider_name=provider_name, status="error", error=detail)
+        return ModelReview(provider_name=provider_name, status="error", error=detail)
 
     @staticmethod
     def _timed_action(provider_name: str, provider: Any, action):
@@ -243,6 +294,7 @@ def _proposal_system_prompt(strategies_per_model: int) -> str:
         "You are one independent model in a multi-model kernel optimization deliberation. "
         "Propose backend-specific optimization strategies, but do not write code. "
         "If root_ncu_profile is provided, use its raw_metrics as runtime evidence about the current root candidate when deciding strategies. "
+        "If phase_transition is provided, this is a phase-2 reroot search: current_scaffold already reflects the best phase-1 candidate, and phase_transition contains the phase-1 trace plus the root-to-best NCU delta. "
         "Use only provided anchors. Return JSON only. "
         f"Return at most {strategies_per_model} strategies with schema: "
         '{"strategies":[{"intent":"...","summary":"...","target_anchors":["..."],'
@@ -294,6 +346,7 @@ def _proposal_payload(task: TaskSpec, provider_name: str, strategies_per_model: 
         "root_ncu_profile": ncu_profile_to_prompt_dict(
             getattr(getattr(task, "diagnostics_profile", None), "ncu_profile", None)
         ),
+        "phase_transition": phase_transition_to_prompt_dict(task.phase_transition),
         "execution_facts": task.execution_facts.to_prompt_dict() if task.execution_facts else None,
         "grounded_regions": [
             {
