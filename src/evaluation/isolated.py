@@ -162,7 +162,10 @@ def _run_worker_process(
                     returncode = int(process.wait(timeout=5) or 0)
                 except subprocess.TimeoutExpired:
                     process.kill()
-                    returncode = int(process.wait(timeout=5) or -signal.SIGKILL)
+                    try:
+                        returncode = int(process.wait(timeout=5) or -signal.SIGKILL)
+                    except subprocess.TimeoutExpired:
+                        returncode = -signal.SIGKILL
             finally:
                 if session_id is not None:
                     _terminate_lingering_session_members(session_id)

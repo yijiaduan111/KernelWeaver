@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import csv
 import os
@@ -126,14 +126,32 @@ def profile_candidate_with_ncu(
             cuda_home=cuda_home,
             torch_extensions_dir=torch_extensions_dir,
         )
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=timeout_seconds,
-            env=env,
-            cwd=str(tmp_path),
-        )
+        try:
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=timeout_seconds,
+                env=env,
+                cwd=str(tmp_path),
+            )
+        except subprocess.TimeoutExpired as exc:
+            partial_output = (exc.stderr or exc.stdout or "")
+            if isinstance(partial_output, bytes):
+                partial_output = partial_output.decode("utf-8", errors="replace")
+            return (
+                NcuProfile(
+                    enabled=False,
+                    status="timeout",
+                    profiler=Path(ncu_bin).name,
+                    notes=[
+                        "NCU profiling timed out for the root candidate program.",
+                        "Continuing without NCU diagnostics for this task.",
+                    ],
+                    error=(partial_output or f"ncu_timeout_after_{timeout_seconds}s").strip()[:1000],
+                ),
+                None,
+            )
         stdout = result.stdout or ""
         if result.returncode != 0 or not stdout.strip():
             return (
