@@ -130,6 +130,8 @@ class MockProvider(AgentProvider):
     ) -> str:
         del system_prompt, temperature
         provider_name = str(user_payload.get("provider_name") or self.name)
+        if purpose == "direct_kernelbench_baseline":
+            return _mock_direct_kernelbench_source(str(user_payload.get("official_reference_source") or ""))
         if purpose == "deliberation_review":
             portfolio = user_payload.get("strategy_portfolio") or {}
             scores = [
@@ -168,3 +170,15 @@ def _region_body(source_code: str, region: str) -> str:
     if not match:
         return "pass"
     return textwrap.dedent(match.group("body")).strip("\n")
+
+
+def _mock_direct_kernelbench_source(reference_source: str) -> str:
+    source = reference_source
+    if "class Model(" in source:
+        source = source.replace("class Model(", "class ModelNew(", 1)
+    elif "class Model:" in source:
+        source = source.replace("class Model:", "class ModelNew:", 1)
+    else:
+        source = "class ModelNew:\n    pass\n"
+    source = source.replace("super(Model, self)", "super(ModelNew, self)")
+    return f"```python\n{source.rstrip()}\n```\n"

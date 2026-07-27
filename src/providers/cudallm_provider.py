@@ -3,19 +3,14 @@
 from __future__ import annotations
 
 import gc
-import json
 import time
 from dataclasses import dataclass, replace
 from typing import Any
 
-from ..core.patch_payload import canonicalize_region_patches, parse_loose_json_dict
-from ..models import AgentContext, PlanProposal, SearchNode, TaskSpec
-from ..utils import extract_anchor_names
-
-from .openai_provider import OpenAICompatibleProvider, _compact_payload_text, _snapshot_to_dict, _strip_code_fences, _task_metadata
+from .openai_provider import OpenAICompatibleProvider, _compact_payload_text
 
 
-@dataclass
+@dataclass(slots=True)
 class LocalCudaLLMConfig:
     """Resolved configuration for a local full-weight cudaLLM backend."""
 
@@ -36,6 +31,7 @@ class LocalCudaLLMConfig:
     retry_backoff_seconds: float = 0.0
     trust_remote_code: bool = False
     use_chat_template: bool = True
+    max_memory_per_gpu: str | None = None
 
 
 class LocalCudaLLMProvider(OpenAICompatibleProvider):
@@ -59,6 +55,11 @@ class LocalCudaLLMProvider(OpenAICompatibleProvider):
     def _ensure_loaded(self) -> None:
         if self._model is not None and self._tokenizer is not None and self._torch is not None:
             return
+        device_spec = _normalize_device_spec(self.config.device)
+        if device_spec["mode"] != "single" and device_spec["cuda_visible_devices"]:
+            current_visible = str(__import__("os").environ.get("CUDA_VISIBLE_DEVICES", "")).strip()
+            if not current_visible:
+                __import__("os").environ["CUDA_VISIBLE_DEVICES"] = ",".join(device_spec["cuda_visible_devices"])
         import torch
         from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -75,10 +76,15 @@ class LocalCudaLLMProvider(OpenAICompatibleProvider):
             "low_cpu_mem_usage": True,
             "trust_remote_code": self.config.trust_remote_code,
         }
-        if self.config.device and self.config.device != "auto":
-            model_kwargs["device_map"] = {"": self.config.device}
+        if device_spec["mode"] == "single":
+            model_kwargs["device_map"] = {"": device_spec["device"]}
         else:
             model_kwargs["device_map"] = "auto"
+            if self.config.max_memory_per_gpu:
+                model_kwargs["max_memory"] = _build_max_memory_map(
+                    device_spec["cuda_visible_devices"],
+                    self.config.max_memory_per_gpu,
+                )
 
         self._model = AutoModelForCausalLM.from_pretrained(
             self.config.model_path,
@@ -104,65 +110,6 @@ class LocalCudaLLMProvider(OpenAICompatibleProvider):
             except Exception:
                 pass
             self._torch = None
-
-
-    def generate_code(
-        self,
-        task: TaskSpec,
-        node: SearchNode,
-        proposal: PlanProposal,
-        context: AgentContext,
-    ) -> str:
-        """Generate anchor-local patches and apply them to the scaffold.
-
-        cudaLLM often rewrites full files and drops marker comments. For the
-        grounded KernelWeaver workflow, the safer contract is to ask the local
-        model for anchor bodies only and let deterministic code preserve the
-        surrounding scaffold.
-        """
-        requested_anchors = [edit.anchor_name for edit in proposal.anchor_edits]
-        prompt = (
-            "You are the coding agent in a STARK-style workflow.\n"
-            "Return JSON only. Do not return a full Python file.\n"
-            "Required JSON schema: "
-            '{"region_patches":[{"region":"...","operation":"replace","body":"..."}]}\n'
-            "Each body must contain only the replacement code inside that editable region.\n"
-            "Do not include # <<<IMPROVE:...>>> or # <<<END_IMPROVE>>> marker comments in any body.\n"
-            "Use only region names requested by the plan. Preserve task semantics, protected scaffold, and evaluator I/O."
-        )
-        user = {
-            "task_name": task.name,
-            "task_description": task.description,
-            "task_metadata": _task_metadata(task),
-            "available_anchors": extract_anchor_names(node.code),
-            "requested_anchors": requested_anchors,
-            "requested_regions": requested_anchors,
-            "plan": {
-                "strategy_name": proposal.strategy_name,
-                "strategy_summary": proposal.strategy_summary,
-                "expected_gain": proposal.expected_gain,
-                "risk_notes": proposal.risk_notes,
-                "anchor_edits": [
-                    {
-                        "anchor_name": edit.anchor_name,
-                        "instruction": edit.instruction,
-                        "operation": edit.operation,
-                    }
-                    for edit in proposal.anchor_edits
-                ],
-            },
-            "current_node": _snapshot_to_dict(context.current),
-            "root_node": _snapshot_to_dict(context.root),
-            "related_nodes": [_snapshot_to_dict(item) for item in context.related],
-            "current_code": node.code,
-        }
-        content = self._chat(
-            system_prompt=prompt,
-            user_payload=user,
-            temperature=self.config.code_temperature,
-            reasoning_effort=self.config.code_reasoning_effort,
-        )
-        return _normalize_patch_response(content, proposal)
 
     def _chat(
         self,
@@ -238,6 +185,38 @@ def _resolve_torch_dtype(torch_module, dtype_name: str):
     return mapping.get(normalized, torch_module.bfloat16)
 
 
+def _normalize_device_spec(raw_device: str | None) -> dict[str, Any]:
+    normalized = str(raw_device or "auto").strip()
+    lowered = normalized.lower()
+    if not normalized or lowered == "auto":
+        return {"mode": "auto", "device": "auto", "cuda_visible_devices": []}
+    if "," not in normalized and " " not in normalized:
+        return {"mode": "single", "device": normalized, "cuda_visible_devices": _extract_cuda_ordinals([normalized])}
+    parts = [part.strip() for part in normalized.replace(" ", ",").split(",") if part.strip()]
+    return {
+        "mode": "multi",
+        "device": "auto",
+        "cuda_visible_devices": _extract_cuda_ordinals(parts),
+    }
+
+
+def _extract_cuda_ordinals(parts: list[str]) -> list[str]:
+    ordinals: list[str] = []
+    for part in parts:
+        lowered = part.lower()
+        if lowered.startswith("cuda:"):
+            candidate = part.split(":", 1)[1].strip()
+            if candidate.isdigit():
+                ordinals.append(candidate)
+    return ordinals
+
+
+def _build_max_memory_map(visible_devices: list[str], limit: str) -> dict[Any, str]:
+    if not visible_devices:
+        return {0: str(limit)}
+    return {index: str(limit) for index, _ in enumerate(visible_devices)}
+
+
 def _compose_local_chat_prompt(tokenizer, messages: list[dict[str, str]], use_chat_template: bool) -> str:
     if use_chat_template and hasattr(tokenizer, "apply_chat_template"):
         try:
@@ -262,17 +241,3 @@ def _compose_local_chat_prompt(tokenizer, messages: list[dict[str, str]], use_ch
         parts.append(f"{role}:\n{content}")
     parts.append("Assistant:\n")
     return "\n\n".join(parts)
-
-def _normalize_patch_response(response_text: str, proposal: PlanProposal) -> str:
-    cleaned = _strip_code_fences(response_text).strip()
-    payload = parse_loose_json_dict(cleaned, allow_python_literal=True)
-    if payload is None:
-        return cleaned
-    allowed = {edit.anchor_name: edit.operation for edit in proposal.anchor_edits}
-    normalized = canonicalize_region_patches(payload, allowed)
-    if normalized is None:
-        return cleaned
-    return json.dumps({"region_patches": normalized})
-
-def _looks_like_full_python_module(text: str) -> bool:
-    return "class ModelNew" in text or "def forward" in text or "load_inline" in text

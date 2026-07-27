@@ -48,6 +48,7 @@ from .config import (
 )
 from .core.loader import KernelBenchLoader
 from .diagnostics import build_task_diagnostics
+from .direct_baseline import direct_result_row, run_direct_baseline
 from .deliberation.runner import MultiModelDeliberationRunner
 from .core.workflow import bootstrap_stark_root, run_stark
 from .demo import build_demo_tasks
@@ -94,6 +95,15 @@ RUNTIME_CHOICES = runtime_profile_choices()
 ROLE_PROVIDER_CHOICES = ["inherit", *PROVIDER_CHOICES]
 
 
+KERNELBENCH_EVAL_COMMANDS = {
+    "run-kernelbench",
+    "run-kernelbench-batch",
+    "run-direct-kernelbench",
+    "run-direct-kernelbench-batch",
+}
+DEFAULT_DIRECT_PROVIDER = "claude-compatible"
+
+
 def _demo_task_map() -> dict[str, Any]:
     return {task.name: task for task in build_demo_tasks()}
 
@@ -114,6 +124,13 @@ def _build_parser() -> argparse.ArgumentParser:
 
     run_kernelbench = subparsers.add_parser("run-kernelbench", help="Run one KernelBench task.")
     _add_kernelbench_run_arguments(run_kernelbench)
+
+    run_direct_kernelbench = subparsers.add_parser("run-direct-kernelbench", help="Run one direct one-shot KernelBench LLM baseline task.")
+    _add_direct_kernelbench_run_arguments(run_direct_kernelbench)
+
+    run_direct_kernelbench_batch = subparsers.add_parser("run-direct-kernelbench-batch", help="Run a direct one-shot KernelBench LLM baseline manifest.")
+    run_direct_kernelbench_batch.add_argument("--manifest", default=None, help="Path to a YAML or JSON manifest file.")
+    _add_direct_kernelbench_run_arguments(run_direct_kernelbench_batch, include_problem_flags=False)
 
     run_kernelbench_batch = subparsers.add_parser("run-kernelbench-batch", help="Run a task manifest.")
     run_kernelbench_batch.add_argument("--manifest", default=None, help="Path to a YAML or JSON manifest file.")
@@ -175,6 +192,25 @@ def _add_kernelbench_run_arguments(parser: argparse.ArgumentParser, include_prob
     parser.add_argument("--output-dir", type=str, required=True)
     parser.add_argument("--provider", default=None, choices=PROVIDER_CHOICES)
     _add_provider_routing_arguments(parser)
+    parser.add_argument("--env-file", default=None)
+    parser.add_argument("--verbose", action="store_true")
+
+
+def _add_direct_kernelbench_run_arguments(parser: argparse.ArgumentParser, include_problem_flags: bool = True) -> None:
+    parser.add_argument("--experiment", "--run-profile", dest="run_profile", default="main", choices=EXPERIMENT_CHOICES)
+    parser.add_argument("--kernelbench-root", default=None)
+    if include_problem_flags:
+        parser.add_argument("--level", type=int, required=True)
+        parser.add_argument("--problem-id", type=int, required=True)
+    parser.add_argument("--backend", default=None, choices=BACKEND_CHOICES)
+    parser.add_argument("--task-config", default=None, choices=TASK_CHOICES, help="Advanced: choose a named task manifest under configs/tasks.")
+    parser.add_argument("--runtime-config", default=None, choices=RUNTIME_CHOICES, help="Advanced: choose a runtime profile under configs/runtime.")
+    parser.add_argument("--evaluator-config", "--evaluator-profile", dest="evaluator_profile", default=None, choices=EVALUATOR_CHOICES)
+    parser.add_argument("--measurement-config", "--measurement-profile", dest="measurement_profile", default=None, choices=MEASUREMENT_CHOICES)
+    parser.add_argument("--output-dir", type=str, required=True)
+    parser.add_argument("--provider", default=DEFAULT_DIRECT_PROVIDER, choices=PROVIDER_CHOICES)
+    parser.add_argument("--model", default=None, help="Optional model override for the selected provider, e.g. claude-fable-5.")
+    parser.add_argument("--temperature", type=float, default=0.2)
     parser.add_argument("--env-file", default=None)
     parser.add_argument("--verbose", action="store_true")
 
@@ -481,8 +517,8 @@ def _close_provider(provider) -> None:
 
 def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
     search_name = _resolve_search_name(args, run_name)
-    evaluator_name = _resolve_evaluator_name(args, run_name) if getattr(args, "command", "") in {"run-kernelbench", "run-kernelbench-batch"} else "quick"
-    measurement_name = _resolve_measurement_name(args, run_name) if getattr(args, "command", "") in {"run-kernelbench", "run-kernelbench-batch"} else "quick"
+    evaluator_name = _resolve_evaluator_name(args, run_name) if getattr(args, "command", "") in KERNELBENCH_EVAL_COMMANDS else "quick"
+    measurement_name = _resolve_measurement_name(args, run_name) if getattr(args, "command", "") in KERNELBENCH_EVAL_COMMANDS else "quick"
     route = _resolve_provider_routing(args, run_name)
     search_settings = search_profile(search_name)
     evaluator_settings = evaluator_profile(evaluator_name)
@@ -774,6 +810,166 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
             deliberation_runner.close()
 
 
+def _build_direct_provider(args: argparse.Namespace, run_name: str):
+    _prepare_runtime_and_env(args, run_name)
+    provider_name = str(getattr(args, "provider", None) or DEFAULT_DIRECT_PROVIDER)
+    provider = _instantiate_single_provider(provider_name, _provider_overrides(args, run_name))
+    model_override = getattr(args, "model", None)
+    if model_override:
+        if not hasattr(getattr(provider, "config", None), "model") or not hasattr(provider, "with_overrides"):
+            raise SystemExit(f"Provider {provider_name} does not support --model overrides.")
+        provider = provider.with_overrides(model=str(model_override))
+    return provider
+
+
+def _configure_direct_config(config: StarkConfig, provider, args: argparse.Namespace) -> StarkConfig:
+    provider_name = str(getattr(provider, "name", getattr(args, "provider", DEFAULT_DIRECT_PROVIDER)))
+    config.max_attempts = 1
+    config.provider_name = provider_name
+    config.agent_provider_profile = "direct_llm"
+    config.plan_provider = provider_name
+    config.code_provider = provider_name
+    config.debug_provider = provider_name
+    config.search_provider = provider_name
+    config.semantics_enabled = False
+    config.diagnostics_enabled = False
+    config.deliberation_enabled = False
+    config.deliberation_profile = "disabled"
+    return config
+
+
+def _provider_model_name(provider, explicit_model: str | None = None) -> str | None:
+    if explicit_model:
+        return str(explicit_model)
+    provider_config = getattr(provider, "config", None)
+    model = getattr(provider_config, "model", None)
+    return str(model) if model else None
+
+
+def _run_direct_kernelbench(args: argparse.Namespace) -> int:
+    run_name = _resolve_run_name(args)
+    backend = _resolve_backend(args, run_name)
+    loader = KernelBenchLoader()
+    config = _build_config(args, run_name)
+    task = loader.load_official_problem(
+        _resolve_kernelbench_root(args, run_name),
+        args.level,
+        args.problem_id,
+        backend=backend,
+        semantics_enabled=False,
+    )
+    provider = _build_direct_provider(args, run_name)
+    config = _configure_direct_config(config, provider, args)
+    evaluator = _kernelbench_evaluator(backend, config.evaluator_profile or "main", config)
+    trace_env_key = "KERNELWEAVER_EVAL_TRACE_DIR"
+    previous_trace_dir = os.environ.get(trace_env_key)
+    os.environ[trace_env_key] = str(Path(args.output_dir) / "eval_traces")
+    try:
+        result = run_direct_baseline(
+            task,
+            config,
+            provider,
+            evaluator,
+            artifact_dir=args.output_dir,
+            temperature=float(args.temperature),
+            provider_name=getattr(provider, "name", None),
+            model_name=_provider_model_name(provider, getattr(args, "model", None)),
+        )
+        return _save_and_print(result, args.output_dir)
+    finally:
+        if previous_trace_dir is None:
+            os.environ.pop(trace_env_key, None)
+        else:
+            os.environ[trace_env_key] = previous_trace_dir
+        _close_provider(provider)
+
+
+def _run_direct_kernelbench_batch(args: argparse.Namespace) -> int:
+    run_name = _resolve_run_name(args)
+    backend = _resolve_backend(args, run_name)
+    kernelbench_root = _resolve_kernelbench_root(args, run_name)
+    manifest = load_task_manifest(_resolve_manifest_path(args, run_name), kernelbench_root=kernelbench_root, default_backend=backend)
+    output_root = Path(args.output_dir)
+    output_root.mkdir(parents=True, exist_ok=True)
+    loader = KernelBenchLoader()
+    provider = _build_direct_provider(args, run_name)
+    rows: list[dict[str, Any]] = []
+    try:
+        for item in manifest["tasks"]:
+            level = int(item["level"])
+            problem_id = int(item["problem_id"])
+            alias = str(item.get("alias") or f"L{level}_P{problem_id}")
+            item_backend = str(item.get("backend") or backend)
+            row = {
+                "alias": alias,
+                "level": level,
+                "problem_id": problem_id,
+                "backend": item_backend,
+                "workflow": "direct_llm_baseline",
+                "run_profile": run_name,
+                "search_profile": _resolve_search_name(args, run_name),
+                "evaluator_profile": _resolve_evaluator_name(args, run_name),
+                "measurement_profile": _resolve_measurement_name(args, run_name),
+                "status": "error",
+                "error": None,
+            }
+            trace_env_key = "KERNELWEAVER_EVAL_TRACE_DIR"
+            previous_trace_dir = os.environ.get(trace_env_key)
+            try:
+                config = _configure_direct_config(_build_config(args, run_name), provider, args)
+                task = loader.load_official_problem(
+                    kernelbench_root,
+                    level,
+                    problem_id,
+                    backend=item_backend,
+                    semantics_enabled=False,
+                )
+                evaluator = _kernelbench_evaluator(item_backend, _resolve_evaluator_name(args, run_name), config)
+                task_output_dir = output_root / batch_output_dir_name(alias, level, problem_id)
+                os.environ[trace_env_key] = str(task_output_dir / "eval_traces")
+                result = run_direct_baseline(
+                    task,
+                    config,
+                    provider,
+                    evaluator,
+                    artifact_dir=task_output_dir,
+                    temperature=float(args.temperature),
+                    provider_name=getattr(provider, "name", None),
+                    model_name=_provider_model_name(provider, getattr(args, "model", None)),
+                )
+                run_path = save_run(result, task_output_dir)
+                row = direct_result_row(result, alias=alias, level=level, problem_id=problem_id, backend=item_backend, run_path=run_path)
+            except Exception as exc:
+                row["error"] = str(exc)
+            finally:
+                if previous_trace_dir is None:
+                    os.environ.pop(trace_env_key, None)
+                else:
+                    os.environ[trace_env_key] = previous_trace_dir
+            rows.append(row)
+        summary_payload = {
+            "manifest": manifest,
+            "workflow": "direct_llm_baseline",
+            "provider": str(getattr(provider, "name", getattr(args, "provider", DEFAULT_DIRECT_PROVIDER))),
+            "model": _provider_model_name(provider, getattr(args, "model", None)),
+            "run_profile": run_name,
+            "search_profile": _resolve_search_name(args, run_name),
+            "evaluator_profile": _resolve_evaluator_name(args, run_name),
+            "measurement_profile": _resolve_measurement_name(args, run_name),
+            "kernelbench_root": kernelbench_root,
+            "output_dir": str(output_root),
+            "rows": rows,
+            "aggregates": aggregate_batch_rows(rows),
+        }
+        (output_root / "summary.json").write_text(json.dumps(summary_payload, indent=2, ensure_ascii=False), encoding="utf-8")
+        write_batch_csv(rows, output_root / "summary.csv")
+        print(f"summary_json={output_root / 'summary.json'}")
+        print(f"summary_csv={output_root / 'summary.csv'}")
+        return 0
+    finally:
+        _close_provider(provider)
+
+
 def _verify_kernelbench(args: argparse.Namespace) -> int:
     validation_path = verify_kernelbench_run(args.path, kernelbench_root=args.kernelbench_root, output_path=args.output)
     payload = load_validation(validation_path)
@@ -861,6 +1057,10 @@ def main(argv: list[str] | None = None) -> int:
         return _run_triton(args)
     if args.command == "run-kernelbench":
         return _run_kernelbench(args)
+    if args.command == "run-direct-kernelbench":
+        return _run_direct_kernelbench(args)
+    if args.command == "run-direct-kernelbench-batch":
+        return _run_direct_kernelbench_batch(args)
     if args.command == "run-kernelbench-batch":
         return _run_kernelbench_batch(args)
     if args.command == "verify-kernelbench":

@@ -57,3 +57,29 @@ class SmokeCliTests(unittest.TestCase):
             '--output-dir', 'runs/test_cute',
         ])
         self.assertEqual(args.backend, 'cute')
+
+    def test_direct_kernelbench_parser_accepts_model_override(self):
+        parser = _build_parser()
+        args = parser.parse_args([
+            'run-direct-kernelbench',
+            '--level', '1',
+            '--problem-id', '40',
+            '--backend', 'cuda',
+            '--provider', 'claude-compatible',
+            '--model', 'claude-fable-5',
+            '--output-dir', 'runs/test_direct',
+        ])
+        self.assertEqual(args.command, 'run-direct-kernelbench')
+        self.assertEqual(args.provider, 'claude-compatible')
+        self.assertEqual(args.model, 'claude-fable-5')
+
+    def test_direct_kernelbench_batch_parser_accepts_manifest(self):
+        parser = _build_parser()
+        args = parser.parse_args([
+            'run-direct-kernelbench-batch',
+            '--experiment', 'quick',
+            '--manifest', 'configs/tasks/main_l1_15.yaml',
+            '--output-dir', 'runs/test_direct_batch',
+        ])
+        self.assertEqual(args.command, 'run-direct-kernelbench-batch')
+        self.assertEqual(args.run_profile, 'quick')
