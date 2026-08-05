@@ -2,6 +2,8 @@
 
 This document records the lightweight migration path for moving the active experiment branch to a new server without copying a full conda environment archive.
 
+For the practical server move checklist, see `docs/server_migration_checklist.md`.
+
 ## Current baseline
 
 - Active branch: `feature/model-deliberation-v0`
