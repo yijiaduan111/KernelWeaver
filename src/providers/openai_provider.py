@@ -72,8 +72,10 @@ class OpenAICompatibleProvider(AgentProvider):
         temperature: float = 0.2,
         purpose: str = "generic",
     ) -> str:
-        del purpose
-        return self._chat(system_prompt, user_payload, temperature, reasoning_effort=None)
+        reasoning_effort = self.config.reasoning_effort
+        if purpose == "direct_kernelbench_baseline":
+            reasoning_effort = self.config.code_reasoning_effort or reasoning_effort
+        return self._chat(system_prompt, user_payload, temperature, reasoning_effort=reasoning_effort)
 
     @classmethod
     def from_env(cls, defaults: dict[str, Any] | None = None) -> "OpenAICompatibleProvider":

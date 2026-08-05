@@ -1072,8 +1072,6 @@ def _phase_two_enabled(config: StarkConfig, deliberation_runner, task: TaskSpec)
         return False
     if config.max_attempts <= 1:
         return False
-    if deliberation_runner is None:
-        return False
     return True
 
 
