@@ -31,6 +31,7 @@ class LocalCudaLLMConfig:
     retry_backoff_seconds: float = 0.0
     trust_remote_code: bool = False
     use_chat_template: bool = True
+    max_memory_per_gpu: str | None = None
 
 
 class LocalCudaLLMProvider(OpenAICompatibleProvider):
@@ -54,6 +55,11 @@ class LocalCudaLLMProvider(OpenAICompatibleProvider):
     def _ensure_loaded(self) -> None:
         if self._model is not None and self._tokenizer is not None and self._torch is not None:
             return
+        device_spec = _normalize_device_spec(self.config.device)
+        if device_spec["mode"] != "single" and device_spec["cuda_visible_devices"]:
+            current_visible = str(__import__("os").environ.get("CUDA_VISIBLE_DEVICES", "")).strip()
+            if not current_visible:
+                __import__("os").environ["CUDA_VISIBLE_DEVICES"] = ",".join(device_spec["cuda_visible_devices"])
         import torch
         from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -70,10 +76,15 @@ class LocalCudaLLMProvider(OpenAICompatibleProvider):
             "low_cpu_mem_usage": True,
             "trust_remote_code": self.config.trust_remote_code,
         }
-        if self.config.device and self.config.device != "auto":
-            model_kwargs["device_map"] = {"": self.config.device}
+        if device_spec["mode"] == "single":
+            model_kwargs["device_map"] = {"": device_spec["device"]}
         else:
             model_kwargs["device_map"] = "auto"
+            if self.config.max_memory_per_gpu:
+                model_kwargs["max_memory"] = _build_max_memory_map(
+                    device_spec["cuda_visible_devices"],
+                    self.config.max_memory_per_gpu,
+                )
 
         self._model = AutoModelForCausalLM.from_pretrained(
             self.config.model_path,
@@ -172,6 +183,38 @@ def _resolve_torch_dtype(torch_module, dtype_name: str):
         "fp32": torch_module.float32,
     }
     return mapping.get(normalized, torch_module.bfloat16)
+
+
+def _normalize_device_spec(raw_device: str | None) -> dict[str, Any]:
+    normalized = str(raw_device or "auto").strip()
+    lowered = normalized.lower()
+    if not normalized or lowered == "auto":
+        return {"mode": "auto", "device": "auto", "cuda_visible_devices": []}
+    if "," not in normalized and " " not in normalized:
+        return {"mode": "single", "device": normalized, "cuda_visible_devices": _extract_cuda_ordinals([normalized])}
+    parts = [part.strip() for part in normalized.replace(" ", ",").split(",") if part.strip()]
+    return {
+        "mode": "multi",
+        "device": "auto",
+        "cuda_visible_devices": _extract_cuda_ordinals(parts),
+    }
+
+
+def _extract_cuda_ordinals(parts: list[str]) -> list[str]:
+    ordinals: list[str] = []
+    for part in parts:
+        lowered = part.lower()
+        if lowered.startswith("cuda:"):
+            candidate = part.split(":", 1)[1].strip()
+            if candidate.isdigit():
+                ordinals.append(candidate)
+    return ordinals
+
+
+def _build_max_memory_map(visible_devices: list[str], limit: str) -> dict[Any, str]:
+    if not visible_devices:
+        return {0: str(limit)}
+    return {index: str(limit) for index, _ in enumerate(visible_devices)}
 
 
 def _compose_local_chat_prompt(tokenizer, messages: list[dict[str, str]], use_chat_template: bool) -> str:

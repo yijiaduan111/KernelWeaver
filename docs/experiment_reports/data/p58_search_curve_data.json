@@ -1,0 +1,395 @@
+{
+  "metadata": {
+    "task": "kernelbench_l1_58_58_conv_transposed_3d_asymmetric_input_asymmetric_kernel",
+    "level": 1,
+    "problem_id": 58,
+    "best_node_id": "phase2_n4",
+    "best_speedup": 9.945652173913043,
+    "phase_transition": {
+      "source_phase": 1,
+      "target_phase": 2,
+      "split_attempts": 5,
+      "trigger_attempt": 5,
+      "root": {
+        "node_id": "root",
+        "strategy_name": null,
+        "runtime": 0.0183,
+        "speedup": 1.0,
+        "plan_summary": null,
+        "changed_regions": [],
+        "lineage": [
+          "root"
+        ]
+      },
+      "selected": {
+        "node_id": "n3",
+        "strategy_name": "strategy_02",
+        "runtime": 0.0182,
+        "speedup": 1.0054945054945055,
+        "plan_summary": "Explore a cuDNN-algorithm-selection path instead of another handwritten kernel: route the CUDA fast path through a C++ extension wrapper that invokes ATen's transposed-conv with cuDNN benchmark and TF32 enabled, while preserving the existing PyTorch module as the fallback and parameter owner.",
+        "changed_regions": [
+          "cuda_cpp",
+          "forward_stmt_2"
+        ],
+        "lineage": [
+          "root",
+          "n1",
+          "n2",
+          "n3"
+        ]
+      },
+      "attempts": [
+        {
+          "node_id": "n1",
+          "parent_id": "root",
+          "strategy_name": "strategy_04",
+          "attempt_mode": "explore",
+          "mutation_family": "shape_specialized_dispatch",
+          "single_change_focus": "Implement one strict shape-gated custom CUDA forward path for the benchmarked `ConvTranspose3d` configuration and call it from `forward`, otherwise fall back unchanged.",
+          "changed_regions": [
+            "cuda_cpp",
+            "cuda_cu",
+            "forward_stmt_2"
+          ],
+          "compile_ok": true,
+          "correct": true,
+          "runtime": 0.0229,
+          "speedup": 0.8034934497816594,
+          "failure_stage": null,
+          "failure_type": null,
+          "plan_summary": "Add a narrow dispatcher that preserves the existing `nn.ConvTranspose3d` module but routes the benchmarked CUDA float32 contiguous case to a shape-specialized custom CUDA kernel, with immediate fallback to the PyTorch path for all other cases."
+        },
+        {
+          "node_id": "n2",
+          "parent_id": "n1",
+          "strategy_name": "strategy_06",
+          "attempt_mode": "explore",
+          "mutation_family": "occupancy_tuned_custom_kernel",
+          "single_change_focus": "Replace the existing naive ConvTranspose3d CUDA kernel with a lower-register width-major kernel and keep the Python dispatch narrowly gated to the same exact legal case.",
+          "changed_regions": [
+            "cuda_cpp",
+            "cuda_cu",
+            "forward_stmt_2"
+          ],
+          "compile_ok": true,
+          "correct": true,
+          "runtime": 0.0265,
+          "speedup": 0.6943396226415094,
+          "failure_stage": null,
+          "failure_type": null,
+          "plan_summary": "Implement a single stricter custom CUDA fast path that replaces the previous naive shape-specialized kernel with a lower-register, occupancy-oriented output-stationary kernel, while keeping PyTorch fallback for all unsupported cases."
+        },
+        {
+          "node_id": "n3",
+          "parent_id": "n2",
+          "strategy_name": "strategy_02",
+          "attempt_mode": "explore",
+          "mutation_family": "cudnn_autotune_wrapper",
+          "single_change_focus": "Replace the current custom-kernel dispatch in `forward` with a C++ extension call that forwards the module weights/bias/conv parameters into ATen transposed-conv under benchmark+TF32 cuDNN settings.",
+          "changed_regions": [
+            "cuda_cpp",
+            "forward_stmt_2"
+          ],
+          "compile_ok": true,
+          "correct": true,
+          "runtime": 0.0182,
+          "speedup": 1.0054945054945055,
+          "failure_stage": null,
+          "failure_type": null,
+          "plan_summary": "Explore a cuDNN-algorithm-selection path instead of another handwritten kernel: route the CUDA fast path through a C++ extension wrapper that invokes ATen's transposed-conv with cuDNN benchmark and TF32 enabled, while preserving the existing PyTorch module as the fallback and parameter owner."
+        },
+        {
+          "node_id": "n4",
+          "parent_id": "n3",
+          "strategy_name": "strategy_02",
+          "attempt_mode": "mutate_champion",
+          "mutation_family": "cudnn_direct_dgrad",
+          "single_change_focus": "Replace the current high-level `at::conv_transpose3d` wrapper with a direct ATen/cuDNN backward-data dispatch that explicitly prefers the faster convolution algorithm while keeping the exported C++ entrypoint unchanged.",
+          "changed_regions": [
+            "cuda_cpp"
+          ],
+          "compile_ok": true,
+          "correct": false,
+          "runtime": null,
+          "speedup": null,
+          "failure_stage": "runtime",
+          "failure_type": "builtins.RuntimeError",
+          "plan_summary": "Refine the working cuDNN-backed transposed-conv path by swapping the high-level wrapper for a lower-level backward-data dispatch that can pick a faster cuDNN algorithm."
+        },
+        {
+          "node_id": "n5",
+          "parent_id": "n4",
+          "strategy_name": "strategy_02",
+          "attempt_mode": "mutate_champion",
+          "mutation_family": "debug_local_repair",
+          "single_change_focus": "small_local_repair",
+          "changed_regions": [
+            "cuda_cpp"
+          ],
+          "compile_ok": false,
+          "correct": false,
+          "runtime": null,
+          "speedup": null,
+          "failure_stage": "compile",
+          "failure_type": "invalid_patch_format",
+          "plan_summary": "Refine the working cuDNN-backed transposed-conv path by swapping the high-level wrapper for a lower-level backward-data dispatch that can pick a faster cuDNN algorithm."
+        }
+      ],
+      "trace_summary": "effective=n3:Replace the current custom-kernel dispatch in `forward` with a C++ extension call that forwards the module weights/bias/conv parameters into ATen transposed-conv under benchmark+TF32 cuDNN settings.:1.005x | flat=n1:Implement one strict shape-gated custom CUDA forward path for the benchmarked `ConvTranspose3d` configuration and call it from `forward`, otherwise fall back unchanged.:0.803x; n2:Replace the existing naive ConvTranspose3d CUDA kernel with a lower-register width-major kernel and keep the Python dispatch narrowly gated to the same exact legal case.:0.694x | failed=n4:Replace the current high-level `at::conv_transpose3d` wrapper with a direct ATen/cuDNN backward-data dispatch that explicitly prefers the faster convolution algorithm while keeping the exported C++ entrypoint unchanged.:builtins.RuntimeError; n5:small_local_repair:invalid_patch_format",
+      "root_diagnostics": {
+        "enabled": true,
+        "mode": "root_ncu_v1",
+        "ncu_profile": {
+          "enabled": true,
+          "status": "ok",
+          "profiler": "ncu",
+          "kernel_name": "void dgrad_alg1_nd_float_engine<float, 3, 128, 6, 7, 3, 3, 5, 0, 0, 0>(int, int, int, const T1 *, int, T1 *, const T1 *, kernel_gradNd_params, unsigned long long, int, float, float)",
+          "row_count": 6,
+          "kernel_launch_count": 6,
+          "raw_metrics": {
+            "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 0.58,
+            "lts__throughput.avg.pct_of_peak_sustained_elapsed": 6.75,
+            "l1tex__throughput.avg.pct_of_peak_sustained_active": 66.75,
+            "sm__throughput.avg.pct_of_peak_sustained_elapsed": 73.73,
+            "sm__warps_active.avg.pct_of_peak_sustained_active": 49.53,
+            "launch__registers_per_thread": 68,
+            "launch__occupancy_limit_registers": 3,
+            "launch__occupancy_limit_shared_mem": 8,
+            "launch__occupancy_limit_warps": 6,
+            "gpu__time_duration.avg": 19549632,
+            "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.02,
+            "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.03,
+            "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+            "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.32,
+            "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+            "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+            "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+            "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+            "smsp__sass_branch_targets_threads_divergent.avg": 31824.5,
+            "smsp__sass_branch_targets_threads_uniform.avg": 343657.96,
+            "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+            "smsp__warps_eligible.avg": 113280482.11
+          },
+          "notes": [
+            "Profiled the root candidate program with Nsight Compute."
+          ],
+          "error": null
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ]
+      },
+      "selected_diagnostics": {
+        "enabled": true,
+        "mode": "root_ncu_v1",
+        "ncu_profile": {
+          "enabled": true,
+          "status": "ok",
+          "profiler": "ncu",
+          "kernel_name": "void cnn::dgrad2d_grouped_direct_kernel<float, int, float, float, 1, 1, 0, 0>(cnn::DgradGroupedDirectParams, const T1 *, const T1 *, T1 *, T4, T4)",
+          "row_count": 450,
+          "kernel_launch_count": 450,
+          "raw_metrics": {
+            "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 0.36,
+            "lts__throughput.avg.pct_of_peak_sustained_elapsed": 3.21,
+            "l1tex__throughput.avg.pct_of_peak_sustained_active": 45.83,
+            "sm__throughput.avg.pct_of_peak_sustained_elapsed": 84.95,
+            "sm__warps_active.avg.pct_of_peak_sustained_active": 64.33,
+            "launch__registers_per_thread": 32,
+            "launch__occupancy_limit_registers": 2,
+            "launch__occupancy_limit_shared_mem": 8,
+            "launch__occupancy_limit_warps": 1,
+            "gpu__time_duration.avg": 35003616,
+            "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.08,
+            "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+            "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.01,
+            "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.29,
+            "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+            "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+            "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+            "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+            "smsp__sass_branch_targets_threads_divergent.avg": 431232,
+            "smsp__sass_branch_targets_threads_uniform.avg": 3902065.5,
+            "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+            "smsp__warps_eligible.avg": 233296417.81
+          },
+          "notes": [
+            "Profiled the root candidate program with Nsight Compute."
+          ],
+          "error": null
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ]
+      },
+      "diagnostics_delta": {
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": -0.21999999999999997,
+        "gpu__time_duration.avg": 15453984,
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": -20.92,
+        "launch__occupancy_limit_registers": -1,
+        "launch__occupancy_limit_shared_mem": 0,
+        "launch__occupancy_limit_warps": -5,
+        "launch__registers_per_thread": -36,
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": -3.54,
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": 11.219999999999999,
+        "sm__warps_active.avg.pct_of_peak_sustained_active": 14.799999999999997,
+        "smsp__sass_branch_targets_threads_divergent.avg": 399407.5,
+        "smsp__sass_branch_targets_threads_uniform.avg": 3558407.54,
+        "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 0,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 0,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.06,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 0,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.01,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 0,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": -0.030000000000000027,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 0,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": -0.03,
+        "smsp__warps_eligible.avg": 120015935.7
+      }
+    },
+    "phase2_start_k": 6,
+    "run_source": "/data/dyj/KernelWeaver/runs_final/kernelbench_k10/level1/L1_P058/run.json"
+  },
+  "rows": [
+    {
+      "k": 1,
+      "node_id": "n1",
+      "parent_id": "root",
+      "origin": "plan_code",
+      "compile_ok": true,
+      "correct": true,
+      "speedup": 0.8034934497816594,
+      "success_at_k": true,
+      "fast1_at_k": false,
+      "best_so_far_speedup": 0.8034934497816594,
+      "failure_stage": "",
+      "failure_type": ""
+    },
+    {
+      "k": 2,
+      "node_id": "n2",
+      "parent_id": "n1",
+      "origin": "plan_code",
+      "compile_ok": true,
+      "correct": true,
+      "speedup": 0.6943396226415094,
+      "success_at_k": true,
+      "fast1_at_k": false,
+      "best_so_far_speedup": 0.8034934497816594,
+      "failure_stage": "",
+      "failure_type": ""
+    },
+    {
+      "k": 3,
+      "node_id": "n3",
+      "parent_id": "n2",
+      "origin": "plan_code",
+      "compile_ok": true,
+      "correct": true,
+      "speedup": 1.0054945054945055,
+      "success_at_k": true,
+      "fast1_at_k": true,
+      "best_so_far_speedup": 1.0054945054945055,
+      "failure_stage": "",
+      "failure_type": ""
+    },
+    {
+      "k": 4,
+      "node_id": "n4",
+      "parent_id": "n3",
+      "origin": "plan_code",
+      "compile_ok": true,
+      "correct": false,
+      "speedup": null,
+      "success_at_k": true,
+      "fast1_at_k": true,
+      "best_so_far_speedup": 1.0054945054945055,
+      "failure_stage": "",
+      "failure_type": "builtins.RuntimeError"
+    },
+    {
+      "k": 5,
+      "node_id": "n5",
+      "parent_id": "n4",
+      "origin": "debug",
+      "compile_ok": false,
+      "correct": false,
+      "speedup": null,
+      "success_at_k": true,
+      "fast1_at_k": true,
+      "best_so_far_speedup": 1.0054945054945055,
+      "failure_stage": "",
+      "failure_type": "invalid_patch_format"
+    },
+    {
+      "k": 6,
+      "node_id": "phase2_n1",
+      "parent_id": "phase2_root",
+      "origin": "plan_code",
+      "compile_ok": true,
+      "correct": true,
+      "speedup": 8.798076923076922,
+      "success_at_k": true,
+      "fast1_at_k": true,
+      "best_so_far_speedup": 8.798076923076922,
+      "failure_stage": "",
+      "failure_type": ""
+    },
+    {
+      "k": 7,
+      "node_id": "phase2_n2",
+      "parent_id": "phase2_n1",
+      "origin": "plan_code",
+      "compile_ok": true,
+      "correct": true,
+      "speedup": 9.33673469387755,
+      "success_at_k": true,
+      "fast1_at_k": true,
+      "best_so_far_speedup": 9.33673469387755,
+      "failure_stage": "",
+      "failure_type": ""
+    },
+    {
+      "k": 8,
+      "node_id": "phase2_n3",
+      "parent_id": "phase2_n2",
+      "origin": "plan_code",
+      "compile_ok": true,
+      "correct": true,
+      "speedup": 9.285714285714286,
+      "success_at_k": true,
+      "fast1_at_k": true,
+      "best_so_far_speedup": 9.33673469387755,
+      "failure_stage": "",
+      "failure_type": ""
+    },
+    {
+      "k": 9,
+      "node_id": "phase2_n4",
+      "parent_id": "phase2_n2",
+      "origin": "plan_code",
+      "compile_ok": true,
+      "correct": true,
+      "speedup": 9.891304347826088,
+      "success_at_k": true,
+      "fast1_at_k": true,
+      "best_so_far_speedup": 9.891304347826088,
+      "failure_stage": "",
+      "failure_type": ""
+    },
+    {
+      "k": 10,
+      "node_id": "phase2_n5",
+      "parent_id": "phase2_n3",
+      "origin": "plan_code",
+      "compile_ok": true,
+      "correct": true,
+      "speedup": 9.945652173913043,
+      "success_at_k": true,
+      "fast1_at_k": true,
+      "best_so_far_speedup": 9.945652173913043,
+      "failure_stage": "",
+      "failure_type": ""
+    }
+  ]
+}
