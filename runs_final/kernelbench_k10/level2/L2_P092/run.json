@@ -1,0 +1,2433 @@
+{
+  "task_name": "kernelbench_l2_92_92_conv2d_groupnorm_tanh_hardswish_residualadd_logsumexp",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": false,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_claude",
+    "plan_provider": "openai-compatible",
+    "code_provider": "claude-compatible",
+    "debug_provider": "openai-compatible",
+    "search_provider": "claude-compatible",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "diagnostics_enabled": false,
+    "diagnostics_mode": "root_ncu_v1",
+    "diagnostics_timeout_seconds": 900,
+    "diagnostics_warmup_runs": 2,
+    "diagnostics_profile_runs": 3,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1,
+    "deliberation_provider_timeout_seconds": 180,
+    "deliberation_phase_timeout_seconds": 240,
+    "evaluator_isolation": "candidate_subprocess",
+    "evaluator_timeout_seconds": 900,
+    "explore_fraction": 0.4,
+    "challenger_fraction": 0.3,
+    "plateau_delta_threshold": 0.03,
+    "plateau_recovery_mutation_attempts": 2,
+    "plateau_window": 3,
+    "deliberation_upgrade_enabled": true,
+    "deliberation_max_rounds": 3,
+    "deliberation_min_remaining_attempts": 8,
+    "phase_two_enabled": true,
+    "phase_two_split_attempts": 5
+  },
+  "best_node_id": "phase2_n4",
+  "leaderboard": [
+    "phase2_n4",
+    "root"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "root",
+      "n5"
+    ],
+    [],
+    [
+      "phase2_root"
+    ],
+    [
+      "phase2_n4",
+      "phase2_root"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "root",
+    "n3",
+    "phase2_root",
+    "phase2_n1",
+    "phase2_n2",
+    "phase2_root",
+    "phase2_n3"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "debug_retry_failure",
+    "debug_retry_failure",
+    "exploit_best_score",
+    "debug_retry_failure",
+    "exploit_best_score",
+    "debug_retry_failure",
+    "debug_retry_failure",
+    "exploit_best_score",
+    "debug_retry_failure"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {
+      "n1": "compile_failure_debug_throttled"
+    },
+    {
+      "n1": "compile_failure_debug_throttled",
+      "n2": "compile_failure_debug_throttled"
+    },
+    {
+      "n1": "compile_failure_debug_throttled",
+      "n2": "compile_failure_debug_throttled"
+    },
+    {},
+    {},
+    {
+      "phase2_n1": "compile_failure_debug_throttled"
+    },
+    {
+      "phase2_n1": "compile_failure_debug_throttled",
+      "phase2_n2": "compile_failure_debug_throttled"
+    },
+    {
+      "phase2_n1": "compile_failure_debug_throttled",
+      "phase2_n2": "compile_failure_debug_throttled"
+    }
+  ],
+  "pruned_nodes": {},
+  "debug_stats": {
+    "total_attempts": 6,
+    "per_node": {
+      "n1": 1,
+      "n2": 1,
+      "n3": 1,
+      "phase2_n1": 1,
+      "phase2_n2": 1,
+      "phase2_n3": 1
+    }
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 4,
+    "debug_attempts": 6,
+    "failure_counts": {
+      "invalid_patch_format": 1,
+      "invalid_region_patch_format": 1,
+      "region_apply_failed": 3,
+      "builtins.RuntimeError": 1,
+      "invalid_candidate_format": 1
+    },
+    "failure_stage_counts": {
+      "compile": 6,
+      "runtime": 1
+    },
+    "invalid_proposals": 0,
+    "attempt_mode_counts": {
+      "explore": 4,
+      "debug": 6
+    },
+    "provider_transient_error_count": 0,
+    "provider_transient_budget_exhausted_count": 0,
+    "provider_transient_errors_by_stage": {},
+    "provider_transient_errors_by_origin": {},
+    "provider_transient_errors": [],
+    "phase_two_triggered": true,
+    "phase_two_seed_node_id": "n5",
+    "pruned_count": 0
+  },
+  "benchmark_family": "kernelbench",
+  "level": 2,
+  "problem_id": 92,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level2/92_Conv2d_GroupNorm_Tanh_HardSwish_ResidualAdd_LogSumExp.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.0107
+  },
+  "speedups": {
+    "torch_eager": 2.336244541484716
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "normalization",
+    "summary": "Normalization computation; preserve statistics axes, epsilon, and affine state while fusing where safe.",
+    "source": "KernelBench/KernelBench/level2/92_Conv2d_GroupNorm_Tanh_HardSwish_ResidualAdd_LogSumExp.py",
+    "exact_facts": null,
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "forward_stmt_3",
+      "forward_stmt_4",
+      "forward_stmt_5",
+      "forward_stmt_6"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x_conv = self.conv(x)",
+        "op_names": [
+          "_conv2d_groupnorm_tanh_hardswish_residualadd_logsumexp",
+          "a",
+          "addition",
+          "and",
+          "applies",
+          "conv",
+          "conv2d",
+          "convolution",
+          "dim",
+          "eps",
+          "group",
+          "group_norm"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x_norm = self.group_norm(x_conv)",
+        "op_names": [
+          "_conv2d_groupnorm_tanh_hardswish_residualadd_logsumexp",
+          "a",
+          "addition",
+          "and",
+          "applies",
+          "conv",
+          "conv2d",
+          "convolution",
+          "dim",
+          "eps",
+          "group",
+          "group_norm"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_3",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x_tanh = self.tanh(x_norm)",
+        "op_names": [
+          "_conv2d_groupnorm_tanh_hardswish_residualadd_logsumexp",
+          "a",
+          "addition",
+          "and",
+          "applies",
+          "conv",
+          "conv2d",
+          "convolution",
+          "dim",
+          "eps",
+          "group",
+          "group_norm"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_4",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x_hard_swish = self.hard_swish(x_tanh)",
+        "op_names": [
+          "_conv2d_groupnorm_tanh_hardswish_residualadd_logsumexp",
+          "a",
+          "addition",
+          "and",
+          "applies",
+          "conv",
+          "conv2d",
+          "convolution",
+          "dim",
+          "eps",
+          "group",
+          "group_norm"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_5",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x_res = x_conv + x_hard_swish",
+        "op_names": [
+          "_conv2d_groupnorm_tanh_hardswish_residualadd_logsumexp",
+          "a",
+          "addition",
+          "and",
+          "applies",
+          "arithmetic",
+          "conv",
+          "conv2d",
+          "convolution",
+          "dim",
+          "eps",
+          "group"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_6",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x_logsumexp = torch.logsumexp(x_res, dim=1, keepdim=True)",
+        "op_names": [
+          "_conv2d_groupnorm_tanh_hardswish_residualadd_logsumexp",
+          "a",
+          "addition",
+          "and",
+          "applies",
+          "conv",
+          "conv2d",
+          "convolution",
+          "dim",
+          "eps",
+          "group",
+          "group_norm"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "fuse_statistics_and_affine",
+        "summary": "fuse statistics and affine",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "compute statistics over the exact normalized axes",
+            "fuse affine transform when present"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "keep mean/variance axes explicit"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "preserve_normalization_axes",
+        "summary": "preserve normalization axes",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "compute statistics over the exact normalized axes",
+            "fuse affine transform when present"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "keep mean/variance axes explicit"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve statistics axes, epsilon, and affine parameters",
+      "avoid changing output dtype or shape"
+    ]
+  },
+  "diagnostics_profile": {
+    "enabled": true,
+    "mode": "root_ncu_v1",
+    "ncu_profile": {
+      "enabled": true,
+      "status": "ok",
+      "profiler": "ncu",
+      "kernel_name": "void at::vectorized_elementwise_kernel<4, at::CUDAFunctor_add<float>, std::array<char *, 3>>(int, T2, T3)",
+      "row_count": 91,
+      "kernel_launch_count": 91,
+      "raw_metrics": {
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 94.87,
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": 40.38,
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": 8.15,
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": 1.35,
+        "sm__warps_active.avg.pct_of_peak_sustained_active": 80.07,
+        "launch__registers_per_thread": 38,
+        "launch__occupancy_limit_registers": 12,
+        "launch__occupancy_limit_shared_mem": 32,
+        "launch__occupancy_limit_warps": 12,
+        "gpu__time_duration.avg": 1859456,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.42,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.08,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+        "smsp__sass_branch_targets_threads_divergent.avg": 0,
+        "smsp__sass_branch_targets_threads_uniform.avg": 992.25,
+        "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+        "smsp__warps_eligible.avg": 44663.45
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ],
+      "error": null
+    },
+    "notes": [
+      "Profiled the root candidate program with Nsight Compute."
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_02",
+        "intent": "warp_per_spatial_logsumexp_activation_fusion",
+        "summary": "Replace the current fused tail expression in forward_stmt_3 with a CUDA extension kernel where each warp owns one (N, H, W) spatial location. The warp cooperatively loads all C=64 channel values from x_norm and x_conv, applies tanh then hardswish then residual add entirely in registers, then executes a two-step warp-shuffle max-then-sum for numerically stable logsumexpâemitting one scalar per spatial site without ever writing intermediate activations to DRAM.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Launch with gridDim=(N*H_out*W_out), blockDim=32; each block is exactly one warp handling one spatial location.",
+          "With C=64, each of the 32 threads handles exactly2 consecutive channels in a register pairâno shared memory needed beyond the warp itself.",
+          "Use __shfl_down_sync for warp-level max reduction (step 1 of logsumexp) followed by a second __shfl_down_sync pass for the sum-of-exp (step 2).",
+          "Read x_norm and x_conv with __ldg (read-only cache) since both tensors are produced upstream and not written by this kernel.",
+          "Apply tanh via __tanhf and hardswish as x*(min(max(x+3,0),6)/6) or the equivalent fmaf sequence to keep instruction count low.",
+          "Declare the kernel with __launch_bounds__(32, 16) to signal the compiler to cap register allocation and maximise warp-level occupancy.",
+          "Expose via a flat pybind11 wrapper taking x_norm (float, [N,C,H,W]) and x_conv (float, [N,C,H,W]) and returning [N,1,H,W].",
+          "Keep forward_stmt_2 (GroupNorm) on the PyTorch path to avoid repeating the n4 GroupNorm correctness failure."
+        ],
+        "expected_gain": "Eliminates 3â4 separate DRAM round-trips (tanh write, hardswish write, add write, logsumexp intermediate); DRAM pressure currently at ~95% so each eliminated pass is a direct latency reduction. Expected1.5â2.5Ã over the current ~0.99Ã scaffold.",
+        "risk_notes": [
+          "C must be divisible by warp size (64/32=2, so this is exactâno masking needed, but verify at runtime with an assertion).",
+          "logsumexp numerical stability requires the two-pass max-then-sum pattern; skipping the max pass will cause inf/nan on large activations.",
+          "The __ldg path requires input tensors to be contiguous and non-overlapping; add .contiguous() guards in the Python wrapper.",
+          "If batch Ã H_out Ã W_out is not a multiple of the SM count, tail wave occupancy dropsâadd a grid-stride loop fallback for small spatial dims."
+        ],
+        "memory_methods": [
+          "warp_shuffle_reduction",
+          "read_only_cache_ldg"
+        ],
+        "mutation_axes": [
+          "forward_stmt_3",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "forbidden_patterns": [
+          "Do not write x_tanh or x_hard_swish to global memory as intermediate tensors.",
+          "Do not use shared memory for the warp reductionâ__shfl_down_sync is sufficient and avoids smem bank conflicts.",
+          "Do not change forward_stmt_1 or forward_stmt_2; conv and GroupNorm must remain on the existing PyTorch path."
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 5.0,
+          "openai-compatible": 4.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "Strong low-to-moderate risk option if GroupNorm stays on PyTorch: warp-per-spatial logsumexp tail fusion is well matched to C=64 and should remove several memory passes. Main limitation is that it leaves GroupNorm traffic untouched and assumes favorable contiguity/layout.",
+          "claude-compatible": "Excellent warp-level design exploiting C=64 divisibility. Each warp owns one spatial location and handles all channels in registers with warp shufflesâno shared memory overhead. Numerically stable two-pass logsumexp. Eliminates 3-4 DRAM passes. Clear implementation path with __launch_bounds__ and __ldg hints. Low risk given the exact warp-to-channel mapping (64/32=2). Highly likely to deliver 1.5-2.5Ã gain.",
+          "gemini-compatible": "Excellent mapping for the tail fusion. Using a warp per spatial location perfectly fits C=64 (2 elements per thread) and allows efficient register-level reductions for LogSumExp without shared memory overhead."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_01",
+        "intent": "fuse_groupnorm_tail_single_kernel",
+        "summary": "Replace the PyTorch path from GroupNorm through channelwise LogSumExp with one CUDA extension that consumes `x_conv`, computes exact per-group mean/variance, applies affine, `tanh`, `hardswish`, residual add, and finishes with stable `logsumexp(dim=1, keepdim=True)` without materializing full intermediates. This targets the observed memory-bound behavior (`gpu__dram_throughput` about 95% peak, `sm__throughput` about 1.35%) by eliminating multiple full-tensor DRAM passes.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "implementation_hints": [
+          "Keep `forward_stmt_1` as the existing convolution producer and call one custom entrypoint after it.",
+          "Use a two-stage CUDA kernel design if needed: block/group reductions for GroupNorm stats, then in-kernel affine + activations + residual + channel reduction for `logsumexp`.",
+          "Use numerically stable LogSumExp with per-output spatial location channel max tracking before exponent accumulation.",
+          "Read `x_conv` once into registers/shared memory tiles where possible, because the current root candidate is dominated by memory traffic rather than compute.",
+          "Expose GroupNorm weight, bias, group count, and epsilon explicitly through `cuda_cpp`/`cuda_cu` while keeping ModelNew I/O unchanged."
+        ],
+        "expected_gain": "High if successful; best chance to beat the current near-flat phase-1 result because it removes the largest remaining global-memory round-trips across normalization and reductions.",
+        "risk_notes": [
+          "Must preserve exact GroupNorm normalization axes and epsilon semantics.",
+          "Stable `logsumexp` is mandatory; naive exp/reduce can cause correctness regressions.",
+          "This is broader than the current phase-1 tail fusion and may raise runtime/correctness risk if group/channel indexing is mishandled."
+        ],
+        "memory_methods": [
+          "Fuse producer-consumer steps to avoid writing `x_norm`, `x_tanh`, `x_hard_swish`, and `x_res` to global memory.",
+          "Use shared-memory or warp-level reductions for per-group stats and per-pixel channel reductions."
+        ],
+        "mutation_axes": [
+          "Expand fusion boundary backward from `forward_stmt_3` to include `forward_stmt_2`.",
+          "Choose between one monolithic kernel versus stats kernel + fused epilogue/reduction kernel.",
+          "Tune block mapping over N,H,W with channels/groups reduced inside blocks."
+        ],
+        "forbidden_patterns": [
+          "Do not change output shape/dtype or `keepdim=True` behavior.",
+          "Do not approximate GroupNorm statistics or fold across wrong axes.",
+          "Do not compute `logsumexp` as `log(sum(exp(x)))` without max subtraction."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 5.0,
+          "claude-compatible": 5.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Best risk-adjusted upside: attacks the dominant DRAM bottleneck by fusing GroupNorm affine, activations, residual add, and stable logsumexp while keeping conv separate. Complexity is high, but the two-stage design is realistic and aligned with the normalization-axis constraints.",
+          "claude-compatible": "Highest potential gain. Directly addresses the 95% DRAM bottleneck by fusing the entire post-conv pipeline into one or two kernels. Eliminates multiple full-tensor round-trips. Well-scoped implementation with clear two-stage kernel design. Stable logsumexp pattern is well-defined. Risk is manageable: GroupNorm axes and epsilon are explicitly preserved, and the model scores reflect high confidence.",
+          "gemini-compatible": "Fusing GroupNorm and LogSumExp into a single kernel is extremely difficult and risky due to intersecting reduction axes (GN reduces over spatial+channels/group, LogSumExp reduces over all channels per spatial location)."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_05",
+        "intent": "two_phase_groupnorm_fused_tail_corrected",
+        "summary": "Fix the n4 runtime failure and complete the full GroupNorm+tail fusion: Phase-1 kernel computes per-group Welford mean and variance over the (C/G, H, W) axes using shared memory reduction; Phase-2 kernel reads x_conv once and, in the same thread, applies the affine GroupNorm transform, tanh, hardswish, adds the residual (x_conv, already in L1 from the first load), and emits the logsumexp-reduced outputâcollapsing six upstream kernel launches into two.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Phase-1 launch: grid=(N*G), block=min(C_per_group*H*W, 1024); use online Welford accumulation in shared memory with a tree reduction to produce group_mean[N,G] and group_invstd[N,G] buffers.",
+          "Phase-2 launch: same indexing as the warp-per-spatial strategy; read x_conv[n,c,h,w] once, compute gn_out = (x_conv - mean[n, c//C_per_group]) * invstd[n, c//C_per_group] * weight[c] + bias[c], then apply tanh, hardswish, add x_conv (reuse the already-loaded register value), finally warp-reduce for logsumexp.",
+          "Store weight and bias in __constant__ memory or pass as raw pointers; they are small (C=64) and will fit in constant cache.",
+          "Epsilon for invstd must match GroupNorm eps exactly; pass it as a float kernel argument.",
+          "n4's RuntimeError likely came from incorrect axis reductionâverify that the statistics loop covers exactly C/G * H * W elements per group, not C * H * W.",
+          "Remove forward_stmt_2 (group_norm call) from the forward method and replace with the two CUDA calls; keep forward_stmt_1 (conv) unchanged.",
+          "Use float accumulators for mean/variance regardless of input dtype to preserve numerical fidelity."
+        ],
+        "expected_gain": "Replaces ~6 kernels (GroupNorm's2â3 passes + tanh + hardswish + add + logsumexp) with 2 custom kernels; halves DRAM traffic for the post-conv portion. Potential2â3Ã over scaffold if DRAM saturation is the dominant bottleneck as the 95% metric suggests.",
+        "risk_notes": [
+          "GroupNorm statistics must be computed over exactly (C/G, H, W) elements per (N, G) pair; off-by-one in loop bounds caused n4's RuntimeError.",
+          "Affine weight and bias indexing must map channel index c, not group index; weight[c] and bias[c] are per-channel, not per-group.",
+          "Shared memory usage in Phase-1 must not exceed device smem limit; for large C/G*H*W, use a grid-stride loop with partial Welford accumulation.",
+          "Phase-2 warp-level logsumexp requires C divisible by 32 (satisfied for C=64) or explicit masking for remainder threads."
+        ],
+        "memory_methods": [
+          "welford_online_statistics",
+          "shared_memory_tree_reduction"
+        ],
+        "mutation_axes": [
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "forbidden_patterns": [
+          "Do not replicate the PyTorch GroupNorm call alongside the custom statistics kernelâremove forward_stmt_2 entirely to avoid double-normalization.",
+          "Do not use atomicAdd for Welford accumulation at the block level; use shared memory reduction first, then a single atomic per group if multi-block.",
+          "Do not reduce statistics over C*H*W; it must be (C/G)*H*W per group."
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 4.0,
+          "openai-compatible": 4.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "High practical value because it explicitly corrects the prior GN-axis failure and uses a conservative two-phase design. Slightly lower score than strategy_01 because Phase-1 shared-memory Welford over (C/G,H,W) can be costly and the L1 reuse claim for x_conv is not guaranteed.",
+          "claude-compatible": "Two-phase design with explicit GroupNorm statistics fusion. Corrects the n4 runtime failure by clarifying reduction axes. Replaces ~6 kernels with 2. Clear Welford online statistics + tree reduction + affine + tail pattern. Risk: implementation complexity in Phase-1 shared memory reduction and correct axis handling. Phase-2 reuses x_conv from L1, which is efficient. Slightly lower than strategies 1-2 due to multi-kernel overhead, but still strong.",
+          "gemini-compatible": "The most realistic and optimal approach for full fusion. Splitting into two phases (Phase 1: GN stats, Phase 2: GN affine + tail + LogSumExp) elegantly solves the intersecting reduction axes problem while minimizing DRAM round-trips."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_03",
+        "intent": "fuse_post_groupnorm_tail_thread_reduction",
+        "summary": "Fuse Tanh, Hardswish, Residual Addition, and LogSumExp into a single CUDA kernel. Each thread handles one spatial location and loops over channels.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Replace the PyTorch tail with a custom CUDA extension call.",
+          "Launch a 1D grid with `N * H * W` threads.",
+          "Each thread computes `n = idx / (H * W)` and `hw = idx % (H * W)`.",
+          "First pass: loop `c` from 0 to `C-1`, read `x_conv` and `x_norm`, compute `val = x_conv + hardswish(tanh(x_norm))`, and find `max_val`.",
+          "Second pass: loop `c` from 0 to `C-1` again, recompute `val`, and accumulate `sum_exp += expf(val - max_val)`.",
+          "Write `max_val + logf(sum_exp)` to the output tensor of shape `(N, 1, H, W)`.",
+          "Use `__ldg` for read-only global memory accesses to utilize the texture cache."
+        ],
+        "expected_gain": "Eliminates multiple DRAM round-trips for the intermediate tensors (tanh, hardswish, residual), achieving near peak memory bandwidth.",
+        "risk_notes": [
+          "Two passes over the channels require reading the inputs twice, but the L1/L2 cache should capture the second read due to the coalesced access pattern."
+        ],
+        "memory_methods": [
+          "coalesced_global_memory_access",
+          "l1_cache_reuse"
+        ],
+        "mutation_axes": [
+          "kernel_fusion",
+          "thread_mapping"
+        ],
+        "forbidden_patterns": [
+          "materializing_intermediate_tensors"
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 4.0,
+          "openai-compatible": 3.0,
+          "claude-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Useful as a simple tail-fusion baseline, but one-thread-per-spatial with sequential channel loops underuses parallelism and depends on cache reuse for the second pass. Lower implementation risk than full GN fusion, but likely less performant than warp/block cooperative reductions.",
+          "claude-compatible": "Sound thread-per-spatial-location design with two-pass logsumexp. Straightforward implementation and clear risk mitigation. Expected to eliminate intermediate DRAM writes. Slightly lower score than strategies 1 and 2 because the two-pass channel loop may stress L1/L2 cache more than warp-shuffle or block-cooperative approaches, and the per-thread reduction is less efficient than warp primitives for C=64.",
+          "gemini-compatible": "Solid approach for tail fusion, but having a single thread loop over all 64 channels might increase register pressure and latency compared to the warp-cooperative approach in strategy_02."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "persistent_groupnorm_logsumexp_reduction",
+        "summary": "Build a persistent reduction-oriented CUDA kernel specialized for the small fixed shape regime implied by `init_args=[8,64,3,16]`, mapping each output spatial location (and batch item) to a block that keeps channel/group reductions on chip. This directly attacks long scoreboard stalls and DRAM saturation by trading extra arithmetic for fewer memory round-trips.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "implementation_hints": [
+          "Exploit that `out_channels=64` and `groups=16` imply only 4 channels per group; use warp or subwarp reductions for per-group mean/variance with minimal synchronization.",
+          "After normalization, continue immediately into `tanh`, `hardswish`, residual add, and channelwise LogSumExp in the same resident block.",
+          "Consider specializing for contiguous NCHW layout and fixed channel count to simplify indexing and reduce control overhead.",
+          "Use lightweight shared-memory staging only for group stats and channel max/sum, not for full intermediate tensors."
+        ],
+        "expected_gain": "Moderate to high on this benchmark if the fixed-shape specialization matches actual runtime inputs; especially attractive because the current dominant kernels are bandwidth-limited and underutilize SM compute.",
+        "risk_notes": [
+          "Specialization may overfit the benchmark shape and be brittle for other channel/group combinations.",
+          "Persistent kernels can reduce occupancy if register/shared-memory use grows too much.",
+          "Need strict fallback behavior for unsupported shapes or non-contiguous inputs."
+        ],
+        "memory_methods": [
+          "Keep per-location channel data resident within a block during all post-conv operations.",
+          "Use warp shuffles for 4-channel-per-group reductions and for channel max/sum where possible."
+        ],
+        "mutation_axes": [
+          "Shape-specialized fast path versus generic path.",
+          "Subwarp width selection for 4-channel groups.",
+          "Block assignment over N*H*W and channel strip-mining strategy."
+        ],
+        "forbidden_patterns": [
+          "Do not assume unsupported layouts without guarding/fallback.",
+          "Do not spill large per-element intermediates to local memory.",
+          "Do not fuse by recomputing convolution output; only consume `x_conv` from `forward_stmt_1`."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 4.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Good benchmark-specific strategy: fixed C=64 and G=16 make subwarp GN reductions attractive, and fusing through logsumexp could pay off. Risk comes from shape over-specialization and occupancy pressure, but for this workload it is plausible and valuable.",
+          "claude-compatible": "Shape-specialized persistent kernel targeting the fixed 64-channel, 16-group regime. Exploits small group size (4 channels/group) for efficient warp reductions. High potential if the benchmark shape is representative. Risk: overfitting to one shape and brittleness for other configurations. Needs strict fallback logic. Good middle-ground strategy if general-purpose fusion proves too complex.",
+          "gemini-compatible": "Persistent kernels for fixed shapes can be fast but are brittle and complex to implement correctly, especially with the intersecting reduction axes."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "fuse_post_groupnorm_tail_block_reduction",
+        "summary": "Fuse the tail operations using a 2D grid where blocks map to spatial locations and threads cooperate to reduce across channels.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Launch a kernel with grid `(N * H * W)` and block size `min(C, 256)`.",
+          "Each block processes one `(n, h, w)` location.",
+          "Threads compute `val = x_conv + hardswish(tanh(x_norm))` for their assigned channels (looping if `C > blockDim.x`).",
+          "Use warp primitives (`__shfl_down_sync`) and shared memory to reduce the maximum and sum across threads in the block.",
+          "Write the final result to the output tensor."
+        ],
+        "expected_gain": "Highly efficient for large C, as it parallelizes the channel reduction and avoids sequential loops.",
+        "risk_notes": [
+          "May have lower occupancy if `N * H * W` is small, but typically spatial dimensions are large enough."
+        ],
+        "memory_methods": [
+          "shared_memory_reduction",
+          "warp_shuffle"
+        ],
+        "mutation_axes": [
+          "kernel_fusion",
+          "parallel_reduction"
+        ],
+        "forbidden_patterns": [
+          "sequential_channel_loop_for_large_c"
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 4.0,
+          "openai-compatible": 4.0,
+          "claude-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Solid tail-only fusion approach: block-cooperative channel reduction is more scalable than the purely sequential thread design and should outperform strategy_03 for C=64. Still capped by leaving GroupNorm unfused, but risk is moderate and implementation is straightforward.",
+          "claude-compatible": "Block-level cooperative reduction with warp shuffles and shared memory. Efficient for large C and spatial dimensions. However, potential occupancy issues if N*H*W is small. Less elegant than warp-per-spatial (strategy_02) for C=64, where warp-level is sufficient. Moderate gain expected, but not as high as full fusion strategies. Reasonable fallback if simpler approaches fail.",
+          "gemini-compatible": "Good alternative for tail fusion using a block per spatial location. For C=64, a block of 64 threads works well, though a warp (strategy_02) might be slightly more efficient."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_10",
+        "intent": "vectorized_elementwise_tail_with_launch_bounds",
+        "summary": "Keep GroupNorm on the PyTorch path (forward_stmt_2 unchanged) but replace the current Python-level fused tail expression in forward_stmt_3 with a CUDA kernel that uses float4 vectorized loads/stores and explicit __launch_bounds__ to reduce the38-register-per-thread pressure that currently caps occupancy at 12 warps. The kernel fuses tanh, hardswish, and residual add into a single elementwise pass over (N,C,H,W) before calling torch.logsumexp on the result.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Launch with block=128and __launch_bounds__(128, 4); the compiler will spill to local memory rather than cut occupancy, which is acceptable given the memory-bound regime.",
+          "Use float4 loads for both x_norm and x_conv (4 floats per thread per iteration) to improve L1/L2 hit rate and reduce instruction overhead per byte loaded.",
+          "Compute tanh as __tanhf(v) and hardswish as v * __saturatef((v + 3.0f) * (1.0f/6.0f)) in registers using a single FMA chain; avoid temporary variables.",
+          "Write the result (after tanh+hardswish+add) into a pre-allocated output buffer of the same shape [N,C,H,W], then call torch.logsumexp(out, dim=1, keepdim=True) from Pythonâthis eliminates 2DRAM passes compared to the current PyTorch chain while keeping logsumexp correctly handled.",
+          "Pad the element count to a multiple of 4 and handle the tail with scalar loads if N*C*H*W is not divisible by 4.",
+          "Expose a single entrypoint: fused_tail(x_norm, x_conv) -> Tensor of shape [N,C,H,W]."
+        ],
+        "expected_gain": "Reduces 3elementwise kernel launches (tanh, hardswish, add) to 1, eliminating 2 full-tensor DRAM write+read cycles. Lower risk than full GN fusion. Expected 1.2â1.5Ã speedup over current scaffold.",
+        "risk_notes": [
+          "float4 requires 16-byte alignment; tensors produced by cuDNN conv and GroupNorm are typically aligned, but add a runtime assertion or use scalar fallback.",
+          "Keeping logsumexp on the PyTorch path means one extra DRAM round-trip compared to full fusion; acceptable as a lower-risk alternative.",
+          "The __launch_bounds__ hint may cause register spilling; profile with ncu --metrics l1tex__data_pipe_lsu_wavefronts_mem_local to verify spill cost is tolerable."
+        ],
+        "memory_methods": [
+          "float4_vectorized_loads",
+          "launch_bounds_occupancy_tuning"
+        ],
+        "mutation_axes": [
+          "forward_stmt_3",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "forbidden_patterns": [
+          "Do not remove the torch.logsumexp call in this strategyâit is intentionally kept on the PyTorch path to reduce correctness risk.",
+          "Do not use float4 when the total element count is less than 4; add a guard branch."
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Reasonable low-risk incremental step: fusing tanh+hardswish+residual add while keeping torch.logsumexp preserves correctness and should cut some memory traffic. However, the proposal overstates benefits of float4 and __launch_bounds__, and keeping logsumexp separate leaves a major bottleneck in place.",
+          "claude-compatible": "Pragmatic incremental optimization: keep GroupNorm on PyTorch, fuse tail elementwise ops with float4 vectorization and __launch_bounds__. Reduces 3 kernels to 1, eliminating 2 DRAM passes. Lower risk than full fusion. Expected 1.2-1.5Ã gain is modest but realistic. Good safe first step or fallback if aggressive fusion strategies fail. Clear implementation path with alignment checks and scalar fallback. Risk-adjusted value is solid for a conservative approach.",
+          "gemini-compatible": "A safe, low-risk fallback that fuses the elementwise operations but leaves LogSumExp in PyTorch. Leaves significant performance on the table by not fusing the reduction."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_07",
+        "intent": "channels_last_conv_to_fused_tail",
+        "summary": "Shift the forward path to a channels-last-friendly layout around the convolution output and consume that layout in a custom fused tail kernel, aiming to improve memory coalescing for channelwise GroupNorm and LogSumExp while preserving the existing convolution module. This is a lower-intrusion alternative if full GroupNorm fusion is too risky.",
+        "target_anchors": [
+          "init_body",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6",
+          "cuda_cpp",
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Keep ModelNew I/O unchanged, but consider arranging `x`/`x_conv` in channels-last format before the fused extension call if the tensor is eligible.",
+          "Implement the fused CUDA tail to expect contiguous NHWC-style channel traversal for better vectorized loads during per-pixel channel reduction.",
+          "Guard the optimized path with layout/contiguity checks and fall back to the current scaffold when conditions are not met.",
+          "If GroupNorm remains on PyTorch, at minimum make the fused tail kernel consume the produced layout efficiently; if GroupNorm is fused too, carry the layout through the whole tail."
+        ],
+        "expected_gain": "Moderate; mostly from improved memory access efficiency and reduced launch overhead, but less upside than full end-to-end post-conv fusion if layout conversions are needed.",
+        "risk_notes": [
+          "Layout conversions can erase gains if inserted naively.",
+          "PyTorch GroupNorm may not benefit unless the whole post-conv region shares the same favorable layout.",
+          "Need careful validation that affine/state semantics are unchanged across layout handling."
+        ],
+        "memory_methods": [
+          "Use vectorized channel loads/stores in the fused tail kernel.",
+          "Avoid explicit transpose copies unless the convolution already produces channels-last efficiently."
+        ],
+        "mutation_axes": [
+          "Full channels-last path versus tail-only channels-last consumption.",
+          "GroupNorm kept in PyTorch versus fused into custom kernel.",
+          "Vector width choice for channel loads based on alignment."
+        ],
+        "forbidden_patterns": [
+          "Do not insert unconditional format conversions on every forward.",
+          "Do not rely on implicit layout assumptions without checking tensor strides.",
+          "Do not alter convolution weights/module behavior."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 2.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Lower value: channels-last can help channelwise reductions, but layout conversions and mixed-layout interaction with PyTorch GroupNorm can easily erase gains. Useful only if the surrounding path already runs efficiently in NHWC.",
+          "claude-compatible": "Channels-last layout strategy focusing on memory coalescing. Lower intrusion than full fusion. Moderate gain, mostly from improved memory access patterns. Risk: layout conversions can negate gains if not carefully managed. PyTorch GroupNorm may not benefit unless entire post-conv region is channels-last. Good incremental strategy but less upside than direct fusion. Safe exploration path if aggressive fusion fails.",
+          "gemini-compatible": "Relying on channels-last layout conversions can introduce significant overhead and complexity that negates the benefits of fusion."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "persistent_threadblock_groupnorm_with_smem_tile",
+        "summary": "Implement GroupNorm as a persistent thread block that tiles over the spatial dimension in shared memory, keeping one group's worth of data in smem across the statistic and normalization passes. Each block computes mean and variance for one (N, G) group in a first smem pass, then immediately normalizes and applies tanh, hardswish, residual add, and accumulates into a per-spatial warp-shuffle logsumexpâall within the same block before any DRAM write, producing the final [N,1,H,W] output in a single kernel launch.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Assign one thread block per (N, G) pair; grid=(N, G). Block size: min(C_per_group * H_out * W_out, 512).",
+          "Tile the C_per_group * H * W elements into shared memory chunks of blockDim.x floats; iterate tiles to accumulate Welford statistics, then reset smem pointer to iterate again for normalization.",
+          "After normalization+affine in shared memory, apply tanh and hardswish in-register, add x_conv via __ldg (load from global with read-only cache), accumulate the logsumexp max-and-sum across the channel loop using registersâno intermediate global write needed.",
+          "The logsumexp reduction across channels requires coordinating across thread blocks of different groups for the same (N, H, W) location; use an atomic-based two-pass approach or restrict to having all C channels of one spatial point handled by the same block. For C=64 and G=16, C_per_group=4, so each block handles 4 channelsâthe logsumexp across all 64 channels requires an inter-block reduction. Use a workspace tensor [N, G, H, W] to store partial max/sum, then a final reduction kernel.",
+          "This inter-block logsumexp coordination adds a second kernel launch but still reduces the total from ~6 to 2 launches.",
+          "Use __syncthreads() between the statistic tile loop and the normalization tile loop."
+        ],
+        "expected_gain": "Eliminates 4â5 DRAM passes (GroupNorm intermediates + activation intermediates) by keeping data in smem across operations. Expected 1.8â2.5Ã if smem bandwidth exceeds the current DRAM bottleneck, but depends heavily on the ratio of C_per_group * H * W to smem capacity.",
+        "risk_notes": [
+          "With C_per_group=4 and typical H_out*W_out for kernel_size=3 on common input sizes, the tile may be too small to saturate smem bandwidthâprofile smem utilization before committing.",
+          "The logsumexp across G=16 groups requires inter-block coordination; an incorrect reduction ordering produces wrong results. Use a dedicated second kernel for the cross-group max-then-sum step.",
+          "Shared memory consumption of 512 floats = 2 KB per block; with the 48 KB smem limit, this allows 24 concurrent blocks per SMâverify this aligns with the 12-warp occupancy target.",
+          "This strategy has the highest implementation complexity and the most failure modes; prefer strategy 1 or 2 if those compile and run correctly first."
+        ],
+        "memory_methods": [
+          "shared_memory_tiling",
+          "welford_smem_statistics"
+        ],
+        "mutation_axes": [
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "forbidden_patterns": [
+          "Do not attempt to hold all C*H*W elements in smem for large spatial dimensions; use a tile loop.",
+          "Do not mix the inter-block logsumexp reduction into the normalization kernel via atomics on the final outputâuse a separate workspace and reduction kernel for correctness.",
+          "Do not use dynamic shared memory allocation without accounting for the smem limit per SM."
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 2.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Technically interesting but poor risk-adjusted value here: inter-block coordination for logsumexp across groups adds substantial complexity, and the tiny C/G=4 reduces the benefit of heavy shared-memory tiling. Too many correctness and scheduling failure modes relative to likely gain.",
+          "claude-compatible": "Persistent threadblock with shared memory tiling and inter-block logsumexp coordination. High complexity with multiple failure modes: smem sizing, inter-block reduction correctness, two-kernel launch overhead. For C_per_group=4, the tile may be too small to saturate smem bandwidth. The inter-block logsumexp coordination via workspace and atomic reductions adds significant complexity. Risk outweighs potential gain compared to simpler warp-level or two-phase strategies. Consider only if simpler approaches fail.",
+          "gemini-compatible": "Highly complex with a high risk of failure. Tiling spatial dimensions in shared memory while coordinating inter-block reductions for LogSumExp is prone to deadlocks and race conditions."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_09",
+        "intent": "fuse_groupnorm_and_tail",
+        "summary": "Fuse GroupNorm and the entire tail into a single kernel to completely eliminate intermediate memory traffic.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Launch blocks of threads where each block handles a group `g` for a batch `n`.",
+          "Compute GroupNorm mean and variance using block reductions over `C/G * H * W`.",
+          "After GroupNorm, compute the tail operations.",
+          "Since LogSumExp requires reducing over all groups in a channel, use atomic operations (`atomicMax`, `atomicAdd`) to combine the LogSumExp results across groups into a workspace, then finalize in a second small kernel."
+        ],
+        "expected_gain": "Maximum theoretical memory bandwidth savings by keeping `x_norm` entirely in registers/shared memory.",
+        "risk_notes": [
+          "Extremely complex due to intersecting reduction axes (GroupNorm over C/G * H * W, LogSumExp over C). High risk of race conditions or shape mismatches."
+        ],
+        "memory_methods": [
+          "atomic_operations",
+          "shared_memory"
+        ],
+        "mutation_axes": [
+          "complex_fusion",
+          "multi_stage_reduction"
+        ],
+        "forbidden_patterns": [
+          "ignoring_group_boundaries"
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 2.0,
+          "openai-compatible": 1.0,
+          "claude-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Lowest risk-adjusted value: single-kernel GN plus tail with atomic-based cross-group logsumexp is extremely fragile and mismatched to the required stable max-then-sum reduction semantics. Race-condition and numerical-correctness risk are both very high.",
+          "claude-compatible": "Maximum theoretical fusion: GroupNorm + entire tail in one kernel. Extremely complex due to intersecting reduction axes (GroupNorm over C/G*H*W, LogSumExp over C). Requires atomics for cross-group coordination, high risk of race conditions and correctness issues. Implementation difficulty is very high. While memory bandwidth savings would be maximum, the complexity and risk make this a last-resort strategy. Prefer strategies 1, 2, or 5 first.",
+          "gemini-compatible": "Using atomics to combine LogSumExp results across groups in a single pass is likely to be a performance bottleneck and numerically unstable."
+        },
+        "priority": 3
+      }
+    ],
+    "proposal_errors": {},
+    "review_errors": {},
+    "deliberation_round": 1
+  },
+  "phase_transition": {
+    "source_phase": 1,
+    "target_phase": 2,
+    "split_attempts": 5,
+    "trigger_attempt": 5,
+    "root": {
+      "node_id": "root",
+      "strategy_name": null,
+      "runtime": 0.0107,
+      "speedup": 1.0,
+      "plan_summary": null,
+      "changed_regions": [],
+      "lineage": [
+        "root"
+      ]
+    },
+    "selected": {
+      "node_id": "n5",
+      "strategy_name": "strategy_02",
+      "runtime": 0.0108,
+      "speedup": 0.9907407407407406,
+      "plan_summary": "Keep convolution and GroupNorm on the existing PyTorch path, then fuse the post-GroupNorm tail (`tanh -> hardswish -> residual add with x_conv -> logsumexp(dim=1, keepdim=True)`) into one custom CUDA extension call to eliminate multiple full-tensor DRAM round-trips and kernel launches.",
+      "changed_regions": [
+        "cuda_cpp",
+        "cuda_cu",
+        "forward_stmt_3",
+        "forward_stmt_4",
+        "forward_stmt_5",
+        "forward_stmt_6"
+      ],
+      "lineage": [
+        "root",
+        "n1",
+        "n2",
+        "n3",
+        "n5"
+      ]
+    },
+    "attempts": [
+      {
+        "node_id": "n1",
+        "parent_id": "root",
+        "strategy_name": "strategy_02",
+        "attempt_mode": "explore",
+        "mutation_family": "post_gn_tail_fusion",
+        "single_change_focus": "Fuse `forward_stmt_3` through `forward_stmt_6` behind one CUDA extension entrypoint while keeping `forward_stmt_2` as the sole producer of normalized data.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "compile_ok": false,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "compile",
+        "failure_type": "invalid_patch_format",
+        "plan_summary": "Keep convolution and GroupNorm on the existing PyTorch path, then fuse the post-GroupNorm tail (`tanh -> hardswish -> residual add with x_conv -> logsumexp(dim=1, keepdim=True)`) into one custom CUDA extension call to eliminate multiple full-tensor DRAM round-trips and kernel launches."
+      },
+      {
+        "node_id": "n2",
+        "parent_id": "n1",
+        "strategy_name": "strategy_02",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "single_change_focus": "small_local_repair",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "compile_ok": false,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "compile",
+        "failure_type": "invalid_region_patch_format",
+        "plan_summary": "Keep convolution and GroupNorm on the existing PyTorch path, then fuse the post-GroupNorm tail (`tanh -> hardswish -> residual add with x_conv -> logsumexp(dim=1, keepdim=True)`) into one custom CUDA extension call to eliminate multiple full-tensor DRAM round-trips and kernel launches."
+      },
+      {
+        "node_id": "n3",
+        "parent_id": "n2",
+        "strategy_name": "strategy_02",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "single_change_focus": "small_local_repair",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "compile_ok": false,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "compile",
+        "failure_type": "region_apply_failed",
+        "plan_summary": "Keep convolution and GroupNorm on the existing PyTorch path, then fuse the post-GroupNorm tail (`tanh -> hardswish -> residual add with x_conv -> logsumexp(dim=1, keepdim=True)`) into one custom CUDA extension call to eliminate multiple full-tensor DRAM round-trips and kernel launches."
+      },
+      {
+        "node_id": "n4",
+        "parent_id": "root",
+        "strategy_name": "strategy_01",
+        "attempt_mode": "explore",
+        "mutation_family": "fused_postconv_norm_tail",
+        "single_change_focus": "Replace the PyTorch tail after `x_conv` with a single custom CUDA op that fuses GroupNorm, `tanh`, `hardswish`, residual add, and stable channelwise `logsumexp`.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "compile_ok": true,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "runtime",
+        "failure_type": "builtins.RuntimeError",
+        "plan_summary": "Fuse the post-convolution tail into one CUDA extension call that consumes `x_conv`, computes exact GroupNorm statistics and affine, applies `tanh` and `hardswish`, adds the residual from `x_conv`, and finishes with stable `logsumexp(dim=1, keepdim=True)` without materializing intermediates."
+      },
+      {
+        "node_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_02",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "single_change_focus": "small_local_repair",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0108,
+        "speedup": 0.9907407407407406,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Keep convolution and GroupNorm on the existing PyTorch path, then fuse the post-GroupNorm tail (`tanh -> hardswish -> residual add with x_conv -> logsumexp(dim=1, keepdim=True)`) into one custom CUDA extension call to eliminate multiple full-tensor DRAM round-trips and kernel launches."
+      }
+    ],
+    "trace_summary": "flat=n5:small_local_repair:0.991x | failed=n1:Fuse `forward_stmt_3` through `forward_stmt_6` behind one CUDA extension entrypoint while keeping `forward_stmt_2` as the sole producer of normalized data.:invalid_patch_format; n2:small_local_repair:invalid_region_patch_format; n3:small_local_repair:region_apply_failed; n4:Replace the PyTorch tail after `x_conv` with a single custom CUDA op that fuses GroupNorm, `tanh`, `hardswish`, residual add, and stable channelwise `logsumexp`.:builtins.RuntimeError",
+    "root_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void at::vectorized_elementwise_kernel<4, at::CUDAFunctor_add<float>, std::array<char *, 3>>(int, T2, T3)",
+        "row_count": 91,
+        "kernel_launch_count": 91,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 94.87,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 40.38,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 8.15,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 1.35,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 80.07,
+          "launch__registers_per_thread": 38,
+          "launch__occupancy_limit_registers": 12,
+          "launch__occupancy_limit_shared_mem": 32,
+          "launch__occupancy_limit_warps": 12,
+          "gpu__time_duration.avg": 1859456,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.42,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.08,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 992.25,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 44663.45
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "selected_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void at::vectorized_elementwise_kernel<4, at::CUDAFunctor_add<float>, std::array<char *, 3>>(int, T2, T3)",
+        "row_count": 91,
+        "kernel_launch_count": 91,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 94.93,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 42.04,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 8.12,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 1.35,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 79.73,
+          "launch__registers_per_thread": 38,
+          "launch__occupancy_limit_registers": 12,
+          "launch__occupancy_limit_shared_mem": 32,
+          "launch__occupancy_limit_warps": 12,
+          "gpu__time_duration.avg": 1856352,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.43,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.08,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 992.25,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 44654.93
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "diagnostics_delta": {
+      "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 0.060000000000002274,
+      "gpu__time_duration.avg": -3104,
+      "l1tex__throughput.avg.pct_of_peak_sustained_active": -0.030000000000001137,
+      "launch__occupancy_limit_registers": 0,
+      "launch__occupancy_limit_shared_mem": 0,
+      "launch__occupancy_limit_warps": 0,
+      "launch__registers_per_thread": 0,
+      "lts__throughput.avg.pct_of_peak_sustained_elapsed": 1.6599999999999966,
+      "sm__throughput.avg.pct_of_peak_sustained_elapsed": 0.0,
+      "sm__warps_active.avg.pct_of_peak_sustained_active": -0.3399999999999892,
+      "smsp__sass_branch_targets_threads_divergent.avg": 0,
+      "smsp__sass_branch_targets_threads_uniform.avg": 0.0,
+      "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.010000000000000009,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+      "smsp__warps_eligible.avg": -8.519999999996799
+    }
+  },
+  "feedback_state": {
+    "total_attempts": 11,
+    "compile_rate": 0.45454545454545453,
+    "correct_rate": 0.36363636363636365,
+    "best_speedup": 2.336244541484716,
+    "best_strategy_name": "strategy_05",
+    "phase": "refinement",
+    "current_champion_id": "phase2_n4",
+    "current_champion_speedup": 2.336244541484716,
+    "plateau_detected": false,
+    "recent_improvement_deltas": [
+      1.3455038007439755
+    ],
+    "recent_regression_deltas": [
+      0.0
+    ],
+    "recent_successful_mutation_families": [
+      "two_phase_groupnorm_tail_fusion"
+    ],
+    "recent_failed_mutation_families": [
+      "debug_local_repair"
+    ],
+    "last_mutation_outcome": "regressed_or_flat",
+    "recent_attempts": [
+      {
+        "attempt_id": "n4",
+        "parent_id": "root",
+        "strategy_name": "strategy_01",
+        "mode": "explore",
+        "mutation_family": "fused_postconv_norm_tail",
+        "speedup": null,
+        "parent_speedup": 1.0,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "runtime",
+        "failure_type": "builtins.RuntimeError",
+        "single_change_focus": "Replace the PyTorch tail after `x_conv` with a single custom CUDA op that fuses GroupNorm, `tanh`, `hardswish`, residual add, and stable channelwise `logsumexp`."
+      },
+      {
+        "attempt_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_02",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": 0.9907407407407406,
+        "parent_speedup": null,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_n1",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_05",
+        "mode": "explore",
+        "mutation_family": "two_phase_groupnorm_tail_fusion",
+        "speedup": null,
+        "parent_speedup": 0.9907407407407406,
+        "compile_ok": false,
+        "correct": false,
+        "failure_stage": "compile",
+        "failure_type": "invalid_candidate_format",
+        "single_change_focus": "Replace the PyTorch GroupNorm and fused tail expression with a two-kernel CUDA path: kernel 1 computes exact per-(N,G) mean/invstd, kernel 2 applies affine+tanh+hardswish+residual+stable logsumexp directly from `x_conv`."
+      },
+      {
+        "attempt_id": "phase2_n2",
+        "parent_id": "phase2_n1",
+        "strategy_name": "strategy_05",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": null,
+        "parent_speedup": null,
+        "compile_ok": false,
+        "correct": false,
+        "failure_stage": "compile",
+        "failure_type": "region_apply_failed",
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_n3",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_05",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": null,
+        "parent_speedup": null,
+        "compile_ok": false,
+        "correct": false,
+        "failure_stage": "compile",
+        "failure_type": "region_apply_failed",
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_n4",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_05",
+        "mode": "explore",
+        "mutation_family": "two_phase_groupnorm_tail_fusion",
+        "speedup": 2.336244541484716,
+        "parent_speedup": 0.9907407407407406,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace `forward_stmt_2` and `forward_stmt_3` with one custom extension call backed by a two-kernel CUDA implementation that computes exact GroupNorm stats then fuses affine+tanh+hardswish+residual+logsumexp from `x_conv`."
+      },
+      {
+        "attempt_id": "phase2_n5",
+        "parent_id": "phase2_n3",
+        "strategy_name": "strategy_05",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": 0.9907407407407406,
+        "parent_speedup": null,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_root",
+        "parent_id": "n5",
+        "strategy_name": "strategy_02",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": 0.9907407407407406,
+        "parent_speedup": 0.9907407407407406,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "small_local_repair"
+      }
+    ],
+    "champion": {
+      "node_id": "phase2_n4",
+      "speedup": 2.336244541484716,
+      "strategy_name": "strategy_05",
+      "mutation_family": "two_phase_groupnorm_tail_fusion",
+      "lineage": [
+        "root",
+        "n1",
+        "n2",
+        "n3",
+        "n5",
+        "phase2_root",
+        "phase2_n4"
+      ],
+      "recent_positive_mutations": [
+        {
+          "attempt_id": "phase2_n4",
+          "strategy_name": "strategy_05",
+          "mode": "explore",
+          "mutation_family": "two_phase_groupnorm_tail_fusion",
+          "speedup": 2.336244541484716,
+          "parent_speedup": 0.9907407407407406,
+          "single_change_focus": "Replace `forward_stmt_2` and `forward_stmt_3` with one custom extension call backed by a two-kernel CUDA implementation that computes exact GroupNorm stats then fuses affine+tanh+hardswish+residual+logsumexp from `x_conv`."
+        }
+      ],
+      "recent_negative_mutations": [
+        {
+          "attempt_id": "phase2_root",
+          "strategy_name": "strategy_02",
+          "mode": "mutate_champion",
+          "mutation_family": "debug_local_repair",
+          "speedup": 0.9907407407407406,
+          "parent_speedup": 0.9907407407407406,
+          "single_change_focus": "small_local_repair"
+        }
+      ],
+      "plateau_detected": false,
+      "lineage_plateau_depth": 0
+    }
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "user_helpers",
+      "region_role": "helper",
+      "start_line": 36,
+      "end_line": 37,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 40,
+      "end_line": 45,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 49,
+      "end_line": 55,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 65,
+      "end_line": 70,
+      "source_excerpt": "self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\nself.group_norm = nn.GroupNorm(groups, out_channels, eps=eps)\nself.tanh = nn.Tanh()\nself.hard_swish = nn.Hardswish()",
+      "source_hash": "9dee65f4de4d"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 73,
+      "end_line": 77,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\nx_conv = self.conv(x)",
+      "source_hash": "a463c1b39b70"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 78,
+      "end_line": 80,
+      "source_excerpt": "x_norm = self.group_norm(x_conv)",
+      "source_hash": "3d0caffea3ef"
+    },
+    {
+      "anchor_name": "forward_stmt_3",
+      "region_role": "forward",
+      "start_line": 81,
+      "end_line": 83,
+      "source_excerpt": "x_tanh = self.tanh(x_norm)",
+      "source_hash": "0c7a806bd9c3"
+    },
+    {
+      "anchor_name": "forward_stmt_4",
+      "region_role": "forward",
+      "start_line": 84,
+      "end_line": 86,
+      "source_excerpt": "x_hard_swish = self.hard_swish(x_tanh)",
+      "source_hash": "df61cca5cc25"
+    },
+    {
+      "anchor_name": "forward_stmt_5",
+      "region_role": "forward",
+      "start_line": 87,
+      "end_line": 89,
+      "source_excerpt": "x_res = x_conv + x_hard_swish",
+      "source_hash": "b2d318044d81"
+    },
+    {
+      "anchor_name": "forward_stmt_6",
+      "region_role": "forward",
+      "start_line": 90,
+      "end_line": 92,
+      "source_excerpt": "x_logsumexp = torch.logsumexp(x_res, dim=1, keepdim=True)",
+      "source_hash": "a908e3d22251"
+    },
+    {
+      "anchor_name": "forward_stmt_7",
+      "region_role": "forward",
+      "start_line": 93,
+      "end_line": 95,
+      "source_excerpt": "return x_logsumexp",
+      "source_hash": "85f27e6f6709"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p92_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, applies Group Normalization, Tanh, HardSwish, \n        Residual Addition, and LogSumExp.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, groups, eps=1e-5):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.group_norm = nn.GroupNorm(groups, out_channels, eps=eps)\n        self.tanh = nn.Tanh()\n        self.hard_swish = nn.Hardswish()\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x_conv = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x_norm = self.group_norm(x_conv)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x_tanh = self.tanh(x_norm)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x_hard_swish = self.hard_swish(x_tanh)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x_res = x_conv + x_hard_swish\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        x_logsumexp = torch.logsumexp(x_res, dim=1, keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x_logsumexp\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1",
+        "n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0107,
+      "score": 0.0107,
+      "logs": [
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=183252",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/09_L2_P92_Retry_P92_20260720_215759/eval_traces/20260720_215800_183223_05f0586f_kernelbench_l2_92_92_conv2d_groupnorm_tanh_hardswish_residualadd_logsumexp"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0107,
+      "speedup": 1.0,
+      "reference_runtimes": {
+        "torch_eager": 0.0107
+      },
+      "speedups": {
+        "torch_eager": 1.0
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": null,
+      "single_change_focus": null,
+      "mutation_family": null,
+      "target_metric": null
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p92_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, applies Group Normalization, Tanh, HardSwish, \n        Residual Addition, and LogSumExp.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, groups, eps=1e-5):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.group_norm = nn.GroupNorm(groups, out_channels, eps=eps)\n        self.tanh = nn.Tanh()\n        self.hard_swish = nn.Hardswish()\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x_conv = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x_norm = self.group_norm(x_conv)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x_tanh = self.tanh(x_norm)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x_hard_swish = self.hard_swish(x_tanh)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x_res = x_conv + x_hard_swish\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        x_logsumexp = torch.logsumexp(x_res, dim=1, keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x_logsumexp\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Keep convolution and GroupNorm on the existing PyTorch path, then fuse the post-GroupNorm tail (`tanh -> hardswish -> residual add with x_conv -> logsumexp(dim=1, keepdim=True)`) into one custom CUDA extension call to eliminate multiple full-tensor DRAM round-trips and kernel launches.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ declaration for one exported CUDA wrapper function, e.g. `torch::Tensor fused_post_gn_tail(torch::Tensor x_norm, torch::Tensor x_conv);`, add basic shape/device checks, and bind it in `PYBIND11_MODULE` as the single extension entrypoint used by the forward path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a CUDA implementation of `fused_post_gn_tail(x_norm, x_conv)` that allocates an output tensor of shape `[N,1,H,W]` and launches one kernel. In the kernel, map each output spatial position `(n,h,w)` to one warp or one block, iterate over channels of `x_norm`/`x_conv`, compute `tanh(x_norm[c])`, then `hardswish(tanh_val)`, then `res = x_conv[c] + hardswish_val`, and perform a numerically stable channelwise `logsumexp` using max-first reduction before writing the scalar result for that position. Keep reads in FP32, avoid extra intermediate global tensors, and preserve NCHW indexing.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the `x_tanh` statement with a call to `_stark_get_extension().fused_post_gn_tail(x_norm, x_conv)` assigned directly to `x_logsumexp`. This anchor should become the start of the fused tail and no longer create a separate activation tensor.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Replace the `x_hard_swish` statement with a no-op placeholder comment indicating the computation is fused into the custom CUDA tail, without introducing new tensors or changing control flow.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_5",
+          "instruction": "Replace the residual-add statement with a no-op placeholder comment indicating the residual add is handled inside the fused CUDA tail using `x_conv` as the residual source.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_6",
+          "instruction": "Replace the `torch.logsumexp` statement with a no-op placeholder comment indicating the channelwise stable logsumexp is produced by the fused CUDA extension and stored in `x_logsumexp`.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "candidate looks like patch JSON but could not be parsed"
+      ],
+      "failure_type": "invalid_patch_format",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "explore",
+      "performance_hypothesis": "If the code stops materializing `x_tanh`, `x_hard_swish`, and `x_res` as separate tensors and instead computes tanh, hardswish, residual add, and channelwise logsumexp inside one CUDA kernel fed by `x_norm` and `x_conv`, global memory traffic and launch overhead will drop enough to outperform the baseline.",
+      "single_change_focus": "Fuse `forward_stmt_3` through `forward_stmt_6` behind one CUDA extension entrypoint while keeping `forward_stmt_2` as the sole producer of normalized data.",
+      "mutation_family": "post_gn_tail_fusion",
+      "target_metric": "speedup"
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p92_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, applies Group Normalization, Tanh, HardSwish, \n        Residual Addition, and LogSumExp.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, groups, eps=1e-5):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.group_norm = nn.GroupNorm(groups, out_channels, eps=eps)\n        self.tanh = nn.Tanh()\n        self.hard_swish = nn.Hardswish()\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x_conv = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x_norm = self.group_norm(x_conv)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x_tanh = self.tanh(x_norm)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x_hard_swish = self.hard_swish(x_tanh)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x_res = x_conv + x_hard_swish\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        x_logsumexp = torch.logsumexp(x_res, dim=1, keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x_logsumexp\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Keep convolution and GroupNorm on the existing PyTorch path, then fuse the post-GroupNorm tail (`tanh -> hardswish -> residual add with x_conv -> logsumexp(dim=1, keepdim=True)`) into one custom CUDA extension call to eliminate multiple full-tensor DRAM round-trips and kernel launches.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ declaration for one exported CUDA wrapper function, e.g. `torch::Tensor fused_post_gn_tail(torch::Tensor x_norm, torch::Tensor x_conv);`, add basic shape/device checks, and bind it in `PYBIND11_MODULE` as the single extension entrypoint used by the forward path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a CUDA implementation of `fused_post_gn_tail(x_norm, x_conv)` that allocates an output tensor of shape `[N,1,H,W]` and launches one kernel. In the kernel, map each output spatial position `(n,h,w)` to one warp or one block, iterate over channels of `x_norm`/`x_conv`, compute `tanh(x_norm[c])`, then `hardswish(tanh_val)`, then `res = x_conv[c] + hardswish_val`, and perform a numerically stable channelwise `logsumexp` using max-first reduction before writing the scalar result for that position. Keep reads in FP32, avoid extra intermediate global tensors, and preserve NCHW indexing.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the `x_tanh` statement with a call to `_stark_get_extension().fused_post_gn_tail(x_norm, x_conv)` assigned directly to `x_logsumexp`. This anchor should become the start of the fused tail and no longer create a separate activation tensor.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Replace the `x_hard_swish` statement with a no-op placeholder comment indicating the computation is fused into the custom CUDA tail, without introducing new tensors or changing control flow.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_5",
+          "instruction": "Replace the residual-add statement with a no-op placeholder comment indicating the residual add is handled inside the fused CUDA tail using `x_conv` as the residual source.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_6",
+          "instruction": "Replace the `torch.logsumexp` statement with a no-op placeholder comment indicating the channelwise stable logsumexp is produced by the fused CUDA extension and stored in `x_logsumexp`.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "region_patches must be a non-empty list"
+      ],
+      "failure_type": "invalid_region_patch_format",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p92_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, applies Group Normalization, Tanh, HardSwish, \n        Residual Addition, and LogSumExp.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, groups, eps=1e-5):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.group_norm = nn.GroupNorm(groups, out_channels, eps=eps)\n        self.tanh = nn.Tanh()\n        self.hard_swish = nn.Hardswish()\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x_conv = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x_norm = self.group_norm(x_conv)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x_tanh = self.tanh(x_norm)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x_hard_swish = self.hard_swish(x_tanh)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x_res = x_conv + x_hard_swish\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        x_logsumexp = torch.logsumexp(x_res, dim=1, keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x_logsumexp\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Keep convolution and GroupNorm on the existing PyTorch path, then fuse the post-GroupNorm tail (`tanh -> hardswish -> residual add with x_conv -> logsumexp(dim=1, keepdim=True)`) into one custom CUDA extension call to eliminate multiple full-tensor DRAM round-trips and kernel launches.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ declaration for one exported CUDA wrapper function, e.g. `torch::Tensor fused_post_gn_tail(torch::Tensor x_norm, torch::Tensor x_conv);`, add basic shape/device checks, and bind it in `PYBIND11_MODULE` as the single extension entrypoint used by the forward path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a CUDA implementation of `fused_post_gn_tail(x_norm, x_conv)` that allocates an output tensor of shape `[N,1,H,W]` and launches one kernel. In the kernel, map each output spatial position `(n,h,w)` to one warp or one block, iterate over channels of `x_norm`/`x_conv`, compute `tanh(x_norm[c])`, then `hardswish(tanh_val)`, then `res = x_conv[c] + hardswish_val`, and perform a numerically stable channelwise `logsumexp` using max-first reduction before writing the scalar result for that position. Keep reads in FP32, avoid extra intermediate global tensors, and preserve NCHW indexing.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the `x_tanh` statement with a call to `_stark_get_extension().fused_post_gn_tail(x_norm, x_conv)` assigned directly to `x_logsumexp`. This anchor should become the start of the fused tail and no longer create a separate activation tensor.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Replace the `x_hard_swish` statement with a no-op placeholder comment indicating the computation is fused into the custom CUDA tail, without introducing new tensors or changing control flow.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_5",
+          "instruction": "Replace the residual-add statement with a no-op placeholder comment indicating the residual add is handled inside the fused CUDA tail using `x_conv` as the residual source.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_6",
+          "instruction": "Replace the `torch.logsumexp` statement with a no-op placeholder comment indicating the channelwise stable logsumexp is produced by the fused CUDA extension and stored in `x_logsumexp`.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "failed to apply region patch: region 'forward_stmt_1' is not active in current refinement policy"
+      ],
+      "failure_type": "region_apply_failed",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p92_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor conv_groupnorm_tanh_hardswish_residualadd_logsumexp_cuda(\n    torch::Tensor x_conv,\n    torch::Tensor gn_weight,\n    torch::Tensor gn_bias,\n    int64_t groups,\n    double eps\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"conv_groupnorm_tanh_hardswish_residualadd_logsumexp_cuda\",\n          &conv_groupnorm_tanh_hardswish_residualadd_logsumexp_cuda,\n          \"Fused GroupNorm+Tanh+HardSwish+ResAdd+LogSumExp (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <math.h>\n\n// Each block handles one (n, h, w) spatial position.\n// Threads within the block cooperate to:\n//   1. Compute GroupNorm mean/var for each group (iterating over all spatial positions in that group).\n//   2. Apply affine, tanh, hardswish, residual add.\n//   3. Compute numerically stable logsumexp over all C channels.\n//\n// NOTE: GroupNorm normalizes over (C/G channels) * (H*W) elements per (n, g) pair.\n// The mean/var must be computed over the full spatial extent, not just one (h,w) position.\n// We therefore need a two-pass approach per group.\n//\n// Strategy: assign one block per (n, g) pair. Each block computes mean/var for that group\n// over all H*W*Cg elements, then writes the normalized+activated+residual values into\n// shared memory, and finally reduces over all C channels (all groups) for logsumexp.\n// But logsumexp needs all channels, spanning all groups, for one specific (n, h, w).\n//\n// Better: assign one block per (n, h, w). Each thread handles one or more channels.\n// For GroupNorm, we need mean/var per (n, g) which spans H*W positions -- so we must\n// do a global reduction over H*W for each group before we can normalize.\n//\n// We use a two-kernel approach:\n//   Kernel 1: compute mean and variance for each (n, g) pair, output shape [N, G].\n//   Kernel 2: for each (n, h, w), use precomputed stats to normalize, activate, residual-add,\n//             then reduce logsumexp over C channels.\n\n__global__ void groupnorm_stats_kernel(\n    const float* __restrict__ x,  // [N, C, H, W]\n    float* __restrict__ mean_out,  // [N, G]\n    float* __restrict__ var_out,   // [N, G]\n    int N, int C, int H, int W, int G\n) {\n    // blockIdx.x = n * G + g\n    int ng = blockIdx.x;\n    int n = ng / G;\n    int g = ng % G;\n    int Cg = C / G;  // channels per group\n    int spatial = H * W;\n    int total = Cg * spatial;  // elements per (n, g)\n\n    // Channel range for this group\n    int c_start = g * Cg;\n\n    // Each thread accumulates sum and sum-of-squares over a strided portion\n    float sum = 0.0f;\n    float sum_sq = 0.0f;\n\n    for (int i = threadIdx.x; i < total; i += blockDim.x) {\n        int c_local = i / spatial;\n        int hw = i % spatial;\n        int c = c_start + c_local;\n        float val = x[((n * C + c) * H + hw / W) * W + hw % W];\n        sum += val;\n        sum_sq += val * val;\n    }\n\n    // Block reduction using shared memory\n    extern __shared__ float smem[];\n    float* s_sum = smem;\n    float* s_sq = smem + blockDim.x;\n\n    s_sum[threadIdx.x] = sum;\n    s_sq[threadIdx.x] = sum_sq;\n    __syncthreads();\n\n    for (int stride = blockDim.x / 2; stride > 0; stride >>= 1) {\n        if (threadIdx.x < stride) {\n            s_sum[threadIdx.x] += s_sum[threadIdx.x + stride];\n            s_sq[threadIdx.x] += s_sq[threadIdx.x + stride];\n        }\n        __syncthreads();\n    }\n\n    if (threadIdx.x == 0) {\n        float mean = s_sum[0] / total;\n        float var = s_sq[0] / total - mean * mean;\n        mean_out[ng] = mean;\n        var_out[ng] = var;\n    }\n}\n\n__global__ void fused_norm_act_logsumexp_kernel(\n    const float* __restrict__ x_conv,   // [N, C, H, W]\n    const float* __restrict__ mean_ng,  // [N, G]\n    const float* __restrict__ var_ng,   // [N, G]\n    const float* __restrict__ gn_weight, // [C]\n    const float* __restrict__ gn_bias,   // [C]\n    float* __restrict__ out,             // [N, 1, H, W]\n    int N, int C, int H, int W, int G,\n    float eps\n) {\n    // blockIdx.x = n * H * W + h * W + w\n    int nhw = blockIdx.x;\n    int n = nhw / (H * W);\n    int hw = nhw % (H * W);\n    int h = hw / W;\n    int w = hw % W;\n\n    int Cg = C / G;\n    int spatial = H * W;\n\n    // Two-pass logsumexp over C channels:\n    // Pass 1: find max of (x_conv[n,c,h,w] + hardswish(tanh(norm(x_conv[n,c,h,w]))))\n    // Pass 2: sum exp(val - max), then write log(sum) + max\n\n    // Each thread handles C/blockDim.x channels (or we use all threads for reduction)\n    // We'll have blockDim.x threads and each thread processes one or more channels\n\n    // First compute all activated residual values (stored in registers / shared mem)\n    // then do stable logsumexp reduction\n\n    extern __shared__ float smem[];\n    // smem layout: [0..C-1] = activated values, [C..C+blockDim-1] = reduction scratch\n\n    // Phase 1: each thread computes its channels\n    for (int c = threadIdx.x; c < C; c += blockDim.x) {\n        int g = c / Cg;\n        float mean = mean_ng[n * G + g];\n        float var = var_ng[n * G + g];\n        float inv_std = rsqrtf(var + eps);\n\n        float xval = x_conv[((n * C + c) * H + h) * W + w];\n        float x_norm = (xval - mean) * inv_std;\n        float x_affine = x_norm * gn_weight[c] + gn_bias[c];\n\n        // Tanh\n        float x_tanh = tanhf(x_affine);\n\n        // HardSwish: x * clamp(x+3, 0, 6) / 6\n        float hs_inner = x_tanh + 3.0f;\n        hs_inner = hs_inner < 0.0f ? 0.0f : (hs_inner > 6.0f ? 6.0f : hs_inner);\n        float x_hardswish = x_tanh * hs_inner / 6.0f;\n\n        // Residual add\n        float x_res = xval + x_hardswish;\n\n        smem[c] = x_res;\n    }\n    __syncthreads();\n\n    // Phase 2: find max over all C channels\n    float local_max = -1e38f;\n    for (int c = threadIdx.x; c < C; c += blockDim.x) {\n        float v = smem[c];\n        if (v > local_max) local_max = v;\n    }\n\n    // Reduce max across threads\n    float* s_max = smem + C;\n    s_max[threadIdx.x] = local_max;\n    __syncthreads();\n    for (int stride = blockDim.x / 2; stride > 0; stride >>= 1) {\n        if (threadIdx.x < stride) {\n            if (s_max[threadIdx.x + stride] > s_max[threadIdx.x])\n                s_max[threadIdx.x] = s_max[threadIdx.x + stride];\n        }\n        __syncthreads();\n    }\n    float global_max = s_max[0];\n    __syncthreads();\n\n    // Phase 3: sum exp(val - max)\n    float local_sum = 0.0f;\n    for (int c = threadIdx.x; c < C; c += blockDim.x) {\n        local_sum += expf(smem[c] - global_max);\n    }\n\n    // Reduce sum across threads (reuse s_max buffer)\n    s_max[threadIdx.x] = local_sum;\n    __syncthreads();\n    for (int stride = blockDim.x / 2; stride > 0; stride >>= 1) {\n        if (threadIdx.x < stride) {\n            s_max[threadIdx.x] += s_max[threadIdx.x + stride];\n        }\n        __syncthreads();\n    }\n\n    if (threadIdx.x == 0) {\n        out[nhw] = logf(s_max[0]) + global_max;  // n*1*H*W + 0*H*W + h*W + w = nhw\n    }\n}\n\ntorch::Tensor conv_groupnorm_tanh_hardswish_residualadd_logsumexp_cuda(\n    torch::Tensor x_conv,\n    torch::Tensor gn_weight,\n    torch::Tensor gn_bias,\n    int64_t groups,\n    double eps\n) {\n    TORCH_CHECK(x_conv.is_cuda(), \"x_conv must be a CUDA tensor\");\n    TORCH_CHECK(x_conv.is_contiguous(), \"x_conv must be contiguous\");\n    TORCH_CHECK(x_conv.scalar_type() == torch::kFloat32, \"x_conv must be float32\");\n    TORCH_CHECK(gn_weight.is_contiguous() && gn_bias.is_contiguous(), \"gn params must be contiguous\");\n\n    int N = x_conv.size(0);\n    int C = x_conv.size(1);\n    int H = x_conv.size(2);\n    int W = x_conv.size(3);\n    int G = (int)groups;\n\n    TORCH_CHECK(C % G == 0, \"C must be divisible by groups\");\n    TORCH_CHECK(gn_weight.size(0) == C && gn_bias.size(0) == C, \"gn_weight/bias size mismatch\");\n\n    auto opts = x_conv.options();\n    auto mean_ng = torch::empty({N * G}, opts);\n    auto var_ng = torch::empty({N * G}, opts);\n    auto output = torch::empty({N, 1, H, W}, opts);\n\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n\n    // Kernel 1: GroupNorm statistics\n    int stats_threads = 256;\n    int stats_blocks = N * G;\n    size_t smem_stats = 2 * stats_threads * sizeof(float);\n    groupnorm_stats_kernel<<<stats_blocks, stats_threads, smem_stats, stream>>>(\n        x_conv.data_ptr<float>(),\n        mean_ng.data_ptr<float>(),\n        var_ng.data_ptr<float>(),\n        N, C, H, W, G\n    );\n\n    // Kernel 2: fused normalize + activate + residual + logsumexp\n    // Use power-of-2 block size >= C for efficient reduction\n    int act_threads = 1;\n    while (act_threads < C) act_threads <<= 1;\n    if (act_threads > 1024) act_threads = 1024;\n    // Ensure at least C threads aren't needed, but we handle C > blockDim via loop\n    // Use min(C rounded up to power of 2, 256) for good occupancy\n    act_threads = min(act_threads, 256);\n    // Make sure act_threads is power of 2 for reduction\n    // If C=64, act_threads=64; if C=128, act_threads=128; cap at 256\n\n    int act_blocks = N * H * W;\n    // smem: C floats for values + act_threads floats for reduction\n    size_t smem_act = (C + act_threads) * sizeof(float);\n    fused_norm_act_logsumexp_kernel<<<act_blocks, act_threads, smem_act, stream>>>(\n        x_conv.data_ptr<float>(),\n        mean_ng.data_ptr<float>(),\n        var_ng.data_ptr<float>(),\n        gn_weight.data_ptr<float>(),\n        gn_bias.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, H, W, G,\n        (float)eps\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, applies Group Normalization, Tanh, HardSwish, \n        Residual Addition, and LogSumExp.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, groups, eps=1e-5):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.group_norm = nn.GroupNorm(groups, out_channels, eps=eps)\n        self.tanh = nn.Tanh()\n        self.hard_swish = nn.Hardswish()\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x_conv = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x_logsumexp = _stark_get_extension().conv_groupnorm_tanh_hardswish_residualadd_logsumexp_cuda(\n            x_conv.contiguous(),\n            self.group_norm.weight.contiguous(),\n            self.group_norm.bias.contiguous(),\n            self.group_norm.num_groups,\n            float(self.group_norm.eps)\n        )\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # tanh fused into custom CUDA op\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # hardswish fused into custom CUDA op\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        # residual add fused into custom CUDA op\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        # logsumexp(dim=1, keepdim=True) fused into custom CUDA op; x_logsumexp produced above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x_logsumexp\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Fuse the post-convolution tail into one CUDA extension call that consumes `x_conv`, computes exact GroupNorm statistics and affine, applies `tanh` and `hardswish`, adds the residual from `x_conv`, and finishes with stable `logsumexp(dim=1, keepdim=True)` without materializing intermediates.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with C++ declarations and pybind export for one CUDA entrypoint named `conv_groupnorm_tanh_hardswish_residualadd_logsumexp_cuda`. The exported function signature should accept `(torch::Tensor x_conv, torch::Tensor gn_weight, torch::Tensor gn_bias, int64_t groups, double eps)` and return one tensor. Add lightweight checks that tensors are CUDA, contiguous, float32, and that `gn_weight`/`gn_bias` are 1D with length `C`. Bind this function in `PYBIND11_MODULE` under the same name so Python can call `_stark_get_extension().conv_groupnorm_tanh_hardswish_residualadd_logsumexp_cuda(...)`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a CUDA implementation of `conv_groupnorm_tanh_hardswish_residualadd_logsumexp_cuda`. Implement one kernel for contiguous NCHW float32 tensors that allocates output `[N,1,H,W]` and maps one block or warp-group to one `(n,h,w)` position. Inside the kernel, iterate over channels to: (1) compute GroupNorm mean/variance for each group using the exact group membership and all spatial elements in that group across the current sample, (2) apply affine with `gn_weight` and `gn_bias`, (3) apply `tanh`, then `hardswish(x)=x*clamp(x+3,0,6)/6`, (4) add the residual from the original `x_conv` value, and (5) perform a numerically stable `logsumexp` reduction over all channels using max-first accumulation before writing one scalar to output `(n,0,h,w)`. Keep all accumulation in float, require contiguous tensors, and return the output tensor from the wrapper after launching the kernel on the current CUDA stream.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the GroupNorm line with a single extension call: compute `x_logsumexp = _stark_get_extension().conv_groupnorm_tanh_hardswish_residualadd_logsumexp_cuda(x_conv.contiguous(), self.group_norm.weight.contiguous(), self.group_norm.bias.contiguous(), self.group_norm.num_groups, float(self.group_norm.eps))`. Do not materialize `x_norm` or any later intermediates in Python.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace this statement with a no-op placeholder comment indicating the `tanh` stage is fused into the custom CUDA op; do not define `x_tanh`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Replace this statement with a no-op placeholder comment indicating the `hardswish` stage is fused into the custom CUDA op; do not define `x_hard_swish`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_5",
+          "instruction": "Replace this statement with a no-op placeholder comment indicating the residual add is fused into the custom CUDA op; do not define `x_res`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_6",
+          "instruction": "Replace this statement with a no-op placeholder comment indicating `logsumexp(dim=1, keepdim=True)` is fused into the custom CUDA op; keep `x_logsumexp` as produced in `forward_stmt_2`.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "applied_region_patch:forward_stmt_4:replace",
+        "applied_region_patch:forward_stmt_5:replace",
+        "applied_region_patch:forward_stmt_6:replace",
+        "runtime_error_name=builtins.RuntimeError",
+        "runtime_error=Error building extension 'stark_cuda_l2_p92_a7753d7e564c': [1/3] /usr/local/cuda-12.8/bin/nvcc --generate-dependencies-with-compile --dependency-output cuda.cuda.o.d -DTORCH_EXTENSION_NAME=stark_cu...",
+        "runtime_error_traceback=ninja: build stopped: subcommand failed.",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=187144",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/09_L2_P92_Retry_P92_20260720_215759/eval_traces/20260720_221007_183223_43814ad7_kernelbench_l2_92_92_conv2d_groupnorm_tanh_hardswish_residualadd_logsumexp",
+        "isolated_worker_stderr_tail=ler-options '-fPIC' -O3 --use_fast_math -std=c++17 -c /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p92_a7753d7e564c/cuda.cu -o cuda.cuda.o \nFAILED: [code=2] cuda.cuda.o \n/usr/local/cuda-12.8/bin/nvcc --generate-dependencies-with-compile --dependency-output cuda.cuda.o.d -DTORCH_EXTENSION_NAME=stark_cuda_l2_p92_a7753d7e564c -DTORCH_API_INCLUDE_EXTENSION_H -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include/torch/csrc/api/include -isystem /usr/local/cuda-12.8/include -isystem /data/dyj/miniconda3/envs/stark/include/python3.10 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr -gencode=arch=compute_89,code=compute_89 -gencode=arch=compute_89,code=sm_89 --compiler-options '-fPIC' -O3 --use_fast_math -std=c++17 -c /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p92_a7753d7e564c/cuda.cu -o cuda.cuda.o \n/data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p92_a7753d7e564c/cuda.cu(216): error: namespace \"at::cuda\" has no member \"getCurrentCUDAStream\"\n      cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n                                      ^\n\n1 error detected in the compilation of \"/data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p92_a7753d7e564c/cuda.cu\".\n[2/3] c++ -MMD -MF main.o.d -DTORCH_EXTENSION_NAME=stark_cuda_l2_p92_a7753d7e564c -DTORCH_API_INCLUDE_EXTENSION_H -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include/torch/csrc/api/include -isystem /usr/local/cuda-12.8/include -isystem /data/dyj/miniconda3/envs/stark/include/python3.10 -fPIC -std=c++17 -O3 -c /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p92_a7753d7e564c/main.cpp -o main.o \nninja: build stopped: subcommand failed."
+      ],
+      "failure_type": "builtins.RuntimeError",
+      "node_status": "runtime_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "runtime",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current runtime is dominated by repeated DRAM round-trips and launch overhead in the GroupNorm/activation/residual/logsumexp tail; replacing those stages with one fused CUDA kernel that reads `x_conv` once and writes only the final `[N,1,H,W]` output should materially reduce bandwidth pressure and improve speed.",
+      "single_change_focus": "Replace the PyTorch tail after `x_conv` with a single custom CUDA op that fuses GroupNorm, `tanh`, `hardswish`, residual add, and stable channelwise `logsumexp`.",
+      "mutation_family": "fused_postconv_norm_tail",
+      "target_metric": "speedup"
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p92_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, applies Group Normalization, Tanh, HardSwish, \n        Residual Addition, and LogSumExp.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, groups, eps=1e-5):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.group_norm = nn.GroupNorm(groups, out_channels, eps=eps)\n        self.tanh = nn.Tanh()\n        self.hard_swish = nn.Hardswish()\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x_conv = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x_norm = self.group_norm(x_conv)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x_logsumexp = torch.logsumexp(x_conv + self.hard_swish(self.tanh(x_norm)), dim=1, keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x_logsumexp\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "phase2_root"
+      ],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Keep convolution and GroupNorm on the existing PyTorch path, then fuse the post-GroupNorm tail (`tanh -> hardswish -> residual add with x_conv -> logsumexp(dim=1, keepdim=True)`) into one custom CUDA extension call to eliminate multiple full-tensor DRAM round-trips and kernel launches.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ declaration for one exported CUDA wrapper function, e.g. `torch::Tensor fused_post_gn_tail(torch::Tensor x_norm, torch::Tensor x_conv);`, add basic shape/device checks, and bind it in `PYBIND11_MODULE` as the single extension entrypoint used by the forward path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a CUDA implementation of `fused_post_gn_tail(x_norm, x_conv)` that allocates an output tensor of shape `[N,1,H,W]` and launches one kernel. In the kernel, map each output spatial position `(n,h,w)` to one warp or one block, iterate over channels of `x_norm`/`x_conv`, compute `tanh(x_norm[c])`, then `hardswish(tanh_val)`, then `res = x_conv[c] + hardswish_val`, and perform a numerically stable channelwise `logsumexp` using max-first reduction before writing the scalar result for that position. Keep reads in FP32, avoid extra intermediate global tensors, and preserve NCHW indexing.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the `x_tanh` statement with a call to `_stark_get_extension().fused_post_gn_tail(x_norm, x_conv)` assigned directly to `x_logsumexp`. This anchor should become the start of the fused tail and no longer create a separate activation tensor.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Replace the `x_hard_swish` statement with a no-op placeholder comment indicating the computation is fused into the custom CUDA tail, without introducing new tensors or changing control flow.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_5",
+          "instruction": "Replace the residual-add statement with a no-op placeholder comment indicating the residual add is handled inside the fused CUDA tail using `x_conv` as the residual source.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_6",
+          "instruction": "Replace the `torch.logsumexp` statement with a no-op placeholder comment indicating the channelwise stable logsumexp is produced by the fused CUDA extension and stored in `x_logsumexp`.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0108,
+      "score": 0.0108,
+      "logs": [
+        "applied_region_patch:forward_stmt_3:replace",
+        "applied_region_patch:forward_stmt_4:replace",
+        "applied_region_patch:forward_stmt_5:replace",
+        "applied_region_patch:forward_stmt_6:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=187496",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/09_L2_P92_Retry_P92_20260720_215759/eval_traces/20260720_221049_183223_ef73ef39_kernelbench_l2_92_92_conv2d_groupnorm_tanh_hardswish_residualadd_logsumexp"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0107,
+      "speedup": 0.9907407407407406,
+      "reference_runtimes": {
+        "torch_eager": 0.0107
+      },
+      "speedups": {
+        "torch_eager": 0.9907407407407406
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_root": {
+      "node_id": "phase2_root",
+      "parent_id": "n5",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p92_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, applies Group Normalization, Tanh, HardSwish, \n        Residual Addition, and LogSumExp.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, groups, eps=1e-5):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.group_norm = nn.GroupNorm(groups, out_channels, eps=eps)\n        self.tanh = nn.Tanh()\n        self.hard_swish = nn.Hardswish()\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x_conv = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x_norm = self.group_norm(x_conv)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x_logsumexp = torch.logsumexp(x_conv + self.hard_swish(self.tanh(x_norm)), dim=1, keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x_logsumexp\n        # <<<END_IMPROVE>>>\n",
+      "origin": "phase2_root",
+      "child_ids": [
+        "phase2_n1",
+        "phase2_n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Keep convolution and GroupNorm on the existing PyTorch path, then fuse the post-GroupNorm tail (`tanh -> hardswish -> residual add with x_conv -> logsumexp(dim=1, keepdim=True)`) into one custom CUDA extension call to eliminate multiple full-tensor DRAM round-trips and kernel launches.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ declaration for one exported CUDA wrapper function, e.g. `torch::Tensor fused_post_gn_tail(torch::Tensor x_norm, torch::Tensor x_conv);`, add basic shape/device checks, and bind it in `PYBIND11_MODULE` as the single extension entrypoint used by the forward path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a CUDA implementation of `fused_post_gn_tail(x_norm, x_conv)` that allocates an output tensor of shape `[N,1,H,W]` and launches one kernel. In the kernel, map each output spatial position `(n,h,w)` to one warp or one block, iterate over channels of `x_norm`/`x_conv`, compute `tanh(x_norm[c])`, then `hardswish(tanh_val)`, then `res = x_conv[c] + hardswish_val`, and perform a numerically stable channelwise `logsumexp` using max-first reduction before writing the scalar result for that position. Keep reads in FP32, avoid extra intermediate global tensors, and preserve NCHW indexing.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the `x_tanh` statement with a call to `_stark_get_extension().fused_post_gn_tail(x_norm, x_conv)` assigned directly to `x_logsumexp`. This anchor should become the start of the fused tail and no longer create a separate activation tensor.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Replace the `x_hard_swish` statement with a no-op placeholder comment indicating the computation is fused into the custom CUDA tail, without introducing new tensors or changing control flow.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_5",
+          "instruction": "Replace the residual-add statement with a no-op placeholder comment indicating the residual add is handled inside the fused CUDA tail using `x_conv` as the residual source.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_6",
+          "instruction": "Replace the `torch.logsumexp` statement with a no-op placeholder comment indicating the channelwise stable logsumexp is produced by the fused CUDA extension and stored in `x_logsumexp`.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0108,
+      "score": 0.0108,
+      "logs": [
+        "applied_region_patch:forward_stmt_3:replace",
+        "applied_region_patch:forward_stmt_4:replace",
+        "applied_region_patch:forward_stmt_5:replace",
+        "applied_region_patch:forward_stmt_6:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=187496",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/09_L2_P92_Retry_P92_20260720_215759/eval_traces/20260720_221049_183223_ef73ef39_kernelbench_l2_92_92_conv2d_groupnorm_tanh_hardswish_residualadd_logsumexp"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0107,
+      "speedup": 0.9907407407407406,
+      "reference_runtimes": {
+        "torch_eager": 0.0107
+      },
+      "speedups": {
+        "torch_eager": 0.9907407407407406
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_n1": {
+      "node_id": "phase2_n1",
+      "parent_id": "phase2_root",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p92_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, applies Group Normalization, Tanh, HardSwish, \n        Residual Addition, and LogSumExp.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, groups, eps=1e-5):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.group_norm = nn.GroupNorm(groups, out_channels, eps=eps)\n        self.tanh = nn.Tanh()\n        self.hard_swish = nn.Hardswish()\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x_conv = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x_norm = self.group_norm(x_conv)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x_logsumexp = torch.logsumexp(x_conv + self.hard_swish(self.tanh(x_norm)), dim=1, keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x_logsumexp\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Reroot away from the flat post-GroupNorm tail fusion and instead repair the previously working-but-incorrect full post-conv fusion by computing exact GroupNorm statistics over (C/G,H,W) first, then fusing affine, tanh, hardswish, residual add, and stable channelwise logsumexp in a second CUDA kernel.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with C++ declarations for two exported functions: one wrapper that computes group statistics and fused output from `x_conv`, `weight`, `bias`, `groups`, and `eps`, and a `PYBIND11_MODULE` block that exposes a single entrypoint such as `groupnorm_tail_forward`. The wrapper should validate CUDA/contiguous tensors, preserve NCHW layout assumptions, and return a tensor shaped `[N, 1, H, W]`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with CUDA code implementing: (1) a stats kernel over `(N,G)` that computes mean and invstd for exactly `channels_per_group * H * W` elements using a numerically stable reduction into temporary tensors `[N,G]`; (2) a fused kernel that reads `x_conv`, looks up `mean/invstd` by `g = c / channels_per_group`, applies GroupNorm affine with `weight[c]` and `bias[c]`, then `tanh`, `hardswish`, residual add with the original `x_conv` value, and finally stable `logsumexp` across channel dimension into `[N,1,H,W]`; and (3) the exported wrapper that allocates temporaries, launches both kernels, and returns the final output. Keep the implementation generic for NCHW but correct for the benchmark shape `C=64, groups=16`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace `x_norm = self.group_norm(x_conv)` with a call to the extension entrypoint, passing `x_conv`, `self.group_norm.weight`, `self.group_norm.bias`, `self.group_norm.num_groups`, and `self.group_norm.eps`, and bind the returned `[N,1,H,W]` tensor to `x_logsumexp`. Do not compute PyTorch GroupNorm on this path anymore.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the current fused PyTorch expression with a no-op placeholder such as `pass` because `x_logsumexp` is now fully produced in `forward_stmt_2` by the CUDA extension. Do not reapply tanh/hardswish/add/logsumexp in Python.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "candidate is neither Python source nor valid patch JSON"
+      ],
+      "failure_type": "invalid_candidate_format",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "explore",
+      "performance_hypothesis": "The kernel is overwhelmingly memory-bound (~95% DRAM throughput, ~1.35% SM throughput), so fixing the GroupNorm-axis bug and expanding fusion backward from `x_norm` to consume `x_conv` directly should cut several full-tensor global-memory passes and outperform the near-noop post-GroupNorm tail fusion.",
+      "single_change_focus": "Replace the PyTorch GroupNorm and fused tail expression with a two-kernel CUDA path: kernel 1 computes exact per-(N,G) mean/invstd, kernel 2 applies affine+tanh+hardswish+residual+stable logsumexp directly from `x_conv`.",
+      "mutation_family": "two_phase_groupnorm_tail_fusion",
+      "target_metric": "speedup"
+    },
+    "phase2_n2": {
+      "node_id": "phase2_n2",
+      "parent_id": "phase2_n1",
+      "depth": 7,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p92_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, applies Group Normalization, Tanh, HardSwish, \n        Residual Addition, and LogSumExp.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, groups, eps=1e-5):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.group_norm = nn.GroupNorm(groups, out_channels, eps=eps)\n        self.tanh = nn.Tanh()\n        self.hard_swish = nn.Hardswish()\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x_conv = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x_norm = self.group_norm(x_conv)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x_logsumexp = torch.logsumexp(x_conv + self.hard_swish(self.tanh(x_norm)), dim=1, keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x_logsumexp\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "phase2_n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Reroot away from the flat post-GroupNorm tail fusion and instead repair the previously working-but-incorrect full post-conv fusion by computing exact GroupNorm statistics over (C/G,H,W) first, then fusing affine, tanh, hardswish, residual add, and stable channelwise logsumexp in a second CUDA kernel.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with C++ declarations for two exported functions: one wrapper that computes group statistics and fused output from `x_conv`, `weight`, `bias`, `groups`, and `eps`, and a `PYBIND11_MODULE` block that exposes a single entrypoint such as `groupnorm_tail_forward`. The wrapper should validate CUDA/contiguous tensors, preserve NCHW layout assumptions, and return a tensor shaped `[N, 1, H, W]`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with CUDA code implementing: (1) a stats kernel over `(N,G)` that computes mean and invstd for exactly `channels_per_group * H * W` elements using a numerically stable reduction into temporary tensors `[N,G]`; (2) a fused kernel that reads `x_conv`, looks up `mean/invstd` by `g = c / channels_per_group`, applies GroupNorm affine with `weight[c]` and `bias[c]`, then `tanh`, `hardswish`, residual add with the original `x_conv` value, and finally stable `logsumexp` across channel dimension into `[N,1,H,W]`; and (3) the exported wrapper that allocates temporaries, launches both kernels, and returns the final output. Keep the implementation generic for NCHW but correct for the benchmark shape `C=64, groups=16`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace `x_norm = self.group_norm(x_conv)` with a call to the extension entrypoint, passing `x_conv`, `self.group_norm.weight`, `self.group_norm.bias`, `self.group_norm.num_groups`, and `self.group_norm.eps`, and bind the returned `[N,1,H,W]` tensor to `x_logsumexp`. Do not compute PyTorch GroupNorm on this path anymore.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the current fused PyTorch expression with a no-op placeholder such as `pass` because `x_logsumexp` is now fully produced in `forward_stmt_2` by the CUDA extension. Do not reapply tanh/hardswish/add/logsumexp in Python.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "failed to apply region patch: region 'forward_stmt_4' is not active in current refinement policy"
+      ],
+      "failure_type": "region_apply_failed",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_n3": {
+      "node_id": "phase2_n3",
+      "parent_id": "phase2_n2",
+      "depth": 8,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p92_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, applies Group Normalization, Tanh, HardSwish, \n        Residual Addition, and LogSumExp.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, groups, eps=1e-5):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.group_norm = nn.GroupNorm(groups, out_channels, eps=eps)\n        self.tanh = nn.Tanh()\n        self.hard_swish = nn.Hardswish()\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x_conv = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x_norm = self.group_norm(x_conv)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x_logsumexp = torch.logsumexp(x_conv + self.hard_swish(self.tanh(x_norm)), dim=1, keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x_logsumexp\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "phase2_n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Reroot away from the flat post-GroupNorm tail fusion and instead repair the previously working-but-incorrect full post-conv fusion by computing exact GroupNorm statistics over (C/G,H,W) first, then fusing affine, tanh, hardswish, residual add, and stable channelwise logsumexp in a second CUDA kernel.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with C++ declarations for two exported functions: one wrapper that computes group statistics and fused output from `x_conv`, `weight`, `bias`, `groups`, and `eps`, and a `PYBIND11_MODULE` block that exposes a single entrypoint such as `groupnorm_tail_forward`. The wrapper should validate CUDA/contiguous tensors, preserve NCHW layout assumptions, and return a tensor shaped `[N, 1, H, W]`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with CUDA code implementing: (1) a stats kernel over `(N,G)` that computes mean and invstd for exactly `channels_per_group * H * W` elements using a numerically stable reduction into temporary tensors `[N,G]`; (2) a fused kernel that reads `x_conv`, looks up `mean/invstd` by `g = c / channels_per_group`, applies GroupNorm affine with `weight[c]` and `bias[c]`, then `tanh`, `hardswish`, residual add with the original `x_conv` value, and finally stable `logsumexp` across channel dimension into `[N,1,H,W]`; and (3) the exported wrapper that allocates temporaries, launches both kernels, and returns the final output. Keep the implementation generic for NCHW but correct for the benchmark shape `C=64, groups=16`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace `x_norm = self.group_norm(x_conv)` with a call to the extension entrypoint, passing `x_conv`, `self.group_norm.weight`, `self.group_norm.bias`, `self.group_norm.num_groups`, and `self.group_norm.eps`, and bind the returned `[N,1,H,W]` tensor to `x_logsumexp`. Do not compute PyTorch GroupNorm on this path anymore.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the current fused PyTorch expression with a no-op placeholder such as `pass` because `x_logsumexp` is now fully produced in `forward_stmt_2` by the CUDA extension. Do not reapply tanh/hardswish/add/logsumexp in Python.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "failed to apply region patch: region 'forward_stmt_4' is not active in current refinement policy"
+      ],
+      "failure_type": "region_apply_failed",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_n4": {
+      "node_id": "phase2_n4",
+      "parent_id": "phase2_root",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p92_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_groupnorm_tail(\n    torch::Tensor x_conv,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    int64_t groups,\n    double eps);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_groupnorm_tail\", &fused_groupnorm_tail,\n          \"Fused GroupNorm + tanh + hardswish + residual + logsumexp (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <math.h>\n\n// Phase-1: Compute per-(n,g) mean and invstd using Welford online algorithm.\n// Grid: (N * groups), Block: up to 1024 threads covering C_per_group * H * W elements.\n__global__ void groupnorm_stats_kernel(\n    const float* __restrict__ x,\n    float* __restrict__ mean_out,\n    float* __restrict__ invstd_out,\n    int N, int C, int H, int W,\n    int groups,\n    float eps)\n{\n    // Each block handles one (n, g) pair.\n    int ng = blockIdx.x;\n    int n = ng / groups;\n    int g = ng % groups;\n    int C_per_group = C / groups;\n    int spatial = H * W;\n    int group_size = C_per_group * spatial;  // elements per (n,g)\n\n    // Base pointer for this group's data in x (NCHW layout).\n    // x[n, c, h, w] = x[n*C*H*W + c*H*W + hw]\n    // For group g, channels are [g*C_per_group, (g+1)*C_per_group).\n    const float* x_ng = x + n * C * spatial + g * C_per_group * spatial;\n\n    // Welford accumulation in registers with grid-stride loop.\n    float welford_mean = 0.0f;\n    float welford_m2 = 0.0f;\n    float welford_count = 0.0f;\n\n    for (int idx = threadIdx.x; idx < group_size; idx += blockDim.x) {\n        // idx maps to (local_c, hw): local_c = idx / spatial, hw = idx % spatial.\n        int local_c = idx / spatial;\n        int hw = idx % spatial;\n        float val = __ldg(x_ng + local_c * spatial + hw);\n        // Online Welford update.\n        welford_count += 1.0f;\n        float delta = val - welford_mean;\n        welford_mean += delta / welford_count;\n        float delta2 = val - welford_mean;\n        welford_m2 += delta * delta2;\n    }\n\n    // Parallel reduction across threads using shared memory.\n    extern __shared__ float sdata[];  // 3 * blockDim.x floats: mean, m2, count\n    float* s_mean  = sdata;\n    float* s_m2    = sdata + blockDim.x;\n    float* s_count = sdata + 2 * blockDim.x;\n\n    s_mean[threadIdx.x]  = welford_mean;\n    s_m2[threadIdx.x]    = welford_m2;\n    s_count[threadIdx.x] = welford_count;\n    __syncthreads();\n\n    // Tree reduction to combine Welford accumulators.\n    for (int stride = blockDim.x / 2; stride > 0; stride >>= 1) {\n        if (threadIdx.x < stride) {\n            float a_mean  = s_mean[threadIdx.x];\n            float a_m2    = s_m2[threadIdx.x];\n            float a_count = s_count[threadIdx.x];\n            float b_mean  = s_mean[threadIdx.x + stride];\n            float b_m2    = s_m2[threadIdx.x + stride];\n            float b_count = s_count[threadIdx.x + stride];\n            float total   = a_count + b_count;\n            if (total > 0.0f) {\n                float delta   = b_mean - a_mean;\n                float new_mean = a_mean + delta * (b_count / total);\n                float new_m2  = a_m2 + b_m2 + delta * delta * (a_count * b_count / total);\n                s_mean[threadIdx.x]  = new_mean;\n                s_m2[threadIdx.x]    = new_m2;\n                s_count[threadIdx.x] = total;\n            }\n        }\n        __syncthreads();\n    }\n\n    if (threadIdx.x == 0) {\n        float final_mean   = s_mean[0];\n        float final_var    = (s_count[0] > 0.0f) ? (s_m2[0] / s_count[0]) : 0.0f;\n        float final_invstd = rsqrtf(final_var + eps);\n        mean_out[ng]   = final_mean;\n        invstd_out[ng] = final_invstd;\n    }\n}\n\n// Phase-2: Per spatial location (n,h,w), apply GroupNorm affine + tanh + hardswish\n// + residual add + stable logsumexp across C channels.\n// Grid: (N * H * W), Block: min(C, 256) â each block handles one (n,h,w) spatial site.\n__global__ void fused_tail_kernel(\n    const float* __restrict__ x_conv,\n    const float* __restrict__ mean,\n    const float* __restrict__ invstd,\n    const float* __restrict__ weight,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int N, int C, int H, int W,\n    int groups)\n{\n    int nhw = blockIdx.x;\n    int n   = nhw / (H * W);\n    int hw  = nhw % (H * W);\n    int C_per_group = C / groups;\n\n    // Each thread handles one or more channels.\n    // Use shared memory for the max-then-sum logsumexp reduction.\n    extern __shared__ float svals[];  // blockDim.x floats\n\n    // Step 1: Each thread computes its channel value and finds local max.\n    float local_max = -1e38f;\n    // We'll accumulate values in svals for the second pass.\n    for (int c = threadIdx.x; c < C; c += blockDim.x) {\n        int g = c / C_per_group;\n        int ng_idx = n * groups + g;\n        float x_val = __ldg(x_conv + n * C * H * W + c * H * W + hw);\n        // GroupNorm affine.\n        float gn_out = (x_val - mean[ng_idx]) * invstd[ng_idx] * __ldg(weight + c) + __ldg(bias + c);\n        // tanh.\n        float t = tanhf(gn_out);\n        // hardswish: t * clamp(t+3, 0, 6) / 6.\n        float hs = t * fminf(fmaxf(t + 3.0f, 0.0f), 6.0f) * (1.0f / 6.0f);\n        // residual add with original x_conv.\n        float res = x_val + hs;\n        svals[threadIdx.x] = res;  // only valid for first channel per thread if C > blockDim.x\n        if (res > local_max) local_max = res;\n    }\n\n    // Reduce local max across threads.\n    // Use shared memory reduction.\n    // We need a separate smem region for max reduction.\n    // Reuse svals for max reduction first.\n    // Store per-thread local_max.\n    svals[threadIdx.x] = local_max;\n    __syncthreads();\n    for (int stride = blockDim.x / 2; stride > 0; stride >>= 1) {\n        if (threadIdx.x < stride) {\n            if (svals[threadIdx.x + stride] > svals[threadIdx.x])\n                svals[threadIdx.x] = svals[threadIdx.x + stride];\n        }\n        __syncthreads();\n    }\n    float global_max = svals[0];\n    __syncthreads();\n\n    // Step 2: Accumulate sum of exp(val - global_max).\n    float local_sum = 0.0f;\n    for (int c = threadIdx.x; c < C; c += blockDim.x) {\n        int g = c / C_per_group;\n        int ng_idx = n * groups + g;\n        float x_val = __ldg(x_conv + n * C * H * W + c * H * W + hw);\n        float gn_out = (x_val - mean[ng_idx]) * invstd[ng_idx] * __ldg(weight + c) + __ldg(bias + c);\n        float t  = tanhf(gn_out);\n        float hs = t * fminf(fmaxf(t + 3.0f, 0.0f), 6.0f) * (1.0f / 6.0f);\n        float res = x_val + hs;\n        local_sum += expf(res - global_max);\n    }\n\n    // Reduce sum across threads.\n    svals[threadIdx.x] = local_sum;\n    __syncthreads();\n    for (int stride = blockDim.x / 2; stride > 0; stride >>= 1) {\n        if (threadIdx.x < stride)\n            svals[threadIdx.x] += svals[threadIdx.x + stride];\n        __syncthreads();\n    }\n\n    if (threadIdx.x == 0) {\n        output[n * H * W + hw] = global_max + logf(svals[0]);\n    }\n}\n\ntorch::Tensor fused_groupnorm_tail(\n    torch::Tensor x_conv,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    int64_t groups,\n    double eps)\n{\n    TORCH_CHECK(x_conv.is_cuda(), \"x_conv must be a CUDA tensor\");\n    TORCH_CHECK(x_conv.is_contiguous(), \"x_conv must be contiguous\");\n    TORCH_CHECK(weight.is_cuda() && bias.is_cuda(), \"weight/bias must be CUDA tensors\");\n\n    int N = x_conv.size(0);\n    int C = x_conv.size(1);\n    int H = x_conv.size(2);\n    int W = x_conv.size(3);\n    int G = (int)groups;\n\n    TORCH_CHECK(C % G == 0, \"C must be divisible by groups\");\n\n    auto opts = x_conv.options();\n    auto mean_buf   = torch::empty({N * G}, opts);\n    auto invstd_buf = torch::empty({N * G}, opts);\n\n    // Phase 1: compute stats.\n    int group_size = (C / G) * H * W;\n    int block1 = min(group_size, 1024);\n    // Round block1 down to nearest power of two for tree reduction.\n    int b1 = 1;\n    while (b1 * 2 <= block1) b1 *= 2;\n    block1 = b1;\n\n    int grid1 = N * G;\n    size_t smem1 = 3 * block1 * sizeof(float);\n    groupnorm_stats_kernel<<<grid1, block1, smem1>>>(\n        x_conv.data_ptr<float>(),\n        mean_buf.data_ptr<float>(),\n        invstd_buf.data_ptr<float>(),\n        N, C, H, W, G, (float)eps);\n\n    // Phase 2: fused tail -> output shape (N, 1, H, W).\n    auto output = torch::empty({N, 1, H, W}, opts);\n\n    int spatial = H * W;\n    int grid2 = N * spatial;\n    int block2 = min(C, 256);\n    // Round block2 down to power of two.\n    int b2 = 1;\n    while (b2 * 2 <= block2) b2 *= 2;\n    block2 = b2;\n\n    size_t smem2 = block2 * sizeof(float);\n    fused_tail_kernel<<<grid2, block2, smem2>>>(\n        x_conv.data_ptr<float>(),\n        mean_buf.data_ptr<float>(),\n        invstd_buf.data_ptr<float>(),\n        weight.data_ptr<float>(),\n        bias.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, H, W, G);\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, applies Group Normalization, Tanh, HardSwish, \n        Residual Addition, and LogSumExp.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, groups, eps=1e-5):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.group_norm = nn.GroupNorm(groups, out_channels, eps=eps)\n        self.tanh = nn.Tanh()\n        self.hard_swish = nn.Hardswish()\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x_conv = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x_logsumexp = _stark_get_extension().fused_groupnorm_tail(\n            x_conv.contiguous(),\n            self.group_norm.weight.contiguous(),\n            self.group_norm.bias.contiguous(),\n            self.group_norm.num_groups,\n            float(self.group_norm.eps)\n        )\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x_logsumexp\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Replace the PyTorch GroupNorm and fused tail with a two-kernel CUDA path: kernel 1 computes exact per-(N,G) mean and invstd over (C/G,H,W), kernel 2 applies affine GroupNorm, tanh, hardswish, residual add with x_conv, and stable channelwise logsumexp without materializing full intermediates.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ binding that declares one exported function, e.g. `torch::Tensor fused_groupnorm_tail(torch::Tensor x_conv, torch::Tensor weight, torch::Tensor bias, int64_t groups, double eps);`, validates CUDA/device/contiguity for `x_conv`, `weight`, and `bias`, and exposes it through `PYBIND11_MODULE` as the single entrypoint used by Python.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a CUDA implementation for `fused_groupnorm_tail`. Implement two kernels specialized for contiguous NCHW float tensors: (1) a stats kernel over grid `(N, groups)` that computes exact mean and invstd for each `(n,g)` across `(C/groups)*H*W` using Welford or numerically stable reduction into temporary tensors `mean[N,groups]` and `invstd[N,groups]`; (2) an output kernel over spatial sites `(n,h,w)` that reads `x_conv` and the saved stats, applies `((x_conv - mean[n,g]) * invstd[n,g]) * weight[c] + bias[c]`, then `tanh`, then hardswish, then adds the original `x_conv`, and finally performs a numerically stable max-then-sum reduction across channel dimension to write one output value per `(n,h,w)` into a `(N,1,H,W)` tensor. Keep channel indexing per-channel for affine, derive group index as `c / (C/groups)`, and preserve `eps` exactly.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the standalone GroupNorm call with a direct fused extension invocation target: prepare contiguous `x_conv`, `self.group_norm.weight`, and `self.group_norm.bias`, and call `_stark_get_extension().fused_groupnorm_tail(x_conv.contiguous(), self.group_norm.weight.contiguous(), self.group_norm.bias.contiguous(), self.group_norm.num_groups, float(self.group_norm.eps))` to produce `x_logsumexp`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the current PyTorch fused tail expression with `pass` because `x_logsumexp` is now fully produced by the custom extension in `forward_stmt_2`; do not leave any extra activation/add/logsumexp work on the PyTorch path.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00458,
+      "score": 0.00458,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=192727",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/09_L2_P92_Retry_P92_20260720_215759/eval_traces/20260720_222225_183223_283e8a12_kernelbench_l2_92_92_conv2d_groupnorm_tanh_hardswish_residualadd_logsumexp"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0107,
+      "speedup": 2.336244541484716,
+      "reference_runtimes": {
+        "torch_eager": 0.0107
+      },
+      "speedups": {
+        "torch_eager": 2.336244541484716
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The remaining bottleneck is the unfused GroupNorm plus tail memory traffic; computing exact GroupNorm stats once and consuming `x_conv` directly in a fused epilogue/reduction kernel will cut several DRAM round-trips and outperform the current tail-only fusion.",
+      "single_change_focus": "Replace `forward_stmt_2` and `forward_stmt_3` with one custom extension call backed by a two-kernel CUDA implementation that computes exact GroupNorm stats then fuses affine+tanh+hardswish+residual+logsumexp from `x_conv`.",
+      "mutation_family": "two_phase_groupnorm_tail_fusion",
+      "target_metric": "speedup"
+    },
+    "phase2_n5": {
+      "node_id": "phase2_n5",
+      "parent_id": "phase2_n3",
+      "depth": 9,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p92_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, applies Group Normalization, Tanh, HardSwish, \n        Residual Addition, and LogSumExp.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, groups, eps=1e-5):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.group_norm = nn.GroupNorm(groups, out_channels, eps=eps)\n        self.tanh = nn.Tanh()\n        self.hard_swish = nn.Hardswish()\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x_conv = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x_norm = self.group_norm(x_conv)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x_logsumexp = torch.logsumexp(x_conv + self.hard_swish(self.tanh(x_norm)), dim=1, keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x_logsumexp\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Reroot away from the flat post-GroupNorm tail fusion and instead repair the previously working-but-incorrect full post-conv fusion by computing exact GroupNorm statistics over (C/G,H,W) first, then fusing affine, tanh, hardswish, residual add, and stable channelwise logsumexp in a second CUDA kernel.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with C++ declarations for two exported functions: one wrapper that computes group statistics and fused output from `x_conv`, `weight`, `bias`, `groups`, and `eps`, and a `PYBIND11_MODULE` block that exposes a single entrypoint such as `groupnorm_tail_forward`. The wrapper should validate CUDA/contiguous tensors, preserve NCHW layout assumptions, and return a tensor shaped `[N, 1, H, W]`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with CUDA code implementing: (1) a stats kernel over `(N,G)` that computes mean and invstd for exactly `channels_per_group * H * W` elements using a numerically stable reduction into temporary tensors `[N,G]`; (2) a fused kernel that reads `x_conv`, looks up `mean/invstd` by `g = c / channels_per_group`, applies GroupNorm affine with `weight[c]` and `bias[c]`, then `tanh`, `hardswish`, residual add with the original `x_conv` value, and finally stable `logsumexp` across channel dimension into `[N,1,H,W]`; and (3) the exported wrapper that allocates temporaries, launches both kernels, and returns the final output. Keep the implementation generic for NCHW but correct for the benchmark shape `C=64, groups=16`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace `x_norm = self.group_norm(x_conv)` with a call to the extension entrypoint, passing `x_conv`, `self.group_norm.weight`, `self.group_norm.bias`, `self.group_norm.num_groups`, and `self.group_norm.eps`, and bind the returned `[N,1,H,W]` tensor to `x_logsumexp`. Do not compute PyTorch GroupNorm on this path anymore.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the current fused PyTorch expression with a no-op placeholder such as `pass` because `x_logsumexp` is now fully produced in `forward_stmt_2` by the CUDA extension. Do not reapply tanh/hardswish/add/logsumexp in Python.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0108,
+      "score": 0.0108,
+      "logs": [
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=193009",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/09_L2_P92_Retry_P92_20260720_215759/eval_traces/20260720_222358_183223_48027925_kernelbench_l2_92_92_conv2d_groupnorm_tanh_hardswish_residualadd_logsumexp"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0107,
+      "speedup": 0.9907407407407406,
+      "reference_runtimes": {
+        "torch_eager": 0.0107
+      },
+      "speedups": {
+        "torch_eager": 0.9907407407407406
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    }
+  }
+}

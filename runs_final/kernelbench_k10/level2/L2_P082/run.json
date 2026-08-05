@@ -1,0 +1,2046 @@
+{
+  "task_name": "kernelbench_l2_82_82_conv2d_tanh_scaling_biasadd_max",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": false,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_claude",
+    "plan_provider": "openai-compatible",
+    "code_provider": "claude-compatible",
+    "debug_provider": "openai-compatible",
+    "search_provider": "claude-compatible",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "diagnostics_enabled": false,
+    "diagnostics_mode": "root_ncu_v1",
+    "diagnostics_timeout_seconds": 900,
+    "diagnostics_warmup_runs": 2,
+    "diagnostics_profile_runs": 3,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1,
+    "deliberation_provider_timeout_seconds": 180,
+    "deliberation_phase_timeout_seconds": 240,
+    "evaluator_isolation": "candidate_subprocess",
+    "evaluator_timeout_seconds": 900,
+    "explore_fraction": 0.4,
+    "challenger_fraction": 0.3,
+    "plateau_delta_threshold": 0.03,
+    "plateau_recovery_mutation_attempts": 2,
+    "plateau_window": 3,
+    "deliberation_upgrade_enabled": true,
+    "deliberation_max_rounds": 3,
+    "deliberation_min_remaining_attempts": 8,
+    "phase_two_enabled": true,
+    "phase_two_split_attempts": 5
+  },
+  "best_node_id": "n1",
+  "leaderboard": [
+    "n1",
+    "phase2_root"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "n1",
+      "root"
+    ],
+    [
+      "n1",
+      "n2"
+    ],
+    [
+      "n1",
+      "n5"
+    ],
+    [],
+    [
+      "phase2_root"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "n1",
+    "n3",
+    "phase2_root",
+    "phase2_n1",
+    "phase2_n2",
+    "phase2_root",
+    "phase2_n3"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "exploit_best_score",
+    "debug_retry_failure",
+    "debug_retry_failure",
+    "exploit_best_score",
+    "debug_retry_failure"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {
+      "phase2_n1": "compile_failure_debug_throttled"
+    },
+    {
+      "phase2_n1": "compile_failure_debug_throttled",
+      "phase2_n2": "compile_failure_debug_throttled"
+    },
+    {
+      "phase2_n1": "compile_failure_debug_throttled",
+      "phase2_n2": "compile_failure_debug_throttled"
+    }
+  ],
+  "pruned_nodes": {},
+  "debug_stats": {
+    "total_attempts": 3,
+    "per_node": {
+      "phase2_n1": 1,
+      "phase2_n2": 1,
+      "phase2_n3": 1
+    }
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 7,
+    "debug_attempts": 3,
+    "failure_counts": {
+      "invalid_patch_format": 2,
+      "region_apply_failed": 2,
+      "invalid_region_patch_format": 1
+    },
+    "failure_stage_counts": {
+      "compile": 5
+    },
+    "invalid_proposals": 0,
+    "attempt_mode_counts": {
+      "explore": 3,
+      "mutate_champion": 3,
+      "best_lineage_push": 1,
+      "debug": 3
+    },
+    "provider_transient_error_count": 0,
+    "provider_transient_budget_exhausted_count": 0,
+    "provider_transient_errors_by_stage": {},
+    "provider_transient_errors_by_origin": {},
+    "provider_transient_errors": [],
+    "phase_two_triggered": true,
+    "phase_two_seed_node_id": "n1",
+    "pruned_count": 0
+  },
+  "benchmark_family": "kernelbench",
+  "level": 2,
+  "problem_id": 82,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level2/82_Conv2d_Tanh_Scaling_BiasAdd_Max.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.027100000000000003
+  },
+  "speedups": {
+    "torch_eager": 2.4414414414414414
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "convolution",
+    "summary": "Convolution style computation; preserve module state and spatial layout.",
+    "source": "KernelBench/KernelBench/level2/82_Conv2d_Tanh_Scaling_BiasAdd_Max.py",
+    "exact_facts": null,
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "forward_stmt_3",
+      "forward_stmt_4",
+      "forward_stmt_5",
+      "forward_stmt_6"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = self.conv(x)",
+        "op_names": [
+          "_conv2d_tanh_scaling_biasadd_max",
+          "a",
+          "adds",
+          "and",
+          "applies",
+          "bias",
+          "bias_shape",
+          "conv",
+          "conv2d",
+          "convolution",
+          "in_channels",
+          "kernel_size"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = torch.tanh(x)",
+        "op_names": [
+          "_conv2d_tanh_scaling_biasadd_max",
+          "a",
+          "adds",
+          "and",
+          "applies",
+          "bias",
+          "bias_shape",
+          "conv",
+          "conv2d",
+          "convolution",
+          "in_channels",
+          "kernel_size"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_3",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = x * self.scaling_factor",
+        "op_names": [
+          "_conv2d_tanh_scaling_biasadd_max",
+          "a",
+          "adds",
+          "and",
+          "applies",
+          "arithmetic",
+          "bias",
+          "bias_shape",
+          "conv",
+          "conv2d",
+          "convolution",
+          "in_channels"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_4",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = x + self.bias",
+        "op_names": [
+          "_conv2d_tanh_scaling_biasadd_max",
+          "a",
+          "adds",
+          "and",
+          "applies",
+          "arithmetic",
+          "bias",
+          "bias_shape",
+          "conv",
+          "conv2d",
+          "convolution",
+          "in_channels"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_5",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = self.max_pool(x)",
+        "op_names": [
+          "_conv2d_tanh_scaling_biasadd_max",
+          "a",
+          "adds",
+          "and",
+          "applies",
+          "bias",
+          "bias_shape",
+          "conv",
+          "conv2d",
+          "convolution",
+          "in_channels",
+          "kernel_size"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_6",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "return x",
+        "op_names": [
+          "_conv2d_tanh_scaling_biasadd_max",
+          "a",
+          "adds",
+          "and",
+          "applies",
+          "bias",
+          "bias_shape",
+          "conv",
+          "conv2d",
+          "convolution",
+          "in_channels",
+          "kernel_size"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "preserve_layout_and_kernel_window",
+        "summary": "preserve layout and kernel window",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "preserve NCHW layout unless explicitly transformed",
+            "guard boundary indices"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use masks for spatial boundaries"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "reuse_input_tiles",
+        "summary": "reuse input tiles",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "preserve NCHW layout unless explicitly transformed",
+            "guard boundary indices"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use masks for spatial boundaries"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve padding, stride, dilation, groups, and layout",
+      "guard spatial boundaries"
+    ]
+  },
+  "diagnostics_profile": {
+    "enabled": true,
+    "mode": "root_ncu_v1",
+    "ncu_profile": {
+      "enabled": true,
+      "status": "ok",
+      "profiler": "ncu",
+      "kernel_name": "void at::vectorized_elementwise_kernel<4, at::tanh_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)], std::array<char *, 2>>(int, T2, T3)",
+      "row_count": 36,
+      "kernel_launch_count": 36,
+      "raw_metrics": {
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 92.71,
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": 20.91,
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": 10.28,
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": 4.88,
+        "sm__warps_active.avg.pct_of_peak_sustained_active": 81.64,
+        "launch__registers_per_thread": 36,
+        "launch__occupancy_limit_registers": 12,
+        "launch__occupancy_limit_shared_mem": 32,
+        "launch__occupancy_limit_warps": 12,
+        "gpu__time_duration.avg": 5183808,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.41,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.09,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+        "smsp__sass_branch_targets_threads_divergent.avg": 0,
+        "smsp__sass_branch_targets_threads_uniform.avg": 4032.25,
+        "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+        "smsp__warps_eligible.avg": 676223.14
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ],
+      "error": null
+    },
+    "notes": [
+      "Profiled the root candidate program with Nsight Compute."
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_01",
+        "intent": "smem_pool_tile_for_fused_tail",
+        "summary": "Keep the successful fused post-conv tail, but change the CUDA kernel to process a 2D pooled-output tile for one `(n,c)` at a time and stage the corresponding `pool_size`-expanded input patch in shared memory before applying `tanh*scale+bias` and max reduction. This directly targets the current kernel's memory-bound behavior and high long-scoreboard stalls.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Retain the existing Python/module API and fused call site, but add a launch variant whose grid maps blocks to `(n,c,oh_tile,ow_tile)` instead of a flat linear index.",
+          "For the observed hot case `pool_kernel_size=4`, let each block cooperatively load a contiguous input tile of shape `(tile_h*4, tile_w*4)` from the conv output into shared memory, then compute pooled outputs from shared memory.",
+          "Hoist `bias[c]` and `scaling_factor` once per block or warp, and keep the generic fallback path for non-divisible boundaries or non-4 pool sizes.",
+          "Tune tile sizes to stay under occupancy cliffs while reducing per-output address recomputation and global load latency."
+        ],
+        "expected_gain": "Moderate; best chance to beat the current champion because DRAM utilization is already ~94% of peak and long scoreboard stalls are dominant, so reducing raw global transactions and improving locality is more promising than more arithmetic tweaks.",
+        "risk_notes": [
+          "Shared-memory tiling only helps if pooled spatial tiles are large enough and boundary handling stays cheap.",
+          "Extra shared memory can lower occupancy; tune tile sizes conservatively.",
+          "Must preserve exact MaxPool2d floor-mode output shape and NCHW semantics."
+        ],
+        "memory_methods": [
+          "shared-memory staging of conv-output patches",
+          "read-only/hoisted bias reuse"
+        ],
+        "mutation_axes": [
+          "block-to-(n,c,tile) mapping",
+          "tile_h/tile_w selection",
+          "specialized pool=4 path with generic fallback",
+          "boundary predication strategy"
+        ],
+        "forbidden_patterns": [
+          "Do not change model I/O or tensor layout externally.",
+          "Do not alter convolution semantics, padding, stride, dilation, or groups.",
+          "Do not remove the generic correctness path for non-hot shapes."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 5.0,
+          "claude-compatible": 5.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Best risk-adjusted candidate. Shared-memory staging directly targets the stated DRAM/long-scoreboard bottleneck, keeps the proven fused tail, and includes sensible hot-path specialization with fallback. Main risk is occupancy loss from smem usage, but the proposal acknowledges and contains it.",
+          "claude-compatible": "Directly targets the dominant bottleneck: DRAM utilization already at ~94% of peak and long scoreboard stalls. Shared-memory staging of conv-output patches for the hot pool=4 case is well-motivated and well-specified. Retains a generic fallback, preserves NCHW semantics, and has the highest source-model confidence (5.0). Highest risk-adjusted value in the portfolio.",
+          "gemini-compatible": "Shared memory staging for pooling (especially if stride=kernel_size, meaning no overlap) often introduces more overhead than benefit compared to relying on L1 cache and vectorized loads."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_02",
+        "intent": "nc_spatial_mapping",
+        "summary": "Remap the CUDA grid to `(spatial, C, N)` to eliminate expensive integer divisions and modulos in the hot path.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Use `blockIdx.y` for channel `c` and `blockIdx.z` for batch `n`.",
+          "Use `blockIdx.x * blockDim.x + threadIdx.x` for the spatial index `oh * W_out + ow`.",
+          "Load `bias[c]` once into a register at the start of the kernel since `c` is constant per block."
+        ],
+        "expected_gain": "Reduces instruction count and register pressure from div/mod operations, improving SM throughput.",
+        "risk_notes": [
+          "Ensure grid dimensions don't exceed CUDA limits (gridDim.y and gridDim.z are limited to 65535, which is fine for typical N and C)."
+        ],
+        "memory_methods": [
+          "register_caching"
+        ],
+        "mutation_axes": [
+          "grid_mapping",
+          "index_math_simplification"
+        ],
+        "forbidden_patterns": [
+          "Flat 1D grid with division/modulo for N and C"
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 5.0,
+          "openai-compatible": 4.0,
+          "claude-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Good low-risk cleanup. Remapping grid dimensions to avoid div/mod and hoist channel bias is easy to implement and robust, with modest but believable upside. Likely incremental rather than transformative because it does not address the dominant memory-traffic issue.",
+          "claude-compatible": "Eliminating integer division and modulo in the hot path via nc_spatial grid mapping is a clean, low-risk win with measurable instruction-count reduction. Simple to implement correctly, no occupancy risk, and orthogonal to memory tilingâmakes a good complement to strategy_01. Low implementation risk.",
+          "gemini-compatible": "Remapping the grid to 3D (spatial, C, N) to avoid expensive integer division and modulo operations in the hot path is a highly effective and low-risk optimization."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_03",
+        "intent": "multi_output_register_tiling",
+        "summary": "Refine the fused tail so each thread computes multiple adjacent pooled outputs for the same `(n,c,oh)` row, amortizing index math, bias/scaling reuse, and launch overhead without requiring full shared-memory staging.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Keep the current fused extension entrypoint, but add a kernel variant where one thread handles 2-4 neighboring `ow` outputs in registers.",
+          "Exploit the fact that outputs for the same `(n,c,oh)` share the same channel bias and use regular width-wise access patterns, allowing simpler pointer bumping versus repeated flat-index division/modulo.",
+          "Use a 2D or row-oriented launch so width traversal is contiguous and branch-free in the hot interior region, with a scalar tail handler for remainders.",
+          "Pair this with compile-time specialization for the observed `pool=4` case, but avoid the prior isolated float4-only mutation that already plateaued."
+        ],
+        "expected_gain": "Small to moderate; likely lower than shared-memory tiling, but it attacks instruction overhead and address-generation cost while keeping register use manageable.",
+        "risk_notes": [
+          "Because adjacent pooled windows do not overlap for stride=kernel pooling, gains come from control/index amortization rather than data reuse.",
+          "Too aggressive per-thread work can raise registers and hurt occupancy.",
+          "Need careful fallback for misaligned width tails."
+        ],
+        "memory_methods": [
+          "register blocking over adjacent outputs",
+          "contiguous width-wise global access"
+        ],
+        "mutation_axes": [
+          "outputs-per-thread",
+          "row-oriented vs 2D launch mapping",
+          "hot-interior fast path vs boundary path",
+          "register/occupancy tradeoff"
+        ],
+        "forbidden_patterns": [
+          "Do not introduce layout transforms to NHWC/channels_last inside the public forward path.",
+          "Do not rely solely on float4 vectorization as the main optimization lever.",
+          "Do not duplicate full intermediate tensors."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Solid middle-ground option. Register tiling over adjacent outputs can reduce index math and amortize epilogue overhead without the complexity of full smem tiling. Gains are likely moderate and safer than a major rewrite, though limited by lack of overlapping pooling reuse and possible register pressure.",
+          "claude-compatible": "Register tiling over adjacent ow outputs amortizes index math and bias/scaling cost without shared-memory occupancy risk. Gain is moderate since non-overlapping pool windows limit data reuse. Useful as a lightweight complement to strategy_01 but unlikely to be the main differentiator. Needs careful fallback for width tails.",
+          "gemini-compatible": "Register tiling to compute multiple outputs per thread amortizes index math and launch overhead, which is a solid approach for memory-bound kernels."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "pool4_unroll",
+        "summary": "Add a specialized fast path for `pool_kernel_size == 4` with fully unrolled loops.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "implementation_hints": [
+          "Check `pool_size == 4` in the host wrapper and launch a specialized kernel.",
+          "Inside the specialized kernel, use `#pragma unroll` for the `kh` and `kw` loops.",
+          "Hardcode the loop bounds to 4 to allow the compiler to optimize memory accesses and instruction scheduling."
+        ],
+        "expected_gain": "Eliminates loop overhead and allows better instruction scheduling for the 16 elements in the pooling window.",
+        "risk_notes": [
+          "Code duplication for the specialized path."
+        ],
+        "memory_methods": [],
+        "mutation_axes": [
+          "loop_unrolling",
+          "kernel_specialization"
+        ],
+        "forbidden_patterns": [],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 4.0,
+          "openai-compatible": 3.0,
+          "claude-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Reasonable specialization, but probably only a small win alone. Full unrolling for pool=4 is straightforward and low risk, yet most benefit may already be captured by compiler heuristics or be overshadowed by memory latency. Better as a layer on stronger mapping/tiling ideas.",
+          "claude-compatible": "Fully unrolled pool=4 specialization is low-risk and straightforward. Enables compiler instruction scheduling improvements for all 16 pool-window elements. Code duplication is the main downside, but the approach is clean and pairs well with other strategies. Good risk-adjusted value for its simplicity.",
+          "gemini-compatible": "Unrolling the pooling loops for a known size (pool=4) is a simple, low-risk optimization that improves instruction scheduling and reduces loop overhead."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_05",
+        "intent": "vectorized_memory_access",
+        "summary": "Use `float4` vectorized loads for the pooling window and vectorized stores for the output.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Assign each thread to compute 4 output elements along the width dimension.",
+          "Cast the input pointer to `float4*` to load an entire row of the 4x4 pooling window in one instruction.",
+          "Write the 4 output maximums using a single `float4` store."
+        ],
+        "expected_gain": "Maximizes memory bandwidth by using 128-bit memory transactions for both reads and writes.",
+        "risk_notes": [
+          "Requires `W` and `W_out` to be multiples of 4, or requires fallback scalar loops for edge cases.",
+          "Alignment issues if pointers are not 16-byte aligned."
+        ],
+        "memory_methods": [
+          "vectorized_loads",
+          "vectorized_stores"
+        ],
+        "mutation_axes": [
+          "memory_vectorization",
+          "thread_coarsening"
+        ],
+        "forbidden_patterns": [],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 5.0,
+          "openai-compatible": 2.0,
+          "claude-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Risky for modest expected value. Float4 vectorization sounds attractive, but pooled-window access and boundary/alignment constraints make it brittle, and the portfolio already notes a prior float4-focused attempt plateaued. Could help on ideal shapes, but weak risk-adjusted bet.",
+          "claude-compatible": "float4 vectorized loads/stores require16-byte alignment and W/W_out divisibility by 4, introducing correctness fragility. More importantly, DRAM is already near saturation (~94%), so widening the transaction size alone is unlikely to unlock new bandwidth. High alignment risk for marginal gain.",
+          "gemini-compatible": "Using float4 vectorized loads for the 4x4 pooling window and vectorized stores is highly effective for maximizing memory bandwidth and naturally coalescing accesses."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "shared_memory_input_caching",
+        "summary": "Cache input tiles in shared memory to coalesce global memory reads and reduce redundant accesses.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Load a tile of `(H_block * pool_size) x (W_block * pool_size)` into `__shared__` memory using coalesced reads.",
+          "Synchronize threads using `__syncthreads()`.",
+          "Perform the pooling operations by reading from the shared memory tile."
+        ],
+        "expected_gain": "Improves memory access patterns and reduces global memory bandwidth pressure.",
+        "risk_notes": [
+          "Shared memory size limits per block.",
+          "Block synchronization overhead."
+        ],
+        "memory_methods": [
+          "shared_memory_caching",
+          "coalesced_access"
+        ],
+        "mutation_axes": [
+          "memory_hierarchy_optimization"
+        ],
+        "forbidden_patterns": [],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 3.0,
+          "openai-compatible": 3.0,
+          "claude-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Potentially useful, but underspecified compared with the stronger smem proposal. Shared-memory caching matches the memory-bound profile, yet this version does not clearly address output-tile mapping, occupancy tradeoffs, or hot-case specialization. Worth considering, but dominated by strategy_01.",
+          "claude-compatible": "Conceptually similar to strategy_01 but less specificâno hot-path specialization for pool=4, no clear tile-size guidance, and less detail on boundary handling. Worth attempting as a simpler variant if strategy_01 proves complex to tune, but expected gain is lower and source-model confidence (3.0) reflects that.",
+          "gemini-compatible": "Similar to strategy 01, shared memory caching for pooling mainly helps with coalescing, which can be achieved more efficiently via float4 vectorization without the __syncthreads overhead."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_07",
+        "intent": "constant_or_param_cache_epilogue",
+        "summary": "Make the fused kernel leaner by moving tiny broadcasted epilogue parameters onto faster access paths and minimizing per-element epilogue work, focusing on bias/scaling fetch behavior rather than pool-loop structure.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_2",
+          "init_body"
+        ],
+        "implementation_hints": [
+          "Keep the fused kernel structure intact, but specialize the wrapper so the tiny `bias` vector and scalar scale are presented through a cache-friendly path such as constant-like storage or one-time kernel argument expansion.",
+          "If shape facts remain stable (`bias_shape=[64,1,1]`), consider a launch specialization keyed on channel count so the compiler can simplify bias indexing.",
+          "Fuse interior-region assumptions more aggressively: compute the common no-boundary path separately from edge handling, so the hot body only executes the epilogue math and max comparisons.",
+          "Use this only as a low-disruption mutation layered on the current champion, not as a standalone rewrite."
+        ],
+        "expected_gain": "Small; prior shared-memory bias caching was flat, so this is a narrower latency/control cleanup rather than a likely major win.",
+        "risk_notes": [
+          "Broadcast bias is already tiny, so benefits may be marginal.",
+          "Over-specialization to one channel count can reduce robustness if benchmark shapes vary.",
+          "Need to preserve exact bias broadcasting semantics."
+        ],
+        "memory_methods": [
+          "constant/argument-cached scalar parameters",
+          "channel-broadcast parameter reuse"
+        ],
+        "mutation_axes": [
+          "channel-count specialization",
+          "interior vs boundary kernel split",
+          "parameter placement strategy"
+        ],
+        "forbidden_patterns": [
+          "Do not hardcode benchmark-only shapes without a guarded fallback.",
+          "Do not change numerical ordering beyond normal fused-kernel behavior.",
+          "Do not add host-side synchronization or extra copies."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 2.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Low-disruption but low ceiling. Bias and scale are tiny, so caching/placement tweaks are unlikely to move a kernel already dominated by global data traffic from the conv output. Interior/boundary splitting may help slightly, but overall expected value seems limited.",
+          "claude-compatible": "Bias is a tiny [64,1,1] tensor already likely resident in L1/L2; extra caching of it yields marginal latency improvement at best. Interior-vs-boundary kernel split adds code complexity for small payoff. Source-model score (2.0) and the'small gain' acknowledgment in the strategy itself confirm low priority.",
+          "gemini-compatible": "Moving bias to constant memory or caching it might provide marginal benefits, but the L1 cache usually handles 1D broadcasted reads very efficiently already."
+        },
+        "priority": 2
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "library_conv_epilogue_relayout_experiment",
+        "summary": "Explore whether a backend-assisted conv output layout or epilogue path can reduce the end-to-end cost by producing a tail-kernel-friendly conv output, while still preserving the successful fused tanh/scale/bias/maxpool design.",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "implementation_hints": [
+          "Keep convolution semantically unchanged, but test a guarded path where the conv output is materialized in a layout or contiguous form that improves fused-tail access regularity before calling the extension.",
+          "If using an alternate memory format, confine all assumptions to the custom call boundary and keep the external module contract unchanged.",
+          "Only pursue this if the conv output reorder cost is demonstrably hidden or amortized; otherwise it will lose against the current memory-bound fused tail.",
+          "Treat this as a high-risk reroot candidate, not the first mutation from the phase-1 champion."
+        ],
+        "expected_gain": "Uncertain; potentially moderate if tail access becomes substantially more coalesced, but easy to regress overall due to format conversion overhead.",
+        "risk_notes": [
+          "Semantic profile prefers preserving NCHW unless explicitly transformed; any relayout must be tightly justified.",
+          "A separate relayout step can erase all gains.",
+          "May interact unpredictably with PyTorch/cuDNN convolution heuristics."
+        ],
+        "memory_methods": [
+          "layout-aware access regularization",
+          "contiguity enforcement only at fused-tail boundary"
+        ],
+        "mutation_axes": [
+          "NCHW contiguous enforcement strategy",
+          "optional memory-format specialization",
+          "conv-output boundary contract"
+        ],
+        "forbidden_patterns": [
+          "Do not change the public tensor layout returned by `forward`.",
+          "Do not insert unconditional full-tensor transposes/copies.",
+          "Do not replace convolution with a custom kernel in this phase."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 1.0,
+          "claude-compatible": 1.0,
+          "gemini-compatible": 1.0
+        },
+        "review_notes": {
+          "openai-compatible": "Highest risk and weakest near-term value. Relayout or backend-assisted conv-output changes conflict with the preference to preserve NCHW and can easily lose to extra materialization cost. Too speculative for this phase unless simpler fused-tail optimizations fail.",
+          "claude-compatible": "Exploratory relayout experiment with uncertain gain and high regression risk. A separate conv-output format conversion step could easily erase any tail-access locality gain. The semantic profile explicitly cautions against NCHW transforms. Appropriately tagged as a high-risk reroot candidate, not a first-line mutation. Source-model score (1.0) aligns with this assessment.",
+          "gemini-compatible": "Relayout of the convolution output is extremely high risk; the overhead of memory format conversion almost always outweighs the benefits for a single subsequent fused operation."
+        },
+        "priority": 1
+      }
+    ],
+    "proposal_errors": {
+      "claude-compatible": "Expecting ',' delimiter: line 58 column 6 (char 5307)"
+    },
+    "review_errors": {},
+    "deliberation_round": 1
+  },
+  "phase_transition": {
+    "source_phase": 1,
+    "target_phase": 2,
+    "split_attempts": 5,
+    "trigger_attempt": 5,
+    "root": {
+      "node_id": "root",
+      "strategy_name": null,
+      "runtime": 0.0275,
+      "speedup": 0.9854545454545456,
+      "plan_summary": null,
+      "changed_regions": [],
+      "lineage": [
+        "root"
+      ]
+    },
+    "selected": {
+      "node_id": "n1",
+      "strategy_name": "strategy_03",
+      "runtime": 0.0111,
+      "speedup": 2.4414414414414414,
+      "plan_summary": "Fuse the post-conv tail into one custom CUDA kernel that performs tanh, scaling, bias add, and max-pool in a single pass over the convolution output, while leaving the convolution itself in PyTorch.",
+      "changed_regions": [
+        "cuda_cpp",
+        "cuda_cu",
+        "forward_stmt_2",
+        "forward_stmt_3",
+        "forward_stmt_4",
+        "forward_stmt_5"
+      ],
+      "lineage": [
+        "root",
+        "n1"
+      ]
+    },
+    "attempts": [
+      {
+        "node_id": "n1",
+        "parent_id": "root",
+        "strategy_name": "strategy_03",
+        "attempt_mode": "explore",
+        "mutation_family": "tail_fusion_poolaware",
+        "single_change_focus": "Replace the chained post-conv PyTorch ops with one fused CUDA extension call that computes tanh->scale->bias->max_pool directly from the conv output tensor.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0111,
+        "speedup": 2.4414414414414414,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Fuse the post-conv tail into one custom CUDA kernel that performs tanh, scaling, bias add, and max-pool in a single pass over the convolution output, while leaving the convolution itself in PyTorch."
+      },
+      {
+        "node_id": "n2",
+        "parent_id": "n1",
+        "strategy_name": "strategy_06",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "pool4_unroll",
+        "single_change_focus": "Add a `pool_size == 4` specialized path inside `cuda_cu` that computes the 4x4 max reduction with fully unrolled loads/epilogue operations, while retaining the existing generic path for other pool sizes.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0112,
+        "speedup": 2.419642857142857,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the working tail-fusion kernel by specializing the hot pool-aware CUDA path for the fixed `pool_kernel_size=4` seen in execution facts, replacing the generic nested pool loops with an unrolled fast path while keeping the existing fused API and forward structure unchanged."
+      },
+      {
+        "node_id": "n3",
+        "parent_id": "n2",
+        "strategy_name": "strategy_08",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "pool4_float4",
+        "single_change_focus": "Add a guarded float4-vectorized load path inside the existing `pool == 4` CUDA kernel, with scalar fallback for misaligned or out-of-bounds windows.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0112,
+        "speedup": 2.419642857142857,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing fused post-conv tail kernel by vectorizing the hot pool-4 spatial loads in the CUDA kernel, keeping the current extension interface and forward path unchanged."
+      },
+      {
+        "node_id": "n4",
+        "parent_id": "n1",
+        "strategy_name": "strategy_07",
+        "attempt_mode": "best_lineage_push",
+        "mutation_family": "bias_smem_broadcast",
+        "single_change_focus": "Replace per-thread global bias loads with a shared-memory cached bias path inside the existing fused CUDA kernel and wrapper-specialized launches.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0112,
+        "speedup": 2.419642857142857,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing fused tail kernel by caching the tiny broadcast bias vector in shared memory so each block loads channel biases once instead of reissuing repeated global reads for every pooled output element."
+      },
+      {
+        "node_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_03",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "nc_spatial_mapping",
+        "single_change_focus": "Replace the current flat-index kernels in `cuda_cu` with a `(spatial, nc)` mapped kernel launch and matching index logic, keeping the fused tanh-scale-bias-maxpool computation otherwise unchanged.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0111,
+        "speedup": 2.4414414414414414,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing fused post-conv tail by changing only the CUDA kernel/work mapping: keep tanh+scale+bias+maxpool fused, but remap launch/indexing so each block processes contiguous pooled spatial positions for one (n,c) pair, removing costly flat-index division/modulo and simplifying the hot loop."
+      }
+    ],
+    "trace_summary": "effective=n1:Replace the chained post-conv PyTorch ops with one fused CUDA extension call that computes tanh->scale->bias->max_pool directly from the conv output tensor.:2.441x; n5:Replace the current flat-index kernels in `cuda_cu` with a `(spatial, nc)` mapped kernel launch and matching index logic, keeping the fused tanh-scale-bias-maxpool computation otherwise unchanged.:2.441x | flat=n2:Add a `pool_size == 4` specialized path inside `cuda_cu` that computes the 4x4 max reduction with fully unrolled loads/epilogue operations, while retaining the existing generic path for other pool sizes.:2.420x; n3:Add a guarded float4-vectorized load path inside the existing `pool == 4` CUDA kernel, with scalar fallback for misaligned or out-of-bounds windows.:2.420x; n4:Replace per-thread global bias loads with a shared-memory cached bias path inside the existing fused CUDA kernel and wrapper-specialized launches.:2.420x",
+    "root_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void at::vectorized_elementwise_kernel<4, at::tanh_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)], std::array<char *, 2>>(int, T2, T3)",
+        "row_count": 36,
+        "kernel_launch_count": 36,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 92.71,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 20.91,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 10.28,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 4.88,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 81.64,
+          "launch__registers_per_thread": 36,
+          "launch__occupancy_limit_registers": 12,
+          "launch__occupancy_limit_shared_mem": 32,
+          "launch__occupancy_limit_warps": 12,
+          "gpu__time_duration.avg": 5183808,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.41,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.09,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 4032.25,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 676223.14
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "selected_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void at::elementwise_kernel<128, 2, void at::gpu_kernel_impl_nocast<at::CUDAFunctor_add<float>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+        "row_count": 21,
+        "kernel_launch_count": 21,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 93.72,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 21.93,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 10.72,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 14.82,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 85.9,
+          "launch__registers_per_thread": 16,
+          "launch__occupancy_limit_registers": 32,
+          "launch__occupancy_limit_shared_mem": 32,
+          "launch__occupancy_limit_warps": 12,
+          "gpu__time_duration.avg": 5119712,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.93,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 145161,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 2081788.73
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "diagnostics_delta": {
+      "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 1.0100000000000051,
+      "gpu__time_duration.avg": -64096,
+      "l1tex__throughput.avg.pct_of_peak_sustained_active": 0.4400000000000013,
+      "launch__occupancy_limit_registers": 20,
+      "launch__occupancy_limit_shared_mem": 0,
+      "launch__occupancy_limit_warps": 0,
+      "launch__registers_per_thread": -20,
+      "lts__throughput.avg.pct_of_peak_sustained_elapsed": 1.0199999999999996,
+      "sm__throughput.avg.pct_of_peak_sustained_elapsed": 9.940000000000001,
+      "sm__warps_active.avg.pct_of_peak_sustained_active": 4.260000000000005,
+      "smsp__sass_branch_targets_threads_divergent.avg": 0,
+      "smsp__sass_branch_targets_threads_uniform.avg": 141128.75,
+      "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.52,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": -0.09,
+      "smsp__warps_eligible.avg": 1405565.5899999999
+    }
+  },
+  "feedback_state": {
+    "total_attempts": 11,
+    "compile_rate": 0.5454545454545454,
+    "correct_rate": 0.5454545454545454,
+    "best_speedup": 2.4414414414414414,
+    "best_strategy_name": "strategy_03",
+    "phase": "refinement",
+    "current_champion_id": "n1",
+    "current_champion_speedup": 2.4414414414414414,
+    "plateau_detected": true,
+    "recent_improvement_deltas": [
+      1.4559868959868958,
+      0.021798584298584167
+    ],
+    "recent_regression_deltas": [
+      -0.021798584298584167,
+      0.0,
+      -0.021798584298584167,
+      0.0
+    ],
+    "recent_successful_mutation_families": [],
+    "recent_failed_mutation_families": [
+      "tail_fusion_poolaware"
+    ],
+    "last_mutation_outcome": "regressed_or_flat",
+    "recent_attempts": [
+      {
+        "attempt_id": "n4",
+        "parent_id": "n1",
+        "strategy_name": "strategy_07",
+        "mode": "best_lineage_push",
+        "mutation_family": "bias_smem_broadcast",
+        "speedup": 2.419642857142857,
+        "parent_speedup": 2.4414414414414414,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace per-thread global bias loads with a shared-memory cached bias path inside the existing fused CUDA kernel and wrapper-specialized launches."
+      },
+      {
+        "attempt_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_03",
+        "mode": "mutate_champion",
+        "mutation_family": "nc_spatial_mapping",
+        "speedup": 2.4414414414414414,
+        "parent_speedup": 2.419642857142857,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the current flat-index kernels in `cuda_cu` with a `(spatial, nc)` mapped kernel launch and matching index logic, keeping the fused tanh-scale-bias-maxpool computation otherwise unchanged."
+      },
+      {
+        "attempt_id": "phase2_n1",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_01",
+        "mode": "explore",
+        "mutation_family": "smem_pool4_tile",
+        "speedup": null,
+        "parent_speedup": 2.4414414414414414,
+        "compile_ok": false,
+        "correct": false,
+        "failure_stage": "compile",
+        "failure_type": "invalid_patch_format",
+        "single_change_focus": "Add a specialized pool-4 shared-memory tiled CUDA kernel and host-side launch selection inside the existing fused extension, while preserving the current generic fused kernel as fallback."
+      },
+      {
+        "attempt_id": "phase2_n2",
+        "parent_id": "phase2_n1",
+        "strategy_name": "strategy_01",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": null,
+        "parent_speedup": null,
+        "compile_ok": false,
+        "correct": false,
+        "failure_stage": "compile",
+        "failure_type": "region_apply_failed",
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_n3",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_01",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": null,
+        "parent_speedup": null,
+        "compile_ok": false,
+        "correct": false,
+        "failure_stage": "compile",
+        "failure_type": "invalid_region_patch_format",
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_n4",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_01",
+        "mode": "explore",
+        "mutation_family": "smem_pool4_tile",
+        "speedup": null,
+        "parent_speedup": 2.4414414414414414,
+        "compile_ok": false,
+        "correct": false,
+        "failure_stage": "compile",
+        "failure_type": "invalid_patch_format",
+        "single_change_focus": "Replace the current fused CUDA kernel implementation with a `pool_size==4` shared-memory tiled fast path while keeping the same wrapper API and preserving the existing generic scalar fallback."
+      },
+      {
+        "attempt_id": "phase2_n5",
+        "parent_id": "phase2_n3",
+        "strategy_name": "strategy_01",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": null,
+        "parent_speedup": null,
+        "compile_ok": false,
+        "correct": false,
+        "failure_stage": "compile",
+        "failure_type": "region_apply_failed",
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_root",
+        "parent_id": "n1",
+        "strategy_name": "strategy_03",
+        "mode": "explore",
+        "mutation_family": "tail_fusion_poolaware",
+        "speedup": 2.4414414414414414,
+        "parent_speedup": 2.4414414414414414,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the chained post-conv PyTorch ops with one fused CUDA extension call that computes tanh->scale->bias->max_pool directly from the conv output tensor."
+      }
+    ],
+    "champion": {
+      "node_id": "n1",
+      "speedup": 2.4414414414414414,
+      "strategy_name": "strategy_03",
+      "mutation_family": "tail_fusion_poolaware",
+      "lineage": [
+        "root",
+        "n1"
+      ],
+      "recent_positive_mutations": [],
+      "recent_negative_mutations": [
+        {
+          "attempt_id": "phase2_root",
+          "strategy_name": "strategy_03",
+          "mode": "explore",
+          "mutation_family": "tail_fusion_poolaware",
+          "speedup": 2.4414414414414414,
+          "parent_speedup": 2.4414414414414414,
+          "single_change_focus": "Replace the chained post-conv PyTorch ops with one fused CUDA extension call that computes tanh->scale->bias->max_pool directly from the conv output tensor."
+        }
+      ],
+      "plateau_detected": true,
+      "lineage_plateau_depth": 3
+    }
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "user_helpers",
+      "region_role": "helper",
+      "start_line": 36,
+      "end_line": 37,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 40,
+      "end_line": 45,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 49,
+      "end_line": 55,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 64,
+      "end_line": 69,
+      "source_excerpt": "self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\nself.scaling_factor = scaling_factor\nself.bias = nn.Parameter(torch.randn(bias_shape))\nself.max_pool = nn.MaxPool2d(pool_kernel_size)",
+      "source_hash": "091bd361fc1b"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 72,
+      "end_line": 76,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\nx = self.conv(x)",
+      "source_hash": "fe567e588858"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 77,
+      "end_line": 79,
+      "source_excerpt": "x = torch.tanh(x)",
+      "source_hash": "49b8121ae39e"
+    },
+    {
+      "anchor_name": "forward_stmt_3",
+      "region_role": "forward",
+      "start_line": 80,
+      "end_line": 82,
+      "source_excerpt": "x = x * self.scaling_factor",
+      "source_hash": "e1d58634de0a"
+    },
+    {
+      "anchor_name": "forward_stmt_4",
+      "region_role": "forward",
+      "start_line": 83,
+      "end_line": 85,
+      "source_excerpt": "x = x + self.bias",
+      "source_hash": "0c4267605d34"
+    },
+    {
+      "anchor_name": "forward_stmt_5",
+      "region_role": "forward",
+      "start_line": 86,
+      "end_line": 88,
+      "source_excerpt": "x = self.max_pool(x)",
+      "source_hash": "6e69ea5fb669"
+    },
+    {
+      "anchor_name": "forward_stmt_6",
+      "region_role": "forward",
+      "start_line": 89,
+      "end_line": 91,
+      "source_excerpt": "return x",
+      "source_hash": "03c387736bb5"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p82_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a convolution, applies tanh, scaling, adds a bias term, and then max-pools.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, scaling_factor, bias_shape, pool_kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.scaling_factor = scaling_factor\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.max_pool = nn.MaxPool2d(pool_kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = torch.tanh(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x * self.scaling_factor\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = x + self.bias\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = self.max_pool(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0275,
+      "score": 0.0275,
+      "logs": [
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=182086",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_0_gpu2/09_L2_P82_Retry_P82_20260720_215529/eval_traces/20260720_215530_182051_d760a0e0_kernelbench_l2_82_82_conv2d_tanh_scaling_biasadd_max"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.027100000000000003,
+      "speedup": 0.9854545454545456,
+      "reference_runtimes": {
+        "torch_eager": 0.027100000000000003
+      },
+      "speedups": {
+        "torch_eager": 0.9854545454545456
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": null,
+      "single_change_focus": null,
+      "mutation_family": null,
+      "target_metric": null
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p82_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_tanh_scale_bias_maxpool\", &fused_tanh_scale_bias_maxpool,\n          \"Fused tanh/scale/bias/maxpool (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n__global__ void fused_tanh_scale_bias_maxpool_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int N, int C, int H, int W,\n    int H_out, int W_out,\n    float scaling_factor,\n    int pool_size\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C * H_out * W_out;\n    if (idx >= total) return;\n\n    int ow = idx % W_out;\n    int oh = (idx / W_out) % H_out;\n    int c  = (idx / (W_out * H_out)) % C;\n    int n  = idx / (W_out * H_out * C);\n\n    float max_val = -3.402823466e+38f;\n    int ih_base = oh * pool_size;\n    int iw_base = ow * pool_size;\n    float b = __ldg(&bias[c]);\n\n    for (int kh = 0; kh < pool_size; kh++) {\n        int ih = ih_base + kh;\n        if (ih >= H) continue;\n        for (int kw = 0; kw < pool_size; kw++) {\n            int iw = iw_base + kw;\n            if (iw >= W) continue;\n            float v = input[((n * C + c) * H + ih) * W + iw];\n            float val = tanhf(v) * scaling_factor + b;\n            max_val = fmaxf(max_val, val);\n        }\n    }\n\n    output[((n * C + c) * H_out + oh) * W_out + ow] = max_val;\n}\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n\n    const int N = x.size(0);\n    const int C = x.size(1);\n    const int H = x.size(2);\n    const int W = x.size(3);\n    const int pool = (int)pool_kernel_size;\n    const int H_out = (H - pool) / pool + 1;\n    const int W_out = (W - pool) / pool + 1;\n\n    auto bias_c = bias.contiguous();\n    auto output = torch::empty({N, C, H_out, W_out}, x.options());\n\n    const int total = N * C * H_out * W_out;\n    const int blockSize = 256;\n    const int gridSize = (total + blockSize - 1) / blockSize;\n\n    fused_tanh_scale_bias_maxpool_kernel<<<gridSize, blockSize, 0,\n        at::cuda::getCurrentCUDAStream()>>>(\n        x.data_ptr<float>(),\n        bias_c.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, H, W, H_out, W_out,\n        (float)scaling_factor,\n        pool\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a convolution, applies tanh, scaling, adds a bias term, and then max-pools.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, scaling_factor, bias_shape, pool_kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.scaling_factor = scaling_factor\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.max_pool = nn.MaxPool2d(pool_kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        pool_k = self.max_pool.kernel_size if isinstance(self.max_pool.kernel_size, int) else self.max_pool.kernel_size[0]\n        x = _stark_get_extension().fused_tanh_scale_bias_maxpool(x.contiguous(), float(self.scaling_factor), self.bias.contiguous(), pool_k)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2",
+        "n4",
+        "phase2_root"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Fuse the post-conv tail into one custom CUDA kernel that performs tanh, scaling, bias add, and max-pool in a single pass over the convolution output, while leaving the convolution itself in PyTorch.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the empty pybind module with a declaration of a C++ wrapper function `torch::Tensor fused_tanh_scale_bias_maxpool(torch::Tensor x, double scaling_factor, torch::Tensor bias, int64_t pool_kernel_size);` and export it via `m.def(\"fused_tanh_scale_bias_maxpool\", &fused_tanh_scale_bias_maxpool, \"Fused tanh/scale/bias/maxpool (CUDA)\");`. The wrapper should only declare the CUDA implementation; do not add unrelated APIs.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the placeholder with a CUDA implementation consisting of: includes for torch/extension and ATen/cuda headers; input checks for CUDA, contiguous, float32 tensors; a `__global__` kernel where each thread computes one pooled output element `(n,c,oh,ow)`, loops over the `pool_kernel_size x pool_kernel_size` region in the input conv-output tensor, applies `tanhf(v) * scaling + bias[c]` for each element, tracks the maximum in registers, and stores to the output tensor; output shape computed as `(H - pool_kernel_size) / pool_kernel_size + 1` and similarly for W; a C++ wrapper `fused_tanh_scale_bias_maxpool` that allocates the output tensor, launches the kernel on the current CUDA stream, and returns the pooled result. Use NCHW flat indexing and explicit bounds guards only for valid output indices.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace `x = torch.tanh(x)` with `x = _stark_get_extension().fused_tanh_scale_bias_maxpool(x.contiguous(), float(self.scaling_factor), self.bias.contiguous(), self.max_pool.kernel_size if isinstance(self.max_pool.kernel_size, int) else self.max_pool.kernel_size[0])` so the fused CUDA kernel consumes the convolution output directly.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace this statement with a no-op pass-through such as `x = x` because scaling is now handled inside the fused CUDA kernel.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Replace this statement with a no-op pass-through such as `x = x` because bias addition is now handled inside the fused CUDA kernel.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_5",
+          "instruction": "Replace this statement with a no-op pass-through such as `x = x` because max-pooling is now handled inside the fused CUDA kernel.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0111,
+      "score": 0.0111,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "applied_region_patch:forward_stmt_4:replace",
+        "applied_region_patch:forward_stmt_5:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=185067",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_0_gpu2/09_L2_P82_Retry_P82_20260720_215529/eval_traces/20260720_220202_182051_691faf5f_kernelbench_l2_82_82_conv2d_tanh_scaling_biasadd_max"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.027100000000000003,
+      "speedup": 2.4414414414414414,
+      "reference_runtimes": {
+        "torch_eager": 0.027100000000000003
+      },
+      "speedups": {
+        "torch_eager": 2.4414414414414414
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current slowdown comes from writing and rereading the full conv output across separate tanh, multiply, bias-add, and max-pool kernels; replacing those with one CUDA kernel that reads each pre-pooled element once, applies epilogue math in registers, and reduces the 4x4 max window before one final store should reduce DRAM traffic substantially and improve end-to-end runtime.",
+      "single_change_focus": "Replace the chained post-conv PyTorch ops with one fused CUDA extension call that computes tanh->scale->bias->max_pool directly from the conv output tensor.",
+      "mutation_family": "tail_fusion_poolaware",
+      "target_metric": "speedup"
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p82_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_tanh_scale_bias_maxpool\", &fused_tanh_scale_bias_maxpool,\n          \"Fused tanh/scale/bias/maxpool (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n// Specialized kernel for pool_size == 4: fully unrolled 4x4 max reduction\n__global__ void fused_tanh_scale_bias_maxpool4_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int N, int C, int H, int W,\n    int H_out, int W_out,\n    float scaling_factor\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C * H_out * W_out;\n    if (idx >= total) return;\n\n    int ow = idx % W_out;\n    int oh = (idx / W_out) % H_out;\n    int c  = (idx / (W_out * H_out)) % C;\n    int n  = idx / (W_out * H_out * C);\n\n    float b = __ldg(&bias[c]);\n    int ih_base = oh * 4;\n    int iw_base = ow * 4;\n    const float* row_base = input + (n * C + c) * H * W;\n\n    float max_val = -3.402823466e+38f;\n\n    // Unrolled 4x4 with boundary guards\n    #pragma unroll\n    for (int kh = 0; kh < 4; kh++) {\n        int ih = ih_base + kh;\n        if (ih >= H) break;\n        const float* row = row_base + ih * W;\n        #pragma unroll\n        for (int kw = 0; kw < 4; kw++) {\n            int iw = iw_base + kw;\n            if (iw >= W) break;\n            float val = tanhf(__ldg(row + iw)) * scaling_factor + b;\n            max_val = fmaxf(max_val, val);\n        }\n    }\n\n    output[((n * C + c) * H_out + oh) * W_out + ow] = max_val;\n}\n\n// Generic kernel for other pool sizes\n__global__ void fused_tanh_scale_bias_maxpool_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int N, int C, int H, int W,\n    int H_out, int W_out,\n    float scaling_factor,\n    int pool_size\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C * H_out * W_out;\n    if (idx >= total) return;\n\n    int ow = idx % W_out;\n    int oh = (idx / W_out) % H_out;\n    int c  = (idx / (W_out * H_out)) % C;\n    int n  = idx / (W_out * H_out * C);\n\n    float max_val = -3.402823466e+38f;\n    int ih_base = oh * pool_size;\n    int iw_base = ow * pool_size;\n    float b = __ldg(&bias[c]);\n    const float* row_base = input + (n * C + c) * H * W;\n\n    for (int kh = 0; kh < pool_size; kh++) {\n        int ih = ih_base + kh;\n        if (ih >= H) continue;\n        const float* row = row_base + ih * W;\n        for (int kw = 0; kw < pool_size; kw++) {\n            int iw = iw_base + kw;\n            if (iw >= W) continue;\n            float val = tanhf(__ldg(row + iw)) * scaling_factor + b;\n            max_val = fmaxf(max_val, val);\n        }\n    }\n\n    output[((n * C + c) * H_out + oh) * W_out + ow] = max_val;\n}\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n\n    const int N = x.size(0);\n    const int C = x.size(1);\n    const int H = x.size(2);\n    const int W = x.size(3);\n    const int pool = (int)pool_kernel_size;\n    const int H_out = (H - pool) / pool + 1;\n    const int W_out = (W - pool) / pool + 1;\n\n    auto bias_c = bias.contiguous();\n    auto output = torch::empty({N, C, H_out, W_out}, x.options());\n\n    const int total = N * C * H_out * W_out;\n    const int blockSize = 256;\n    const int gridSize = (total + blockSize - 1) / blockSize;\n    auto stream = at::cuda::getCurrentCUDAStream();\n\n    if (pool == 4) {\n        fused_tanh_scale_bias_maxpool4_kernel<<<gridSize, blockSize, 0, stream>>>(\n            x.data_ptr<float>(),\n            bias_c.data_ptr<float>(),\n            output.data_ptr<float>(),\n            N, C, H, W, H_out, W_out,\n            (float)scaling_factor\n        );\n    } else {\n        fused_tanh_scale_bias_maxpool_kernel<<<gridSize, blockSize, 0, stream>>>(\n            x.data_ptr<float>(),\n            bias_c.data_ptr<float>(),\n            output.data_ptr<float>(),\n            N, C, H, W, H_out, W_out,\n            (float)scaling_factor,\n            pool\n        );\n    }\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a convolution, applies tanh, scaling, adds a bias term, and then max-pools.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, scaling_factor, bias_shape, pool_kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.scaling_factor = scaling_factor\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.max_pool = nn.MaxPool2d(pool_kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        pool_k = self.max_pool.kernel_size if isinstance(self.max_pool.kernel_size, int) else self.max_pool.kernel_size[0]\n        x = _stark_get_extension().fused_tanh_scale_bias_maxpool(x.contiguous(), float(self.scaling_factor), self.bias.contiguous(), pool_k)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Refine the working tail-fusion kernel by specializing the hot pool-aware CUDA path for the fixed `pool_kernel_size=4` seen in execution facts, replacing the generic nested pool loops with an unrolled fast path while keeping the existing fused API and forward structure unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current fused kernel implementation with a version that preserves the same exported wrapper and launch wiring but adds a specialized CUDA kernel path for `pool_size == 4`. In the wrapper, branch on `pool==4`: launch a dedicated `fused_tanh_scale_bias_maxpool4_kernel` that computes one `(n,c,oh,ow)` pooled output per thread, derives `ih_base=oh*4` and `iw_base=ow*4`, loads the 16 input elements with explicit guarded scalar accesses, applies `tanhf(v) * scaling_factor + bias[c]` for each, and performs the max reduction with straight-line code or `#pragma unroll` rather than runtime `for` loops. Keep the existing generic kernel as fallback for other pool sizes, preserve output-shape computation, contiguous checks, and the same `fused_tanh_scale_bias_maxpool(...)` API.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0112,
+      "score": 0.0112,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=185479",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_0_gpu2/09_L2_P82_Retry_P82_20260720_215529/eval_traces/20260720_220420_182051_86d21545_kernelbench_l2_82_82_conv2d_tanh_scaling_biasadd_max"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.027100000000000003,
+      "speedup": 2.419642857142857,
+      "reference_runtimes": {
+        "torch_eager": 0.027100000000000003
+      },
+      "speedups": {
+        "torch_eager": 2.419642857142857
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Because the champion already removes extra DRAM passes, the next bottleneck is per-output control/index overhead inside the generic pool loop; a dedicated `pool==4` unrolled path should improve throughput by cutting branch and loop instructions while preserving the same memory traffic.",
+      "single_change_focus": "Add a `pool_size == 4` specialized path inside `cuda_cu` that computes the 4x4 max reduction with fully unrolled loads/epilogue operations, while retaining the existing generic path for other pool sizes.",
+      "mutation_family": "pool4_unroll",
+      "target_metric": "speedup"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p82_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_tanh_scale_bias_maxpool\", &fused_tanh_scale_bias_maxpool,\n          \"Fused tanh/scale/bias/maxpool (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n// Specialized kernel for pool_size == 4 with vectorized loads\n__global__ void fused_tanh_scale_bias_maxpool4_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int N, int C, int H, int W,\n    int H_out, int W_out,\n    float scaling_factor\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C * H_out * W_out;\n    if (idx >= total) return;\n\n    int ow = idx % W_out;\n    int oh = (idx / W_out) % H_out;\n    int c  = (idx / (W_out * H_out)) % C;\n    int n  = idx / (W_out * H_out * C);\n\n    float b = __ldg(&bias[c]);\n    int ih_base = oh * 4;\n    int iw_base = ow * 4;\n    const float* row_base = input + (n * C + c) * H * W;\n\n    float max_val = -3.402823466e+38f;\n\n    // Try vectorized load for each row if aligned and in bounds\n    #pragma unroll\n    for (int kh = 0; kh < 4; kh++) {\n        int ih = ih_base + kh;\n        if (ih >= H) break;\n        const float* row = row_base + ih * W;\n        int iw = iw_base;\n\n        // Check if we can use float4: fully in bounds and 16-byte aligned\n        bool can_vectorize = (iw + 3 < W) && (((uintptr_t)(row + iw) & 0xF) == 0);\n\n        if (can_vectorize) {\n            float4 v4 = *reinterpret_cast<const float4*>(row + iw);\n            float vals[4] = {v4.x, v4.y, v4.z, v4.w};\n            #pragma unroll\n            for (int i = 0; i < 4; i++) {\n                float val = tanhf(vals[i]) * scaling_factor + b;\n                max_val = fmaxf(max_val, val);\n            }\n        } else {\n            // Scalar fallback\n            #pragma unroll\n            for (int kw = 0; kw < 4; kw++) {\n                int iw_cur = iw + kw;\n                if (iw_cur >= W) break;\n                float val = tanhf(__ldg(row + iw_cur)) * scaling_factor + b;\n                max_val = fmaxf(max_val, val);\n            }\n        }\n    }\n\n    output[((n * C + c) * H_out + oh) * W_out + ow] = max_val;\n}\n\n// Generic kernel for other pool sizes\n__global__ void fused_tanh_scale_bias_maxpool_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int N, int C, int H, int W,\n    int H_out, int W_out,\n    float scaling_factor,\n    int pool_size\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C * H_out * W_out;\n    if (idx >= total) return;\n\n    int ow = idx % W_out;\n    int oh = (idx / W_out) % H_out;\n    int c  = (idx / (W_out * H_out)) % C;\n    int n  = idx / (W_out * H_out * C);\n\n    float max_val = -3.402823466e+38f;\n    int ih_base = oh * pool_size;\n    int iw_base = ow * pool_size;\n    float b = __ldg(&bias[c]);\n    const float* row_base = input + (n * C + c) * H * W;\n\n    for (int kh = 0; kh < pool_size; kh++) {\n        int ih = ih_base + kh;\n        if (ih >= H) continue;\n        const float* row = row_base + ih * W;\n        for (int kw = 0; kw < pool_size; kw++) {\n            int iw = iw_base + kw;\n            if (iw >= W) continue;\n            float val = tanhf(__ldg(row + iw)) * scaling_factor + b;\n            max_val = fmaxf(max_val, val);\n        }\n    }\n\n    output[((n * C + c) * H_out + oh) * W_out + ow] = max_val;\n}\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n\n    const int N = x.size(0);\n    const int C = x.size(1);\n    const int H = x.size(2);\n    const int W = x.size(3);\n    const int pool = (int)pool_kernel_size;\n    const int H_out = (H - pool) / pool + 1;\n    const int W_out = (W - pool) / pool + 1;\n\n    auto bias_c = bias.contiguous();\n    auto output = torch::empty({N, C, H_out, W_out}, x.options());\n\n    const int total = N * C * H_out * W_out;\n    const int blockSize = 256;\n    const int gridSize = (total + blockSize - 1) / blockSize;\n    auto stream = at::cuda::getCurrentCUDAStream();\n\n    if (pool == 4) {\n        fused_tanh_scale_bias_maxpool4_kernel<<<gridSize, blockSize, 0, stream>>>(\n            x.data_ptr<float>(),\n            bias_c.data_ptr<float>(),\n            output.data_ptr<float>(),\n            N, C, H, W, H_out, W_out,\n            (float)scaling_factor\n        );\n    } else {\n        fused_tanh_scale_bias_maxpool_kernel<<<gridSize, blockSize, 0, stream>>>(\n            x.data_ptr<float>(),\n            bias_c.data_ptr<float>(),\n            output.data_ptr<float>(),\n            N, C, H, W, H_out, W_out,\n            (float)scaling_factor,\n            pool\n        );\n    }\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a convolution, applies tanh, scaling, adds a bias term, and then max-pools.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, scaling_factor, bias_shape, pool_kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.scaling_factor = scaling_factor\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.max_pool = nn.MaxPool2d(pool_kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        pool_k = self.max_pool.kernel_size if isinstance(self.max_pool.kernel_size, int) else self.max_pool.kernel_size[0]\n        x = _stark_get_extension().fused_tanh_scale_bias_maxpool(x.contiguous(), float(self.scaling_factor), self.bias.contiguous(), pool_k)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_08",
+      "plan_summary": "Refine the existing fused post-conv tail kernel by vectorizing the hot pool-4 spatial loads in the CUDA kernel, keeping the current extension interface and forward path unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current CUDA source with the same fused kernel structure and exported wrapper, but modify only the specialized `fused_tanh_scale_bias_maxpool4_kernel` so that for each pooled output it checks whether the 4-wide row segment is fully in bounds (`iw_base + 3 < W`) and 16-byte aligned (`((uintptr_t)(row + iw_base) & 0xF) == 0`). When both conditions hold, load the four contiguous floats for that row via `const float4 v4 = *reinterpret_cast<const float4*>(row + iw_base);`, apply `tanhf(v)` * scaling + bias to each lane, and reduce them into `max_val`. Keep the existing loop over the four rows, and keep scalar per-element fallback for any row/window that is misaligned or crosses the boundary. Leave the generic kernel, wrapper signature, output-shape math, and launch wiring unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0112,
+      "score": 0.0112,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=185924",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_0_gpu2/09_L2_P82_Retry_P82_20260720_215529/eval_traces/20260720_220653_182051_3f40f9b5_kernelbench_l2_82_82_conv2d_tanh_scaling_biasadd_max"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.027100000000000003,
+      "speedup": 2.419642857142857,
+      "reference_runtimes": {
+        "torch_eager": 0.027100000000000003
+      },
+      "speedups": {
+        "torch_eager": 2.419642857142857
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "In the existing fused tail, pool_size=4 means each pooled output consumes four contiguous values per row across four rows. Replacing four scalar loads per row with one guarded `float4` load in the pool-4 specialization should cut memory instructions and reduce scoreboard stalls without changing the algorithm, improving runtime over the current champion.",
+      "single_change_focus": "Add a guarded float4-vectorized load path inside the existing `pool == 4` CUDA kernel, with scalar fallback for misaligned or out-of-bounds windows.",
+      "mutation_family": "pool4_float4",
+      "target_metric": "speedup"
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p82_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_tanh_scale_bias_maxpool\", &fused_tanh_scale_bias_maxpool,\n          \"Fused tanh/scale/bias/maxpool (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n// Fused kernel with shared-memory bias caching and pool_size==4 unrolled specialization\n__global__ void fused_tanh_scale_bias_maxpool_smem_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int N, int C, int H, int W,\n    int H_out, int W_out,\n    float scaling_factor,\n    int pool_size\n) {\n    // Cooperatively load bias into dynamic shared memory\n    extern __shared__ float s_bias[];\n    for (int c_idx = threadIdx.x; c_idx < C; c_idx += blockDim.x) {\n        s_bias[c_idx] = bias[c_idx];\n    }\n    __syncthreads();\n\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C * H_out * W_out;\n    if (idx >= total) return;\n\n    int ow = idx % W_out;\n    int oh = (idx / W_out) % H_out;\n    int c  = (idx / (W_out * H_out)) % C;\n    int n  = idx / (W_out * H_out * C);\n\n    float b = s_bias[c];\n    float max_val = -3.402823466e+38f;\n    int ih_base = oh * pool_size;\n    int iw_base = ow * pool_size;\n    const float* chan_base = input + (n * C + c) * H * W;\n\n    if (pool_size == 4) {\n        // Fully unrolled 4x4 with boundary guards\n        #pragma unroll\n        for (int kh = 0; kh < 4; kh++) {\n            int ih = ih_base + kh;\n            if (ih >= H) break;\n            const float* row = chan_base + ih * W;\n            #pragma unroll\n            for (int kw = 0; kw < 4; kw++) {\n                int iw = iw_base + kw;\n                if (iw >= W) break;\n                float val = tanhf(row[iw]) * scaling_factor + b;\n                max_val = fmaxf(max_val, val);\n            }\n        }\n    } else {\n        for (int kh = 0; kh < pool_size; kh++) {\n            int ih = ih_base + kh;\n            if (ih >= H) continue;\n            const float* row = chan_base + ih * W;\n            for (int kw = 0; kw < pool_size; kw++) {\n                int iw = iw_base + kw;\n                if (iw >= W) continue;\n                float val = tanhf(row[iw]) * scaling_factor + b;\n                max_val = fmaxf(max_val, val);\n            }\n        }\n    }\n\n    output[((n * C + c) * H_out + oh) * W_out + ow] = max_val;\n}\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n\n    const int N = x.size(0);\n    const int C = x.size(1);\n    const int H = x.size(2);\n    const int W = x.size(3);\n    const int pool = (int)pool_kernel_size;\n    const int H_out = (H - pool) / pool + 1;\n    const int W_out = (W - pool) / pool + 1;\n\n    auto bias_c = bias.contiguous();\n    auto output = torch::empty({N, C, H_out, W_out}, x.options());\n\n    const int total = N * C * H_out * W_out;\n    const int blockSize = 256;\n    const int gridSize = (total + blockSize - 1) / blockSize;\n    const size_t smem_bytes = (size_t)C * sizeof(float);\n\n    fused_tanh_scale_bias_maxpool_smem_kernel<<<gridSize, blockSize, smem_bytes,\n        at::cuda::getCurrentCUDAStream()>>>(\n        x.data_ptr<float>(),\n        bias_c.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, H, W, H_out, W_out,\n        (float)scaling_factor,\n        pool\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a convolution, applies tanh, scaling, adds a bias term, and then max-pools.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, scaling_factor, bias_shape, pool_kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.scaling_factor = scaling_factor\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.max_pool = nn.MaxPool2d(pool_kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        pool_k = self.max_pool.kernel_size if isinstance(self.max_pool.kernel_size, int) else self.max_pool.kernel_size[0]\n        x = _stark_get_extension().fused_tanh_scale_bias_maxpool(x.contiguous(), float(self.scaling_factor), self.bias.contiguous(), pool_k)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_07",
+      "plan_summary": "Refine the existing fused tail kernel by caching the tiny broadcast bias vector in shared memory so each block loads channel biases once instead of reissuing repeated global reads for every pooled output element.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current CUDA source with the same fused entrypoint and overall kernel structure, but add one generic kernel variant templated or parameterized with a `cache_bias` path that declares `__shared__ float s_bias[256]` (large enough for runtime C, or use dynamic shared memory sized to `C * sizeof(float)`), has threads cooperatively preload `bias[c_idx]` for `c_idx` in a strided loop `for (int c_idx = threadIdx.x; c_idx < C; c_idx += blockDim.x)`, calls `__syncthreads()`, and then uses `float b = s_bias[c];` instead of `__ldg(&bias[c])` in the fused tanh/scale/bias/maxpool loop. Keep all existing indexing, pooling loops, output-shape math, and wrapper signature unchanged; in the wrapper, launch this shared-memory-cached kernel for the normal fused path, preserving the current contiguous checks and output allocation.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0112,
+      "score": 0.0112,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=186735",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_0_gpu2/09_L2_P82_Retry_P82_20260720_215529/eval_traces/20260720_220914_182051_a5c3010c_kernelbench_l2_82_82_conv2d_tanh_scaling_biasadd_max"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.027100000000000003,
+      "speedup": 2.419642857142857,
+      "reference_runtimes": {
+        "torch_eager": 0.027100000000000003
+      },
+      "speedups": {
+        "torch_eager": 2.419642857142857
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "best_lineage_push",
+      "performance_hypothesis": "In the current fused kernel, every thread repeatedly reads bias[c] from global memory for a small broadcast vector; staging the full bias vector into shared memory once per block and reading s_bias[c] thereafter will slightly reduce memory latency/L2 pressure and improve throughput without perturbing the successful pool-aware kernel mapping.",
+      "single_change_focus": "Replace per-thread global bias loads with a shared-memory cached bias path inside the existing fused CUDA kernel and wrapper-specialized launches.",
+      "mutation_family": "bias_smem_broadcast",
+      "target_metric": "speedup"
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p82_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_tanh_scale_bias_maxpool\", &fused_tanh_scale_bias_maxpool,\n          \"Fused tanh/scale/bias/maxpool (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n__global__ void fused_tanh_scale_bias_maxpool_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int N, int C, int H, int W,\n    int H_out, int W_out,\n    float scaling_factor,\n    int pool_size\n) {\n    int s = blockIdx.x * blockDim.x + threadIdx.x;\n    if (s >= H_out * W_out) return;\n\n    int ow = s % W_out;\n    int oh = s / W_out;\n    int nc = blockIdx.y;\n    int c = nc % C;\n    int n = nc / C;\n\n    float b = __ldg(&bias[c]);\n    int ih_base = oh * pool_size;\n    int iw_base = ow * pool_size;\n    const float* row_base = input + (n * C + c) * H * W;\n\n    float max_val = -3.402823466e+38f;\n\n    for (int kh = 0; kh < pool_size; kh++) {\n        int ih = ih_base + kh;\n        if (ih >= H) continue;\n        const float* row = row_base + ih * W;\n        for (int kw = 0; kw < pool_size; kw++) {\n            int iw = iw_base + kw;\n            if (iw >= W) continue;\n            float val = tanhf(__ldg(row + iw)) * scaling_factor + b;\n            max_val = fmaxf(max_val, val);\n        }\n    }\n\n    output[((n * C + c) * H_out + oh) * W_out + ow] = max_val;\n}\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n\n    const int N = x.size(0);\n    const int C = x.size(1);\n    const int H = x.size(2);\n    const int W = x.size(3);\n    const int pool = (int)pool_kernel_size;\n    const int H_out = (H - pool) / pool + 1;\n    const int W_out = (W - pool) / pool + 1;\n\n    auto bias_c = bias.contiguous();\n    auto output = torch::empty({N, C, H_out, W_out}, x.options());\n\n    const int blockSize = 256;\n    dim3 grid((H_out * W_out + blockSize - 1) / blockSize, N * C);\n\n    fused_tanh_scale_bias_maxpool_kernel<<<grid, blockSize, 0,\n        at::cuda::getCurrentCUDAStream()>>>(\n        x.data_ptr<float>(),\n        bias_c.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, H, W, H_out, W_out,\n        (float)scaling_factor,\n        pool\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a convolution, applies tanh, scaling, adds a bias term, and then max-pools.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, scaling_factor, bias_shape, pool_kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.scaling_factor = scaling_factor\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.max_pool = nn.MaxPool2d(pool_kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        pool_k = self.max_pool.kernel_size if isinstance(self.max_pool.kernel_size, int) else self.max_pool.kernel_size[0]\n        x = _stark_get_extension().fused_tanh_scale_bias_maxpool(x.contiguous(), float(self.scaling_factor), self.bias.contiguous(), pool_k)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Refine the existing fused post-conv tail by changing only the CUDA kernel/work mapping: keep tanh+scale+bias+maxpool fused, but remap launch/indexing so each block processes contiguous pooled spatial positions for one (n,c) pair, removing costly flat-index division/modulo and simplifying the hot loop.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current specialized/generic flat-idx kernel implementation with a single fused kernel family that uses a 2D launch: let `grid.y = N * C`, let each thread cover one pooled spatial index `s = blockIdx.x * blockDim.x + threadIdx.x`, return if `s >= H_out * W_out`, decode `ow = s % W_out`, `oh = s / W_out`, decode `nc = blockIdx.y`, `c = nc % C`, `n = nc / C`, then compute the same max over the pool window with `float b = __ldg(&bias[c])`, `const float* row_base = input + (n * C + c) * H * W`, and write `output[((n * C + c) * H_out + oh) * W_out + ow] = max_val`. Keep one generic loop-based kernel for all pool sizes; remove the current pool==4 vectorized special-case path and launch the generic kernel with `dim3 grid((H_out * W_out + blockSize - 1) / blockSize, N * C)` and `blockSize = 256`. Preserve the exported wrapper name/signature and output-shape calculation exactly as they are now.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0111,
+      "score": 0.0111,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=189249",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_0_gpu2/09_L2_P82_Retry_P82_20260720_215529/eval_traces/20260720_221132_182051_493940be_kernelbench_l2_82_82_conv2d_tanh_scaling_biasadd_max"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.027100000000000003,
+      "speedup": 2.4414414414414414,
+      "reference_runtimes": {
+        "torch_eager": 0.027100000000000003
+      },
+      "speedups": {
+        "torch_eager": 2.4414414414414414
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "A 2D launch that binds `blockIdx.y` to `(n,c)` and `blockIdx.x*blockDim.x + threadIdx.x` to pooled spatial positions will reduce per-output integer division/modulo overhead and branchiness versus the current flat 1D mapping, while improving contiguous writes and keeping the same DRAM traffic.",
+      "single_change_focus": "Replace the current flat-index kernels in `cuda_cu` with a `(spatial, nc)` mapped kernel launch and matching index logic, keeping the fused tanh-scale-bias-maxpool computation otherwise unchanged.",
+      "mutation_family": "nc_spatial_mapping",
+      "target_metric": "speedup"
+    },
+    "phase2_root": {
+      "node_id": "phase2_root",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p82_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_tanh_scale_bias_maxpool\", &fused_tanh_scale_bias_maxpool,\n          \"Fused tanh/scale/bias/maxpool (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n__global__ void fused_tanh_scale_bias_maxpool_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int N, int C, int H, int W,\n    int H_out, int W_out,\n    float scaling_factor,\n    int pool_size\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C * H_out * W_out;\n    if (idx >= total) return;\n\n    int ow = idx % W_out;\n    int oh = (idx / W_out) % H_out;\n    int c  = (idx / (W_out * H_out)) % C;\n    int n  = idx / (W_out * H_out * C);\n\n    float max_val = -3.402823466e+38f;\n    int ih_base = oh * pool_size;\n    int iw_base = ow * pool_size;\n    float b = __ldg(&bias[c]);\n\n    for (int kh = 0; kh < pool_size; kh++) {\n        int ih = ih_base + kh;\n        if (ih >= H) continue;\n        for (int kw = 0; kw < pool_size; kw++) {\n            int iw = iw_base + kw;\n            if (iw >= W) continue;\n            float v = input[((n * C + c) * H + ih) * W + iw];\n            float val = tanhf(v) * scaling_factor + b;\n            max_val = fmaxf(max_val, val);\n        }\n    }\n\n    output[((n * C + c) * H_out + oh) * W_out + ow] = max_val;\n}\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n\n    const int N = x.size(0);\n    const int C = x.size(1);\n    const int H = x.size(2);\n    const int W = x.size(3);\n    const int pool = (int)pool_kernel_size;\n    const int H_out = (H - pool) / pool + 1;\n    const int W_out = (W - pool) / pool + 1;\n\n    auto bias_c = bias.contiguous();\n    auto output = torch::empty({N, C, H_out, W_out}, x.options());\n\n    const int total = N * C * H_out * W_out;\n    const int blockSize = 256;\n    const int gridSize = (total + blockSize - 1) / blockSize;\n\n    fused_tanh_scale_bias_maxpool_kernel<<<gridSize, blockSize, 0,\n        at::cuda::getCurrentCUDAStream()>>>(\n        x.data_ptr<float>(),\n        bias_c.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, H, W, H_out, W_out,\n        (float)scaling_factor,\n        pool\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a convolution, applies tanh, scaling, adds a bias term, and then max-pools.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, scaling_factor, bias_shape, pool_kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.scaling_factor = scaling_factor\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.max_pool = nn.MaxPool2d(pool_kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        pool_k = self.max_pool.kernel_size if isinstance(self.max_pool.kernel_size, int) else self.max_pool.kernel_size[0]\n        x = _stark_get_extension().fused_tanh_scale_bias_maxpool(x.contiguous(), float(self.scaling_factor), self.bias.contiguous(), pool_k)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "phase2_root",
+      "child_ids": [
+        "phase2_n1",
+        "phase2_n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Fuse the post-conv tail into one custom CUDA kernel that performs tanh, scaling, bias add, and max-pool in a single pass over the convolution output, while leaving the convolution itself in PyTorch.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the empty pybind module with a declaration of a C++ wrapper function `torch::Tensor fused_tanh_scale_bias_maxpool(torch::Tensor x, double scaling_factor, torch::Tensor bias, int64_t pool_kernel_size);` and export it via `m.def(\"fused_tanh_scale_bias_maxpool\", &fused_tanh_scale_bias_maxpool, \"Fused tanh/scale/bias/maxpool (CUDA)\");`. The wrapper should only declare the CUDA implementation; do not add unrelated APIs.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the placeholder with a CUDA implementation consisting of: includes for torch/extension and ATen/cuda headers; input checks for CUDA, contiguous, float32 tensors; a `__global__` kernel where each thread computes one pooled output element `(n,c,oh,ow)`, loops over the `pool_kernel_size x pool_kernel_size` region in the input conv-output tensor, applies `tanhf(v) * scaling + bias[c]` for each element, tracks the maximum in registers, and stores to the output tensor; output shape computed as `(H - pool_kernel_size) / pool_kernel_size + 1` and similarly for W; a C++ wrapper `fused_tanh_scale_bias_maxpool` that allocates the output tensor, launches the kernel on the current CUDA stream, and returns the pooled result. Use NCHW flat indexing and explicit bounds guards only for valid output indices.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace `x = torch.tanh(x)` with `x = _stark_get_extension().fused_tanh_scale_bias_maxpool(x.contiguous(), float(self.scaling_factor), self.bias.contiguous(), self.max_pool.kernel_size if isinstance(self.max_pool.kernel_size, int) else self.max_pool.kernel_size[0])` so the fused CUDA kernel consumes the convolution output directly.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace this statement with a no-op pass-through such as `x = x` because scaling is now handled inside the fused CUDA kernel.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Replace this statement with a no-op pass-through such as `x = x` because bias addition is now handled inside the fused CUDA kernel.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_5",
+          "instruction": "Replace this statement with a no-op pass-through such as `x = x` because max-pooling is now handled inside the fused CUDA kernel.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0111,
+      "score": 0.0111,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "applied_region_patch:forward_stmt_4:replace",
+        "applied_region_patch:forward_stmt_5:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=185067",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_0_gpu2/09_L2_P82_Retry_P82_20260720_215529/eval_traces/20260720_220202_182051_691faf5f_kernelbench_l2_82_82_conv2d_tanh_scaling_biasadd_max"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.027100000000000003,
+      "speedup": 2.4414414414414414,
+      "reference_runtimes": {
+        "torch_eager": 0.027100000000000003
+      },
+      "speedups": {
+        "torch_eager": 2.4414414414414414
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current slowdown comes from writing and rereading the full conv output across separate tanh, multiply, bias-add, and max-pool kernels; replacing those with one CUDA kernel that reads each pre-pooled element once, applies epilogue math in registers, and reduces the 4x4 max window before one final store should reduce DRAM traffic substantially and improve end-to-end runtime.",
+      "single_change_focus": "Replace the chained post-conv PyTorch ops with one fused CUDA extension call that computes tanh->scale->bias->max_pool directly from the conv output tensor.",
+      "mutation_family": "tail_fusion_poolaware",
+      "target_metric": "speedup"
+    },
+    "phase2_n1": {
+      "node_id": "phase2_n1",
+      "parent_id": "phase2_root",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p82_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_tanh_scale_bias_maxpool\", &fused_tanh_scale_bias_maxpool,\n          \"Fused tanh/scale/bias/maxpool (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n__global__ void fused_tanh_scale_bias_maxpool_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int N, int C, int H, int W,\n    int H_out, int W_out,\n    float scaling_factor,\n    int pool_size\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C * H_out * W_out;\n    if (idx >= total) return;\n\n    int ow = idx % W_out;\n    int oh = (idx / W_out) % H_out;\n    int c  = (idx / (W_out * H_out)) % C;\n    int n  = idx / (W_out * H_out * C);\n\n    float max_val = -3.402823466e+38f;\n    int ih_base = oh * pool_size;\n    int iw_base = ow * pool_size;\n    float b = __ldg(&bias[c]);\n\n    for (int kh = 0; kh < pool_size; kh++) {\n        int ih = ih_base + kh;\n        if (ih >= H) continue;\n        for (int kw = 0; kw < pool_size; kw++) {\n            int iw = iw_base + kw;\n            if (iw >= W) continue;\n            float v = input[((n * C + c) * H + ih) * W + iw];\n            float val = tanhf(v) * scaling_factor + b;\n            max_val = fmaxf(max_val, val);\n        }\n    }\n\n    output[((n * C + c) * H_out + oh) * W_out + ow] = max_val;\n}\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n\n    const int N = x.size(0);\n    const int C = x.size(1);\n    const int H = x.size(2);\n    const int W = x.size(3);\n    const int pool = (int)pool_kernel_size;\n    const int H_out = (H - pool) / pool + 1;\n    const int W_out = (W - pool) / pool + 1;\n\n    auto bias_c = bias.contiguous();\n    auto output = torch::empty({N, C, H_out, W_out}, x.options());\n\n    const int total = N * C * H_out * W_out;\n    const int blockSize = 256;\n    const int gridSize = (total + blockSize - 1) / blockSize;\n\n    fused_tanh_scale_bias_maxpool_kernel<<<gridSize, blockSize, 0,\n        at::cuda::getCurrentCUDAStream()>>>(\n        x.data_ptr<float>(),\n        bias_c.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, H, W, H_out, W_out,\n        (float)scaling_factor,\n        pool\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a convolution, applies tanh, scaling, adds a bias term, and then max-pools.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, scaling_factor, bias_shape, pool_kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.scaling_factor = scaling_factor\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.max_pool = nn.MaxPool2d(pool_kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        pool_k = self.max_pool.kernel_size if isinstance(self.max_pool.kernel_size, int) else self.max_pool.kernel_size[0]\n        x = _stark_get_extension().fused_tanh_scale_bias_maxpool(x.contiguous(), float(self.scaling_factor), self.bias.contiguous(), pool_k)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Refine the working fused post-conv tail by keeping the existing extension API and forward fusion, but adding a specialized shared-memory tiled kernel for the hot `pool_kernel_size==4` case so each block processes a 2D pooled-output tile for one `(n,c)` pair and stages the corresponding conv-output patch before applying `tanh * scale + bias` and max reduction.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current single fused kernel implementation with two paths inside the same exported function: (1) keep the existing generic fused kernel as fallback for arbitrary `pool_size`; (2) add a specialized `pool_size == 4` kernel whose grid maps `blockIdx.x` over pooled-output width tiles, `blockIdx.y` over pooled-output height tiles, and `blockIdx.z` over flattened `(n * C + c)` so each block handles exactly one `(n,c)` pair. In the specialized kernel, use a small 2D block such as `BLOCK_W=8`, `BLOCK_H=8`; allocate shared memory for a contiguous input patch of size `(BLOCK_H*4) * (BLOCK_W*4)` floats; have threads cooperatively load this patch from `input[((n*C + c)*H + ih)*W + iw]` with boundary guards; synchronize; then for each valid pooled output `(oh, ow)` owned by the thread, scan its 4x4 region from shared memory, apply `tanhf(v) * scaling_factor + bias[c]`, and write the max to `output[((n*C + c)*H_out + oh)*W_out + ow]`. In the host wrapper, if `pool == 4`, launch the tiled kernel with `dim3 block(BLOCK_W, BLOCK_H)` and `dim3 grid(ceil_div(W_out,BLOCK_W), ceil_div(H_out,BLOCK_H), N*C)`; otherwise launch the existing generic kernel. Keep tensor checks, contiguous handling, and output allocation unchanged except for the new launch branch.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "candidate looks like patch JSON but could not be parsed"
+      ],
+      "failure_type": "invalid_patch_format",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "explore",
+      "performance_hypothesis": "A pool-4 shared-memory tile path that maps each block to one `(n,c)` pooled tile will outperform the current per-output global-read kernel because the hot case can cooperatively stage a contiguous `(tile_h*4) x (tile_w*4)` patch once, then reuse those values from shared memory during the 4x4 max reduction, cutting long-scoreboard stall time on this memory-bound tail.",
+      "single_change_focus": "Add a specialized pool-4 shared-memory tiled CUDA kernel and host-side launch selection inside the existing fused extension, while preserving the current generic fused kernel as fallback.",
+      "mutation_family": "smem_pool4_tile",
+      "target_metric": "speedup"
+    },
+    "phase2_n2": {
+      "node_id": "phase2_n2",
+      "parent_id": "phase2_n1",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p82_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_tanh_scale_bias_maxpool\", &fused_tanh_scale_bias_maxpool,\n          \"Fused tanh/scale/bias/maxpool (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n__global__ void fused_tanh_scale_bias_maxpool_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int N, int C, int H, int W,\n    int H_out, int W_out,\n    float scaling_factor,\n    int pool_size\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C * H_out * W_out;\n    if (idx >= total) return;\n\n    int ow = idx % W_out;\n    int oh = (idx / W_out) % H_out;\n    int c  = (idx / (W_out * H_out)) % C;\n    int n  = idx / (W_out * H_out * C);\n\n    float max_val = -3.402823466e+38f;\n    int ih_base = oh * pool_size;\n    int iw_base = ow * pool_size;\n    float b = __ldg(&bias[c]);\n\n    for (int kh = 0; kh < pool_size; kh++) {\n        int ih = ih_base + kh;\n        if (ih >= H) continue;\n        for (int kw = 0; kw < pool_size; kw++) {\n            int iw = iw_base + kw;\n            if (iw >= W) continue;\n            float v = input[((n * C + c) * H + ih) * W + iw];\n            float val = tanhf(v) * scaling_factor + b;\n            max_val = fmaxf(max_val, val);\n        }\n    }\n\n    output[((n * C + c) * H_out + oh) * W_out + ow] = max_val;\n}\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n\n    const int N = x.size(0);\n    const int C = x.size(1);\n    const int H = x.size(2);\n    const int W = x.size(3);\n    const int pool = (int)pool_kernel_size;\n    const int H_out = (H - pool) / pool + 1;\n    const int W_out = (W - pool) / pool + 1;\n\n    auto bias_c = bias.contiguous();\n    auto output = torch::empty({N, C, H_out, W_out}, x.options());\n\n    const int total = N * C * H_out * W_out;\n    const int blockSize = 256;\n    const int gridSize = (total + blockSize - 1) / blockSize;\n\n    fused_tanh_scale_bias_maxpool_kernel<<<gridSize, blockSize, 0,\n        at::cuda::getCurrentCUDAStream()>>>(\n        x.data_ptr<float>(),\n        bias_c.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, H, W, H_out, W_out,\n        (float)scaling_factor,\n        pool\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a convolution, applies tanh, scaling, adds a bias term, and then max-pools.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, scaling_factor, bias_shape, pool_kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.scaling_factor = scaling_factor\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.max_pool = nn.MaxPool2d(pool_kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        pool_k = self.max_pool.kernel_size if isinstance(self.max_pool.kernel_size, int) else self.max_pool.kernel_size[0]\n        x = _stark_get_extension().fused_tanh_scale_bias_maxpool(x.contiguous(), float(self.scaling_factor), self.bias.contiguous(), pool_k)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "phase2_n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Refine the working fused post-conv tail by keeping the existing extension API and forward fusion, but adding a specialized shared-memory tiled kernel for the hot `pool_kernel_size==4` case so each block processes a 2D pooled-output tile for one `(n,c)` pair and stages the corresponding conv-output patch before applying `tanh * scale + bias` and max reduction.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current single fused kernel implementation with two paths inside the same exported function: (1) keep the existing generic fused kernel as fallback for arbitrary `pool_size`; (2) add a specialized `pool_size == 4` kernel whose grid maps `blockIdx.x` over pooled-output width tiles, `blockIdx.y` over pooled-output height tiles, and `blockIdx.z` over flattened `(n * C + c)` so each block handles exactly one `(n,c)` pair. In the specialized kernel, use a small 2D block such as `BLOCK_W=8`, `BLOCK_H=8`; allocate shared memory for a contiguous input patch of size `(BLOCK_H*4) * (BLOCK_W*4)` floats; have threads cooperatively load this patch from `input[((n*C + c)*H + ih)*W + iw]` with boundary guards; synchronize; then for each valid pooled output `(oh, ow)` owned by the thread, scan its 4x4 region from shared memory, apply `tanhf(v) * scaling_factor + bias[c]`, and write the max to `output[((n*C + c)*H_out + oh)*W_out + ow]`. In the host wrapper, if `pool == 4`, launch the tiled kernel with `dim3 block(BLOCK_W, BLOCK_H)` and `dim3 grid(ceil_div(W_out,BLOCK_W), ceil_div(H_out,BLOCK_H), N*C)`; otherwise launch the existing generic kernel. Keep tensor checks, contiguous handling, and output allocation unchanged except for the new launch branch.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "failed to apply region patch: region 'cuda_cpp' is not active in current refinement policy"
+      ],
+      "failure_type": "region_apply_failed",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_n3": {
+      "node_id": "phase2_n3",
+      "parent_id": "phase2_n2",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p82_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_tanh_scale_bias_maxpool\", &fused_tanh_scale_bias_maxpool,\n          \"Fused tanh/scale/bias/maxpool (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n__global__ void fused_tanh_scale_bias_maxpool_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int N, int C, int H, int W,\n    int H_out, int W_out,\n    float scaling_factor,\n    int pool_size\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C * H_out * W_out;\n    if (idx >= total) return;\n\n    int ow = idx % W_out;\n    int oh = (idx / W_out) % H_out;\n    int c  = (idx / (W_out * H_out)) % C;\n    int n  = idx / (W_out * H_out * C);\n\n    float max_val = -3.402823466e+38f;\n    int ih_base = oh * pool_size;\n    int iw_base = ow * pool_size;\n    float b = __ldg(&bias[c]);\n\n    for (int kh = 0; kh < pool_size; kh++) {\n        int ih = ih_base + kh;\n        if (ih >= H) continue;\n        for (int kw = 0; kw < pool_size; kw++) {\n            int iw = iw_base + kw;\n            if (iw >= W) continue;\n            float v = input[((n * C + c) * H + ih) * W + iw];\n            float val = tanhf(v) * scaling_factor + b;\n            max_val = fmaxf(max_val, val);\n        }\n    }\n\n    output[((n * C + c) * H_out + oh) * W_out + ow] = max_val;\n}\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n\n    const int N = x.size(0);\n    const int C = x.size(1);\n    const int H = x.size(2);\n    const int W = x.size(3);\n    const int pool = (int)pool_kernel_size;\n    const int H_out = (H - pool) / pool + 1;\n    const int W_out = (W - pool) / pool + 1;\n\n    auto bias_c = bias.contiguous();\n    auto output = torch::empty({N, C, H_out, W_out}, x.options());\n\n    const int total = N * C * H_out * W_out;\n    const int blockSize = 256;\n    const int gridSize = (total + blockSize - 1) / blockSize;\n\n    fused_tanh_scale_bias_maxpool_kernel<<<gridSize, blockSize, 0,\n        at::cuda::getCurrentCUDAStream()>>>(\n        x.data_ptr<float>(),\n        bias_c.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, H, W, H_out, W_out,\n        (float)scaling_factor,\n        pool\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a convolution, applies tanh, scaling, adds a bias term, and then max-pools.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, scaling_factor, bias_shape, pool_kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.scaling_factor = scaling_factor\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.max_pool = nn.MaxPool2d(pool_kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        pool_k = self.max_pool.kernel_size if isinstance(self.max_pool.kernel_size, int) else self.max_pool.kernel_size[0]\n        x = _stark_get_extension().fused_tanh_scale_bias_maxpool(x.contiguous(), float(self.scaling_factor), self.bias.contiguous(), pool_k)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "phase2_n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Refine the working fused post-conv tail by keeping the existing extension API and forward fusion, but adding a specialized shared-memory tiled kernel for the hot `pool_kernel_size==4` case so each block processes a 2D pooled-output tile for one `(n,c)` pair and stages the corresponding conv-output patch before applying `tanh * scale + bias` and max reduction.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current single fused kernel implementation with two paths inside the same exported function: (1) keep the existing generic fused kernel as fallback for arbitrary `pool_size`; (2) add a specialized `pool_size == 4` kernel whose grid maps `blockIdx.x` over pooled-output width tiles, `blockIdx.y` over pooled-output height tiles, and `blockIdx.z` over flattened `(n * C + c)` so each block handles exactly one `(n,c)` pair. In the specialized kernel, use a small 2D block such as `BLOCK_W=8`, `BLOCK_H=8`; allocate shared memory for a contiguous input patch of size `(BLOCK_H*4) * (BLOCK_W*4)` floats; have threads cooperatively load this patch from `input[((n*C + c)*H + ih)*W + iw]` with boundary guards; synchronize; then for each valid pooled output `(oh, ow)` owned by the thread, scan its 4x4 region from shared memory, apply `tanhf(v) * scaling_factor + bias[c]`, and write the max to `output[((n*C + c)*H_out + oh)*W_out + ow]`. In the host wrapper, if `pool == 4`, launch the tiled kernel with `dim3 block(BLOCK_W, BLOCK_H)` and `dim3 grid(ceil_div(W_out,BLOCK_W), ceil_div(H_out,BLOCK_H), N*C)`; otherwise launch the existing generic kernel. Keep tensor checks, contiguous handling, and output allocation unchanged except for the new launch branch.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "region_patches must be a non-empty list"
+      ],
+      "failure_type": "invalid_region_patch_format",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_n4": {
+      "node_id": "phase2_n4",
+      "parent_id": "phase2_root",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p82_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_tanh_scale_bias_maxpool\", &fused_tanh_scale_bias_maxpool,\n          \"Fused tanh/scale/bias/maxpool (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n__global__ void fused_tanh_scale_bias_maxpool_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int N, int C, int H, int W,\n    int H_out, int W_out,\n    float scaling_factor,\n    int pool_size\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C * H_out * W_out;\n    if (idx >= total) return;\n\n    int ow = idx % W_out;\n    int oh = (idx / W_out) % H_out;\n    int c  = (idx / (W_out * H_out)) % C;\n    int n  = idx / (W_out * H_out * C);\n\n    float max_val = -3.402823466e+38f;\n    int ih_base = oh * pool_size;\n    int iw_base = ow * pool_size;\n    float b = __ldg(&bias[c]);\n\n    for (int kh = 0; kh < pool_size; kh++) {\n        int ih = ih_base + kh;\n        if (ih >= H) continue;\n        for (int kw = 0; kw < pool_size; kw++) {\n            int iw = iw_base + kw;\n            if (iw >= W) continue;\n            float v = input[((n * C + c) * H + ih) * W + iw];\n            float val = tanhf(v) * scaling_factor + b;\n            max_val = fmaxf(max_val, val);\n        }\n    }\n\n    output[((n * C + c) * H_out + oh) * W_out + ow] = max_val;\n}\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n\n    const int N = x.size(0);\n    const int C = x.size(1);\n    const int H = x.size(2);\n    const int W = x.size(3);\n    const int pool = (int)pool_kernel_size;\n    const int H_out = (H - pool) / pool + 1;\n    const int W_out = (W - pool) / pool + 1;\n\n    auto bias_c = bias.contiguous();\n    auto output = torch::empty({N, C, H_out, W_out}, x.options());\n\n    const int total = N * C * H_out * W_out;\n    const int blockSize = 256;\n    const int gridSize = (total + blockSize - 1) / blockSize;\n\n    fused_tanh_scale_bias_maxpool_kernel<<<gridSize, blockSize, 0,\n        at::cuda::getCurrentCUDAStream()>>>(\n        x.data_ptr<float>(),\n        bias_c.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, H, W, H_out, W_out,\n        (float)scaling_factor,\n        pool\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a convolution, applies tanh, scaling, adds a bias term, and then max-pools.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, scaling_factor, bias_shape, pool_kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.scaling_factor = scaling_factor\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.max_pool = nn.MaxPool2d(pool_kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        pool_k = self.max_pool.kernel_size if isinstance(self.max_pool.kernel_size, int) else self.max_pool.kernel_size[0]\n        x = _stark_get_extension().fused_tanh_scale_bias_maxpool(x.contiguous(), float(self.scaling_factor), self.bias.contiguous(), pool_k)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Refine the existing fused post-conv tail by keeping the same extension interface and fused semantics, but replacing the CUDA kernel body with a pool-4 shared-memory tiled implementation mapped over `(tile_x, c, n)` plus the current generic fallback for other pool sizes or edge cases.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current single flat-index kernel/wrapper implementation with two CUDA kernels inside the same exported function: (1) keep a generic fallback kernel equivalent to the current behavior for arbitrary `pool_size`; (2) add a specialized fast-path kernel used only when `pool_size == 4` whose launch maps `grid.x` over pooled-output width/height tiles, `grid.y` over channel `C`, and `grid.z` over batch `N`. In the fast path, use a small fixed tile such as `BLOCK_W=8`, `BLOCK_H=8` and allocate shared memory for a `float smem[BLOCK_H*4][BLOCK_W*4]` patch (or flattened equivalent). Have threads cooperatively load the corresponding contiguous conv-output patch for one `(n,c)` tile from global memory into shared memory with boundary guards, synchronize once, hoist `bias[c]` and `scaling_factor` into registers, then let each thread compute one pooled output `(oh, ow)` in the tile by reading its 4x4 region from shared memory, applying `tanhf(v) * scaling_factor + bias_c`, and taking the max. Use boundary checks when writing outputs so partial edge tiles stay correct. In the wrapper, preserve the existing function signature and output allocation, but dispatch to the specialized tiled kernel when `pool == 4`; otherwise launch the generic fallback kernel. Keep all tensors contiguous assumptions and CUDA stream usage unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "candidate looks like patch JSON but could not be parsed"
+      ],
+      "failure_type": "invalid_patch_format",
+      "node_status": "compile_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "explore",
+      "performance_hypothesis": "A specialized `pool_size==4` shared-memory tiled kernel that assigns each block to one `(n,c)` pooled-output tile will reduce global-memory latency and address recomputation enough to outperform the current flat fused kernel, because the selected champion remains DRAM-saturated with high long-scoreboard stalls despite lower register pressure.",
+      "single_change_focus": "Replace the current fused CUDA kernel implementation with a `pool_size==4` shared-memory tiled fast path while keeping the same wrapper API and preserving the existing generic scalar fallback.",
+      "mutation_family": "smem_pool4_tile",
+      "target_metric": "speedup"
+    },
+    "phase2_n5": {
+      "node_id": "phase2_n5",
+      "parent_id": "phase2_n3",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p82_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_tanh_scale_bias_maxpool\", &fused_tanh_scale_bias_maxpool,\n          \"Fused tanh/scale/bias/maxpool (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n__global__ void fused_tanh_scale_bias_maxpool_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int N, int C, int H, int W,\n    int H_out, int W_out,\n    float scaling_factor,\n    int pool_size\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C * H_out * W_out;\n    if (idx >= total) return;\n\n    int ow = idx % W_out;\n    int oh = (idx / W_out) % H_out;\n    int c  = (idx / (W_out * H_out)) % C;\n    int n  = idx / (W_out * H_out * C);\n\n    float max_val = -3.402823466e+38f;\n    int ih_base = oh * pool_size;\n    int iw_base = ow * pool_size;\n    float b = __ldg(&bias[c]);\n\n    for (int kh = 0; kh < pool_size; kh++) {\n        int ih = ih_base + kh;\n        if (ih >= H) continue;\n        for (int kw = 0; kw < pool_size; kw++) {\n            int iw = iw_base + kw;\n            if (iw >= W) continue;\n            float v = input[((n * C + c) * H + ih) * W + iw];\n            float val = tanhf(v) * scaling_factor + b;\n            max_val = fmaxf(max_val, val);\n        }\n    }\n\n    output[((n * C + c) * H_out + oh) * W_out + ow] = max_val;\n}\n\ntorch::Tensor fused_tanh_scale_bias_maxpool(\n    torch::Tensor x,\n    double scaling_factor,\n    torch::Tensor bias,\n    int64_t pool_kernel_size\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n\n    const int N = x.size(0);\n    const int C = x.size(1);\n    const int H = x.size(2);\n    const int W = x.size(3);\n    const int pool = (int)pool_kernel_size;\n    const int H_out = (H - pool) / pool + 1;\n    const int W_out = (W - pool) / pool + 1;\n\n    auto bias_c = bias.contiguous();\n    auto output = torch::empty({N, C, H_out, W_out}, x.options());\n\n    const int total = N * C * H_out * W_out;\n    const int blockSize = 256;\n    const int gridSize = (total + blockSize - 1) / blockSize;\n\n    fused_tanh_scale_bias_maxpool_kernel<<<gridSize, blockSize, 0,\n        at::cuda::getCurrentCUDAStream()>>>(\n        x.data_ptr<float>(),\n        bias_c.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, H, W, H_out, W_out,\n        (float)scaling_factor,\n        pool\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a convolution, applies tanh, scaling, adds a bias term, and then max-pools.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, scaling_factor, bias_shape, pool_kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.scaling_factor = scaling_factor\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.max_pool = nn.MaxPool2d(pool_kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        pool_k = self.max_pool.kernel_size if isinstance(self.max_pool.kernel_size, int) else self.max_pool.kernel_size[0]\n        x = _stark_get_extension().fused_tanh_scale_bias_maxpool(x.contiguous(), float(self.scaling_factor), self.bias.contiguous(), pool_k)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Refine the working fused post-conv tail by keeping the existing extension API and forward fusion, but adding a specialized shared-memory tiled kernel for the hot `pool_kernel_size==4` case so each block processes a 2D pooled-output tile for one `(n,c)` pair and stages the corresponding conv-output patch before applying `tanh * scale + bias` and max reduction.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current single fused kernel implementation with two paths inside the same exported function: (1) keep the existing generic fused kernel as fallback for arbitrary `pool_size`; (2) add a specialized `pool_size == 4` kernel whose grid maps `blockIdx.x` over pooled-output width tiles, `blockIdx.y` over pooled-output height tiles, and `blockIdx.z` over flattened `(n * C + c)` so each block handles exactly one `(n,c)` pair. In the specialized kernel, use a small 2D block such as `BLOCK_W=8`, `BLOCK_H=8`; allocate shared memory for a contiguous input patch of size `(BLOCK_H*4) * (BLOCK_W*4)` floats; have threads cooperatively load this patch from `input[((n*C + c)*H + ih)*W + iw]` with boundary guards; synchronize; then for each valid pooled output `(oh, ow)` owned by the thread, scan its 4x4 region from shared memory, apply `tanhf(v) * scaling_factor + bias[c]`, and write the max to `output[((n*C + c)*H_out + oh)*W_out + ow]`. In the host wrapper, if `pool == 4`, launch the tiled kernel with `dim3 block(BLOCK_W, BLOCK_H)` and `dim3 grid(ceil_div(W_out,BLOCK_W), ceil_div(H_out,BLOCK_H), N*C)`; otherwise launch the existing generic kernel. Keep tensor checks, contiguous handling, and output allocation unchanged except for the new launch branch.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "failed to apply region patch: region 'user_helpers' is not active in current refinement policy"
+      ],
+      "failure_type": "region_apply_failed",
+      "node_status": "compile_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    }
+  }
+}

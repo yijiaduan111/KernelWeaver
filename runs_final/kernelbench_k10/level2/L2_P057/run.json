@@ -1,0 +1,2153 @@
+{
+  "task_name": "kernelbench_l2_57_57_conv2d_relu_hardswish",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": false,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_claude",
+    "plan_provider": "openai-compatible",
+    "code_provider": "claude-compatible",
+    "debug_provider": "openai-compatible",
+    "search_provider": "claude-compatible",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "diagnostics_enabled": false,
+    "diagnostics_mode": "root_ncu_v1",
+    "diagnostics_timeout_seconds": 300,
+    "diagnostics_warmup_runs": 2,
+    "diagnostics_profile_runs": 3,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1,
+    "deliberation_provider_timeout_seconds": 180,
+    "deliberation_phase_timeout_seconds": 240,
+    "evaluator_isolation": "candidate_subprocess",
+    "evaluator_timeout_seconds": 900,
+    "explore_fraction": 0.4,
+    "challenger_fraction": 0.3,
+    "plateau_delta_threshold": 0.03,
+    "plateau_recovery_mutation_attempts": 2,
+    "plateau_window": 3,
+    "deliberation_upgrade_enabled": true,
+    "deliberation_max_rounds": 3,
+    "deliberation_min_remaining_attempts": 8,
+    "phase_two_enabled": true,
+    "phase_two_split_attempts": 5
+  },
+  "best_node_id": "n1",
+  "leaderboard": [
+    "n1",
+    "n4"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "n1",
+      "root"
+    ],
+    [
+      "n1",
+      "n2"
+    ],
+    [
+      "n1",
+      "n3"
+    ],
+    [
+      "n1",
+      "n4"
+    ],
+    [],
+    [
+      "phase2_root"
+    ],
+    [
+      "phase2_root",
+      "phase2_n1"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "n1",
+    "n3",
+    "phase2_root",
+    "phase2_n1",
+    "phase2_n2",
+    "phase2_root",
+    "phase2_n3"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {}
+  ],
+  "pruned_nodes": {},
+  "debug_stats": {
+    "total_attempts": 0,
+    "per_node": {}
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 10,
+    "debug_attempts": 0,
+    "failure_counts": {},
+    "failure_stage_counts": {},
+    "invalid_proposals": 0,
+    "attempt_mode_counts": {
+      "explore": 3,
+      "mutate_champion": 5,
+      "best_lineage_push": 1,
+      "challenger": 1
+    },
+    "provider_transient_error_count": 0,
+    "provider_transient_budget_exhausted_count": 0,
+    "provider_transient_errors_by_stage": {},
+    "provider_transient_errors_by_origin": {},
+    "provider_transient_errors": [],
+    "phase_two_triggered": true,
+    "phase_two_seed_node_id": "n1",
+    "pruned_count": 0
+  },
+  "benchmark_family": "kernelbench",
+  "level": 2,
+  "problem_id": 57,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level2/57_Conv2d_ReLU_HardSwish.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.00783
+  },
+  "speedups": {
+    "torch_eager": 2.663265306122449
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "convolution",
+    "summary": "Convolution style computation; preserve module state and spatial layout.",
+    "source": "KernelBench/KernelBench/level2/57_Conv2d_ReLU_HardSwish.py",
+    "exact_facts": null,
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "forward_stmt_3",
+      "forward_stmt_4",
+      "cuda_cu",
+      "cuda_cpp"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = self.conv(x)",
+        "op_names": [
+          "_conv2d_relu_hardswish",
+          "a",
+          "activation",
+          "and",
+          "applies",
+          "clamp",
+          "conv",
+          "conv2d",
+          "convolution",
+          "hardswish",
+          "in_channels",
+          "kernel_size"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = torch.relu(x)",
+        "op_names": [
+          "_conv2d_relu_hardswish",
+          "a",
+          "activation",
+          "and",
+          "applies",
+          "clamp",
+          "conv",
+          "conv2d",
+          "convolution",
+          "hardswish",
+          "in_channels",
+          "kernel_size"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_3",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = x * torch.clamp((x + 3) / 6, 0, 1)",
+        "op_names": [
+          "_conv2d_relu_hardswish",
+          "a",
+          "activation",
+          "and",
+          "applies",
+          "arithmetic",
+          "clamp",
+          "conv",
+          "conv2d",
+          "convolution",
+          "hardswish",
+          "in_channels"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_4",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "return x",
+        "op_names": [
+          "_conv2d_relu_hardswish",
+          "a",
+          "activation",
+          "and",
+          "applies",
+          "clamp",
+          "conv",
+          "conv2d",
+          "convolution",
+          "hardswish",
+          "in_channels",
+          "kernel_size"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "cuda_cpp",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+        "op_names": [
+          "add",
+          "cuda",
+          "custom",
+          "entrypoints",
+          "exports",
+          "extension",
+          "for",
+          "h",
+          "here",
+          "include",
+          "m",
+          "pybind"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      },
+      {
+        "anchor_name": "cuda_cu",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+        "op_names": [
+          "add",
+          "and",
+          "cuda",
+          "cuda_runtime",
+          "exported",
+          "extension",
+          "functions",
+          "h",
+          "here",
+          "include",
+          "kernels",
+          "torch"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "preserve_layout_and_kernel_window",
+        "summary": "preserve layout and kernel window",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "preserve NCHW layout unless explicitly transformed",
+            "guard boundary indices"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use masks for spatial boundaries"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "reuse_input_tiles",
+        "summary": "reuse input tiles",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "preserve NCHW layout unless explicitly transformed",
+            "guard boundary indices"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use masks for spatial boundaries"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve padding, stride, dilation, groups, and layout",
+      "guard spatial boundaries"
+    ]
+  },
+  "diagnostics_profile": {
+    "enabled": true,
+    "mode": "root_ncu_v1",
+    "ncu_profile": {
+      "enabled": true,
+      "status": "ok",
+      "profiler": "ncu",
+      "kernel_name": "void at::vectorized_elementwise_kernel<4, at::BinaryFunctor<float, float, float, binary_internal::MulFunctor<float>>, std::array<char *, 3>>(int, T2, T3)",
+      "row_count": 41,
+      "kernel_launch_count": 41,
+      "raw_metrics": {
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 94.93,
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": 40.56,
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": 8.06,
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": 1.34,
+        "sm__warps_active.avg.pct_of_peak_sustained_active": 79.94,
+        "launch__registers_per_thread": 38,
+        "launch__occupancy_limit_registers": 12,
+        "launch__occupancy_limit_shared_mem": 32,
+        "launch__occupancy_limit_warps": 12,
+        "gpu__time_duration.avg": 1856512,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.43,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.08,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+        "smsp__sass_branch_targets_threads_divergent.avg": 0,
+        "smsp__sass_branch_targets_threads_uniform.avg": 992.25,
+        "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+        "smsp__warps_eligible.avg": 44661.38
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ],
+      "error": null
+    },
+    "notes": [
+      "Profiled the root candidate program with Nsight Compute."
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_01",
+        "intent": "single_kernel_conv_epilogue_fusion",
+        "summary": "Replace the current `conv -> custom activation` split with a custom CUDA convolution that accumulates each output pixel in registers and applies `ReLU` + `HardSwish` before the only global store. This directly attacks the still memory-bound phase-1 winner (`gpu__dram_throughput` ~94%, `sm__throughput` ~15.5%, long scoreboard ~0.93).",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4"
+        ],
+        "implementation_hints": [
+          "Keep `ModelNew` inputs/outputs unchanged and swap the post-conv extension call for a single exported fused conv entrypoint.",
+          "Specialize for NCHW float32 and the observed small-kernel regime (`kernel_size=3`, `in_channels=8` from execution facts) with loop unrolling over `C_in` and `KxK`.",
+          "Map blocks over `(N, C_out, H, W)` tiles; stage input patches and filter tiles in shared memory when reuse is favorable, and keep the activation epilogue purely register-resident.",
+          "Preserve PyTorch fallback for unsupported stride/padding/dilation/groups cases; guard borders explicitly."
+        ],
+        "expected_gain": "High; potentially larger than phase-1 because it removes the intermediate conv output write/read pair rather than only fusing the activation tail.",
+        "risk_notes": [
+          "Highest implementation complexity and correctness risk around padding/stride/layout semantics.",
+          "May underperform cuDNN on some shapes if the custom kernel is too specialized or poorly tiled.",
+          "Need careful boundary handling and launch geometry tuning to avoid occupancy collapse."
+        ],
+        "memory_methods": [
+          "Eliminate intermediate activation tensor traffic.",
+          "Reuse input/filter data via shared-memory tiles or read-only cache."
+        ],
+        "mutation_axes": [
+          "Direct convolution vs implicit-GEMM style kernel",
+          "Output tile size",
+          "Shared-memory staging depth",
+          "Unroll factor over `C_in` and `KxK`",
+          "Per-thread output count"
+        ],
+        "forbidden_patterns": [
+          "Do not change external tensor layout contract.",
+          "Do not drop fallback support for unsupported convolution parameters.",
+          "Do not add separate ReLU/HardSwish kernels after the fused conv."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 5.0,
+          "claude-compatible": 5.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Best upside for this workload: removes the conv-output round trip and matches the memory-bound profile. Risk is high, but with tight shape specialization plus safe fallback it has the strongest risk-adjusted value.",
+          "claude-compatible": "Best risk-adjusted bet. Eliminates the conv output intermediate write/read pair entirely, directly attacking the ~94% DRAM throughput bottleneck. Small-kernel regime (C_in=8, K=3) makes a custom direct conv tractable and the 72-MAC reduction per output fits cleanly in registers. Shared-memory staging for input patches is well-matched to this shape. Highest implementation complexity but also highest ceiling â this is the only strategy that attacks the root cause rather than the epilogue tail.",
+          "gemini-compatible": "High potential reward by eliminating the global memory round-trip between convolution and activation. However, writing a highly performant custom convolution kernel in CUDA is complex and carries significant risk of underperforming cuDNN on unspecialized shapes."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_03",
+        "intent": "specialized_small_cin_conv_kernel",
+        "summary": "Exploit the observed `in_channels=8`, `kernel_size=3` regime with a hand-specialized CUDA conv kernel that fully unrolls the tiny reduction and fuses the activation epilogue. This is a narrower variant of full conv fusion aimed at better instruction-level efficiency and cache reuse.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Add a shape-guarded specialized entrypoint for `C_in=8` and `K=3`, with a generic fallback to the existing path for all other cases.",
+          "Unroll the 72 multiply-accumulate terms per output (`8 * 3 * 3`) and consider loading filter fragments as packed vectors when alignment permits.",
+          "Assign each thread or warp a small output tile to reuse the same input patch across multiple `C_out` values or neighboring pixels.",
+          "Apply `ReLU` + `HardSwish` in registers before storing the final result."
+        ],
+        "expected_gain": "Medium to high on the benchmarked shape family; lower portability but strong fit for the provided execution facts.",
+        "risk_notes": [
+          "Very shape-specific; gains may vanish outside the guarded regime.",
+          "Code size and register pressure can grow quickly with aggressive unrolling.",
+          "Must avoid assuming alignment that the input/output tensors do not guarantee."
+        ],
+        "memory_methods": [
+          "Turn the tiny input-channel reduction into register-heavy computation.",
+          "Vectorize filter/input loads where alignment is verified."
+        ],
+        "mutation_axes": [
+          "Specialization guards",
+          "Warp-per-output-channel vs threadblock-per-spatial-tile mapping",
+          "Packed load width",
+          "Unroll aggressiveness",
+          "Outputs-per-thread"
+        ],
+        "forbidden_patterns": [
+          "Do not use the specialized path when shape guards fail.",
+          "Do not remove the generic fallback.",
+          "Do not assume contiguous/aligned vector loads without runtime checks."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 5.0,
+          "claude-compatible": 4.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Very strong fit for the stated small `C_in=8`, `K=3` regime. Specialized fused conv+epilogue with guards gives high practical value while containing correctness risk through fallback.",
+          "claude-compatible": "Narrower version of strategy_01 with a better tractability profile. Fully unrolling 72 MACs for C_in=8, K=3 is straightforward, register pressure is manageable, and the shape guard keeps the fallback clean. Missing the conv-output round-trip elimination that strategy_01 targets, so ceiling is lower, but the implementation risk is substantially reduced. Good candidate to run in parallel with strategy_01 as a fallback.",
+          "gemini-compatible": "Hand-specializing for a specific shape (Cin=8, K=3) can yield strong performance for that exact case, but lacks generality. It is a reasonable fallback if general fusion fails, but provides limited value across diverse workloads."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_02",
+        "intent": "cudnn_conv_with_fused_activation_via_cudnn_frontend",
+        "summary": "Phase 1 achieved 2.67x by fusing the post-conv activation epilogue. The remaining bottleneck is that cuDNN's conv kernel and the custom epilogue are still two separate kernels with a global memory round-trip for the conv output. Using cuDNN Frontend API's OperationGraph with a CUDNN_POINTWISE_RELU + custom HardSwish pointwise fusion directly inside the convolution operation eliminates this round-trip entirely. This targets forward_stmt_1 to replace self.conv() with a direct cuDNN graph call that fuses conv+relu+hardswish in one pass.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4"
+        ],
+        "implementation_hints": [
+          "Use at::cudnn_convolution as the base and attach a pointwise epilogue via CUDNN_BACKEND_OPERATION_POINTWISE_DESCRIPTOR; this is available through the ATen cudnn_frontend bindings or direct cudnn_frontend.h inclusion",
+          "The HardSwish after ReLU simplifies to x * min((x+3)/6, 1) with x>=0, which decomposes into: ADD(x, 3), MUL(1/6), CLAMP_MAX(1), MUL(x) â all expressible as CUDNN_POINTWISE operations",
+          "Cache the compiled cuDNN graph by (N, C, H, W, K, R, S, pad, stride) key in a static std::unordered_map to amortize graph build cost",
+          "Fall back to the existing fused_relu_hardswish path if cuDNN graph build fails or input shapes are outside supported range",
+          "Preserve NCHW layout; cuDNN tensor descriptors must match the conv weight layout from self.conv"
+        ],
+        "expected_gain": "Potentially 1.5xâ2.5x over champion by eliminating the convâactivation global memory round-trip; highly dependent on problem size â more impactful at larger spatial dims",
+        "risk_notes": [
+          "cuDNN Frontend API availability varies by cuDNN version; requires cuDNN >= 8.0 for full graph API support",
+          "Graph build latency at first call is significant; must be cached properly or first-call benchmark will be penalized",
+          "Correctness of HardSwish decomposition into cuDNN pointwise chain must be validated carefully",
+          "Self.conv weight/bias tensors must remain unchanged; access them via self.conv.weight and self.conv.bias in the wrapper",
+          "Groups, dilation, and padding must be forwarded exactly from the nn.Conv2d parameters"
+        ],
+        "memory_methods": [
+          "elimination of conv output intermediate buffer",
+          "cuDNN graph-fused activation epilogue"
+        ],
+        "mutation_axes": [
+          "conv kernel selection",
+          "activation fusion depth",
+          "forward dispatch strategy"
+        ],
+        "forbidden_patterns": [
+          "replacing nn.Conv2d weight storage",
+          "modifying init_body",
+          "breaking the existing fused_relu_hardswish fallback path"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "Potentially strong if cuDNN frontend fusion is available, but dependency/version risk and graph-build complexity are substantial. Good idea in theory, weaker risk-adjusted value than a direct specialized kernel.",
+          "claude-compatible": "Conceptually sound â cuDNN frontend graph fusion would eliminate the same round-trip as strategy_01 â but carries significant practical risk. cuDNN graph build latency requires careful caching, HardSwish decomposition into cuDNN pointwise ops is non-trivial to validate, and API availability gating adds fragility. At small spatial dims the graph overhead may not amortize. Scores lower than strategy_01 because the implementation surface is wide and correctness risk is high relative to expected gain.",
+          "gemini-compatible": "Excellent approach if the cuDNN Frontend API is available in the build environment. Fusing the activation directly into the cuDNN convolution operation graph provides the benefits of vendor-optimized convolution with zero-overhead epilogue fusion."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_07",
+        "intent": "persistent_warp_epilogue_with_grid_stride_loop",
+        "summary": "The selected NCU profile shows warps_eligible averaging 502,564 and warps_active at 86.82%, indicating the current 256-thread grid is well-occupied but still suffering long_scoreboard stalls at 0.93. A grid-stride persistent kernel with a smaller grid (2xâ4x SM count) and a loop over 8â16 float4 elements per thread gives each warp more arithmetic to hide outstanding loads. The current two-kernel (vec + tail) launch is already single-pass; this refines the launch geometry to improve ILP per warp rather than changing the access pattern.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Launch exactly N_SM * 2 blocks (query deviceProp.multiProcessorCount at wrapper time and cache it), each block runs a stride loop over float4 chunks until exhausted",
+          "Process 8 float4 registers per loop iteration per thread to fill the instruction pipeline and amortize loop overhead",
+          "Eliminate the separate tail kernel: handle remainder elements inside the same loop body with a lane-index predicate on the last iteration",
+          "Use __ldg() for all read paths to route through the read-only cache and reduce LTS pressure from current 26.21%",
+          "Keep __launch_bounds__(256, 4) from the existing scaffold to maintain occupancy limit of 32 established by the champion"
+        ],
+        "expected_gain": "~1.1xâ1.25x incremental gain over champion by reducing kernel launch overhead from two launches to one and improving ILP; primarily reduces long_scoreboard stall ratio",
+        "risk_notes": [
+          "Reducing grid size too aggressively can underutilize SMs if the tensor is small (batch=8, 64 channels); measure at actual execution_facts dims",
+          "The grid-stride loop must handle n % (gridDim.x * blockDim.x * 4) != 0 correctly to avoid out-of-bounds reads"
+        ],
+        "memory_methods": [
+          "__ldg read-only cache routing",
+          "persistent kernel grid-stride loop"
+        ],
+        "mutation_axes": [
+          "grid launch geometry",
+          "elements per thread per iteration",
+          "tail handling consolidation"
+        ],
+        "forbidden_patterns": [
+          "changing forward_stmt_1 or conv layer",
+          "introducing shared memory tiling for elementwise ops",
+          "modifying cuda_cpp pybind exports"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 2.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Reasonable micro-optimization for the activation kernel, but it attacks a smaller part of end-to-end time after phase-1. Incremental upside only, with some tuning risk around grid sizing.",
+          "claude-compatible": "The persistent grid-stride loop and __ldg routing are sound micro-optimizations, but the analysis is self-limiting: the strategy acknowledges it primarily reduces long_scoreboard stall ratio on an already well-occupied grid. Collapsing the two-kernel launch into one is a real win, but the overall gain ceiling is low because the epilogue is not the bottleneck after phase-1. Worth folding into whichever epilogue kernel wins, but not a standalone strategy.",
+          "gemini-compatible": "A solid, low-risk refinement of the existing epilogue kernel. Implementing a grid-stride loop and consolidating the tail handling into a single launch will reduce overhead and improve instruction-level parallelism."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "activation_kernel_memory_path_refinement",
+        "summary": "If phase-2 stays focused on the existing fused activation path, push the memory system harder with stricter vectorization/alignment gating, grid-stride flattening, and read-write-in-place handling on already contiguous outputs. The phase-1 winner is still dominated by DRAM and long-scoreboard stalls, so any remaining gain comes from fewer memory transactions and better coalescing.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Keep the exported activation API but add a single-kernel flattened path that chooses scalar, `float2`, or `float4` access based on runtime alignment and element count.",
+          "Favor in-place transformation on the contiguous working tensor when aliasing/lifetime is safe, avoiding extra destination allocation and write traffic.",
+          "Use grid-stride loops instead of separate vector/tail launches so the launch count and tail handling stay minimal.",
+          "Only pursue this as a lower-priority branch, since the main bottleneck after phase-1 is likely the conv/intermediate tensor traffic rather than arithmetic."
+        ],
+        "expected_gain": "Low to medium; likely incremental because phase-1 already captured most of the easy post-conv fusion win.",
+        "risk_notes": [
+          "May deliver only noise-level improvements if conv now dominates end-to-end time.",
+          "Alignment-based vectorization must be guarded carefully to avoid invalid accesses.",
+          "In-place operation must respect tensor aliasing and autograd expectations for the benchmark setting."
+        ],
+        "memory_methods": [
+          "Reduce extra output-buffer traffic.",
+          "Use packed loads/stores when aligned."
+        ],
+        "mutation_axes": [
+          "`float` vs `float2` vs `float4` path selection",
+          "In-place vs out-of-place wrapper policy",
+          "Block size",
+          "Grid-stride loop granularity"
+        ],
+        "forbidden_patterns": [
+          "Do not split back into multiple activation kernels.",
+          "Do not assume all tensors are 16-byte aligned.",
+          "Do not prioritize this over conv-side fusion if a broader change is allowed."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 3.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Solid low-risk cleanup path for the existing activation kernel: better vectorization gating, grid-stride flattening, and careful in-place use may yield modest wins. Limited ceiling because conv/intermediate traffic likely dominates.",
+          "claude-compatible": "Explicitly acknowledges it is incremental and may deliver noise-level improvement. The float2/float4 alignment gating and in-place path are good engineering hygiene but phase-1 already captured most of the easy post-conv activation win. Useful as a cleanup pass after a larger structural change (strategy_01 or strategy_03) lands, not as a primary optimization target.",
+          "gemini-compatible": "Safe and standard memory path refinements (alignment-based vectorization, in-place operations). However, the expected gains are marginal if the kernel is already utilizing float4 memory accesses effectively."
+        },
+        "priority": 2
+      },
+      {
+        "strategy_id": "strategy_05",
+        "intent": "cudnn_channels_last_fastpath",
+        "summary": "Add a CUDA fast path that opportunistically uses `channels_last` tensors around the convolution, then applies the existing fused activation in the most contiguous layout available. For many conv shapes this can shift work onto better-tuned vendor kernels while keeping module semantics unchanged.",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "cuda_cpp",
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "In the forward path, detect CUDA float32 tensors and convert the working activation to `channels_last` only when the tensor is not already in that format and shape sizes justify the transform cost.",
+          "Run `self.conv` on the channels-last working tensor, then either keep the fused activation kernel layout-aware or provide a dedicated NHWC contiguous activation path in `cuda_cu`.",
+          "Return a tensor with the same logical shape; only use this fast path when layout conversions are amortized by conv speedup.",
+          "Benchmark-gate the path because the current winner shows activation is bandwidth-bound, so layout wins must outweigh any conversion overhead."
+        ],
+        "expected_gain": "Medium; best if cuDNN chooses a materially faster convolution algorithm than the current NCHW path.",
+        "risk_notes": [
+          "Extra layout conversions can erase gains on small tensors.",
+          "Need to preserve user-visible shape/stride expectations where relevant.",
+          "Activation kernel must not assume NCHW-contiguous-only addressing if this path is enabled."
+        ],
+        "memory_methods": [
+          "Exploit vendor-optimized conv memory access patterns in NHWC/channels-last.",
+          "Prefer operating on an already contiguous channels-last buffer to avoid extra copies."
+        ],
+        "mutation_axes": [
+          "Always-on vs heuristic channels-last conversion",
+          "NHWC-aware fused activation kernel",
+          "Contiguous conversion placement",
+          "Thresholds based on tensor size/channel count"
+        ],
+        "forbidden_patterns": [
+          "Do not permanently mutate module parameter layout in a way that breaks fallback.",
+          "Do not force channels-last for unsupported dtypes/devices.",
+          "Do not add redundant format conversions before and after every op without a heuristic."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 2.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Channels-last can help some convolutions, but layout conversions are risky for a benchmark-sensitive path and may erase gains. Useful only if the workload already benefits strongly from NHWC without extra copies.",
+          "claude-compatible": "Channels-last conversion adds layout transform overhead that is hard to amortize at small tensor sizes (batch=8, 8 input channels). The gain depends entirely on cuDNN selecting a better algorithm for NHWC, which is not guaranteed and not controllable. The strategy does not address the memory round-trip and the heuristic gating adds complexity without a clear win condition. Low priority given the other options.",
+          "gemini-compatible": "Using channels_last (NHWC) can trigger faster cuDNN kernels, but the overhead of layout conversion (NCHW -> NHWC -> NCHW) for a single convolution layer often outweighs the compute benefits."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "half2_vectorized_epilogue_with_reduced_register_pressure",
+        "summary": "Replace the float4 epilogue kernel with a __half2-based vectorized kernel that packs two fp16 activations per thread operation, reducing register pressure from the current 16 registers/thread. The selected NCU profile shows long_scoreboard stalls at 0.93 ratio and DRAM at 93.91% sustained â the bottleneck is memory latency hiding, not compute. Switching to fp16 vector ops cuts DRAM traffic by 2x and halves the per-thread working set, allowing more warps in flight to hide the remaining latency. The current scaffold already exposes the fused_relu_hardswish entry point, so only cuda_cu and the contiguous-path dispatch logic need changes.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Convert input tensor to fp16 via .to(torch::kHalf) before the kernel, process with __half2 vector loads, convert output back to fp32 after â or keep fp16 throughout if downstream ops permit",
+          "Use __hfma2 for the (r + 3) * (1/6) computation, __hmax2 for ReLU, __hmin2 for the upper clamp",
+          "Pack two half2 lanes per thread to double effective memory bandwidth utilization",
+          "Keep the scalar fallback path for odd elements and non-CUDA input as in the current scaffold",
+          "Add __launch_bounds__(256, 4) to cap register allocation and improve occupancy",
+          "Dispatch fp16 path only when input dtype is kFloat32 (convert internally) to preserve interface contract"
+        ],
+        "expected_gain": "1.3xâ1.6x over current 2.67x champion by halving DRAM traffic; long_scoreboard stall ratio should drop as more warps become schedulable",
+        "risk_notes": [
+          "fp16 accumulation has lower precision â verify numerical correctness against PyTorch reference within tolerance",
+          "The convert-in/convert-out round trip adds kernel overhead; only beneficial if DRAM savings outweigh conversion cost",
+          "Preserve NCHW layout and do not alter conv output shape or dtype seen by downstream callers"
+        ],
+        "memory_methods": [
+          "fp16 vectorization",
+          "2x bandwidth reduction via dtype narrowing"
+        ],
+        "mutation_axes": [
+          "dtype of epilogue buffer",
+          "vector width per thread",
+          "register count via launch_bounds"
+        ],
+        "forbidden_patterns": [
+          "changing conv weight dtype",
+          "modifying init_body or conv layer",
+          "altering forward_stmt_1 conv call"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 2.0,
+          "openai-compatible": 1.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Poor fit because it changes math/precision for an epilogue while the larger remaining cost is likely the separate conv kernel and intermediate traffic. Convert-to-fp16/convert-back overhead and accuracy risk make this low value.",
+          "claude-compatible": "Fp16 vectorization of the epilogue only reduces traffic on the activation tail, not on the conv output buffer which is the dominant intermediate. The convert-in/convert-out overhead is real and the precision risk (8-bit mantissa for HardSwish intermediates) needs careful validation. At the current bottleneck profile this is unlikely to outperform the existing float4 path by more than noise. The insight about register pressure is valid but better applied inside a full conv fusion kernel.",
+          "gemini-compatible": "Downcasting to fp16 introduces significant precision risks that will likely fail strict correctness checks. Additionally, the overhead of casting back and forth may negate the memory bandwidth savings."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "vectorized_inplace_bf16_epilogue_with_stream_ordered_allocation",
+        "summary": "The current champion allocates torch::empty_like(x) for the output buffer on every forward call. At batch=8, 64 channels, this allocation overhead is measurable relative to the ~2.94ms runtime. Switching to bfloat16 for the epilogue buffer (bf16 has same range as fp32 but 2x bandwidth) combined with cudaMallocAsync stream-ordered allocation (CUDA 11.2+) eliminates both the allocation stall and the dtype conversion overhead seen with fp16. The in-place variant (already partially explored in n4/n5 attempts) is the right direction but was tried on float32; doing it on a bf16 staging buffer avoids the precision risk of in-place fp32 modification.",
+        "target_anchors": [
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Allocate the epilogue output as a bf16 tensor using torch::empty(x.sizes(), x.options().dtype(torch::kBFloat16)) and use nv_bfloat162 vector operations in the kernel",
+          "Use __nv_bfloat162 loads/stores for 2-element packing, keeping the same float4-equivalent throughput with 2x bandwidth reduction",
+          "Convert back to fp32 via __bfloat162float inline after the kernel for the return tensor, or return bf16 if the model can tolerate it",
+          "Use cudaMallocAsync / cudaFreeAsync with the current stream to overlap allocation with prior conv kernel execution",
+          "Cache a persistent output buffer per shape to avoid repeated allocation; store it as a member or static thread_local map keyed on numel"
+        ],
+        "expected_gain": "~1.1xâ1.2x over champion by reducing allocation overhead and improving DRAM efficiency; secondary benefit from bf16 bandwidth advantage",
+        "risk_notes": [
+          "bfloat16 has 8-bit mantissa vs fp32's 23-bit â ReLU output range is preserved but HardSwish intermediate precision may diverge from reference",
+          "cudaMallocAsync requires CUDA 11.2+ and a supporting allocator; check availability at extension load time",
+          "Persistent buffer caching requires invalidation on shape change; avoid memory leaks if shapes vary across calls",
+          "The n4/n5 in-place attempts already showed no regression at 2.67x; this extends that direction rather than repeating it"
+        ],
+        "memory_methods": [
+          "bfloat16 vectorization for 2x bandwidth",
+          "stream-ordered allocation to overlap with conv"
+        ],
+        "mutation_axes": [
+          "epilogue buffer dtype",
+          "allocation strategy",
+          "output conversion path"
+        ],
+        "forbidden_patterns": [
+          "modifying conv weights or init_body",
+          "changing the pybind interface in cuda_cpp",
+          "returning bf16 tensor without explicit fp32 conversion if downstream expects float"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 1.0,
+          "openai-compatible": 1.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Weak risk-adjusted value: bf16 staging and async allocation add complexity, precision drift, and allocator/version constraints while only targeting a secondary cost. Likely incremental at best.",
+          "claude-compatible": "Stream-ordered allocation and bf16 staging address second-order costs (allocation overhead, bandwidth of the epilogue buffer) while the dominant cost is still the conv output intermediate tensor. The expected 1.1xâ1.2x gain estimate is optimistic given that allocation overhead at this tensor size is small relative to kernel execution. Persistent buffer caching with shape-keyed invalidation adds memory management complexity for marginal return. Not worth pursuing until conv-side fusion is exhausted.",
+          "gemini-compatible": "Similar to strategy_04, using bfloat16 introduces precision risks. Furthermore, relying on cudaMallocAsync might cause compatibility issues depending on the CUDA version and allocator state in the benchmark environment."
+        },
+        "priority": 3
+      }
+    ],
+    "proposal_errors": {
+      "gemini-compatible": "Expecting value: line 1 column 1 (char 0)"
+    },
+    "review_errors": {},
+    "deliberation_round": 1
+  },
+  "phase_transition": {
+    "source_phase": 1,
+    "target_phase": 2,
+    "split_attempts": 5,
+    "trigger_attempt": 5,
+    "root": {
+      "node_id": "root",
+      "strategy_name": null,
+      "runtime": 0.00805,
+      "speedup": 0.9739130434782609,
+      "plan_summary": null,
+      "changed_regions": [],
+      "lineage": [
+        "root"
+      ]
+    },
+    "selected": {
+      "node_id": "n1",
+      "strategy_name": "strategy_05",
+      "runtime": 0.00294,
+      "speedup": 2.663265306122449,
+      "plan_summary": "Fuse ReLU and HardSwish into one CUDA epilogue after the convolution to eliminate extra global-memory round trips in the memory-bound post-conv path.",
+      "changed_regions": [
+        "cuda_cpp",
+        "cuda_cu",
+        "forward_stmt_2",
+        "forward_stmt_3"
+      ],
+      "lineage": [
+        "root",
+        "n1"
+      ]
+    },
+    "attempts": [
+      {
+        "node_id": "n1",
+        "parent_id": "root",
+        "strategy_name": "strategy_05",
+        "attempt_mode": "explore",
+        "mutation_family": "epilogue_fusion_float4",
+        "single_change_focus": "Fuse the activation tail into one custom CUDA epilogue kernel call site.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00294,
+        "speedup": 2.663265306122449,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Fuse ReLU and HardSwish into one CUDA epilogue after the convolution to eliminate extra global-memory round trips in the memory-bound post-conv path."
+      },
+      {
+        "node_id": "n2",
+        "parent_id": "n1",
+        "strategy_name": "strategy_10",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "single_launch_epilogue",
+        "single_change_focus": "Collapse the current two-kernel fused activation implementation into one single-launch contiguous kernel with internal packed-plus-tail handling.",
+        "changed_regions": [
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00298,
+        "speedup": 2.6442953020134228,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing fused post-conv activation by keeping the current exported API and forward call unchanged, but replacing the two-launch vector-plus-tail implementation with a single flattened contiguous CUDA kernel that handles packed `float4` work and scalar tail internally."
+      },
+      {
+        "node_id": "n3",
+        "parent_id": "n2",
+        "strategy_name": "strategy_09",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "launch_bounds_occupancy_tune",
+        "single_change_focus": "Add occupancy-oriented launch bounds and a smaller thread block to the existing fused activation kernel, keeping the packed and tail logic unchanged.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00294,
+        "speedup": 2.663265306122449,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Tighten the current fused float4 epilogue by reducing register pressure and nudging occupancy upward, while preserving the proven single-launch packed+tail structure."
+      },
+      {
+        "node_id": "n4",
+        "parent_id": "n1",
+        "strategy_name": "strategy_10",
+        "attempt_mode": "best_lineage_push",
+        "mutation_family": "inplace_epilogue_buffer_reuse",
+        "single_change_focus": "Make the fused CUDA wrapper operate in place on the contiguous working tensor and return that tensor, without changing the existing fused activation kernel structure or launch configuration.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00294,
+        "speedup": 2.6700680272108843,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the working fused activation epilogue by switching the hot contiguous float32 CUDA path from out-of-place output allocation to in-place transformation on the contiguous buffer, while preserving the existing packed vector path, launch-bounds tuning, and scalar fallback structure."
+      },
+      {
+        "node_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_10",
+        "attempt_mode": "challenger",
+        "mutation_family": "inplace_contiguous_epilogue",
+        "single_change_focus": "Convert the fused activation CUDA wrapper/kernel to an in-place contiguous path that reads and writes the same tensor buffer.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00294,
+        "speedup": 2.6666666666666665,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing fused activation path by making the hot CUDA epilogue operate in place on the contiguous tensor, preserving the proven packed float4/tail structure while removing the extra output allocation and destination write path."
+      }
+    ],
+    "trace_summary": "effective=n1:Fuse the activation tail into one custom CUDA epilogue kernel call site.:2.663x; n3:Add occupancy-oriented launch bounds and a smaller thread block to the existing fused activation kernel, keeping the packed and tail logic unchanged.:2.663x; n4:Make the fused CUDA wrapper operate in place on the contiguous working tensor and return that tensor, without changing the existing fused activation kernel structure or launch configuration.:2.670x; n5:Convert the fused activation CUDA wrapper/kernel to an in-place contiguous path that reads and writes the same tensor buffer.:2.667x | flat=n2:Collapse the current two-kernel fused activation implementation into one single-launch contiguous kernel with internal packed-plus-tail handling.:2.644x",
+    "root_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void at::vectorized_elementwise_kernel<4, at::BinaryFunctor<float, float, float, binary_internal::MulFunctor<float>>, std::array<char *, 3>>(int, T2, T3)",
+        "row_count": 41,
+        "kernel_launch_count": 41,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 94.93,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 40.56,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 8.06,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 1.34,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 79.94,
+          "launch__registers_per_thread": 38,
+          "launch__occupancy_limit_registers": 12,
+          "launch__occupancy_limit_shared_mem": 32,
+          "launch__occupancy_limit_warps": 12,
+          "gpu__time_duration.avg": 1856512,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.43,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.08,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 992.25,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 44661.38
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "selected_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void at::elementwise_kernel<128, 2, void at::gpu_kernel_impl_nocast<at::CUDAFunctor_add<float>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+        "row_count": 21,
+        "kernel_launch_count": 21,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 93.91,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 26.21,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 11.23,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 15.5,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 86.82,
+          "launch__registers_per_thread": 16,
+          "launch__occupancy_limit_registers": 32,
+          "launch__occupancy_limit_shared_mem": 32,
+          "launch__occupancy_limit_warps": 12,
+          "gpu__time_duration.avg": 1208800,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.93,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 35721,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 502564.67
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "diagnostics_delta": {
+      "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": -1.0200000000000102,
+      "gpu__time_duration.avg": -647712,
+      "l1tex__throughput.avg.pct_of_peak_sustained_active": 3.17,
+      "launch__occupancy_limit_registers": 20,
+      "launch__occupancy_limit_shared_mem": 0,
+      "launch__occupancy_limit_warps": 0,
+      "launch__registers_per_thread": -22,
+      "lts__throughput.avg.pct_of_peak_sustained_elapsed": -14.350000000000001,
+      "sm__throughput.avg.pct_of_peak_sustained_elapsed": 14.16,
+      "sm__warps_active.avg.pct_of_peak_sustained_active": 6.8799999999999955,
+      "smsp__sass_branch_targets_threads_divergent.avg": 0,
+      "smsp__sass_branch_targets_threads_uniform.avg": 34728.75,
+      "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.5,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": -0.08,
+      "smsp__warps_eligible.avg": 457903.29
+    }
+  },
+  "feedback_state": {
+    "total_attempts": 11,
+    "compile_rate": 1.0,
+    "correct_rate": 1.0,
+    "best_speedup": 2.6700680272108843,
+    "best_strategy_name": "strategy_10",
+    "phase": "refinement",
+    "current_champion_id": "n4",
+    "current_champion_speedup": 2.6700680272108843,
+    "plateau_detected": true,
+    "recent_improvement_deltas": [
+      0.018970004109026384,
+      0.00680272108843516,
+      0.003401360544217358,
+      0.002286533342433561,
+      0.04229580573951397
+    ],
+    "recent_regression_deltas": [
+      -0.018970004109026384,
+      -0.04682274247491636,
+      -0.005395763656633079,
+      -0.13914955049543964,
+      0.0
+    ],
+    "recent_successful_mutation_families": [
+      "aligned_grid_stride_activation",
+      "dual_float4_unroll"
+    ],
+    "recent_failed_mutation_families": [
+      "host_dispatch_vecwidth",
+      "persistent_grid_cap",
+      "inplace_epilogue_reuse",
+      "epilogue_fusion_float4"
+    ],
+    "last_mutation_outcome": "regressed_or_flat",
+    "recent_attempts": [
+      {
+        "attempt_id": "n4",
+        "parent_id": "n1",
+        "strategy_name": "strategy_10",
+        "mode": "best_lineage_push",
+        "mutation_family": "inplace_epilogue_buffer_reuse",
+        "speedup": 2.6700680272108843,
+        "parent_speedup": 2.663265306122449,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Make the fused CUDA wrapper operate in place on the contiguous working tensor and return that tensor, without changing the existing fused activation kernel structure or launch configuration."
+      },
+      {
+        "attempt_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_10",
+        "mode": "challenger",
+        "mutation_family": "inplace_contiguous_epilogue",
+        "speedup": 2.6666666666666665,
+        "parent_speedup": 2.663265306122449,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Convert the fused activation CUDA wrapper/kernel to an in-place contiguous path that reads and writes the same tensor buffer."
+      },
+      {
+        "attempt_id": "phase2_n1",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_08",
+        "mode": "explore",
+        "mutation_family": "aligned_grid_stride_activation",
+        "speedup": 2.6655518394648827,
+        "parent_speedup": 2.663265306122449,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Collapse the activation kernel into one alignment-aware grid-stride path."
+      },
+      {
+        "attempt_id": "phase2_n2",
+        "parent_id": "phase2_n1",
+        "strategy_name": "strategy_08",
+        "mode": "mutate_champion",
+        "mutation_family": "host_dispatch_vecwidth",
+        "speedup": 2.6187290969899664,
+        "parent_speedup": 2.6655518394648827,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the monolithic alignment-aware kernel with host-dispatched specialized `float4`, `float2`, and scalar kernels while keeping the same exported wrapper and launch geometry."
+      },
+      {
+        "attempt_id": "phase2_n3",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_08",
+        "mode": "mutate_champion",
+        "mutation_family": "persistent_grid_cap",
+        "speedup": 2.6133333333333333,
+        "parent_speedup": 2.6187290969899664,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Use device SM count to compute a persistent grid cap for the existing fused activation launches instead of the current hardcoded 2048-block limit."
+      },
+      {
+        "attempt_id": "phase2_n4",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_08",
+        "mode": "explore",
+        "mutation_family": "inplace_epilogue_reuse",
+        "speedup": 2.5241157556270095,
+        "parent_speedup": 2.663265306122449,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Convert the CUDA fast path of `fused_relu_hardswish` from out-of-place output allocation to in-place transformation on the contiguous working tensor."
+      },
+      {
+        "attempt_id": "phase2_n5",
+        "parent_id": "phase2_n3",
+        "strategy_name": "strategy_08",
+        "mode": "mutate_champion",
+        "mutation_family": "dual_float4_unroll",
+        "speedup": 2.6556291390728473,
+        "parent_speedup": 2.6133333333333333,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Unroll the aligned float4 path to handle two packed vectors per loop iteration before advancing the grid-stride cursor."
+      },
+      {
+        "attempt_id": "phase2_root",
+        "parent_id": "n1",
+        "strategy_name": "strategy_05",
+        "mode": "explore",
+        "mutation_family": "epilogue_fusion_float4",
+        "speedup": 2.663265306122449,
+        "parent_speedup": 2.663265306122449,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Fuse the activation tail into one custom CUDA epilogue kernel call site."
+      }
+    ],
+    "champion": {
+      "node_id": "n4",
+      "speedup": 2.6700680272108843,
+      "strategy_name": "strategy_10",
+      "mutation_family": "inplace_epilogue_buffer_reuse",
+      "lineage": [
+        "root",
+        "n1",
+        "n4"
+      ],
+      "recent_positive_mutations": [
+        {
+          "attempt_id": "phase2_n1",
+          "strategy_name": "strategy_08",
+          "mode": "explore",
+          "mutation_family": "aligned_grid_stride_activation",
+          "speedup": 2.6655518394648827,
+          "parent_speedup": 2.663265306122449,
+          "single_change_focus": "Collapse the activation kernel into one alignment-aware grid-stride path."
+        },
+        {
+          "attempt_id": "phase2_n5",
+          "strategy_name": "strategy_08",
+          "mode": "mutate_champion",
+          "mutation_family": "dual_float4_unroll",
+          "speedup": 2.6556291390728473,
+          "parent_speedup": 2.6133333333333333,
+          "single_change_focus": "Unroll the aligned float4 path to handle two packed vectors per loop iteration before advancing the grid-stride cursor."
+        }
+      ],
+      "recent_negative_mutations": [
+        {
+          "attempt_id": "phase2_n2",
+          "strategy_name": "strategy_08",
+          "mode": "mutate_champion",
+          "mutation_family": "host_dispatch_vecwidth",
+          "speedup": 2.6187290969899664,
+          "parent_speedup": 2.6655518394648827,
+          "single_change_focus": "Replace the monolithic alignment-aware kernel with host-dispatched specialized `float4`, `float2`, and scalar kernels while keeping the same exported wrapper and launch geometry."
+        },
+        {
+          "attempt_id": "phase2_n3",
+          "strategy_name": "strategy_08",
+          "mode": "mutate_champion",
+          "mutation_family": "persistent_grid_cap",
+          "speedup": 2.6133333333333333,
+          "parent_speedup": 2.6187290969899664,
+          "single_change_focus": "Use device SM count to compute a persistent grid cap for the existing fused activation launches instead of the current hardcoded 2048-block limit."
+        },
+        {
+          "attempt_id": "phase2_n4",
+          "strategy_name": "strategy_08",
+          "mode": "explore",
+          "mutation_family": "inplace_epilogue_reuse",
+          "speedup": 2.5241157556270095,
+          "parent_speedup": 2.663265306122449,
+          "single_change_focus": "Convert the CUDA fast path of `fused_relu_hardswish` from out-of-place output allocation to in-place transformation on the contiguous working tensor."
+        },
+        {
+          "attempt_id": "phase2_root",
+          "strategy_name": "strategy_05",
+          "mode": "explore",
+          "mutation_family": "epilogue_fusion_float4",
+          "speedup": 2.663265306122449,
+          "parent_speedup": 2.663265306122449,
+          "single_change_focus": "Fuse the activation tail into one custom CUDA epilogue kernel call site."
+        }
+      ],
+      "plateau_detected": true,
+      "lineage_plateau_depth": 3
+    }
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "user_helpers",
+      "region_role": "helper",
+      "start_line": 36,
+      "end_line": 37,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 40,
+      "end_line": 45,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 49,
+      "end_line": 55,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 64,
+      "end_line": 66,
+      "source_excerpt": "self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)",
+      "source_hash": "94eea2fb2760"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 69,
+      "end_line": 73,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\nx = self.conv(x)",
+      "source_hash": "fe567e588858"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 74,
+      "end_line": 76,
+      "source_excerpt": "x = torch.relu(x)",
+      "source_hash": "f07aaa5b5229"
+    },
+    {
+      "anchor_name": "forward_stmt_3",
+      "region_role": "forward",
+      "start_line": 77,
+      "end_line": 79,
+      "source_excerpt": "x = x * torch.clamp((x + 3) / 6, 0, 1)",
+      "source_hash": "39e323d78786"
+    },
+    {
+      "anchor_name": "forward_stmt_4",
+      "region_role": "forward",
+      "start_line": 80,
+      "end_line": 82,
+      "source_excerpt": "return x",
+      "source_hash": "03c387736bb5"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p57_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a convolution, applies ReLU, and applies HardSwish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = torch.relu(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x * torch.clamp((x + 3) / 6, 0, 1)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00805,
+      "score": 0.00805,
+      "logs": [
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=653037",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/19_L2_P57_Auto_P57_20260720_063717/eval_traces/20260720_063718_653010_424e429e_kernelbench_l2_57_57_conv2d_relu_hardswish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00784,
+      "speedup": 0.9739130434782609,
+      "reference_runtimes": {
+        "torch_eager": 0.00784
+      },
+      "speedups": {
+        "torch_eager": 0.9739130434782609
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": null,
+      "single_change_focus": null,
+      "mutation_family": null,
+      "target_metric": null
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p57_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_relu_hardswish\", &fused_relu_hardswish, \"Fused ReLU + HardSwish (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void fused_relu_hardswish_vec(\n    const float* __restrict__ inp,\n    float* __restrict__ out,\n    int nvec\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= nvec) return;\n    float4 v = reinterpret_cast<const float4*>(inp)[idx];\n    float4 o;\n    float r;\n    // relu(x) * clamp((relu(x)+3)/6, 0, 1)\n    // since relu(x)>=0, lower clamp never fires; (r+3)/6 = fma(r, 1/6, 0.5)\n    r = fmaxf(v.x, 0.0f); o.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n    r = fmaxf(v.y, 0.0f); o.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n    r = fmaxf(v.z, 0.0f); o.z = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n    r = fmaxf(v.w, 0.0f); o.w = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n    reinterpret_cast<float4*>(out)[idx] = o;\n}\n\n__global__ void fused_relu_hardswish_tail(\n    const float* __restrict__ inp,\n    float* __restrict__ out,\n    int start,\n    int n\n) {\n    int idx = start + blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= n) return;\n    float r = fmaxf(inp[idx], 0.0f);\n    out[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n}\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input) {\n    if (!input.is_cuda() || input.scalar_type() != torch::kFloat32) {\n        auto x = torch::relu(input);\n        return x * torch::clamp((x + 3.0f) / 6.0f, 0.0f, 1.0f);\n    }\n    auto x = input.contiguous();\n    auto out = torch::empty_like(x);\n    int64_t n = x.numel();\n    int64_t nvec = n / 4;\n    int64_t rem  = n % 4;\n    const int BS = 256;\n    if (nvec > 0) {\n        int grid = (int)((nvec + BS - 1) / BS);\n        fused_relu_hardswish_vec<<<grid, BS>>>(\n            x.data_ptr<float>(), out.data_ptr<float>(), (int)nvec);\n    }\n    if (rem > 0) {\n        fused_relu_hardswish_tail<<<1, (int)rem>>>(\n            x.data_ptr<float>(), out.data_ptr<float>(), (int)(nvec * 4), (int)n);\n    }\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a convolution, applies ReLU, and applies HardSwish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_relu_hardswish(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2",
+        "n4",
+        "phase2_root"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Fuse ReLU and HardSwish into one CUDA epilogue after the convolution to eliminate extra global-memory round trips in the memory-bound post-conv path.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the empty pybind module with exports for one CUDA entrypoint named `fused_relu_hardswish`; keep the module skeleton minimal and expose the function so `forward_stmt_2` can call it through `_stark_get_extension()`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Implement a CUDA wrapper plus kernel that takes a contiguous float32 tensor, applies `relu(x) * clamp((x + 3) / 6, 0, 1)` in one pass, uses a `float4` fast path when aligned and a scalar tail fallback otherwise, and returns the same-shaped tensor; include runtime guards and a safe fallback for unsupported cases.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the separate `torch.relu(x)` call with a single extension call like `x = _stark_get_extension().fused_relu_hardswish(x)` so the activation tail executes in one CUDA pass immediately after convolution.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the standalone HardSwish math with a no-op comment or direct pass-through so the fused CUDA epilogue becomes the only activation implementation path.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00294,
+      "score": 0.00294,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=653864",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/19_L2_P57_Auto_P57_20260720_063717/eval_traces/20260720_064125_653010_d80e58ad_kernelbench_l2_57_57_conv2d_relu_hardswish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00783,
+      "speedup": 2.663265306122449,
+      "reference_runtimes": {
+        "torch_eager": 0.00783
+      },
+      "speedups": {
+        "torch_eager": 2.663265306122449
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If the conv output is consumed once by a fused CUDA epilogue, the workload will drop two intermediate tensor reads/writes and reduce the dominant DRAM-bound tail latency.",
+      "single_change_focus": "Fuse the activation tail into one custom CUDA epilogue kernel call site.",
+      "mutation_family": "epilogue_fusion_float4",
+      "target_metric": "speedup"
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p57_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_relu_hardswish\", &fused_relu_hardswish, \"Fused ReLU + HardSwish single-launch (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Single-launch fused ReLU + HardSwish kernel.\n// Processes float4 chunks for the aligned prefix and scalar elements for the tail,\n// all within one grid-stride kernel to eliminate dual-launch overhead.\n__global__ void fused_relu_hardswish_kernel(\n    const float* __restrict__ inp,\n    float* __restrict__ out,\n    int nvec,      // number of float4 chunks\n    int n          // total float elements\n) {\n    // --- float4 packed region ---\n    for (int idx = blockIdx.x * blockDim.x + threadIdx.x; idx < nvec; idx += blockDim.x * gridDim.x) {\n        float4 v = reinterpret_cast<const float4*>(inp)[idx];\n        float4 o;\n        float r;\n        r = fmaxf(v.x, 0.0f); o.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.y, 0.0f); o.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.z, 0.0f); o.z = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.w, 0.0f); o.w = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        reinterpret_cast<float4*>(out)[idx] = o;\n    }\n    // --- scalar tail region [nvec*4, n) ---\n    int tail_start = nvec * 4;\n    for (int idx = tail_start + blockIdx.x * blockDim.x + threadIdx.x; idx < n; idx += blockDim.x * gridDim.x) {\n        float r = fmaxf(inp[idx], 0.0f);\n        out[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n    }\n}\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input) {\n    if (!input.is_cuda() || input.scalar_type() != torch::kFloat32) {\n        auto x = torch::relu(input);\n        return x * torch::clamp((x + 3.0f) / 6.0f, 0.0f, 1.0f);\n    }\n    auto x = input.contiguous();\n    auto out = torch::empty_like(x);\n    int64_t n = x.numel();\n    int64_t nvec = n / 4;\n    const int BS = 256;\n    // Grid sized to cover the packed float4 region; tail handled in same kernel.\n    int grid = (int)((nvec + BS - 1) / BS);\n    if (grid < 1) grid = 1;\n    fused_relu_hardswish_kernel<<<grid, BS>>>(\n        x.data_ptr<float>(), out.data_ptr<float>(), (int)nvec, (int)n);\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a convolution, applies ReLU, and applies HardSwish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_relu_hardswish(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_10",
+      "plan_summary": "Refine the existing fused post-conv activation by keeping the current exported API and forward call unchanged, but replacing the two-launch vector-plus-tail implementation with a single flattened contiguous CUDA kernel that handles packed `float4` work and scalar tail internally.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current CUDA implementation with one exported `fused_relu_hardswish(torch::Tensor input)` wrapper that preserves the same signature and fallback behavior, but launches exactly one CUDA kernel for the float32 CUDA fast path. In that kernel, flatten the contiguous tensor to `n` elements, compute an aligned packed region `vec_elems = (n / 4) * 4`, have each thread iterate grid-stride over `float4` chunks for indices `< vec_elems / 4`, apply `r = fmaxf(x, 0.f); y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.f)` to each lane, then in the same kernel have threads also grid-stride over scalar indices covering `[vec_elems, n)` for the tail. Keep output out-of-place if needed for safety, but remove the separate `fused_relu_hardswish_vec` and `fused_relu_hardswish_tail` launches and their host-side branching so the fast path is a single launch over one contiguous flattened tensor.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the C++ binding only as needed to keep a single exported function declaration `torch::Tensor fused_relu_hardswish(torch::Tensor input);` and the existing pybind name `fused_relu_hardswish`, without changing the Python-visible API or adding new entrypoints.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00298,
+      "score": 0.00298,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:cuda_cpp:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=654538",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/19_L2_P57_Auto_P57_20260720_063717/eval_traces/20260720_064420_653010_3decdc4d_kernelbench_l2_57_57_conv2d_relu_hardswish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00788,
+      "speedup": 2.6442953020134228,
+      "reference_runtimes": {
+        "torch_eager": 0.00788
+      },
+      "speedups": {
+        "torch_eager": 2.6442953020134228
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "A single grid-stride fused activation kernel that processes the aligned `float4` prefix and scalar tail in one launch will outperform the current separate vector and tail launches by reducing launch overhead and wrapper-side branching while keeping the memory-efficient fused epilogue intact.",
+      "single_change_focus": "Collapse the current two-kernel fused activation implementation into one single-launch contiguous kernel with internal packed-plus-tail handling.",
+      "mutation_family": "single_launch_epilogue",
+      "target_metric": "speedup"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p57_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_relu_hardswish\", &fused_relu_hardswish, \"Fused ReLU + HardSwish single-launch (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Fused ReLU + HardSwish kernel with __launch_bounds__ to reduce register pressure\n// and improve occupancy. Uses float4 packed access for the aligned prefix and\n// scalar processing for the tail, all in one grid-stride launch.\n__launch_bounds__(128, 4)\n__global__ void fused_relu_hardswish_kernel(\n    const float* __restrict__ inp,\n    float* __restrict__ out,\n    int nvec,\n    int n\n) {\n    // --- float4 packed region ---\n    for (int idx = blockIdx.x * blockDim.x + threadIdx.x; idx < nvec; idx += blockDim.x * gridDim.x) {\n        float4 v = reinterpret_cast<const float4*>(inp)[idx];\n        float4 o;\n        float r;\n        r = fmaxf(v.x, 0.0f); o.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.y, 0.0f); o.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.z, 0.0f); o.z = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.w, 0.0f); o.w = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        reinterpret_cast<float4*>(out)[idx] = o;\n    }\n    // --- scalar tail region [nvec*4, n) ---\n    int tail_start = nvec * 4;\n    for (int idx = tail_start + blockIdx.x * blockDim.x + threadIdx.x; idx < n; idx += blockDim.x * gridDim.x) {\n        float r = fmaxf(inp[idx], 0.0f);\n        out[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n    }\n}\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input) {\n    if (!input.is_cuda() || input.scalar_type() != torch::kFloat32) {\n        auto x = torch::relu(input);\n        return x * torch::clamp((x + 3.0f) / 6.0f, 0.0f, 1.0f);\n    }\n    auto x = input.contiguous();\n    auto out = torch::empty_like(x);\n    int64_t n = x.numel();\n    int64_t nvec = n / 4;\n    const int BS = 128;\n    int grid = (int)((nvec + BS - 1) / BS);\n    if (grid < 1) grid = 1;\n    fused_relu_hardswish_kernel<<<grid, BS>>>(\n        x.data_ptr<float>(), out.data_ptr<float>(), (int)nvec, (int)n);\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a convolution, applies ReLU, and applies HardSwish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_relu_hardswish(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_09",
+      "plan_summary": "Tighten the current fused float4 epilogue by reducing register pressure and nudging occupancy upward, while preserving the proven single-launch packed+tail structure.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current fused activation kernel launch configuration with an occupancy-tuned variant: add `__launch_bounds__(128, 4)` to `fused_relu_hardswish_kernel`, set the launch block size to 128 threads, and keep the existing float4 packed path, scalar tail path, wrapper signature, and fallback math exactly the same.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00294,
+      "score": 0.00294,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=654803",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/19_L2_P57_Auto_P57_20260720_063717/eval_traces/20260720_064748_653010_457bd550_kernelbench_l2_57_57_conv2d_relu_hardswish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00783,
+      "speedup": 2.663265306122449,
+      "reference_runtimes": {
+        "torch_eager": 0.00783
+      },
+      "speedups": {
+        "torch_eager": 2.663265306122449
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Reducing register pressure in the fused activation kernel will raise effective occupancy enough to hide more long-scoreboard stalls without changing memory traffic or math.",
+      "single_change_focus": "Add occupancy-oriented launch bounds and a smaller thread block to the existing fused activation kernel, keeping the packed and tail logic unchanged.",
+      "mutation_family": "launch_bounds_occupancy_tune",
+      "target_metric": "speedup"
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p57_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_relu_hardswish\", &fused_relu_hardswish, \"Fused ReLU + HardSwish (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__launch_bounds__(256, 4)\n__global__ void fused_relu_hardswish_vec(\n    float* __restrict__ data,\n    int nvec\n) {\n    for (int idx = blockIdx.x * blockDim.x + threadIdx.x; idx < nvec; idx += blockDim.x * gridDim.x) {\n        float4 v = reinterpret_cast<float4*>(data)[idx];\n        float4 o;\n        float r;\n        r = fmaxf(v.x, 0.0f); o.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.y, 0.0f); o.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.z, 0.0f); o.z = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.w, 0.0f); o.w = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        reinterpret_cast<float4*>(data)[idx] = o;\n    }\n}\n\n__launch_bounds__(256, 4)\n__global__ void fused_relu_hardswish_tail(\n    float* __restrict__ data,\n    int start,\n    int n\n) {\n    int idx = start + blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= n) return;\n    float r = fmaxf(data[idx], 0.0f);\n    data[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n}\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input) {\n    if (!input.is_cuda() || input.scalar_type() != torch::kFloat32) {\n        auto x = torch::relu(input);\n        return x * torch::clamp((x + 3.0f) / 6.0f, 0.0f, 1.0f);\n    }\n    auto x = input.contiguous();\n    int64_t n = x.numel();\n    int64_t nvec = n / 4;\n    int64_t rem  = n % 4;\n    const int BS = 256;\n    if (nvec > 0) {\n        int grid = (int)((nvec + BS - 1) / BS);\n        fused_relu_hardswish_vec<<<grid, BS>>>(\n            x.data_ptr<float>(), (int)nvec);\n    }\n    if (rem > 0) {\n        fused_relu_hardswish_tail<<<1, (int)rem>>>(\n            x.data_ptr<float>(), (int)(nvec * 4), (int)n);\n    }\n    return x;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a convolution, applies ReLU, and applies HardSwish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_relu_hardswish(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_10",
+      "plan_summary": "Refine the working fused activation epilogue by switching the hot contiguous float32 CUDA path from out-of-place output allocation to in-place transformation on the contiguous buffer, while preserving the existing packed vector path, launch-bounds tuning, and scalar fallback structure.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current CUDA helper implementation with an in-place version of the existing fused ReLU+HardSwish path: keep the current working kernel family, launch-bounds tuning, packed float4 processing, and scalar tail logic, but have the wrapper create `auto x = input.contiguous();` and launch the kernel with `x.data_ptr<float>()` as both input and output for the hot CUDA float32 path, then return `x` directly instead of allocating `empty_like`. Keep exact fallback semantics for non-CUDA or non-float32 inputs. Preserve correctness for `n % 4 != 0`, and if the implementation currently has separate aligned/scalar handling, keep those guards intact rather than broadening assumptions.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00294,
+      "score": 0.00294,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=655071",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/19_L2_P57_Auto_P57_20260720_063717/eval_traces/20260720_065049_653010_de9e38a9_kernelbench_l2_57_57_conv2d_relu_hardswish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00785,
+      "speedup": 2.6700680272108843,
+      "reference_runtimes": {
+        "torch_eager": 0.00785
+      },
+      "speedups": {
+        "torch_eager": 2.6700680272108843
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "best_lineage_push",
+      "performance_hypothesis": "If the fused CUDA wrapper writes results back into the contiguous working tensor instead of allocating a separate output tensor, end-to-end latency will drop slightly because the hot path avoids an `empty_like` allocation and retains the same single-pass packed kernel structure that already performs well.",
+      "single_change_focus": "Make the fused CUDA wrapper operate in place on the contiguous working tensor and return that tensor, without changing the existing fused activation kernel structure or launch configuration.",
+      "mutation_family": "inplace_epilogue_buffer_reuse",
+      "target_metric": "speedup"
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p57_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_relu_hardswish\", &fused_relu_hardswish, \"Fused ReLU + HardSwish single-launch (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// In-place fused ReLU + HardSwish kernel.\n// Reads and writes the same buffer, removing the need for a separate output allocation.\n// Uses float4 packed access for the aligned prefix and scalar for the tail.\n__launch_bounds__(128, 4)\n__global__ void fused_relu_hardswish_kernel(\n    float* __restrict__ data,\n    int nvec,\n    int n\n) {\n    // --- float4 packed region ---\n    for (int idx = blockIdx.x * blockDim.x + threadIdx.x; idx < nvec; idx += blockDim.x * gridDim.x) {\n        float4 v = reinterpret_cast<float4*>(data)[idx];\n        float4 o;\n        float r;\n        r = fmaxf(v.x, 0.0f); o.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.y, 0.0f); o.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.z, 0.0f); o.z = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.w, 0.0f); o.w = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        reinterpret_cast<float4*>(data)[idx] = o;\n    }\n    // --- scalar tail region [nvec*4, n) ---\n    int tail_start = nvec * 4;\n    for (int idx = tail_start + blockIdx.x * blockDim.x + threadIdx.x; idx < n; idx += blockDim.x * gridDim.x) {\n        float r = fmaxf(data[idx], 0.0f);\n        data[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n    }\n}\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input) {\n    if (!input.is_cuda() || input.scalar_type() != torch::kFloat32) {\n        auto x = torch::relu(input);\n        return x * torch::clamp((x + 3.0f) / 6.0f, 0.0f, 1.0f);\n    }\n    auto x = input.contiguous();\n    int64_t n = x.numel();\n    int64_t nvec = n / 4;\n    const int BS = 128;\n    int grid = (int)((nvec + BS - 1) / BS);\n    if (grid < 1) grid = 1;\n    fused_relu_hardswish_kernel<<<grid, BS>>>(\n        x.data_ptr<float>(), (int)nvec, (int)n);\n    return x;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a convolution, applies ReLU, and applies HardSwish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_relu_hardswish(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_10",
+      "plan_summary": "Refine the existing fused activation path by making the hot CUDA epilogue operate in place on the contiguous tensor, preserving the proven packed float4/tail structure while removing the extra output allocation and destination write path.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current out-of-place fused activation implementation with an in-place version: use a single mutable `float* data` buffer, keep the existing float4 packed loop and scalar tail loop, load each value before overwriting it, and return the same contiguous tensor from the wrapper after launching the kernel. Remove the separate `torch::empty_like` destination and any separate input/output pointer parameters so the kernel no longer relies on alias-unsafe `__restrict__` source/destination pointers.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00294,
+      "score": 0.00294,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=655431",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/19_L2_P57_Auto_P57_20260720_063717/eval_traces/20260720_065419_653010_15af1d24_kernelbench_l2_57_57_conv2d_relu_hardswish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00784,
+      "speedup": 2.6666666666666665,
+      "reference_runtimes": {
+        "torch_eager": 0.00784
+      },
+      "speedups": {
+        "torch_eager": 2.6666666666666665
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "challenger",
+      "performance_hypothesis": "Writing the fused activation result back into the contiguous working tensor will remove one full output allocation and one global-memory destination stream, reducing DRAM pressure without changing arithmetic work.",
+      "single_change_focus": "Convert the fused activation CUDA wrapper/kernel to an in-place contiguous path that reads and writes the same tensor buffer.",
+      "mutation_family": "inplace_contiguous_epilogue",
+      "target_metric": "speedup"
+    },
+    "phase2_root": {
+      "node_id": "phase2_root",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p57_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_relu_hardswish\", &fused_relu_hardswish, \"Fused ReLU + HardSwish (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void fused_relu_hardswish_vec(\n    const float* __restrict__ inp,\n    float* __restrict__ out,\n    int nvec\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= nvec) return;\n    float4 v = reinterpret_cast<const float4*>(inp)[idx];\n    float4 o;\n    float r;\n    // relu(x) * clamp((relu(x)+3)/6, 0, 1)\n    // since relu(x)>=0, lower clamp never fires; (r+3)/6 = fma(r, 1/6, 0.5)\n    r = fmaxf(v.x, 0.0f); o.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n    r = fmaxf(v.y, 0.0f); o.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n    r = fmaxf(v.z, 0.0f); o.z = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n    r = fmaxf(v.w, 0.0f); o.w = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n    reinterpret_cast<float4*>(out)[idx] = o;\n}\n\n__global__ void fused_relu_hardswish_tail(\n    const float* __restrict__ inp,\n    float* __restrict__ out,\n    int start,\n    int n\n) {\n    int idx = start + blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= n) return;\n    float r = fmaxf(inp[idx], 0.0f);\n    out[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n}\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input) {\n    if (!input.is_cuda() || input.scalar_type() != torch::kFloat32) {\n        auto x = torch::relu(input);\n        return x * torch::clamp((x + 3.0f) / 6.0f, 0.0f, 1.0f);\n    }\n    auto x = input.contiguous();\n    auto out = torch::empty_like(x);\n    int64_t n = x.numel();\n    int64_t nvec = n / 4;\n    int64_t rem  = n % 4;\n    const int BS = 256;\n    if (nvec > 0) {\n        int grid = (int)((nvec + BS - 1) / BS);\n        fused_relu_hardswish_vec<<<grid, BS>>>(\n            x.data_ptr<float>(), out.data_ptr<float>(), (int)nvec);\n    }\n    if (rem > 0) {\n        fused_relu_hardswish_tail<<<1, (int)rem>>>(\n            x.data_ptr<float>(), out.data_ptr<float>(), (int)(nvec * 4), (int)n);\n    }\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a convolution, applies ReLU, and applies HardSwish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_relu_hardswish(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "phase2_root",
+      "child_ids": [
+        "phase2_n1",
+        "phase2_n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Fuse ReLU and HardSwish into one CUDA epilogue after the convolution to eliminate extra global-memory round trips in the memory-bound post-conv path.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the empty pybind module with exports for one CUDA entrypoint named `fused_relu_hardswish`; keep the module skeleton minimal and expose the function so `forward_stmt_2` can call it through `_stark_get_extension()`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Implement a CUDA wrapper plus kernel that takes a contiguous float32 tensor, applies `relu(x) * clamp((x + 3) / 6, 0, 1)` in one pass, uses a `float4` fast path when aligned and a scalar tail fallback otherwise, and returns the same-shaped tensor; include runtime guards and a safe fallback for unsupported cases.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the separate `torch.relu(x)` call with a single extension call like `x = _stark_get_extension().fused_relu_hardswish(x)` so the activation tail executes in one CUDA pass immediately after convolution.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the standalone HardSwish math with a no-op comment or direct pass-through so the fused CUDA epilogue becomes the only activation implementation path.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00294,
+      "score": 0.00294,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=653864",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/19_L2_P57_Auto_P57_20260720_063717/eval_traces/20260720_064125_653010_d80e58ad_kernelbench_l2_57_57_conv2d_relu_hardswish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00783,
+      "speedup": 2.663265306122449,
+      "reference_runtimes": {
+        "torch_eager": 0.00783
+      },
+      "speedups": {
+        "torch_eager": 2.663265306122449
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If the conv output is consumed once by a fused CUDA epilogue, the workload will drop two intermediate tensor reads/writes and reduce the dominant DRAM-bound tail latency.",
+      "single_change_focus": "Fuse the activation tail into one custom CUDA epilogue kernel call site.",
+      "mutation_family": "epilogue_fusion_float4",
+      "target_metric": "speedup"
+    },
+    "phase2_n1": {
+      "node_id": "phase2_n1",
+      "parent_id": "phase2_root",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p57_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_relu_hardswish\", &fused_relu_hardswish, \"Fused ReLU + HardSwish (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void __launch_bounds__(256, 4) fused_relu_hardswish_kernel(\n    const float* __restrict__ inp,\n    float* __restrict__ out,\n    int64_t n\n) {\n    int64_t gidx = blockIdx.x * blockDim.x + threadIdx.x;\n    int64_t stride = gridDim.x * blockDim.x;\n\n    uintptr_t ptr_val = reinterpret_cast<uintptr_t>(inp);\n    bool align16 = (ptr_val % 16 == 0) && (n >= 4);\n    bool align8  = (ptr_val % 8 == 0) && (n >= 2);\n\n    if (align16) {\n        int64_t nvec = n / 4;\n        for (int64_t idx = gidx; idx < nvec; idx += stride) {\n            float4 v = reinterpret_cast<const float4*>(inp)[idx];\n            float4 o;\n            float r;\n            r = fmaxf(v.x, 0.0f); o.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v.y, 0.0f); o.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v.z, 0.0f); o.z = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v.w, 0.0f); o.w = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            reinterpret_cast<float4*>(out)[idx] = o;\n        }\n        for (int64_t idx = nvec * 4 + gidx; idx < n; idx += stride) {\n            float r = fmaxf(inp[idx], 0.0f);\n            out[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        }\n    } else if (align8) {\n        int64_t nvec = n / 2;\n        for (int64_t idx = gidx; idx < nvec; idx += stride) {\n            float2 v = reinterpret_cast<const float2*>(inp)[idx];\n            float2 o;\n            float r;\n            r = fmaxf(v.x, 0.0f); o.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v.y, 0.0f); o.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            reinterpret_cast<float2*>(out)[idx] = o;\n        }\n        for (int64_t idx = nvec * 2 + gidx; idx < n; idx += stride) {\n            float r = fmaxf(inp[idx], 0.0f);\n            out[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        }\n    } else {\n        for (int64_t idx = gidx; idx < n; idx += stride) {\n            float r = fmaxf(inp[idx], 0.0f);\n            out[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        }\n    }\n}\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input) {\n    if (!input.is_cuda() || input.scalar_type() != torch::kFloat32) {\n        auto x = torch::relu(input);\n        return x * torch::clamp((x + 3.0f) / 6.0f, 0.0f, 1.0f);\n    }\n    auto x = input.contiguous();\n    auto out = torch::empty_like(x);\n    int64_t n = x.numel();\n\n    const int BS = 256;\n    int grid = std::min((int)((n + BS - 1) / BS), 2048);\n    fused_relu_hardswish_kernel<<<grid, BS>>>(\n        x.data_ptr<float>(), out.data_ptr<float>(), n);\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a convolution, applies ReLU, and applies HardSwish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_relu_hardswish(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_08",
+      "plan_summary": "Refine the existing fused activation path with a single grid-stride CUDA kernel that selects scalar/float2/float4 access by runtime alignment, reducing tail-launch overhead and memory transactions without disturbing the working conv scaffold.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current separate float4 vector kernel plus tail kernel with one exported CUDA kernel that uses a grid-stride loop over flattened elements, chooses scalar, float2, or float4 access based on pointer alignment and remaining count, applies ReLU + HardSwish in registers, and writes results in a single launch; keep the existing CPU/non-CUDA fallback path intact.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Keep the extension call site, but pass a contiguous tensor into `fused_relu_hardswish` so the new alignment-aware kernel can take the fast vector path safely; do not add any extra activation call or temporary tensor.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00299,
+      "score": 0.00299,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=656572",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/19_L2_P57_Auto_P57_20260720_063717/eval_traces/20260720_070431_653010_76a7bca7_kernelbench_l2_57_57_conv2d_relu_hardswish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00797,
+      "speedup": 2.6655518394648827,
+      "reference_runtimes": {
+        "torch_eager": 0.00797
+      },
+      "speedups": {
+        "torch_eager": 2.6655518394648827
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current activation path is still DRAM-bound and pays extra launch/tail overhead; collapsing packed and tail handling into one alignment-aware grid-stride kernel and keeping the input contiguous should reduce memory traffic and improve throughput slightly.",
+      "single_change_focus": "Collapse the activation kernel into one alignment-aware grid-stride path.",
+      "mutation_family": "aligned_grid_stride_activation",
+      "target_metric": "speedup"
+    },
+    "phase2_n2": {
+      "node_id": "phase2_n2",
+      "parent_id": "phase2_n1",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p57_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_relu_hardswish\", &fused_relu_hardswish, \"Fused ReLU + HardSwish (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void __launch_bounds__(256, 4) fused_relu_hardswish_f4(\n    const float* __restrict__ inp,\n    float* __restrict__ out,\n    int64_t nvec\n) {\n    int64_t idx = blockIdx.x * (int64_t)blockDim.x + threadIdx.x;\n    int64_t stride = gridDim.x * blockDim.x;\n    for (; idx < nvec; idx += stride) {\n        float4 v = reinterpret_cast<const float4*>(inp)[idx];\n        float4 o;\n        float r;\n        r = fmaxf(v.x, 0.0f); o.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.y, 0.0f); o.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.z, 0.0f); o.z = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.w, 0.0f); o.w = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        reinterpret_cast<float4*>(out)[idx] = o;\n    }\n}\n\n__global__ void __launch_bounds__(256, 4) fused_relu_hardswish_f2(\n    const float* __restrict__ inp,\n    float* __restrict__ out,\n    int64_t nvec\n) {\n    int64_t idx = blockIdx.x * (int64_t)blockDim.x + threadIdx.x;\n    int64_t stride = gridDim.x * blockDim.x;\n    for (; idx < nvec; idx += stride) {\n        float2 v = reinterpret_cast<const float2*>(inp)[idx];\n        float2 o;\n        float r;\n        r = fmaxf(v.x, 0.0f); o.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        r = fmaxf(v.y, 0.0f); o.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        reinterpret_cast<float2*>(out)[idx] = o;\n    }\n}\n\n__global__ void __launch_bounds__(256, 4) fused_relu_hardswish_scalar(\n    const float* __restrict__ inp,\n    float* __restrict__ out,\n    int64_t start,\n    int64_t n\n) {\n    int64_t idx = start + blockIdx.x * (int64_t)blockDim.x + threadIdx.x;\n    int64_t stride = gridDim.x * blockDim.x;\n    for (; idx < n; idx += stride) {\n        float r = fmaxf(inp[idx], 0.0f);\n        out[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n    }\n}\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input) {\n    if (!input.is_cuda() || input.scalar_type() != torch::kFloat32) {\n        auto x = torch::relu(input);\n        return x * torch::clamp((x + 3.0f) / 6.0f, 0.0f, 1.0f);\n    }\n    auto x = input.contiguous();\n    auto out = torch::empty_like(x);\n    int64_t n = x.numel();\n\n    const float* inp_ptr = x.data_ptr<float>();\n    float*       out_ptr = out.data_ptr<float>();\n    uintptr_t inp_addr = reinterpret_cast<uintptr_t>(inp_ptr);\n    uintptr_t out_addr = reinterpret_cast<uintptr_t>(out_ptr);\n\n    const int BS = 256;\n    bool align16 = (inp_addr % 16 == 0) && (out_addr % 16 == 0) && (n >= 4);\n    bool align8  = (inp_addr % 8  == 0) && (out_addr % 8  == 0) && (n >= 2);\n\n    if (align16) {\n        int64_t nvec = n / 4;\n        int64_t tail_start = nvec * 4;\n        int grid_vec = (int)std::min((nvec + BS - 1) / BS, (int64_t)2048);\n        if (nvec > 0)\n            fused_relu_hardswish_f4<<<grid_vec, BS>>>(inp_ptr, out_ptr, nvec);\n        if (tail_start < n) {\n            int64_t tail_n = n - tail_start;\n            int grid_tail = (int)std::min((tail_n + BS - 1) / BS, (int64_t)2048);\n            fused_relu_hardswish_scalar<<<grid_tail, BS>>>(inp_ptr, out_ptr, tail_start, n);\n        }\n    } else if (align8) {\n        int64_t nvec = n / 2;\n        int64_t tail_start = nvec * 2;\n        int grid_vec = (int)std::min((nvec + BS - 1) / BS, (int64_t)2048);\n        if (nvec > 0)\n            fused_relu_hardswish_f2<<<grid_vec, BS>>>(inp_ptr, out_ptr, nvec);\n        if (tail_start < n) {\n            int64_t tail_n = n - tail_start;\n            int grid_tail = (int)std::min((tail_n + BS - 1) / BS, (int64_t)2048);\n            fused_relu_hardswish_scalar<<<grid_tail, BS>>>(inp_ptr, out_ptr, tail_start, n);\n        }\n    } else {\n        int grid = (int)std::min((n + BS - 1) / BS, (int64_t)2048);\n        fused_relu_hardswish_scalar<<<grid, BS>>>(inp_ptr, out_ptr, 0, n);\n    }\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a convolution, applies ReLU, and applies HardSwish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_relu_hardswish(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_08",
+      "plan_summary": "Refine the winning fused activation epilogue by hoisting alignment decisions out of the kernel and dispatching one specialized contiguous kernel variant per access width.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current single `fused_relu_hardswish_kernel` implementation with three separate CUDA kernels: one `float4` grid-stride kernel, one `float2` grid-stride kernel, and one scalar grid-stride kernel, each containing only its own load/store width and the existing fused ReLU+HardSwish arithmetic. In `fused_relu_hardswish`, keep `auto x = input.contiguous(); auto out = torch::empty_like(x);` and the existing non-CUDA/non-float32 fallback, but compute `uintptr_t` alignment for both `x.data_ptr<float>()` and `out.data_ptr<float>()` on the host. Dispatch `float4` only when both pointers are 16-byte aligned and `n >= 4`; dispatch `float2` only when both pointers are 8-byte aligned and `n >= 2`; otherwise dispatch scalar. For the vector kernels, process `n / 4` or `n / 2` packed elements in a grid-stride loop, then handle the remaining tail elements by launching the scalar kernel once on the leftover suffix or by adding a second scalar dispatch for the remainder. Keep `__launch_bounds__(256, 4)` on the specialized kernels and preserve the existing `grid = min((n + BS - 1) / BS, 2048)` style launch policy adapted to packed counts.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00299,
+      "score": 0.00299,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=656741",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/19_L2_P57_Auto_P57_20260720_063717/eval_traces/20260720_070747_653010_c4446435_kernelbench_l2_57_57_conv2d_relu_hardswish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00783,
+      "speedup": 2.6187290969899664,
+      "reference_runtimes": {
+        "torch_eager": 0.00783
+      },
+      "speedups": {
+        "torch_eager": 2.6187290969899664
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "The current kernel pays unnecessary per-thread control overhead because each thread recomputes pointer alignment checks and carries three code paths (`float4`/`float2`/scalar). Dispatching a single specialized kernel from the wrapper based on host-side alignment of both input and output should reduce instruction count and register/control pressure on the memory-bound epilogue, yielding a small speedup.",
+      "single_change_focus": "Replace the monolithic alignment-aware kernel with host-dispatched specialized `float4`, `float2`, and scalar kernels while keeping the same exported wrapper and launch geometry.",
+      "mutation_family": "host_dispatch_vecwidth",
+      "target_metric": "speedup"
+    },
+    "phase2_n3": {
+      "node_id": "phase2_n3",
+      "parent_id": "phase2_n2",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p57_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_relu_hardswish\", &fused_relu_hardswish, \"Fused ReLU + HardSwish (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\nstatic int _get_sm_count() {\n    static int sm_count = -1;\n    if (sm_count < 0) {\n        int dev = 0;\n        cudaGetDevice(&dev);\n        cudaDeviceGetAttribute(&sm_count, cudaDevAttrMultiProcessorCount, dev);\n        if (sm_count < 1) sm_count = 108;\n    }\n    return sm_count;\n}\n\n__global__ void __launch_bounds__(256, 4) fused_relu_hardswish_kernel(\n    const float* __restrict__ inp,\n    float* __restrict__ out,\n    int64_t n\n) {\n    int64_t gidx = blockIdx.x * blockDim.x + threadIdx.x;\n    int64_t stride = gridDim.x * blockDim.x;\n\n    uintptr_t ptr_val = reinterpret_cast<uintptr_t>(inp);\n    bool align16 = (ptr_val % 16 == 0) && (n >= 4);\n    bool align8  = (ptr_val % 8 == 0) && (n >= 2);\n\n    if (align16) {\n        int64_t nvec = n / 4;\n        for (int64_t idx = gidx; idx < nvec; idx += stride) {\n            float4 v = reinterpret_cast<const float4*>(inp)[idx];\n            float4 o;\n            float r;\n            r = fmaxf(v.x, 0.0f); o.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v.y, 0.0f); o.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v.z, 0.0f); o.z = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v.w, 0.0f); o.w = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            reinterpret_cast<float4*>(out)[idx] = o;\n        }\n        for (int64_t idx = nvec * 4 + gidx; idx < n; idx += stride) {\n            float r = fmaxf(inp[idx], 0.0f);\n            out[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        }\n    } else if (align8) {\n        int64_t nvec = n / 2;\n        for (int64_t idx = gidx; idx < nvec; idx += stride) {\n            float2 v = reinterpret_cast<const float2*>(inp)[idx];\n            float2 o;\n            float r;\n            r = fmaxf(v.x, 0.0f); o.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v.y, 0.0f); o.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            reinterpret_cast<float2*>(out)[idx] = o;\n        }\n        for (int64_t idx = nvec * 2 + gidx; idx < n; idx += stride) {\n            float r = fmaxf(inp[idx], 0.0f);\n            out[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        }\n    } else {\n        for (int64_t idx = gidx; idx < n; idx += stride) {\n            float r = fmaxf(inp[idx], 0.0f);\n            out[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        }\n    }\n}\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input) {\n    if (!input.is_cuda() || input.scalar_type() != torch::kFloat32) {\n        auto x = torch::relu(input);\n        return x * torch::clamp((x + 3.0f) / 6.0f, 0.0f, 1.0f);\n    }\n    auto x = input.contiguous();\n    auto out = torch::empty_like(x);\n    int64_t n = x.numel();\n\n    const int BS = 256;\n    int sm_count = _get_sm_count();\n    int max_blocks = sm_count * 4;\n    int64_t ceil_n = (n + BS - 1) / BS;\n    int grid = (int)std::min(ceil_n, (int64_t)max_blocks);\n    grid = std::max(grid, 1);\n\n    fused_relu_hardswish_kernel<<<grid, BS>>>(\n        x.data_ptr<float>(), out.data_ptr<float>(), n);\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a convolution, applies ReLU, and applies HardSwish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_relu_hardswish(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_08",
+      "plan_summary": "Refine the existing fused activation epilogue by changing only its launch geometry: keep the current math, alignment gating, and exported API, but switch from a hardcoded large block cap to an SM-count-based persistent grid for the CUDA activation kernel.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace only the launch-configuration logic inside `fused_relu_hardswish` so that, after `const int BS = 256;`, the wrapper queries the active CUDA device once, reads `multiProcessorCount`, caches it in a local static or function-static integer, computes `int max_blocks = max(1, sm_count * 4)`, and uses `grid = min(ceil_div(work_items, BS), max_blocks)` for every CUDA launch in the function. Keep the existing kernels, activation math, alignment checks, input/output allocation policy, and fallback path unchanged; do not add new kernels or new pybind exports. If a vector path has a scalar tail launch, apply the same SM-based cap to that tail launch as well.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.003,
+      "score": 0.003,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=657005",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/19_L2_P57_Auto_P57_20260720_063717/eval_traces/20260720_071045_653010_25fe56ac_kernelbench_l2_57_57_conv2d_relu_hardswish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00784,
+      "speedup": 2.6133333333333333,
+      "reference_runtimes": {
+        "torch_eager": 0.00784
+      },
+      "speedups": {
+        "torch_eager": 2.6133333333333333
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "For this bandwidth-bound fused activation, replacing the fixed 2048-block cap with an SM-count-scaled persistent grid will reduce oversubscription and improve per-warp progress through the grid-stride loop, yielding a small end-to-end speedup without changing memory traffic or numerics.",
+      "single_change_focus": "Use device SM count to compute a persistent grid cap for the existing fused activation launches instead of the current hardcoded 2048-block limit.",
+      "mutation_family": "persistent_grid_cap",
+      "target_metric": "speedup"
+    },
+    "phase2_n4": {
+      "node_id": "phase2_n4",
+      "parent_id": "phase2_root",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p57_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_relu_hardswish\", &fused_relu_hardswish, \"Fused ReLU + HardSwish (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void __launch_bounds__(256, 4) fused_relu_hardswish_inplace_kernel(\n    float* __restrict__ data,\n    int64_t n\n) {\n    int64_t gidx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    int64_t stride = (int64_t)gridDim.x * blockDim.x;\n\n    uintptr_t ptr_val = reinterpret_cast<uintptr_t>(data);\n    bool align16 = (ptr_val % 16 == 0);\n\n    if (align16) {\n        int64_t nvec = n / 4;\n        for (int64_t idx = gidx; idx < nvec; idx += stride) {\n            float4 v = reinterpret_cast<float4*>(data)[idx];\n            float r;\n            r = fmaxf(v.x, 0.0f); v.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v.y, 0.0f); v.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v.z, 0.0f); v.z = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v.w, 0.0f); v.w = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            reinterpret_cast<float4*>(data)[idx] = v;\n        }\n        // tail\n        int64_t tail_start = nvec * 4;\n        for (int64_t idx = tail_start + gidx; idx < n; idx += stride) {\n            float r = fmaxf(data[idx], 0.0f);\n            data[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        }\n    } else {\n        for (int64_t idx = gidx; idx < n; idx += stride) {\n            float r = fmaxf(data[idx], 0.0f);\n            data[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        }\n    }\n}\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input) {\n    if (!input.is_cuda() || input.scalar_type() != torch::kFloat32) {\n        auto x = torch::relu(input);\n        return x * torch::clamp((x + 3.0f) / 6.0f, 0.0f, 1.0f);\n    }\n    auto x = input.contiguous();\n    int64_t n = x.numel();\n    const int BS = 256;\n    int grid = (int)std::min((int64_t)((n / 4 + BS - 1) / BS), (int64_t)2048);\n    if (grid < 1) grid = 1;\n    fused_relu_hardswish_inplace_kernel<<<grid, BS>>>(\n        x.data_ptr<float>(), n);\n    return x;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a convolution, applies ReLU, and applies HardSwish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_relu_hardswish(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_08",
+      "plan_summary": "Refine the existing fused activation champion by keeping the exported API and forward path unchanged, but switching the hot CUDA float32 path to an in-place contiguous kernel so the epilogue no longer allocates and writes a separate output buffer.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current exported wrapper and kernel implementation with an in-place variant that preserves the same `torch::Tensor fused_relu_hardswish(torch::Tensor input)` signature. Keep one fused float32 CUDA kernel using the existing alignment-aware/grid-stride structure and ReLU+HardSwish formula, but make the kernel take a single `float* data` pointer and update elements in place (`data[idx] = ...`). In the wrapper: for non-CUDA or non-float32 inputs, keep the existing PyTorch fallback; for CUDA float32, create `auto x = input.contiguous();`, launch the fused kernel on `x.data_ptr<float>()`, and return `x` directly instead of allocating `out = torch::empty_like(x)`. Preserve boundary handling for tail elements inside the same kernel and do not add host-side dispatch by vec width or persistent-grid logic.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00311,
+      "score": 0.00311,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=657263",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/19_L2_P57_Auto_P57_20260720_063717/eval_traces/20260720_071345_653010_cc69369d_kernelbench_l2_57_57_conv2d_relu_hardswish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00785,
+      "speedup": 2.5241157556270095,
+      "reference_runtimes": {
+        "torch_eager": 0.00785
+      },
+      "speedups": {
+        "torch_eager": 2.5241157556270095
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If the fused activation kernel reads and writes the same contiguous float32 buffer in place, end-to-end time will improve slightly because the post-conv epilogue avoids `empty_like` allocation and halves write-traffic to a separate destination while keeping the champion's memory access pattern otherwise unchanged.",
+      "single_change_focus": "Convert the CUDA fast path of `fused_relu_hardswish` from out-of-place output allocation to in-place transformation on the contiguous working tensor.",
+      "mutation_family": "inplace_epilogue_reuse",
+      "target_metric": "speedup"
+    },
+    "phase2_n5": {
+      "node_id": "phase2_n5",
+      "parent_id": "phase2_n3",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p57_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_relu_hardswish\", &fused_relu_hardswish, \"Fused ReLU + HardSwish (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\nstatic int _get_sm_count() {\n    static int sm_count = -1;\n    if (sm_count < 0) {\n        int dev = 0;\n        cudaGetDevice(&dev);\n        cudaDeviceGetAttribute(&sm_count, cudaDevAttrMultiProcessorCount, dev);\n        if (sm_count < 1) sm_count = 108;\n    }\n    return sm_count;\n}\n\n__global__ void __launch_bounds__(256, 4) fused_relu_hardswish_kernel(\n    const float* __restrict__ inp,\n    float* __restrict__ out,\n    int64_t n\n) {\n    int64_t gidx = blockIdx.x * blockDim.x + threadIdx.x;\n    int64_t stride = gridDim.x * blockDim.x;\n\n    uintptr_t ptr_val = reinterpret_cast<uintptr_t>(inp);\n    bool align16 = (ptr_val % 16 == 0) && (n >= 4);\n    bool align8  = (ptr_val % 8 == 0) && (n >= 2);\n\n    if (align16) {\n        int64_t nvec = n / 4;\n        //2x unrolled grid-stride: process two float4 per loop iteration\n        for (int64_t idx = gidx; idx < nvec; idx += 2 * stride) {\n            float4 v0 = reinterpret_cast<const float4*>(inp)[idx];\n            float4 o0;\n            float r;\n            r = fmaxf(v0.x, 0.0f); o0.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v0.y, 0.0f); o0.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v0.z, 0.0f); o0.z = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v0.w, 0.0f); o0.w = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            reinterpret_cast<float4*>(out)[idx] = o0;\n            int64_t idx2 = idx + stride;\n            if (idx2 < nvec) {\n                float4 v1 = reinterpret_cast<const float4*>(inp)[idx2];\n                float4 o1;\n                r = fmaxf(v1.x, 0.0f); o1.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n                r = fmaxf(v1.y, 0.0f); o1.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n                r = fmaxf(v1.z, 0.0f); o1.z = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n                r = fmaxf(v1.w, 0.0f); o1.w = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n                reinterpret_cast<float4*>(out)[idx2] = o1;\n            }\n        }\n        for (int64_t idx = nvec * 4 + gidx; idx < n; idx += stride) {\n            float r = fmaxf(inp[idx], 0.0f);\n            out[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        }\n    } else if (align8) {\n        int64_t nvec = n / 2;\n        for (int64_t idx = gidx; idx < nvec; idx += stride) {\n            float2 v = reinterpret_cast<const float2*>(inp)[idx];\n            float2 o;\n            float r;\n            r = fmaxf(v.x, 0.0f); o.x = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            r = fmaxf(v.y, 0.0f); o.y = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n            reinterpret_cast<float2*>(out)[idx] = o;\n        }\n        for (int64_t idx = nvec * 2 + gidx; idx < n; idx += stride) {\n            float r = fmaxf(inp[idx], 0.0f);\n            out[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        }\n    } else {\n        for (int64_t idx = gidx; idx < n; idx += stride) {\n            float r = fmaxf(inp[idx], 0.0f);\n            out[idx] = r * fminf(__fmaf_rn(r, 0.16666667f, 0.5f), 1.0f);\n        }\n    }\n}\n\ntorch::Tensor fused_relu_hardswish(torch::Tensor input) {\n    if (!input.is_cuda() || input.scalar_type() != torch::kFloat32) {\n        auto x = torch::relu(input);\n        return x * torch::clamp((x + 3.0f) / 6.0f, 0.0f, 1.0f);\n    }\n    auto x = input.contiguous();\n    auto out = torch::empty_like(x);\n    int64_t n = x.numel();\n\n    const int BS = 256;\n    int sm_count = _get_sm_count();\n    int max_blocks = sm_count * 4;\n    int64_t ceil_n = (n + BS - 1) / BS;\n    int grid = (int)std::min(ceil_n, (int64_t)max_blocks);\n    grid = std::max(grid, 1);\n\n    fused_relu_hardswish_kernel<<<grid, BS>>>(\n        x.data_ptr<float>(), out.data_ptr<float>(), n);\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a convolution, applies ReLU, and applies HardSwish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_relu_hardswish(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_08",
+      "plan_summary": "Refine the current aligned grid-stride activation kernel by increasing per-thread work in the fast aligned path, keeping the proven wrapper and fallback structure intact.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "In `fused_relu_hardswish_kernel`, keep the current alignment checks and scalar/f2 fallback branches, but change the `align16` float4 loop to process two `float4` elements per thread per iteration when available: load/store `idx` and `idx + stride` inside one loop body, then advance by `2 * stride`. Leave the tail loop and all math unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00302,
+      "score": 0.00302,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=657549",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/19_L2_P57_Auto_P57_20260720_063717/eval_traces/20260720_071701_653010_eb779e92_kernelbench_l2_57_57_conv2d_relu_hardswish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00802,
+      "speedup": 2.6556291390728473,
+      "reference_runtimes": {
+        "torch_eager": 0.00802
+      },
+      "speedups": {
+        "torch_eager": 2.6556291390728473
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Processing two float4 chunks per thread per loop iteration in the aligned path will reduce loop overhead and improve instruction-level parallelism enough to beat the current single-chunk grid-stride kernel.",
+      "single_change_focus": "Unroll the aligned float4 path to handle two packed vectors per loop iteration before advancing the grid-stride cursor.",
+      "mutation_family": "dual_float4_unroll",
+      "target_metric": "speedup"
+    }
+  }
+}

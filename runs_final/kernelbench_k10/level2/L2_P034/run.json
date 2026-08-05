@@ -1,0 +1,2231 @@
+{
+  "task_name": "kernelbench_l2_34_34_convtranspose3d_layernorm_gelu_scaling",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": false,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_claude",
+    "plan_provider": "openai-compatible",
+    "code_provider": "claude-compatible",
+    "debug_provider": "openai-compatible",
+    "search_provider": "claude-compatible",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "diagnostics_enabled": false,
+    "diagnostics_mode": "root_ncu_v1",
+    "diagnostics_timeout_seconds": 300,
+    "diagnostics_warmup_runs": 2,
+    "diagnostics_profile_runs": 3,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1,
+    "deliberation_provider_timeout_seconds": 180,
+    "deliberation_phase_timeout_seconds": 240,
+    "evaluator_isolation": "candidate_subprocess",
+    "evaluator_timeout_seconds": 900,
+    "explore_fraction": 0.4,
+    "challenger_fraction": 0.3,
+    "plateau_delta_threshold": 0.03,
+    "plateau_recovery_mutation_attempts": 2,
+    "plateau_window": 3,
+    "deliberation_upgrade_enabled": true,
+    "deliberation_max_rounds": 3,
+    "deliberation_min_remaining_attempts": 8,
+    "phase_two_enabled": true,
+    "phase_two_split_attempts": 5
+  },
+  "best_node_id": "root",
+  "leaderboard": [
+    "root",
+    "phase2_n3"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "root",
+      "n2"
+    ],
+    [
+      "root",
+      "n4"
+    ],
+    [],
+    [
+      "phase2_root"
+    ],
+    [
+      "phase2_n3",
+      "phase2_root"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "root",
+    "n3",
+    "phase2_root",
+    "phase2_n1",
+    "phase2_n2",
+    "phase2_n3",
+    "phase2_n4"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "debug_retry_failure",
+    "explore_leaf",
+    "exploit_best_score",
+    "debug_retry_failure",
+    "exploit_best_score",
+    "debug_retry_failure",
+    "debug_retry_failure",
+    "explore_leaf",
+    "debug_retry_failure"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {
+      "n1": "debug_retry_limit_reached"
+    },
+    {
+      "n1": "debug_retry_limit_reached"
+    },
+    {
+      "n1": "debug_retry_limit_reached"
+    },
+    {},
+    {},
+    {
+      "phase2_n1": "debug_retry_limit_reached"
+    },
+    {
+      "phase2_n1": "debug_retry_limit_reached",
+      "phase2_n2": "debug_retry_limit_reached"
+    },
+    {
+      "phase2_n1": "debug_retry_limit_reached",
+      "phase2_n2": "debug_retry_limit_reached"
+    }
+  ],
+  "pruned_nodes": {},
+  "debug_stats": {
+    "total_attempts": 5,
+    "per_node": {
+      "n1": 1,
+      "n3": 1,
+      "phase2_n1": 1,
+      "phase2_n2": 1,
+      "phase2_n4": 1
+    }
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 5,
+    "debug_attempts": 5,
+    "failure_counts": {
+      "correctness_error": 5,
+      "python_region_syntax_error": 1,
+      "region_apply_failed": 1
+    },
+    "failure_stage_counts": {
+      "correctness": 5,
+      "compile": 2
+    },
+    "invalid_proposals": 0,
+    "attempt_mode_counts": {
+      "explore": 5,
+      "debug": 5
+    },
+    "provider_transient_error_count": 1,
+    "provider_transient_budget_exhausted_count": 0,
+    "provider_transient_errors_by_stage": {
+      "phase2": 1
+    },
+    "provider_transient_errors_by_origin": {
+      "plan_code": 1
+    },
+    "provider_transient_errors": [
+      {
+        "stage": "phase2",
+        "attempt_index": 4,
+        "selected_node_id": "n3",
+        "origin": "plan_code",
+        "error_index": 1,
+        "error_budget": 20,
+        "message": "LLM request failed: HTTP 522:"
+      }
+    ],
+    "phase_two_triggered": true,
+    "phase_two_seed_node_id": "n4",
+    "pruned_count": 0
+  },
+  "benchmark_family": "kernelbench",
+  "level": 2,
+  "problem_id": 34,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level2/34_ConvTranspose3d_LayerNorm_GELU_Scaling.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.047
+  },
+  "speedups": {
+    "torch_eager": 1.002132196162047
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "normalization",
+    "summary": "Normalization computation; preserve statistics axes, epsilon, and affine state while fusing where safe.",
+    "source": "KernelBench/KernelBench/level2/34_ConvTranspose3d_LayerNorm_GELU_Scaling.py",
+    "exact_facts": null,
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "forward_stmt_3",
+      "forward_stmt_4",
+      "forward_stmt_5",
+      "forward_stmt_6"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "\"\"\"\n        Args:\n            x (torch.Tensor): Input tensor of shape (batch_size, in_channels, D, H, W).\n\n        Returns:\n            torch.Tensor: Output tensor of shape (batch_size, out_channels, D', H', W').\n        \"\"\"",
+        "op_names": [
+          "_convtranspose3d_layernorm_gelu_scaling",
+          "a",
+          "activation",
+          "and",
+          "args",
+          "batch_size",
+          "bias",
+          "conv_transpose",
+          "convolution",
+          "convtranspose3d",
+          "d",
+          "eps"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x = self.conv_transpose(x)",
+        "op_names": [
+          "_convtranspose3d_layernorm_gelu_scaling",
+          "a",
+          "activation",
+          "and",
+          "args",
+          "batch_size",
+          "bias",
+          "conv_transpose",
+          "convolution",
+          "convtranspose3d",
+          "d",
+          "eps"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_3",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x = self.layer_norm(x)",
+        "op_names": [
+          "_convtranspose3d_layernorm_gelu_scaling",
+          "a",
+          "activation",
+          "and",
+          "args",
+          "batch_size",
+          "bias",
+          "conv_transpose",
+          "convolution",
+          "convtranspose3d",
+          "d",
+          "eps"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_4",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x = torch.nn.functional.gelu(x)",
+        "op_names": [
+          "_convtranspose3d_layernorm_gelu_scaling",
+          "a",
+          "activation",
+          "and",
+          "args",
+          "batch_size",
+          "bias",
+          "conv_transpose",
+          "convolution",
+          "convtranspose3d",
+          "d",
+          "eps"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_5",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x = x * self.scaling_factor",
+        "op_names": [
+          "_convtranspose3d_layernorm_gelu_scaling",
+          "a",
+          "activation",
+          "and",
+          "args",
+          "arithmetic",
+          "batch_size",
+          "bias",
+          "conv_transpose",
+          "convolution",
+          "convtranspose3d",
+          "d"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_6",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "return x",
+        "op_names": [
+          "_convtranspose3d_layernorm_gelu_scaling",
+          "a",
+          "activation",
+          "and",
+          "args",
+          "batch_size",
+          "bias",
+          "conv_transpose",
+          "convolution",
+          "convtranspose3d",
+          "d",
+          "eps"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "fuse_statistics_and_affine",
+        "summary": "fuse statistics and affine",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "compute statistics over the exact normalized axes",
+            "fuse affine transform when present"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "keep mean/variance axes explicit"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "preserve_normalization_axes",
+        "summary": "preserve normalization axes",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "compute statistics over the exact normalized axes",
+            "fuse affine transform when present"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "keep mean/variance axes explicit"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve statistics axes, epsilon, and affine parameters",
+      "avoid changing output dtype or shape"
+    ]
+  },
+  "diagnostics_profile": {
+    "enabled": true,
+    "mode": "root_ncu_v1",
+    "ncu_profile": {
+      "enabled": true,
+      "status": "ok",
+      "profiler": "ncu",
+      "kernel_name": "void convolveNd_dgrad_float_engine<float, 3, 128, 6, 8, 3, 3, 5, 0>(int, int, int, const T1 *, int, const T1 *, int, T1 *, kernel_gradNd_params, unsigned long long, int, unsigned long long, int, float, int)",
+      "row_count": 31,
+      "kernel_launch_count": 31,
+      "raw_metrics": {
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 6.74,
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": 84.63,
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": 42.01,
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": 11.75,
+        "sm__warps_active.avg.pct_of_peak_sustained_active": 32.61,
+        "launch__registers_per_thread": 122,
+        "launch__occupancy_limit_registers": 2,
+        "launch__occupancy_limit_shared_mem": 5,
+        "launch__occupancy_limit_warps": 6,
+        "gpu__time_duration.avg": 43155264,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.32,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.02,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.01,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+        "smsp__sass_branch_targets_threads_divergent.avg": 30116,
+        "smsp__sass_branch_targets_threads_uniform.avg": 422492,
+        "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+        "smsp__warps_eligible.avg": 14825937.88
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ],
+      "error": null
+    },
+    "notes": [
+      "Profiled the root candidate program with Nsight Compute."
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_02",
+        "intent": "fused_welford_single_pass_layernorm_gelu_scale_kernel",
+        "summary": "Replace the three separate PyTorch ops (LayerNorm, GELU, scale) with a single fused CUDA kernel using Welford's online algorithm for single-pass mean+variance computation. With normalized_shape=(out_channels=64,) the last spatial dimension W'=64 means each normalization row is exactly 64 elements â a perfect fit for 2 warps (64 threads) per block with one float per thread. The previous n2 attempt was correct but 0.42x because it used a generic implementation; this strategy uses warp-level shuffle reductions, float4 vectorized I/O, and __expf/__erff fast-math intrinsics.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "implementation_hints": [
+          "Grid: (N * C * D_out * H_out) blocks of 64 threads (2 warps); each block handles exactly one row of 64 floats",
+          "Use Welford online algorithm: each thread accumulates (count=1, mean=x_i, M2=0) then reduce with __shfl_xor_sync across all64 threads using a two-stage warp reduction (intra-warp then cross-warp via shared memory for the second warp)",
+          "Load input with float4: 64 floats = 16 float4 loads per block (each thread loads 1 float4 = 4 elements... but with64 threads and 64 elements, each thread loads exactly 1 float); alternatively use __ldg() for the scalar case",
+          "After computing mean and inv_std, apply: out_i = (x_i - mean) * inv_std * weight[col] + bias[col], then GELU via0.5f * v * (1.0f + erff(v * 0.7071067811865476f)), then multiply by scaling_factor",
+          "Pass LayerNorm weight and bias as raw float* pointers obtained via .data_ptr<float>()",
+          "The scaling_factor is a scalar float; pass it directly as a kernel argument",
+          "Add epsilon to variance before sqrt: inv_std = rsqrtf(var + eps)",
+          "Use __launch_bounds__(64, 8) to hint the compiler about the expected occupancy",
+          "Gate the custom kernel with a shape check: only use it when the last dimension of the conv output equals the LayerNorm normalized_shape[0]; fall back to PyTorch ops otherwise",
+          "Key difference from failed n2: use a single combined kernel (not separate mean/variance kernels), use fast-math intrinsics, and assert the64-element row fits in 64 threads without a loop"
+        ],
+        "expected_gain": "Eliminates two extra global memory round-trips (mean pass + variance pass + affine pass in PyTorch LN) and three separate kernel launches. Expected1.5â2.5x speedup on the post-conv portion. Since conv dominates (L2-bound), overall speedup relative to root is estimated at 1.1â1.4x depending on the spatial volume.",
+        "risk_notes": [
+          "The 64-thread-per-row assumption must be validated at runtime with a shape guard â if W_out != 64, fall back to PyTorch ops",
+          "The two-warp cross-warp reduction via shared memory requires exactly 2 floats of shared memory for the warp-level aggregation; any error here produces incorrect mean/variance (the root cause of n1 correctness failure)",
+          "erff() has ~1e-5 relative error; this matches PyTorch's GELU(approximate='none') using erf; do NOT use tanh approximation unless the model was trained with it",
+          "LayerNorm weight and bias must be on CUDA and contiguous; assert before kernel launch",
+          "The previous n2 was slow likely because it launched one block per element or used global atomics for reduction â avoid both"
+        ],
+        "memory_methods": [
+          "warp shuffle reduction (__shfl_xor_sync)",
+          "single-pass Welford online algorithm"
+        ],
+        "mutation_axes": [
+          "kernel_fusion",
+          "reduction_algorithm",
+          "thread_block_sizing",
+          "fast_math_intrinsics"
+        ],
+        "forbidden_patterns": [
+          "Two-pass normalization (separate mean kernel + variance kernel)",
+          "Global atomic reductions for mean/variance",
+          "Using tanh-based GELU approximation",
+          "Launching more than one CUDA kernel for the LN+GELU+scale sequence",
+          "Applying channels_last_3d before this kernel"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 5.0,
+          "openai-compatible": 4.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "Highest upside custom-kernel option, but the strict width-64/Welford assumptions and correctness risk keep it below a top score.",
+          "claude-compatible": "Best risk-adjusted candidate. The 64-element row size aligns perfectly with 2 warps, Welford single-pass eliminates the extra global memory round-trips, and warp shuffle reductions avoid shared memory contention. The correctness notes are precise and actionable â particularly the erf vs tanh GELU distinction and the cross-warp shared memory requirement. The expected 1.1â1.4x overall gain is realistic given conv dominance. Should be the primary implementation target.",
+          "gemini-compatible": "Highly optimized single-pass Welford kernel tailored to the specific channel size (64), maximizing memory bandwidth."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_05",
+        "intent": "revert_contiguous_restore_cudnn_fast_path",
+        "summary": "Remove the channels_last_3d conversion introduced in n4. The NCU delta shows that channels_last_3d switched cuDNN from convolveNd_dgrad_float_engine (31 launches,43ms avg) to dgrad2d_grouped_direct_kernel (111 launches, 617ms avg), increasing total conv time by ~574ms. Reverting to contiguous NCDHW format restores the faster cuDNN kernel path and is a prerequisite for any post-conv fusion.",
+        "target_anchors": [
+          "init_body",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Remove self._stark_use_cl3d and the torch.channels_last_3d conversion entirely from init_body and forward_stmt_2",
+          "Keep torch.backends.cudnn.benchmark = True in init_body since it is free and may still help cuDNN select a faster algorithm",
+          "forward_stmt_2 should be simply: x = self.conv_transpose(x) with no format conversion",
+          "Do not call x.contiguous() after conv â cuDNN already returns contiguous NCDHW output on the fast path",
+          "Verify the conv kernel reverts to convolveNd_dgrad_float_engine by checking that LTS throughput is high (~84%) and DRAM throughput is low (~6%) post-change"
+        ],
+        "expected_gain": "Recovers the ~14% regression introduced by n4 and restores runtime to near-root (~0.0469s). This is a prerequisite correction, not a net speedup over root on its own.",
+        "risk_notes": [
+          "Low risk â this is a pure revert of a measured regression",
+          "cudnn.benchmark=True adds a one-time autotuning cost on first forward pass; benchmark timing must exclude warmup",
+          "If the conv input spatial dims are small, cuDNN may still pick an inefficient algorithm even in contiguous format"
+        ],
+        "memory_methods": [
+          "contiguous NCDHW layout",
+          "cuDNN native conv path"
+        ],
+        "mutation_axes": [
+          "layout_format",
+          "cudnn_path_selection"
+        ],
+        "forbidden_patterns": [
+          "x.to(memory_format=torch.channels_last_3d)",
+          "self._stark_use_cl3d conditional branch in forward"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 4.0,
+          "openai-compatible": 5.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "Low-risk correction of a measured regression; likely the best risk-adjusted value because it restores the faster cuDNN path.",
+          "claude-compatible": "High value as a corrective action â the NCU delta evidence (31 launches at 43ms vs 111 launches at 617ms) is concrete and the revert is low risk. This is a prerequisite for strategies 01/02/03 to land cleanly. Scores a 4 because it's not a net speedup on its own but unblocks the most promising paths and is nearly zero-risk to apply.",
+          "gemini-compatible": "Crucial revert of a known regression; restoring contiguous NCDHW is necessary for optimal cuDNN ConvTranspose3d performance."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_01",
+        "intent": "layout-gated fused post-conv epilogue on exact LayerNorm axis",
+        "summary": "Fuse only the post-convolution `LayerNorm(out_channels) -> GELU -> scale` into one CUDA path, but gate it strictly to the baseline contract where normalization is over the last logical dimension equal to `out_channels`. The phase-1 fused attempt failed mainly on correctness, so the profitable direction is a narrower, layout-aware specialization rather than a generic epilogue.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "implementation_hints": [
+          "Keep `forward_stmt_2` as the existing cuDNN ConvTranspose3d call and fuse only the epilogue after convolution.",
+          "Require a contiguous last-dimension view for the custom path; if the tensor is NCDHW after conv, insert only metadata/layout gating and fall back unless a safe NDHWC-style logical view is available.",
+          "Compute mean and variance over the exact normalized axis only; preserve `eps`, affine weight/bias, output dtype, and shape.",
+          "Use one block per normalized row with warp-level reduction, accumulate statistics in FP32, then apply affine, GELU, and scaling before the single output write.",
+          "Export a dedicated entrypoint through `cuda_cpp` instead of a polymorphic kernel to reduce dispatch complexity and correctness surface."
+        ],
+        "expected_gain": "Medium; likely better than the failed generic fusion and should reduce extra reads/writes from separate LayerNorm/GELU/scale passes when the shape/layout gate hits.",
+        "risk_notes": [
+          "Highest risk is semantic mismatch: `nn.LayerNorm(out_channels)` must normalize the exact same axis as PyTorch for the produced tensor layout.",
+          "Prior phase-1 correctness failures suggest avoiding any implicit axis reinterpretation or broad shape support.",
+          "If the conv output is not naturally aligned to last-dim normalization, gate out aggressively rather than forcing copies."
+        ],
+        "memory_methods": [
+          "Single-read/single-write fused epilogue",
+          "FP32 reduction accumulators"
+        ],
+        "mutation_axes": [
+          "strict forward gating policy",
+          "row-to-block mapping",
+          "warp vs block reduction width",
+          "GELU approximation choice if numerically acceptable"
+        ],
+        "forbidden_patterns": [
+          "Do not change ConvTranspose3d semantics or I/O.",
+          "Do not normalize over spatial dimensions or channels accidentally.",
+          "Do not rely on a generic fused kernel that guesses the normalized axis from strides."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Strong targeted fusion idea with a safer layout gate; good upside, but still carries semantic-axis risk.",
+          "claude-compatible": "Solid directional thinking â gating the fused epilogue to the exact normalized axis avoids the semantic mismatch that caused prior failures. The risk is that layout-gating logic is itself a correctness surface, and the per-normalized-row block design duplicates much of strategy_02 without the single-pass Welford benefit. Medium expected gain with medium implementation complexity. Useful as a fallback design if strategy_02's Welford reduction has cross-warp bugs.",
+          "gemini-compatible": "Solid approach to fuse the epilogue while ensuring correctness via strict layout gating."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_03",
+        "intent": "float4_vectorized_fused_epilogue_with_contiguous_gate",
+        "summary": "Implement a vectorized fused LayerNorm+GELU+scale CUDA kernel using 128-bit (float4) vector loads and stores. With W'=64 and 64 threads per block, each thread handles exactly one float. Alternatively, use 32 threads with each thread loading 2 consecutive floats, enabling float2 vectorization. This strategy focuses on maximizing memory bandwidth utilization for the post-conv epilogue while keeping the conv on the native cuDNN path (contiguous NCDHW). Unlike strategy 2, this uses a two-pass approach (mean then variance) but with vectorized access to amortize load overhead.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "implementation_hints": [
+          "Use 32 threads per block; each thread loads 2 consecutive floats using float2 vector load (__ldg reinterpret as float2*)",
+          "Thread block covers one row of 64 floats; grid = N * C * D_out * H_out",
+          "Pass1: compute partial sum and sum-of-squares using float2 loads, then reduce with __shfl_xor_sync across 32 threads to get mean and variance",
+          "Pass 2: re-load data, apply normalization, affine, GELU, scale, and store â use float2 stores (reinterpret_cast<float2*>)",
+          "Store partial sums in registers between pass 1 and pass 2 to avoid extra global loads: keep the 2 loaded floats in registers after pass 1 so pass 2 only does computation + store (not reload)",
+          "This means the kernel effectively reads each element once and writes once, with two arithmetic passes in registers",
+          "Use __fmaf_rn for fused multiply-add in the affine transform: out = __fmaf_rn(norm_val, weight_val, bias_val)",
+          "Use rsqrtf(var + eps) for inverse standard deviation",
+          "Shape guard: assert x.size(-1) == normalized_shape[0] before launching; fall back to PyTorch if not met",
+          "Use __launch_bounds__(32, 16) for32-thread blocks"
+        ],
+        "expected_gain": "Float2 vectorized loads/stores double effective memory bandwidth per instruction. Combined with register-retained data between passes, estimated 1.2â2.0x speedup on post-conv ops. The conv remains bottlenecked by L2, so overall gain is 1.05â1.3x over baseline.",
+        "risk_notes": [
+          "Pointer aliasing: float2 reinterpret cast requires the tensor to be contiguous and aligned to 8bytes; verify x.is_contiguous() before the cast",
+          "The two-pass approach reads from registers for pass 2, not global memory â but this only works if each thread holds its own data; requires careful register allocation",
+          "With 32 threads and 64 elements, each thread holds 2 consecutive elements â the warp reduction must sum contributions from both elements; this requires careful implementation to avoid computing statistics over only32 of64 elements",
+          "Lower theoretical ceiling than Welford single-pass (strategy 2) but simpler to implement correctly"
+        ],
+        "memory_methods": [
+          "float2 vector loads (__ldg)",
+          "float2 vector stores"
+        ],
+        "mutation_axes": [
+          "vector_width",
+          "thread_block_sizing",
+          "memory_access_pattern",
+          "register_reuse"
+        ],
+        "forbidden_patterns": [
+          "Reloading input data from global memory in pass 2 if it was already loaded in pass 1",
+          "Using float4 when the row size is 64 and thread count is 32 â float4 with 32 threads covers 128 elements not 64",
+          "Assuming alignment without checking x.data_ptr() % 8 == 0"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Reasonable vectorized optimization, but the two-pass design and implementation complexity make it less attractive than the fused alternatives.",
+          "claude-compatible": "Float2 vectorization is a reasonable bandwidth optimization but the two-pass design is strictly inferior to strategy_02's single-pass Welford on this shape. The register-retention trick between passes is clever but fragile â register pressure with 32 threads holding 2 floats each plus reduction temporaries is a real concern. Useful as a fallback if strategy_02's Welford proves hard to get correct, but not the first attempt.",
+          "gemini-compatible": "Good alternative using vectorized loads and a two-pass approach, though slightly lower ceiling than single-pass Welford."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "shape-specialized normalization kernel with native fallback",
+        "summary": "Introduce a very narrow CUDA normalization kernel specialized for this benchmark familyâs fixed small normalized extent (`out_channels=64` from init args), then either fuse GELU+scale into it or launch a second lightweight elementwise pass. This reduces correctness risk versus a fully generic fused kernel while still targeting the normalization-heavy portion of the graph.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5"
+        ],
+        "implementation_hints": [
+          "Specialize the kernel for normalized width 64 and exact tensor rank/axis assumptions validated at runtime.",
+          "Use FP32 Welford or two-pass reduction for numerical stability, then optionally fold affine + GELU + scale into the writeback.",
+          "If affine parameters exist, load them once per channel block and reuse across rows.",
+          "Keep a fallback to `self.layer_norm` when any assumption fails, rather than broadening the CUDA path."
+        ],
+        "expected_gain": "Low-to-medium; less upside than a full fused path, but a better correctness/performance tradeoff after phase-1 failures.",
+        "risk_notes": [
+          "Speedup may be limited if conv still dominates wall time for some shapes.",
+          "Specialization narrows applicability, so gains depend on the benchmark staying close to the profiled init args.",
+          "Need to match PyTorch LayerNorm numerics closely enough for test tolerance."
+        ],
+        "memory_methods": [
+          "Width-64 specialization",
+          "Shared-memory or warp-register reductions sized to normalized extent"
+        ],
+        "mutation_axes": [
+          "Welford vs sum/sumsq statistics",
+          "fused vs split GELU/scale",
+          "one row per warp vs one row per block",
+          "vector width for width-64 loads"
+        ],
+        "forbidden_patterns": [
+          "Do not build a fully generic arbitrary-stride normalization kernel.",
+          "Do not change epsilon handling or affine broadcasting rules.",
+          "Do not force this path for non-matching shapes."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Good compromise between performance and correctness via narrow specialization, with lower risk than a fully generic custom kernel.",
+          "claude-compatible": "Functionally similar to strategy_01 but with more explicit width-64 specialization and a cleaner fallback story. The narrower scope reduces correctness risk relative to a generic kernel. However, it's largely subsumed by strategy_02 which already targets width-64 with a more efficient reduction. Useful as a simpler reference implementation if the Welford kernel has numerical issues.",
+          "gemini-compatible": "Safe but redundant with Strategy 02/01, offers a narrower scope."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "conv output layout co-design for legal last-dim normalization fast path",
+        "summary": "Adjust the conv path so the produced activation layout is intentionally compatible with `LayerNorm(out_channels)` as a last-dimension operation, enabling a faster fused or native epilogue without semantic ambiguity. The selected phase-1 candidate showed a conv/layout tweak helped versus the bad fused path, so extending that idea into epilogue-friendly layout planning is more promising than deeper conv tinkering alone.",
+        "target_anchors": [
+          "init_body",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Retain cuDNN autotuning, but add stronger runtime gating around `channels_last_3d` usage based on whether the following normalization can legally treat `out_channels` as the last logical dimension.",
+          "Prefer a path where conv output already lands in the layout expected by the normalization fast path; avoid explicit reorder after conv unless benchmarked as net-positive.",
+          "Cache shape/layout eligibility in `init_body` for the fixed benchmark arguments to minimize per-call Python overhead.",
+          "If the eligibility check fails, keep the current safe PyTorch fallback for LayerNorm/GELU/scale."
+        ],
+        "expected_gain": "Medium; can unlock the fused epilogue path while preserving the good parts of the current conv-focused candidate.",
+        "risk_notes": [
+          "A mere memory-format conversion may not preserve the same logical axis that `LayerNorm` expects; layout and semantics must be separated carefully.",
+          "Extra reorders can erase gains, especially since the selected profile shows low DRAM pressure and high SM utilization.",
+          "cuDNN may already choose a good kernel; over-constraining layout could regress conv performance."
+        ],
+        "memory_methods": [
+          "Producer-consumer layout matching",
+          "Avoid materialized transposes when possible"
+        ],
+        "mutation_axes": [
+          "eligibility predicates for channels-last-3d",
+          "whether to keep input conversion or move conversion to conv output handling",
+          "shape-specialized caching in init",
+          "fallback thresholds based on normalized extent"
+        ],
+        "forbidden_patterns": [
+          "Do not insert unconditional format conversions around every forward.",
+          "Do not assume channels-last-3d alone makes `LayerNorm(out_channels)` semantically last-dim correct.",
+          "Do not replace cuDNN ConvTranspose3d with a custom conv kernel."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 3.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Potentially useful if it unlocks a legal fast path, but it depends heavily on layout semantics and may not pay off alone.",
+          "claude-compatible": "The insight about producer-consumer layout matching is valid, but this strategy is mostly a prerequisite design discussion rather than an actionable kernel. It depends on a layout co-design that strategy_05 argues is actively harmful (channels_last_3d regression). Without a concrete epilogue kernel attached, the gain is speculative. The value is low unless paired with a confirmed layout that doesn't regress cuDNN kernel selection.",
+          "gemini-compatible": "Risky, as previous attempts with channels_last_3d for ConvTranspose3d often regress cuDNN performance."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_07",
+        "intent": "torch_compile_post_conv_epilogue_fusion",
+        "summary": "Wrap the post-conv sequence (LayerNorm + GELU + scale) in a torch.compile region with mode='reduce-overhead'. This lets the inductor backend automatically fuse the three ops into a single triton or CUDA kernel without custom kernel code, eliminating the correctness risk that caused n1/n3/n5 failures. Apply this after the revert of channels_last_3d so the conv kernel is already fast.",
+        "target_anchors": [
+          "init_body",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5"
+        ],
+        "implementation_hints": [
+          "In init_body, define a compiled helper: self._post_conv = torch.compile(self._post_conv_impl, mode='reduce-overhead', fullgraph=True)",
+          "Define _post_conv_impl as a method or lambda that takes x and returns layer_norm -> gelu -> scale in three lines",
+          "Pass self.layer_norm, self.scaling_factor as closed-over references so the compiled graph captures them as constants",
+          "Use fullgraph=True to prevent graph breaks which would defeat the fusion",
+          "forward_stmt_3 through forward_stmt_5 become: x = self._post_conv(x)",
+          "Add a try/except fallback to the non-compiled path in case torch.compile is unavailable (older PyTorch builds)",
+          "Set torch._dynamo.config.cache_size_limit = 4 in init_body to prevent recompilation on shape variation",
+          "This approach preserves exact PyTorch numerics â no risk of normalization axis or GELU approximation errors"
+        ],
+        "expected_gain": "Expected 1.1â1.3x speedup over baseline on the post-conv ops. Lower ceiling than a hand-written kernel but zero correctness risk and no custom CUDA code.",
+        "risk_notes": [
+          "torch.compile adds JIT compilation latency on the first forward pass; benchmark must use warmup",
+          "fullgraph=True may fail if LayerNorm internally uses a graph-break operation; test with fullgraph=False fallback",
+          "Speedup depends on PyTorch/Triton version; older environments may see no gain or even regression",
+          "Dynamic shape recompilation overhead if spatial dimensions vary between calls"
+        ],
+        "memory_methods": [
+          "inductor-generated fused kernel",
+          "automatic buffer elimination via graph fusion"
+        ],
+        "mutation_axes": [
+          "compiler_fusion",
+          "kernel_launch_reduction"
+        ],
+        "forbidden_patterns": [
+          "torch.compile on the conv_transpose itself â cuDNN autotuning already handles this",
+          "torch.compile with dynamic=True when shapes are fixed",
+          "Using mode='max-autotune' on first attempt â it has very high compilation cost"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 2.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Convenient and safer than hand-written CUDA, but compile overhead and backend variability make the payoff uncertain.",
+          "claude-compatible": "torch.compile avoids custom CUDA correctness risk entirely, which is appealing after n1/n3/n5 failures. However, the JIT compilation latency on first forward is a real benchmark liability, fullgraph=True has a meaningful failure rate with LayerNorm internals, and the performance ceiling is lower than a hand-written kernel. In a controlled benchmark environment where warmup is excluded from timing, this could surprise negatively. Worth keeping as a last-resort fallback but not a primary strategy.",
+          "gemini-compatible": "torch.compile is a low-effort fallback but may not meet the requirement of providing a custom CUDA kernel."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "dispatch and launch overhead reduction via static fast-path routing",
+        "summary": "Trim Python and extension dispatch overhead around the fixed benchmark shape by precomputing fast-path eligibility in `init_body` and routing directly to the chosen implementation in forward. This is lower risk and complements either the current cuDNN path or a future fused epilogue.",
+        "target_anchors": [
+          "user_helpers",
+          "init_body",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Precompute whether CUDA, cuDNN benchmark, memory format, and normalization-axis conditions are all satisfied for the fixed configuration.",
+          "Avoid repeated `is_cuda`/format probing and repeated extension lookup decisions inside the hot forward path when the model configuration is static.",
+          "Use a tiny helper to centralize path selection so future custom CUDA entrypoints can be called with minimal Python branching.",
+          "Keep the baseline PyTorch path intact for any dynamic or unsupported case."
+        ],
+        "expected_gain": "Low but reliable; mostly useful as a support optimization and to make more aggressive kernels easier to realize cleanly.",
+        "risk_notes": [
+          "This will not recover the large gap alone if kernel execution dominates.",
+          "Over-caching assumptions about device or shape can break correctness if inputs vary unexpectedly.",
+          "Benefit may be hard to measure without combining it with a custom CUDA epilogue."
+        ],
+        "memory_methods": [
+          "No new tensor copies",
+          "Static path caching"
+        ],
+        "mutation_axes": [
+          "helper-based route caching",
+          "shape/device invariants cached in init",
+          "eager extension load vs lazy load",
+          "branch elimination in forward"
+        ],
+        "forbidden_patterns": [
+          "Do not remove runtime safety checks for unsupported shapes/devices.",
+          "Do not force extension loading on CPU-only runs.",
+          "Do not hide semantic fallbacks behind unchecked cached flags."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 2.0,
+          "claude-compatible": 1.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Useful as support plumbing, but too small to matter much on its own for kernel-level performance.",
+          "claude-compatible": "Dispatch overhead reduction is real but marginal when kernel execution dominates. The implementation hints are vague (precompute eligibility, avoid repeated probing) and don't translate to measurable gains without an accompanying custom kernel. This is optimization noise at the current performance gap level. Only useful as a polish pass after a real kernel win is in place.",
+          "gemini-compatible": "Python overhead reduction is negligible compared to kernel execution time in this context."
+        },
+        "priority": 2
+      }
+    ],
+    "proposal_errors": {
+      "gemini-compatible": "Unterminated string starting at: line 2 column 2 (char 1277)"
+    },
+    "review_errors": {},
+    "deliberation_round": 1
+  },
+  "phase_transition": {
+    "source_phase": 1,
+    "target_phase": 2,
+    "split_attempts": 5,
+    "trigger_attempt": 5,
+    "root": {
+      "node_id": "root",
+      "strategy_name": null,
+      "runtime": 0.0469,
+      "speedup": 1.002132196162047,
+      "plan_summary": null,
+      "changed_regions": [],
+      "lineage": [
+        "root"
+      ]
+    },
+    "selected": {
+      "node_id": "n4",
+      "strategy_name": "strategy_10",
+      "runtime": 0.0545,
+      "speedup": 0.8605504587155963,
+      "plan_summary": "Explore a conv-focused optimization instead of another fused-epilogue attempt: enable cuDNN autotuning for the fixed ConvTranspose3d shape and use a channels-last-3d fast path around the convolution while leaving LayerNorm/GELU/scale semantics unchanged.",
+      "changed_regions": [
+        "init_body",
+        "forward_stmt_2"
+      ],
+      "lineage": [
+        "root",
+        "n4"
+      ]
+    },
+    "attempts": [
+      {
+        "node_id": "n1",
+        "parent_id": "root",
+        "strategy_name": "strategy_01",
+        "attempt_mode": "explore",
+        "mutation_family": "fused_epilogue_lastdim_ln",
+        "single_change_focus": "Introduce one fused CUDA epilogue for LayerNorm(last-dim)+affine+GELU+scale, and route the forward path to it only when the tensor layout matches the baseline LayerNorm contract.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "compile_ok": true,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "plan_summary": "Fuse the post-convolution LayerNorm, GELU, and scaling into one custom CUDA epilogue so the ConvTranspose3d output is read once, normalized over the exact LayerNorm axes, transformed, activated, scaled, and written once."
+      },
+      {
+        "node_id": "n2",
+        "parent_id": "n1",
+        "strategy_name": "strategy_01",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "single_change_focus": "small_local_repair",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.111,
+        "speedup": 0.42342342342342343,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Fuse the post-convolution LayerNorm, GELU, and scaling into one custom CUDA epilogue so the ConvTranspose3d output is read once, normalized over the exact LayerNorm axes, transformed, activated, scaled, and written once."
+      },
+      {
+        "node_id": "n3",
+        "parent_id": "n2",
+        "strategy_name": "strategy_06",
+        "attempt_mode": "explore",
+        "mutation_family": "layout_aware_lastdim_fusion",
+        "single_change_focus": "Replace the generic fused post-conv path with an exact-axis, last-dimension-only specialization plus strict forward gating.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3"
+        ],
+        "compile_ok": false,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "compile",
+        "failure_type": "python_region_syntax_error",
+        "plan_summary": "Add a layout-aware CUDA fast path only for the exact baseline LayerNorm contract: normalize over the last contiguous dimension when it equals `normalized_shape[0]`, and otherwise fall back to PyTorch. Implement a lean last-dimension fused kernel so the custom path is both correct and more likely to beat the generic epilogue."
+      },
+      {
+        "node_id": "n4",
+        "parent_id": "root",
+        "strategy_name": "strategy_10",
+        "attempt_mode": "explore",
+        "mutation_family": "cudnn_layout_autotune",
+        "single_change_focus": "Make the conv path layout- and autotune-aware, with no custom kernel fusion.",
+        "changed_regions": [
+          "init_body",
+          "forward_stmt_2"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0545,
+        "speedup": 0.8605504587155963,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Explore a conv-focused optimization instead of another fused-epilogue attempt: enable cuDNN autotuning for the fixed ConvTranspose3d shape and use a channels-last-3d fast path around the convolution while leaving LayerNorm/GELU/scale semantics unchanged."
+      },
+      {
+        "node_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_06",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "single_change_focus": "small_local_repair",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3"
+        ],
+        "compile_ok": true,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "plan_summary": "Add a layout-aware CUDA fast path only for the exact baseline LayerNorm contract: normalize over the last contiguous dimension when it equals `normalized_shape[0]`, and otherwise fall back to PyTorch. Implement a lean last-dimension fused kernel so the custom path is both correct and more likely to beat the generic epilogue."
+      }
+    ],
+    "trace_summary": "flat=n2:small_local_repair:0.423x; n4:Make the conv path layout- and autotune-aware, with no custom kernel fusion.:0.861x | failed=n1:Introduce one fused CUDA epilogue for LayerNorm(last-dim)+affine+GELU+scale, and route the forward path to it only when the tensor layout matches the baseline LayerNorm contract.:correctness_error; n3:Replace the generic fused post-conv path with an exact-axis, last-dimension-only specialization plus strict forward gating.:python_region_syntax_error; n5:small_local_repair:correctness_error",
+    "root_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void convolveNd_dgrad_float_engine<float, 3, 128, 6, 8, 3, 3, 5, 0>(int, int, int, const T1 *, int, const T1 *, int, T1 *, kernel_gradNd_params, unsigned long long, int, unsigned long long, int, float, int)",
+        "row_count": 31,
+        "kernel_launch_count": 31,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 6.74,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 84.63,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 42.01,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 11.75,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 32.61,
+          "launch__registers_per_thread": 122,
+          "launch__occupancy_limit_registers": 2,
+          "launch__occupancy_limit_shared_mem": 5,
+          "launch__occupancy_limit_warps": 6,
+          "gpu__time_duration.avg": 43155264,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.32,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.02,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.01,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 30116,
+          "smsp__sass_branch_targets_threads_uniform.avg": 422492,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 14825937.88
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "selected_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void cnn::dgrad2d_grouped_direct_kernel<float, int, float, float, 1, 1, 0, 0>(cnn::DgradGroupedDirectParams, const T1 *, const T1 *, T1 *, T4, T4)",
+        "row_count": 111,
+        "kernel_launch_count": 111,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 0.5,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 4.45,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 39.53,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 72.39,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 65.48,
+          "launch__registers_per_thread": 32,
+          "launch__occupancy_limit_registers": 2,
+          "launch__occupancy_limit_shared_mem": 8,
+          "launch__occupancy_limit_warps": 1,
+          "gpu__time_duration.avg": 617715296,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.16,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.02,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.21,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 7999488,
+          "smsp__sass_branch_targets_threads_uniform.avg": 126775296,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 3310763133.86
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "diagnostics_delta": {
+      "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": -6.24,
+      "gpu__time_duration.avg": 574560032,
+      "l1tex__throughput.avg.pct_of_peak_sustained_active": -2.479999999999997,
+      "launch__occupancy_limit_registers": 0,
+      "launch__occupancy_limit_shared_mem": 3,
+      "launch__occupancy_limit_warps": -5,
+      "launch__registers_per_thread": -90,
+      "lts__throughput.avg.pct_of_peak_sustained_elapsed": -80.17999999999999,
+      "sm__throughput.avg.pct_of_peak_sustained_elapsed": 60.64,
+      "sm__warps_active.avg.pct_of_peak_sustained_active": 32.870000000000005,
+      "smsp__sass_branch_targets_threads_divergent.avg": 7969372,
+      "smsp__sass_branch_targets_threads_uniform.avg": 126352804,
+      "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": -0.16,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.02,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.19999999999999998,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": -0.02,
+      "smsp__warps_eligible.avg": 3295937195.98
+    }
+  },
+  "feedback_state": {
+    "total_attempts": 11,
+    "compile_rate": 0.8181818181818182,
+    "correct_rate": 0.36363636363636365,
+    "best_speedup": 1.002132196162047,
+    "best_strategy_name": null,
+    "phase": "refinement",
+    "current_champion_id": "root",
+    "current_champion_speedup": 1.002132196162047,
+    "plateau_detected": false,
+    "recent_improvement_deltas": [],
+    "recent_regression_deltas": [
+      -0.14158173744645075,
+      0.0
+    ],
+    "recent_successful_mutation_families": [],
+    "recent_failed_mutation_families": [
+      "cudnn_layout_autotune"
+    ],
+    "last_mutation_outcome": "regressed_or_flat",
+    "recent_attempts": [
+      {
+        "attempt_id": "n4",
+        "parent_id": "root",
+        "strategy_name": "strategy_10",
+        "mode": "explore",
+        "mutation_family": "cudnn_layout_autotune",
+        "speedup": 0.8605504587155963,
+        "parent_speedup": 1.002132196162047,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Make the conv path layout- and autotune-aware, with no custom kernel fusion."
+      },
+      {
+        "attempt_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_06",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": null,
+        "parent_speedup": null,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_n1",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_05",
+        "mode": "explore",
+        "mutation_family": "layout_revert_cudnn_fastpath",
+        "speedup": null,
+        "parent_speedup": 0.8605504587155963,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "single_change_focus": "Delete the channels-last-3d fast path around ConvTranspose3d and keep a plain contiguous `self.conv_transpose(x)` call."
+      },
+      {
+        "attempt_id": "phase2_n2",
+        "parent_id": "phase2_n1",
+        "strategy_name": "strategy_05",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": null,
+        "parent_speedup": null,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_n3",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_05",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": 1.0,
+        "parent_speedup": null,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_n4",
+        "parent_id": "phase2_n3",
+        "strategy_name": "strategy_07",
+        "mode": "explore",
+        "mutation_family": "compiled_epilogue_fusion",
+        "speedup": null,
+        "parent_speedup": 1.0,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "single_change_focus": "Precompile a dedicated post-conv helper in `__init__` and replace the separate LayerNorm/GELU/scale steps with one call site."
+      },
+      {
+        "attempt_id": "phase2_n5",
+        "parent_id": "phase2_n4",
+        "strategy_name": "strategy_07",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": null,
+        "parent_speedup": null,
+        "compile_ok": false,
+        "correct": false,
+        "failure_stage": "compile",
+        "failure_type": "region_apply_failed",
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_root",
+        "parent_id": "n4",
+        "strategy_name": "strategy_10",
+        "mode": "explore",
+        "mutation_family": "cudnn_layout_autotune",
+        "speedup": 0.8605504587155963,
+        "parent_speedup": 0.8605504587155963,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Make the conv path layout- and autotune-aware, with no custom kernel fusion."
+      }
+    ],
+    "champion": {
+      "node_id": "root",
+      "speedup": 1.002132196162047,
+      "strategy_name": null,
+      "mutation_family": null,
+      "lineage": [
+        "root"
+      ],
+      "recent_positive_mutations": [],
+      "recent_negative_mutations": [
+        {
+          "attempt_id": "phase2_root",
+          "strategy_name": "strategy_10",
+          "mode": "explore",
+          "mutation_family": "cudnn_layout_autotune",
+          "speedup": 0.8605504587155963,
+          "parent_speedup": 0.8605504587155963,
+          "single_change_focus": "Make the conv path layout- and autotune-aware, with no custom kernel fusion."
+        }
+      ],
+      "plateau_detected": false,
+      "lineage_plateau_depth": 0
+    }
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "user_helpers",
+      "region_role": "helper",
+      "start_line": 36,
+      "end_line": 37,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 40,
+      "end_line": 45,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 49,
+      "end_line": 55,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 64,
+      "end_line": 68,
+      "source_excerpt": "self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\nself.layer_norm = nn.LayerNorm(out_channels, eps=eps)\nself.scaling_factor = scaling_factor",
+      "source_hash": "d6b67ae82375"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 71,
+      "end_line": 81,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n\"\"\"\n        Args:\n            x (torch.Tensor): Input tensor of shape (batch_size, in_channels, D, H, W).\n\n        Returns:\n            torch.Tensor: Output tensor of shape (batch_size, out_channels, D', H', W').\n        \"\"\"",
+      "source_hash": "b054f19b1700"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 82,
+      "end_line": 84,
+      "source_excerpt": "x = self.conv_transpose(x)",
+      "source_hash": "d1732d46e9c7"
+    },
+    {
+      "anchor_name": "forward_stmt_3",
+      "region_role": "forward",
+      "start_line": 85,
+      "end_line": 87,
+      "source_excerpt": "x = self.layer_norm(x)",
+      "source_hash": "3fe8f88afac1"
+    },
+    {
+      "anchor_name": "forward_stmt_4",
+      "region_role": "forward",
+      "start_line": 88,
+      "end_line": 90,
+      "source_excerpt": "x = torch.nn.functional.gelu(x)",
+      "source_hash": "13a7c736a1ef"
+    },
+    {
+      "anchor_name": "forward_stmt_5",
+      "region_role": "forward",
+      "start_line": 91,
+      "end_line": 93,
+      "source_excerpt": "x = x * self.scaling_factor",
+      "source_hash": "e1d58634de0a"
+    },
+    {
+      "anchor_name": "forward_stmt_6",
+      "region_role": "forward",
+      "start_line": 94,
+      "end_line": 96,
+      "source_excerpt": "return x",
+      "source_hash": "03c387736bb5"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p34_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a 3D transposed convolution, layer normalization, GELU activation, and scaling.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True, eps=1e-5, scaling_factor=1.0):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.layer_norm = nn.LayerNorm(out_channels, eps=eps)\n        self.scaling_factor = scaling_factor\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_channels, D, H, W).\n\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_channels, D', H', W').\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = self.layer_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = torch.nn.functional.gelu(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x * self.scaling_factor\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1",
+        "n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0469,
+      "score": 0.0469,
+      "logs": [
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=578137",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/06_L2_P34_Auto_P34_20260719_233118/eval_traces/20260719_233120_578110_e18fbe76_kernelbench_l2_34_34_convtranspose3d_layernorm_gelu_scaling"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.047,
+      "speedup": 1.002132196162047,
+      "reference_runtimes": {
+        "torch_eager": 0.047
+      },
+      "speedups": {
+        "torch_eager": 1.002132196162047
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": null,
+      "single_change_focus": null,
+      "mutation_family": null,
+      "target_metric": null
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p34_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor convtranspose3d_layernorm_gelu_scale_cuda(\n    torch::Tensor x,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    double scaling_factor);\n\ntorch::Tensor convtranspose3d_layernorm_gelu_scale(\n    torch::Tensor x,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    double scaling_factor) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(weight.is_cuda(), \"weight must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be a CUDA tensor\");\n    return convtranspose3d_layernorm_gelu_scale_cuda(\n        x.contiguous(), weight.contiguous(), bias.contiguous(), eps, scaling_factor);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"convtranspose3d_layernorm_gelu_scale\",\n          &convtranspose3d_layernorm_gelu_scale,\n          \"Fused LayerNorm + GELU + Scale (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <math.h>\n\n// Fused kernel: LayerNorm over last dimension + affine + GELU (erf form) + scale\n// Input shape: [outer_size, norm_size] (last dim = norm_size)\n// One block per row (outer element), threads cooperate to reduce over norm_size\n__global__ void layernorm_gelu_scale_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ weight,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int norm_size,\n    float eps,\n    float scaling_factor)\n{\n    extern __shared__ float smem[];\n\n    int row = blockIdx.x;\n    int tid = threadIdx.x;\n    int block_size = blockDim.x;\n\n    const float* row_in = input + row * norm_size;\n    float* row_out = output + row * norm_size;\n\n    // --- Pass 1: compute mean ---\n    float sum = 0.0f;\n    for (int j = tid; j < norm_size; j += block_size) {\n        sum += row_in[j];\n    }\n    smem[tid] = sum;\n    __syncthreads();\n\n    // Block reduction for sum\n    for (int s = block_size >> 1; s > 0; s >>= 1) {\n        if (tid < s) smem[tid] += smem[tid + s];\n        __syncthreads();\n    }\n    float mean = smem[0] / (float)norm_size;\n    __syncthreads();\n\n    // --- Pass 2: compute variance ---\n    float var_sum = 0.0f;\n    for (int j = tid; j < norm_size; j += block_size) {\n        float diff = row_in[j] - mean;\n        var_sum += diff * diff;\n    }\n    smem[tid] = var_sum;\n    __syncthreads();\n\n    for (int s = block_size >> 1; s > 0; s >>= 1) {\n        if (tid < s) smem[tid] += smem[tid + s];\n        __syncthreads();\n    }\n    float inv_std = rsqrtf(smem[0] / (float)norm_size + eps);\n    __syncthreads();\n\n    // --- Pass 3: normalize + affine + GELU + scale ---\n    // GELU: x * 0.5 * (1 + erf(x / sqrt(2)))\n    const float sqrt2_inv = 0.70710678118f;\n    const float half_scale = scaling_factor * 0.5f;\n\n    for (int j = tid; j < norm_size; j += block_size) {\n        float xhat = (row_in[j] - mean) * inv_std;\n        float y = xhat * weight[j] + bias[j];\n        // GELU exact\n        float gelu_val = y * 0.5f * (1.0f + erff(y * sqrt2_inv));\n        row_out[j] = gelu_val * scaling_factor;\n    }\n}\n\n// Vectorized version for norm_size divisible by 4\n__global__ void layernorm_gelu_scale_kernel_vec4(\n    const float* __restrict__ input,\n    const float* __restrict__ weight,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int norm_size,\n    float eps,\n    float scaling_factor)\n{\n    extern __shared__ float smem[];\n\n    int row = blockIdx.x;\n    int tid = threadIdx.x;\n    int block_size = blockDim.x;\n    int vec_size = norm_size / 4;\n\n    const float4* row_in4 = reinterpret_cast<const float4*>(input + row * norm_size);\n    float4* row_out4 = reinterpret_cast<float4*>(output + row * norm_size);\n\n    // --- Pass 1: mean ---\n    float sum = 0.0f;\n    for (int j = tid; j < vec_size; j += block_size) {\n        float4 v = row_in4[j];\n        sum += v.x + v.y + v.z + v.w;\n    }\n    smem[tid] = sum;\n    __syncthreads();\n    for (int s = block_size >> 1; s > 0; s >>= 1) {\n        if (tid < s) smem[tid] += smem[tid + s];\n        __syncthreads();\n    }\n    float mean = smem[0] / (float)norm_size;\n    __syncthreads();\n\n    // --- Pass 2: variance ---\n    float var_sum = 0.0f;\n    for (int j = tid; j < vec_size; j += block_size) {\n        float4 v = row_in4[j];\n        float d0 = v.x - mean, d1 = v.y - mean, d2 = v.z - mean, d3 = v.w - mean;\n        var_sum += d0*d0 + d1*d1 + d2*d2 + d3*d3;\n    }\n    smem[tid] = var_sum;\n    __syncthreads();\n    for (int s = block_size >> 1; s > 0; s >>= 1) {\n        if (tid < s) smem[tid] += smem[tid + s];\n        __syncthreads();\n    }\n    float inv_std = rsqrtf(smem[0] / (float)norm_size + eps);\n    __syncthreads();\n\n    // --- Pass 3: normalize + affine + GELU + scale ---\n    const float sqrt2_inv = 0.70710678118f;\n    const float4* w4 = reinterpret_cast<const float4*>(weight);\n    const float4* b4 = reinterpret_cast<const float4*>(bias);\n\n    for (int j = tid; j < vec_size; j += block_size) {\n        float4 v = row_in4[j];\n        float4 wv = w4[j];\n        float4 bv = b4[j];\n\n        float x0 = (v.x - mean) * inv_std * wv.x + bv.x;\n        float x1 = (v.y - mean) * inv_std * wv.y + bv.y;\n        float x2 = (v.z - mean) * inv_std * wv.z + bv.z;\n        float x3 = (v.w - mean) * inv_std * wv.w + bv.w;\n\n        float4 out;\n        out.x = x0 * 0.5f * (1.0f + erff(x0 * sqrt2_inv)) * scaling_factor;\n        out.y = x1 * 0.5f * (1.0f + erff(x1 * sqrt2_inv)) * scaling_factor;\n        out.z = x2 * 0.5f * (1.0f + erff(x2 * sqrt2_inv)) * scaling_factor;\n        out.w = x3 * 0.5f * (1.0f + erff(x3 * sqrt2_inv)) * scaling_factor;\n        row_out4[j] = out;\n    }\n}\n\ntorch::Tensor convtranspose3d_layernorm_gelu_scale_cuda(\n    torch::Tensor x,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    double scaling_factor)\n{\n    auto out = torch::empty_like(x);\n    int norm_size = x.size(-1);\n    int64_t total = x.numel();\n    int outer_size = (int)(total / norm_size);\n\n    // Choose block size: for norm_size=64, 64 threads is enough\n    int block_size = 64;\n    if (norm_size > 256) block_size = 256;\n    else if (norm_size > 128) block_size = 128;\n\n    int smem_bytes = block_size * sizeof(float);\n    float eps_f = (float)eps;\n    float sf = (float)scaling_factor;\n\n    if (norm_size % 4 == 0) {\n        layernorm_gelu_scale_kernel_vec4<<<outer_size, block_size, smem_bytes>>>(\n            x.data_ptr<float>(),\n            weight.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            out.data_ptr<float>(),\n            norm_size, eps_f, sf);\n    } else {\n        layernorm_gelu_scale_kernel<<<outer_size, block_size, smem_bytes>>>(\n            x.data_ptr<float>(),\n            weight.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            out.data_ptr<float>(),\n            norm_size, eps_f, sf);\n    }\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a 3D transposed convolution, layer normalization, GELU activation, and scaling.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True, eps=1e-5, scaling_factor=1.0):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.layer_norm = nn.LayerNorm(out_channels, eps=eps)\n        self.scaling_factor = scaling_factor\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_channels, D, H, W).\n\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_channels, D', H', W').\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        _fused = False\n        if (x.is_cuda and x.is_contiguous() and\n                self.layer_norm.weight is not None and self.layer_norm.bias is not None and\n                x.dtype == torch.float32 and\n                x.dim() >= 1 and x.size(-1) == self.layer_norm.normalized_shape[0]):\n            try:\n                ext = _stark_get_extension()\n                x = ext.convtranspose3d_layernorm_gelu_scale(\n                    x.contiguous(),\n                    self.layer_norm.weight.contiguous(),\n                    self.layer_norm.bias.contiguous(),\n                    self.layer_norm.eps,\n                    float(self.scaling_factor))\n                _fused = True\n            except Exception:\n                _fused = False\n        if not _fused:\n            x = self.layer_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        if not _fused:\n            x = torch.nn.functional.gelu(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        if not _fused:\n            x = x * self.scaling_factor\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Fuse the post-convolution LayerNorm, GELU, and scaling into one custom CUDA epilogue so the ConvTranspose3d output is read once, normalized over the exact LayerNorm axes, transformed, activated, scaled, and written once.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the empty extension stub with a C++ binding that declares a CUDA function `torch::Tensor convtranspose3d_layernorm_gelu_scale_cuda(torch::Tensor x, torch::Tensor weight, torch::Tensor bias, double eps, double scaling_factor);`, checks that all tensors are CUDA/contiguous as required, exposes a wrapper named `convtranspose3d_layernorm_gelu_scale`, and registers it in `PYBIND11_MODULE`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the placeholder with a CUDA implementation of `convtranspose3d_layernorm_gelu_scale_cuda` that assumes normalization over the last dimension only. Implement a kernel that treats the input as `outer_size x norm_size`, launches one block per row, accumulates mean and variance in FP32 over `norm_size`, applies `(x-mean)/sqrt(var+eps)`, affine using `weight[j]` and `bias[j]`, exact GELU using `erff`, then multiplies by `scaling_factor` and writes to a new output tensor. Include a simple contiguous fast path and keep indexing limited to flattened last-dimension rows.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the plain `self.layer_norm(x)` call with a guarded dispatch: if `x.is_cuda`, the extension loads successfully, `self.layer_norm.weight` and `self.layer_norm.bias` are present, `x.dim() >= 1`, and `x.size(-1) == self.layer_norm.normalized_shape[0]`, call `_stark_get_extension().convtranspose3d_layernorm_gelu_scale(x.contiguous(), self.layer_norm.weight.contiguous(), self.layer_norm.bias.contiguous(), self.layer_norm.eps, self.scaling_factor)` and store back into `x`; otherwise keep the original PyTorch `self.layer_norm(x)` path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Replace this statement so it only applies `torch.nn.functional.gelu(x)` on the fallback path. If the fused CUDA path already ran in `forward_stmt_3`, leave `x` unchanged here.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_5",
+          "instruction": "Replace this statement so it only applies `x * self.scaling_factor` on the fallback path. If the fused CUDA path already ran in `forward_stmt_3`, leave `x` unchanged here.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_6",
+          "instruction": "Replace the return with a direct `return x`, preserving the fused-result or fallback-result transparently without changing output semantics.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "autofix_tensor_property_call",
+        "applied_region_patch:forward_stmt_3:replace",
+        "applied_region_patch:forward_stmt_4:replace",
+        "applied_region_patch:forward_stmt_5:replace",
+        "applied_region_patch:forward_stmt_6:replace",
+        "correctness_issue=Output mismatch",
+        "max_difference=['0.013207']",
+        "avg_difference=['0.000000']",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=579675",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/06_L2_P34_Auto_P34_20260719_233118/eval_traces/20260719_233626_578110_3924a754_kernelbench_l2_34_34_convtranspose3d_layernorm_gelu_scaling"
+      ],
+      "failure_type": "correctness_error",
+      "node_status": "correctness_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "correctness",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "A fused CUDA epilogue launched after `self.conv_transpose(x)` will outperform three separate PyTorch ops because it eliminates extra kernel launches and repeated L2-resident round-trips of the conv output, while doing the normalization reduction and elementwise transforms in one pass with FP32 accumulators.",
+      "single_change_focus": "Introduce one fused CUDA epilogue for LayerNorm(last-dim)+affine+GELU+scale, and route the forward path to it only when the tensor layout matches the baseline LayerNorm contract.",
+      "mutation_family": "fused_epilogue_lastdim_ln",
+      "target_metric": "speedup"
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p34_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor convtranspose3d_layernorm_gelu_scale_cuda(\n    torch::Tensor x,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    double scaling_factor);\n\ntorch::Tensor convtranspose3d_layernorm_gelu_scale(\n    torch::Tensor x,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    double scaling_factor) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(weight.is_cuda(), \"weight must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be a CUDA tensor\");\n    return convtranspose3d_layernorm_gelu_scale_cuda(\n        x.contiguous(), weight.contiguous(), bias.contiguous(), eps, scaling_factor);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"convtranspose3d_layernorm_gelu_scale\",\n          &convtranspose3d_layernorm_gelu_scale,\n          \"Fused LayerNorm + GELU + Scale (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <math.h>\n\n// Fused kernel: LayerNorm over last dimension + affine + GELU (erf form) + scale\n// Input shape: [outer_size, norm_size] (last dim = norm_size)\n// One block per row (outer element), threads cooperate to reduce over norm_size\n__global__ void layernorm_gelu_scale_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ weight,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int norm_size,\n    float eps,\n    float scaling_factor)\n{\n    extern __shared__ double smem[];\n\n    int row = blockIdx.x;\n    int tid = threadIdx.x;\n    int block_size = blockDim.x;\n\n    const float* row_in = input + row * norm_size;\n    float* row_out = output + row * norm_size;\n\n    // --- Pass 1: compute mean ---\n    double sum = 0.0;\n    for (int j = tid; j < norm_size; j += block_size) {\n        sum += (double)row_in[j];\n    }\n    smem[tid] = sum;\n    __syncthreads();\n\n    // Block reduction for sum\n    for (int s = block_size >> 1; s > 0; s >>= 1) {\n        if (tid < s) smem[tid] += smem[tid + s];\n        __syncthreads();\n    }\n    double mean = smem[0] / (double)norm_size;\n    __syncthreads();\n\n    // --- Pass 2: compute variance ---\n    double var_sum = 0.0;\n    for (int j = tid; j < norm_size; j += block_size) {\n        double diff = (double)row_in[j] - mean;\n        var_sum += diff * diff;\n    }\n    smem[tid] = var_sum;\n    __syncthreads();\n\n    for (int s = block_size >> 1; s > 0; s >>= 1) {\n        if (tid < s) smem[tid] += smem[tid + s];\n        __syncthreads();\n    }\n    double inv_std = 1.0 / sqrt(smem[0] / (double)norm_size + (double)eps);\n    __syncthreads();\n\n    // --- Pass 3: normalize + affine + GELU + scale ---\n    const double sqrt2_inv = 0.70710678118654752440;\n\n    for (int j = tid; j < norm_size; j += block_size) {\n        double xhat = ((double)row_in[j] - mean) * inv_std;\n        double y = xhat * (double)weight[j] + (double)bias[j];\n        // GELU exact\n        double gelu_val = y * 0.5 * (1.0 + erf(y * sqrt2_inv));\n        row_out[j] = (float)(gelu_val * (double)scaling_factor);\n    }\n}\n\n// Vectorized version for norm_size divisible by 4\n__global__ void layernorm_gelu_scale_kernel_vec4(\n    const float* __restrict__ input,\n    const float* __restrict__ weight,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int norm_size,\n    float eps,\n    float scaling_factor)\n{\n    extern __shared__ double smem[];\n\n    int row = blockIdx.x;\n    int tid = threadIdx.x;\n    int block_size = blockDim.x;\n    int vec_size = norm_size / 4;\n\n    const float4* row_in4 = reinterpret_cast<const float4*>(input + row * norm_size);\n    float4* row_out4 = reinterpret_cast<float4*>(output + row * norm_size);\n\n    // --- Pass 1: mean ---\n    double sum = 0.0;\n    for (int j = tid; j < vec_size; j += block_size) {\n        float4 v = row_in4[j];\n        sum += (double)v.x + (double)v.y + (double)v.z + (double)v.w;\n    }\n    smem[tid] = sum;\n    __syncthreads();\n    for (int s = block_size >> 1; s > 0; s >>= 1) {\n        if (tid < s) smem[tid] += smem[tid + s];\n        __syncthreads();\n    }\n    double mean = smem[0] / (double)norm_size;\n    __syncthreads();\n\n    // --- Pass 2: variance ---\n    double var_sum = 0.0;\n    for (int j = tid; j < vec_size; j += block_size) {\n        float4 v = row_in4[j];\n        double d0 = (double)v.x - mean;\n        double d1 = (double)v.y - mean;\n        double d2 = (double)v.z - mean;\n        double d3 = (double)v.w - mean;\n        var_sum += d0*d0 + d1*d1 + d2*d2 + d3*d3;\n    }\n    smem[tid] = var_sum;\n    __syncthreads();\n    for (int s = block_size >> 1; s > 0; s >>= 1) {\n        if (tid < s) smem[tid] += smem[tid + s];\n        __syncthreads();\n    }\n    double inv_std = 1.0 / sqrt(smem[0] / (double)norm_size + (double)eps);\n    __syncthreads();\n\n    // --- Pass 3: normalize + affine + GELU + scale ---\n    const double sqrt2_inv = 0.70710678118654752440;\n    const float4* w4 = reinterpret_cast<const float4*>(weight);\n    const float4* b4 = reinterpret_cast<const float4*>(bias);\n\n    for (int j = tid; j < vec_size; j += block_size) {\n        float4 v = row_in4[j];\n        float4 wv = w4[j];\n        float4 bv = b4[j];\n\n        double x0 = ((double)v.x - mean) * inv_std * (double)wv.x + (double)bv.x;\n        double x1 = ((double)v.y - mean) * inv_std * (double)wv.y + (double)bv.y;\n        double x2 = ((double)v.z - mean) * inv_std * (double)wv.z + (double)bv.z;\n        double x3 = ((double)v.w - mean) * inv_std * (double)wv.w + (double)bv.w;\n\n        float4 out;\n        out.x = (float)(x0 * 0.5 * (1.0 + erf(x0 * sqrt2_inv)) * (double)scaling_factor);\n        out.y = (float)(x1 * 0.5 * (1.0 + erf(x1 * sqrt2_inv)) * (double)scaling_factor);\n        out.z = (float)(x2 * 0.5 * (1.0 + erf(x2 * sqrt2_inv)) * (double)scaling_factor);\n        out.w = (float)(x3 * 0.5 * (1.0 + erf(x3 * sqrt2_inv)) * (double)scaling_factor);\n        row_out4[j] = out;\n    }\n}\n\ntorch::Tensor convtranspose3d_layernorm_gelu_scale_cuda(\n    torch::Tensor x,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    double scaling_factor)\n{\n    auto out = torch::empty_like(x);\n    int norm_size = x.size(-1);\n    int64_t total = x.numel();\n    int outer_size = (int)(total / norm_size);\n\n    // Choose block size: for norm_size=64, 64 threads is enough\n    int block_size = 64;\n    if (norm_size > 256) block_size = 256;\n    else if (norm_size > 128) block_size = 128;\n\n    int smem_bytes = block_size * sizeof(double);\n    float eps_f = (float)eps;\n    float sf = (float)scaling_factor;\n\n    if (norm_size % 4 == 0) {\n        layernorm_gelu_scale_kernel_vec4<<<outer_size, block_size, smem_bytes>>>(\n            x.data_ptr<float>(),\n            weight.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            out.data_ptr<float>(),\n            norm_size, eps_f, sf);\n    } else {\n        layernorm_gelu_scale_kernel<<<outer_size, block_size, smem_bytes>>>(\n            x.data_ptr<float>(),\n            weight.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            out.data_ptr<float>(),\n            norm_size, eps_f, sf);\n    }\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a 3D transposed convolution, layer normalization, GELU activation, and scaling.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True, eps=1e-5, scaling_factor=1.0):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.layer_norm = nn.LayerNorm(out_channels, eps=eps)\n        self.scaling_factor = scaling_factor\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_channels, D, H, W).\n\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_channels, D', H', W').\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        _fused = False\n        if (x.is_cuda and x.is_contiguous() and\n                self.layer_norm.weight is not None and self.layer_norm.bias is not None and\n                x.dtype == torch.float32 and\n                x.dim() >= 1 and x.size(-1) == self.layer_norm.normalized_shape[0]):\n            try:\n                ext = _stark_get_extension()\n                x = ext.convtranspose3d_layernorm_gelu_scale(\n                    x.contiguous(),\n                    self.layer_norm.weight.contiguous(),\n                    self.layer_norm.bias.contiguous(),\n                    self.layer_norm.eps,\n                    float(self.scaling_factor))\n                _fused = True\n            except Exception:\n                _fused = False\n        if not _fused:\n            x = self.layer_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        if not _fused:\n            x = torch.nn.functional.gelu(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        if not _fused:\n            x = x * self.scaling_factor\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Fuse the post-convolution LayerNorm, GELU, and scaling into one custom CUDA epilogue so the ConvTranspose3d output is read once, normalized over the exact LayerNorm axes, transformed, activated, scaled, and written once.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the empty extension stub with a C++ binding that declares a CUDA function `torch::Tensor convtranspose3d_layernorm_gelu_scale_cuda(torch::Tensor x, torch::Tensor weight, torch::Tensor bias, double eps, double scaling_factor);`, checks that all tensors are CUDA/contiguous as required, exposes a wrapper named `convtranspose3d_layernorm_gelu_scale`, and registers it in `PYBIND11_MODULE`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the placeholder with a CUDA implementation of `convtranspose3d_layernorm_gelu_scale_cuda` that assumes normalization over the last dimension only. Implement a kernel that treats the input as `outer_size x norm_size`, launches one block per row, accumulates mean and variance in FP32 over `norm_size`, applies `(x-mean)/sqrt(var+eps)`, affine using `weight[j]` and `bias[j]`, exact GELU using `erff`, then multiplies by `scaling_factor` and writes to a new output tensor. Include a simple contiguous fast path and keep indexing limited to flattened last-dimension rows.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the plain `self.layer_norm(x)` call with a guarded dispatch: if `x.is_cuda`, the extension loads successfully, `self.layer_norm.weight` and `self.layer_norm.bias` are present, `x.dim() >= 1`, and `x.size(-1) == self.layer_norm.normalized_shape[0]`, call `_stark_get_extension().convtranspose3d_layernorm_gelu_scale(x.contiguous(), self.layer_norm.weight.contiguous(), self.layer_norm.bias.contiguous(), self.layer_norm.eps, self.scaling_factor)` and store back into `x`; otherwise keep the original PyTorch `self.layer_norm(x)` path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Replace this statement so it only applies `torch.nn.functional.gelu(x)` on the fallback path. If the fused CUDA path already ran in `forward_stmt_3`, leave `x` unchanged here.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_5",
+          "instruction": "Replace this statement so it only applies `x * self.scaling_factor` on the fallback path. If the fused CUDA path already ran in `forward_stmt_3`, leave `x` unchanged here.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_6",
+          "instruction": "Replace the return with a direct `return x`, preserving the fused-result or fallback-result transparently without changing output semantics.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.111,
+      "score": 0.111,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=580315",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/06_L2_P34_Auto_P34_20260719_233118/eval_traces/20260719_234016_578110_b52a7743_kernelbench_l2_34_34_convtranspose3d_layernorm_gelu_scaling"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.047,
+      "speedup": 0.42342342342342343,
+      "reference_runtimes": {
+        "torch_eager": 0.047
+      },
+      "speedups": {
+        "torch_eager": 0.42342342342342343
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p34_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor convtranspose3d_layernorm_gelu_scale_cuda(\n    torch::Tensor x,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    double scaling_factor);\n\ntorch::Tensor convtranspose3d_layernorm_gelu_scale(\n    torch::Tensor x,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    double scaling_factor) {\n    TORCH_CHECK(x.is_cuda(),      \"x must be a CUDA tensor\");\n    TORCH_CHECK(weight.is_cuda(), \"weight must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(),   \"bias must be a CUDA tensor\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"x must be float32\");\n    return convtranspose3d_layernorm_gelu_scale_cuda(\n        x.contiguous(), weight.contiguous(), bias.contiguous(), eps, scaling_factor);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"convtranspose3d_layernorm_gelu_scale\",\n          &convtranspose3d_layernorm_gelu_scale,\n          \"Fused LayerNorm + GELU + Scale (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <math.h>\n\n// Warp-level reduction helpers\n__device__ __forceinline__ float warp_reduce_sum(float val) {\n    #pragma unroll\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val += __shfl_down_sync(0xffffffff, val, offset);\n    return val;\n}\n\n// Fused kernel: LayerNorm over last dim + affine + GELU (erf) + scale\n// Specialized for norm_size <= 64: one warp (32 threads) per row,\n// each thread handles norm_size/32 elements, warp-shuffle reduction.\n// For norm_size == 64: each thread handles 2 elements.\n__global__ void layernorm_gelu_scale_kernel_warp(\n    const float* __restrict__ input,\n    const float* __restrict__ weight,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int norm_size,\n    float eps,\n    float scaling_factor)\n{\n    // One warp per row\n    int row = blockIdx.x * (blockDim.x / 32) + (threadIdx.x / 32);\n    int lane = threadIdx.x & 31;\n\n    const float* row_in = input + row * norm_size;\n    float* row_out = output + row * norm_size;\n\n    // Each lane accumulates norm_size/32 elements\n    float sum = 0.0f;\n    float sum2 = 0.0f;\n    for (int j = lane; j < norm_size; j += 32) {\n        float v = row_in[j];\n        sum += v;\n        sum2 += v * v;\n    }\n\n    // Warp reduce\n    sum  = warp_reduce_sum(sum);\n    sum2 = warp_reduce_sum(sum2);\n\n    float mean    = sum  / (float)norm_size;\n    float var     = sum2 / (float)norm_size - mean * mean;\n    float inv_std = rsqrtf(var + eps);\n\n    // Broadcast mean and inv_std to all lanes via shuffle\n    mean    = __shfl_sync(0xffffffff, mean,    0);\n    inv_std = __shfl_sync(0xffffffff, inv_std, 0);\n\n    const float sqrt2_inv = 0.70710678118654752440f;\n\n    for (int j = lane; j < norm_size; j += 32) {\n        float xhat = (row_in[j] - mean) * inv_std;\n        float y    = xhat * weight[j] + bias[j];\n        float g    = y * 0.5f * (1.0f + erff(y * sqrt2_inv));\n        row_out[j] = g * scaling_factor;\n    }\n}\n\n// General kernel for larger norm_size: one block per row, shared memory reduction\n__global__ void layernorm_gelu_scale_kernel_block(\n    const float* __restrict__ input,\n    const float* __restrict__ weight,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int norm_size,\n    float eps,\n    float scaling_factor)\n{\n    extern __shared__ float smem[];\n\n    int row       = blockIdx.x;\n    int tid       = threadIdx.x;\n    int block_size = blockDim.x;\n\n    const float* row_in = input + row * norm_size;\n    float* row_out = output + row * norm_size;\n\n    // Pass 1: sum and sum-of-squares\n    float sum = 0.0f, sum2 = 0.0f;\n    for (int j = tid; j < norm_size; j += block_size) {\n        float v = row_in[j];\n        sum  += v;\n        sum2 += v * v;\n    }\n\n    float* s_sum  = smem;\n    float* s_sum2 = smem + block_size;\n    s_sum[tid]  = sum;\n    s_sum2[tid] = sum2;\n    __syncthreads();\n\n    for (int s = block_size >> 1; s > 0; s >>= 1) {\n        if (tid < s) {\n            s_sum[tid]  += s_sum[tid + s];\n            s_sum2[tid] += s_sum2[tid + s];\n        }\n        __syncthreads();\n    }\n\n    float mean    = s_sum[0]  / (float)norm_size;\n    float var     = s_sum2[0] / (float)norm_size - mean * mean;\n    float inv_std = rsqrtf(var + eps);\n    __syncthreads();\n\n    const float sqrt2_inv = 0.70710678118654752440f;\n\n    for (int j = tid; j < norm_size; j += block_size) {\n        float xhat = (row_in[j] - mean) * inv_std;\n        float y    = xhat * weight[j] + bias[j];\n        float g    = y * 0.5f * (1.0f + erff(y * sqrt2_inv));\n        row_out[j] = g * scaling_factor;\n    }\n}\n\ntorch::Tensor convtranspose3d_layernorm_gelu_scale_cuda(\n    torch::Tensor x,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    double scaling_factor)\n{\n    auto out = torch::empty_like(x);\n    int norm_size = (int)x.size(-1);\n    int64_t total = x.numel();\n    int outer_size = (int)(total / norm_size);\n\n    float eps_f = (float)eps;\n    float sf    = (float)scaling_factor;\n\n    if (norm_size <= 64) {\n        // Use warp-specialized path: multiple warps per block, one warp per row\n        int warps_per_block = 8;  // 256 threads / 32\n        int threads = warps_per_block * 32;\n        int blocks  = (outer_size + warps_per_block - 1) / warps_per_block;\n        layernorm_gelu_scale_kernel_warp<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            weight.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            out.data_ptr<float>(),\n            norm_size, eps_f, sf);\n    } else {\n        int block_size;\n        if (norm_size <= 128)       block_size = 128;\n        else if (norm_size <= 256)  block_size = 256;\n        else                        block_size = 512;\n        int smem_bytes = 2 * block_size * sizeof(float);\n        layernorm_gelu_scale_kernel_block<<<outer_size, block_size, smem_bytes>>>(\n            x.data_ptr<float>(),\n            weight.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            out.data_ptr<float>(),\n            norm_size, eps_f, sf);\n    }\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a 3D transposed convolution, layer normalization, GELU activation, and scaling.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True, eps=1e-5, scaling_factor=1.0):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.layer_norm = nn.LayerNorm(out_channels, eps=eps)\n        self.scaling_factor = scaling_factor\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_channels, D, H, W).\n\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_channels, D', H', W').\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        _fused = False\n                if (x.is_cuda and\n                        x.dtype == torch.float32 and\n                        x.is_contiguous() and\n                        x.dim() >= 1 and\n                        self.layer_norm.weight is not None and\n                        self.layer_norm.bias is not None and\n                        len(self.layer_norm.normalized_shape) == 1 and\n                        x.size(-1) == self.layer_norm.normalized_shape[0]):\n                    try:\n                        ext = _stark_get_extension()\n                        x = ext.convtranspose3d_layernorm_gelu_scale(\n                            x,\n                            self.layer_norm.weight.contiguous(),\n                            self.layer_norm.bias.contiguous(),\n                            self.layer_norm.eps,\n                            float(self.scaling_factor))\n                        _fused = True\n                    except Exception:\n                        _fused = False\n                if not _fused:\n                    x = self.layer_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        if not _fused:\n            x = torch.nn.functional.gelu(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        if not _fused:\n            x = x * self.scaling_factor\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Add a layout-aware CUDA fast path only for the exact baseline LayerNorm contract: normalize over the last contiguous dimension when it equals `normalized_shape[0]`, and otherwise fall back to PyTorch. Implement a lean last-dimension fused kernel so the custom path is both correct and more likely to beat the generic epilogue.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the helper source with a single exported CUDA entrypoint `convtranspose3d_layernorm_gelu_scale` that accepts `(x, weight, bias, eps, scaling_factor)`, checks that all tensors are CUDA, contiguous, and `float32`, and forwards to the CUDA implementation without changing ModelNew I/O or adding unrelated bindings.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA source with a specialized fused kernel for `float32` contiguous tensors that treats the input as `[outer_size, norm_size]` over the last dimension only. Implement a warp-level path optimized for `norm_size <= 64` using `__shfl_down_sync` reductions in FP32/FP64 accumulators, apply affine, exact `erf`-based GELU, and scaling in one pass, and keep a simple fallback kernel for other supported `norm_size` values. The wrapper must compute `outer_size = numel / size(-1)`, require `x.size(-1) == weight.numel() == bias.numel()`, launch one warp or one block per row, and return a new output tensor. Do not normalize across channels or any flattened tail broader than the true last dimension.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the current fused-path gating with a strict fast-path predicate: only call the extension when `x.is_cuda`, `x.dtype == torch.float32`, `x.is_contiguous()`, `x.dim() >= 1`, `self.layer_norm.weight` and `self.layer_norm.bias` exist, `len(self.layer_norm.normalized_shape) == 1`, `x.size(-1) == self.layer_norm.normalized_shape[0]`, and `x.stride(-1) == 1`. On success, assign the fused result and set `_fused = True`; otherwise fall back to `self.layer_norm(x)` exactly as today. Keep the `try/except` fallback behavior.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "unexpected indent (line 267, column 16)"
+      ],
+      "failure_type": "python_region_syntax_error",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "explore",
+      "performance_hypothesis": "A warp-specialized fused epilogue that only activates for contiguous last-dimension LayerNorm rows of width 64 will outperform separate ATen LayerNorm + GELU + multiply by reducing kernel launches and L2 round-trips, while avoiding the correctness/performance pitfalls of a generic block-wide implementation.",
+      "single_change_focus": "Replace the generic fused post-conv path with an exact-axis, last-dimension-only specialization plus strict forward gating.",
+      "mutation_family": "layout_aware_lastdim_fusion",
+      "target_metric": "speedup"
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p34_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a 3D transposed convolution, layer normalization, GELU activation, and scaling.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True, eps=1e-5, scaling_factor=1.0):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.layer_norm = nn.LayerNorm(out_channels, eps=eps)\n        self.scaling_factor = scaling_factor\n        self._stark_use_cl3d = torch.cuda.is_available()\n        if torch.backends.cudnn.is_available():\n            torch.backends.cudnn.benchmark = True\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_channels, D, H, W).\n\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_channels, D', H', W').\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if x.is_cuda and self._stark_use_cl3d:\n            x = x.to(memory_format=torch.channels_last_3d)\n            x = self.conv_transpose(x)\n        else:\n            x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = self.layer_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = torch.nn.functional.gelu(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x * self.scaling_factor\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_root"
+      ],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_10",
+      "plan_summary": "Explore a conv-focused optimization instead of another fused-epilogue attempt: enable cuDNN autotuning for the fixed ConvTranspose3d shape and use a channels-last-3d fast path around the convolution while leaving LayerNorm/GELU/scale semantics unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "init_body",
+          "instruction": "Replace the body with the existing module construction plus a small performance flag setup: keep `self.conv_transpose`, `self.layer_norm`, and `self.scaling_factor` exactly as before; then add a boolean such as `self._stark_use_cl3d = torch.cuda.is_available()` and, if `torch.backends.cudnn.is_available()`, set `torch.backends.cudnn.benchmark = True`. Do not change constructor arguments or module fields used by the baseline path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the single convolution line with a guarded fast path: if `x.is_cuda` and `self._stark_use_cl3d`, convert `x` to `memory_format=torch.channels_last_3d`, run `self.conv_transpose(x)` on that tensor, then keep the result in whatever memory format cuDNN returns; otherwise use the original `self.conv_transpose(x)` call. Do not insert permutes, do not change shape, and do not alter the subsequent LayerNorm/GELU/scale statements.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0545,
+      "score": 0.0545,
+      "logs": [
+        "normalized_python_region_indent:init_body",
+        "applied_region_patch:init_body:replace",
+        "normalized_python_region_indent:forward_stmt_2",
+        "applied_region_patch:forward_stmt_2:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=580717",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/06_L2_P34_Auto_P34_20260719_233118/eval_traces/20260719_234442_578110_c9cb2d1e_kernelbench_l2_34_34_convtranspose3d_layernorm_gelu_scaling"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0469,
+      "speedup": 0.8605504587155963,
+      "reference_runtimes": {
+        "torch_eager": 0.0469
+      },
+      "speedups": {
+        "torch_eager": 0.8605504587155963
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "For this fixed-shape benchmark, `ConvTranspose3d` is the bottleneck; enabling cuDNN benchmark and feeding the convolution with `channels_last_3d` tensors will steer cuDNN toward a faster algorithm/layout for the dgrad-style transposed-convolution kernel, reducing end-to-end runtime without changing normalization behavior.",
+      "single_change_focus": "Make the conv path layout- and autotune-aware, with no custom kernel fusion.",
+      "mutation_family": "cudnn_layout_autotune",
+      "target_metric": "speedup"
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p34_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor convtranspose3d_layernorm_gelu_scale_cuda(\n    torch::Tensor x,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    double scaling_factor);\n\ntorch::Tensor convtranspose3d_layernorm_gelu_scale(\n    torch::Tensor x,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    double scaling_factor) {\n    TORCH_CHECK(x.is_cuda(),      \"x must be a CUDA tensor\");\n    TORCH_CHECK(weight.is_cuda(), \"weight must be a CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(),   \"bias must be a CUDA tensor\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"x must be float32\");\n    return convtranspose3d_layernorm_gelu_scale_cuda(\n        x.contiguous(), weight.contiguous(), bias.contiguous(), eps, scaling_factor);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"convtranspose3d_layernorm_gelu_scale\",\n          &convtranspose3d_layernorm_gelu_scale,\n          \"Fused LayerNorm + GELU + Scale (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <math.h>\n\n// Warp-level reduction helpers\n__device__ __forceinline__ float warp_reduce_sum(float val) {\n    #pragma unroll\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val += __shfl_down_sync(0xffffffff, val, offset);\n    return val;\n}\n\n// Fused kernel: LayerNorm over last dim + affine + GELU (erf) + scale\n// Specialized for norm_size <= 64: one warp (32 threads) per row,\n// each thread handles norm_size/32 elements, warp-shuffle reduction.\n// For norm_size == 64: each thread handles 2 elements.\n__global__ void layernorm_gelu_scale_kernel_warp(\n    const float* __restrict__ input,\n    const float* __restrict__ weight,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int norm_size,\n    float eps,\n    float scaling_factor)\n{\n    // One warp per row\n    int row = blockIdx.x * (blockDim.x / 32) + (threadIdx.x / 32);\n    int lane = threadIdx.x & 31;\n\n    const float* row_in = input + row * norm_size;\n    float* row_out = output + row * norm_size;\n\n    // Each lane accumulates norm_size/32 elements\n    float sum = 0.0f;\n    float sum2 = 0.0f;\n    for (int j = lane; j < norm_size; j += 32) {\n        float v = row_in[j];\n        sum += v;\n        sum2 += v * v;\n    }\n\n    // Warp reduce\n    sum  = warp_reduce_sum(sum);\n    sum2 = warp_reduce_sum(sum2);\n\n    float mean    = sum  / (float)norm_size;\n    float var     = sum2 / (float)norm_size - mean * mean;\n    float inv_std = rsqrtf(var + eps);\n\n    // Broadcast mean and inv_std to all lanes via shuffle\n    mean    = __shfl_sync(0xffffffff, mean,    0);\n    inv_std = __shfl_sync(0xffffffff, inv_std, 0);\n\n    const float sqrt2_inv = 0.70710678118654752440f;\n\n    for (int j = lane; j < norm_size; j += 32) {\n        float xhat = (row_in[j] - mean) * inv_std;\n        float y    = xhat * weight[j] + bias[j];\n        float g    = y * 0.5f * (1.0f + erff(y * sqrt2_inv));\n        row_out[j] = g * scaling_factor;\n    }\n}\n\n// General kernel for larger norm_size: one block per row, shared memory reduction\n__global__ void layernorm_gelu_scale_kernel_block(\n    const float* __restrict__ input,\n    const float* __restrict__ weight,\n    const float* __restrict__ bias,\n    float* __restrict__ output,\n    int norm_size,\n    float eps,\n    float scaling_factor)\n{\n    extern __shared__ float smem[];\n\n    int row       = blockIdx.x;\n    int tid       = threadIdx.x;\n    int block_size = blockDim.x;\n\n    const float* row_in = input + row * norm_size;\n    float* row_out = output + row * norm_size;\n\n    // Pass 1: sum and sum-of-squares\n    float sum = 0.0f, sum2 = 0.0f;\n    for (int j = tid; j < norm_size; j += block_size) {\n        float v = row_in[j];\n        sum  += v;\n        sum2 += v * v;\n    }\n\n    float* s_sum  = smem;\n    float* s_sum2 = smem + block_size;\n    s_sum[tid]  = sum;\n    s_sum2[tid] = sum2;\n    __syncthreads();\n\n    for (int s = block_size >> 1; s > 0; s >>= 1) {\n        if (tid < s) {\n            s_sum[tid]  += s_sum[tid + s];\n            s_sum2[tid] += s_sum2[tid + s];\n        }\n        __syncthreads();\n    }\n\n    float mean    = s_sum[0]  / (float)norm_size;\n    float var     = s_sum2[0] / (float)norm_size - mean * mean;\n    float inv_std = rsqrtf(var + eps);\n    __syncthreads();\n\n    const float sqrt2_inv = 0.70710678118654752440f;\n\n    for (int j = tid; j < norm_size; j += block_size) {\n        float xhat = (row_in[j] - mean) * inv_std;\n        float y    = xhat * weight[j] + bias[j];\n        float g    = y * 0.5f * (1.0f + erff(y * sqrt2_inv));\n        row_out[j] = g * scaling_factor;\n    }\n}\n\ntorch::Tensor convtranspose3d_layernorm_gelu_scale_cuda(\n    torch::Tensor x,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    double scaling_factor)\n{\n    auto out = torch::empty_like(x);\n    int norm_size = (int)x.size(-1);\n    int64_t total = x.numel();\n    int outer_size = (int)(total / norm_size);\n\n    float eps_f = (float)eps;\n    float sf    = (float)scaling_factor;\n\n    if (norm_size <= 64) {\n        // Use warp-specialized path: multiple warps per block, one warp per row\n        int warps_per_block = 8;  // 256 threads / 32\n        int threads = warps_per_block * 32;\n        int blocks  = (outer_size + warps_per_block - 1) / warps_per_block;\n        layernorm_gelu_scale_kernel_warp<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            weight.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            out.data_ptr<float>(),\n            norm_size, eps_f, sf);\n    } else {\n        int block_size;\n        if (norm_size <= 128)       block_size = 128;\n        else if (norm_size <= 256)  block_size = 256;\n        else                        block_size = 512;\n        int smem_bytes = 2 * block_size * sizeof(float);\n        layernorm_gelu_scale_kernel_block<<<outer_size, block_size, smem_bytes>>>(\n            x.data_ptr<float>(),\n            weight.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            out.data_ptr<float>(),\n            norm_size, eps_f, sf);\n    }\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a 3D transposed convolution, layer normalization, GELU activation, and scaling.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True, eps=1e-5, scaling_factor=1.0):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.layer_norm = nn.LayerNorm(out_channels, eps=eps)\n        self.scaling_factor = scaling_factor\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_channels, D, H, W).\n\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_channels, D', H', W').\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        _fused = False\n        if (x.is_cuda and\n                x.dtype == torch.float32 and\n                x.is_contiguous() and\n                x.dim() >= 1 and\n                self.layer_norm.weight is not None and\n                self.layer_norm.bias is not None and\n                len(self.layer_norm.normalized_shape) == 1 and\n                x.size(-1) == self.layer_norm.normalized_shape[0]):\n            try:\n                ext = _stark_get_extension()\n                x = ext.convtranspose3d_layernorm_gelu_scale(\n                    x,\n                    self.layer_norm.weight.contiguous(),\n                    self.layer_norm.bias.contiguous(),\n                    self.layer_norm.eps,\n                    float(self.scaling_factor))\n                _fused = True\n            except Exception:\n                _fused = False\n        if not _fused:\n            x = self.layer_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        if not _fused:\n            x = torch.nn.functional.gelu(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        if not _fused:\n            x = x * self.scaling_factor\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Add a layout-aware CUDA fast path only for the exact baseline LayerNorm contract: normalize over the last contiguous dimension when it equals `normalized_shape[0]`, and otherwise fall back to PyTorch. Implement a lean last-dimension fused kernel so the custom path is both correct and more likely to beat the generic epilogue.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the helper source with a single exported CUDA entrypoint `convtranspose3d_layernorm_gelu_scale` that accepts `(x, weight, bias, eps, scaling_factor)`, checks that all tensors are CUDA, contiguous, and `float32`, and forwards to the CUDA implementation without changing ModelNew I/O or adding unrelated bindings.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA source with a specialized fused kernel for `float32` contiguous tensors that treats the input as `[outer_size, norm_size]` over the last dimension only. Implement a warp-level path optimized for `norm_size <= 64` using `__shfl_down_sync` reductions in FP32/FP64 accumulators, apply affine, exact `erf`-based GELU, and scaling in one pass, and keep a simple fallback kernel for other supported `norm_size` values. The wrapper must compute `outer_size = numel / size(-1)`, require `x.size(-1) == weight.numel() == bias.numel()`, launch one warp or one block per row, and return a new output tensor. Do not normalize across channels or any flattened tail broader than the true last dimension.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the current fused-path gating with a strict fast-path predicate: only call the extension when `x.is_cuda`, `x.dtype == torch.float32`, `x.is_contiguous()`, `x.dim() >= 1`, `self.layer_norm.weight` and `self.layer_norm.bias` exist, `len(self.layer_norm.normalized_shape) == 1`, `x.size(-1) == self.layer_norm.normalized_shape[0]`, and `x.stride(-1) == 1`. On success, assign the fused result and set `_fused = True`; otherwise fall back to `self.layer_norm(x)` exactly as today. Keep the `try/except` fallback behavior.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:forward_stmt_3:replace",
+        "correctness_issue=Output mismatch",
+        "max_difference=['0.141761']",
+        "avg_difference=['0.000000']",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=580818",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/06_L2_P34_Auto_P34_20260719_233118/eval_traces/20260719_234517_578110_12dfc8e6_kernelbench_l2_34_34_convtranspose3d_layernorm_gelu_scaling"
+      ],
+      "failure_type": "correctness_error",
+      "node_status": "correctness_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "correctness",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_root": {
+      "node_id": "phase2_root",
+      "parent_id": "n4",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p34_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a 3D transposed convolution, layer normalization, GELU activation, and scaling.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True, eps=1e-5, scaling_factor=1.0):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.layer_norm = nn.LayerNorm(out_channels, eps=eps)\n        self.scaling_factor = scaling_factor\n        self._stark_use_cl3d = torch.cuda.is_available()\n        if torch.backends.cudnn.is_available():\n            torch.backends.cudnn.benchmark = True\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_channels, D, H, W).\n\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_channels, D', H', W').\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if x.is_cuda and self._stark_use_cl3d:\n            x = x.to(memory_format=torch.channels_last_3d)\n            x = self.conv_transpose(x)\n        else:\n            x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = self.layer_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = torch.nn.functional.gelu(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x * self.scaling_factor\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "phase2_root",
+      "child_ids": [
+        "phase2_n1"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_10",
+      "plan_summary": "Explore a conv-focused optimization instead of another fused-epilogue attempt: enable cuDNN autotuning for the fixed ConvTranspose3d shape and use a channels-last-3d fast path around the convolution while leaving LayerNorm/GELU/scale semantics unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "init_body",
+          "instruction": "Replace the body with the existing module construction plus a small performance flag setup: keep `self.conv_transpose`, `self.layer_norm`, and `self.scaling_factor` exactly as before; then add a boolean such as `self._stark_use_cl3d = torch.cuda.is_available()` and, if `torch.backends.cudnn.is_available()`, set `torch.backends.cudnn.benchmark = True`. Do not change constructor arguments or module fields used by the baseline path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the single convolution line with a guarded fast path: if `x.is_cuda` and `self._stark_use_cl3d`, convert `x` to `memory_format=torch.channels_last_3d`, run `self.conv_transpose(x)` on that tensor, then keep the result in whatever memory format cuDNN returns; otherwise use the original `self.conv_transpose(x)` call. Do not insert permutes, do not change shape, and do not alter the subsequent LayerNorm/GELU/scale statements.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0545,
+      "score": 0.0545,
+      "logs": [
+        "normalized_python_region_indent:init_body",
+        "applied_region_patch:init_body:replace",
+        "normalized_python_region_indent:forward_stmt_2",
+        "applied_region_patch:forward_stmt_2:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=580717",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/06_L2_P34_Auto_P34_20260719_233118/eval_traces/20260719_234442_578110_c9cb2d1e_kernelbench_l2_34_34_convtranspose3d_layernorm_gelu_scaling"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0469,
+      "speedup": 0.8605504587155963,
+      "reference_runtimes": {
+        "torch_eager": 0.0469
+      },
+      "speedups": {
+        "torch_eager": 0.8605504587155963
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "For this fixed-shape benchmark, `ConvTranspose3d` is the bottleneck; enabling cuDNN benchmark and feeding the convolution with `channels_last_3d` tensors will steer cuDNN toward a faster algorithm/layout for the dgrad-style transposed-convolution kernel, reducing end-to-end runtime without changing normalization behavior.",
+      "single_change_focus": "Make the conv path layout- and autotune-aware, with no custom kernel fusion.",
+      "mutation_family": "cudnn_layout_autotune",
+      "target_metric": "speedup"
+    },
+    "phase2_n1": {
+      "node_id": "phase2_n1",
+      "parent_id": "phase2_root",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p34_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a 3D transposed convolution, layer normalization, GELU activation, and scaling.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True, eps=1e-5, scaling_factor=1.0):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.layer_norm = nn.LayerNorm(out_channels, eps=eps)\n        self.scaling_factor = scaling_factor\n        if torch.backends.cudnn.is_available():\n            torch.backends.cudnn.benchmark = True\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_channels, D, H, W).\n\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_channels, D', H', W').\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = self.layer_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = torch.nn.functional.gelu(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x * self.scaling_factor\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Revert the channels-last-3d conv path and keep only cuDNN autotuning so ConvTranspose3d returns to the previously profiled fast contiguous NCDHW kernel family before attempting any post-conv fusion.",
+      "anchor_edits": [
+        {
+          "anchor_name": "init_body",
+          "instruction": "Replace the body with: `self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)` then `self.layer_norm = nn.LayerNorm(out_channels, eps=eps)` then `self.scaling_factor = scaling_factor)` and keep only the guarded `torch.backends.cudnn.benchmark = True` block; remove `_stark_use_cl3d` entirely.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the whole conditional memory-format branch with exactly `x = self.conv_transpose(x)` and do not insert any `to(memory_format=...)` or extra `contiguous()` calls.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:init_body:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "correctness_issue=Output mismatch",
+        "max_difference=['0.156895']",
+        "avg_difference=['0.000000']",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=582946",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/06_L2_P34_Auto_P34_20260719_233118/eval_traces/20260719_235542_578110_35b049dd_kernelbench_l2_34_34_convtranspose3d_layernorm_gelu_scaling"
+      ],
+      "failure_type": "correctness_error",
+      "node_status": "correctness_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "correctness",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Removing the `channels_last_3d` conversion before `self.conv_transpose` will let cuDNN choose the original high-L2-throughput `convolveNd_dgrad_float_engine` path instead of the much slower 111-launch grouped-direct kernel, cutting the large conv-time regression.",
+      "single_change_focus": "Delete the channels-last-3d fast path around ConvTranspose3d and keep a plain contiguous `self.conv_transpose(x)` call.",
+      "mutation_family": "layout_revert_cudnn_fastpath",
+      "target_metric": "speedup"
+    },
+    "phase2_n2": {
+      "node_id": "phase2_n2",
+      "parent_id": "phase2_n1",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p34_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a 3D transposed convolution, layer normalization, GELU activation, and scaling.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True, eps=1e-5, scaling_factor=1.0):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.layer_norm = nn.LayerNorm(out_channels, eps=eps)\n        self.scaling_factor = scaling_factor\n        self._stark_use_cl3d = True\n        if torch.backends.cudnn.is_available():\n            torch.backends.cudnn.benchmark = True\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_channels, D, H, W).\n\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_channels, D', H', W').\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if self._stark_use_cl3d and x.is_cuda:\n            x = x.contiguous(memory_format=torch.channels_last_3d)\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = self.layer_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = torch.nn.functional.gelu(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x * self.scaling_factor\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "phase2_n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Revert the channels-last-3d conv path and keep only cuDNN autotuning so ConvTranspose3d returns to the previously profiled fast contiguous NCDHW kernel family before attempting any post-conv fusion.",
+      "anchor_edits": [
+        {
+          "anchor_name": "init_body",
+          "instruction": "Replace the body with: `self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)` then `self.layer_norm = nn.LayerNorm(out_channels, eps=eps)` then `self.scaling_factor = scaling_factor)` and keep only the guarded `torch.backends.cudnn.benchmark = True` block; remove `_stark_use_cl3d` entirely.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the whole conditional memory-format branch with exactly `x = self.conv_transpose(x)` and do not insert any `to(memory_format=...)` or extra `contiguous()` calls.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "normalized_python_region_indent:init_body",
+        "applied_region_patch:init_body:replace",
+        "normalized_python_region_indent:forward_stmt_2",
+        "applied_region_patch:forward_stmt_2:replace",
+        "correctness_issue=Output mismatch",
+        "max_difference=['0.071107']",
+        "avg_difference=['0.000000']",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=583039",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/06_L2_P34_Auto_P34_20260719_233118/eval_traces/20260719_235652_578110_677cd855_kernelbench_l2_34_34_convtranspose3d_layernorm_gelu_scaling"
+      ],
+      "failure_type": "correctness_error",
+      "node_status": "correctness_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "correctness",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_n3": {
+      "node_id": "phase2_n3",
+      "parent_id": "phase2_n2",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p34_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a 3D transposed convolution, layer normalization, GELU activation, and scaling.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True, eps=1e-5, scaling_factor=1.0):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.layer_norm = nn.LayerNorm(out_channels, eps=eps)\n        self.scaling_factor = scaling_factor\n        if torch.backends.cudnn.is_available():\n            torch.backends.cudnn.benchmark = True\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_channels, D, H, W).\n\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_channels, D', H', W').\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = self.layer_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = torch.nn.functional.gelu(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x * self.scaling_factor\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "phase2_n4"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Revert the channels-last-3d conv path and keep only cuDNN autotuning so ConvTranspose3d returns to the previously profiled fast contiguous NCDHW kernel family before attempting any post-conv fusion.",
+      "anchor_edits": [
+        {
+          "anchor_name": "init_body",
+          "instruction": "Replace the body with: `self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)` then `self.layer_norm = nn.LayerNorm(out_channels, eps=eps)` then `self.scaling_factor = scaling_factor)` and keep only the guarded `torch.backends.cudnn.benchmark = True` block; remove `_stark_use_cl3d` entirely.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the whole conditional memory-format branch with exactly `x = self.conv_transpose(x)` and do not insert any `to(memory_format=...)` or extra `contiguous()` calls.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0469,
+      "score": 0.0469,
+      "logs": [
+        "applied_region_patch:init_body:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=583131",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/06_L2_P34_Auto_P34_20260719_233118/eval_traces/20260719_235723_578110_7f80f21d_kernelbench_l2_34_34_convtranspose3d_layernorm_gelu_scaling"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0469,
+      "speedup": 1.0,
+      "reference_runtimes": {
+        "torch_eager": 0.0469
+      },
+      "speedups": {
+        "torch_eager": 1.0
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_n4": {
+      "node_id": "phase2_n4",
+      "parent_id": "phase2_n3",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p34_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a 3D transposed convolution, layer normalization, GELU activation, and scaling.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True, eps=1e-5, scaling_factor=1.0):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.layer_norm = nn.LayerNorm(out_channels, eps=eps)\n        self.scaling_factor = scaling_factor\n        if torch.backends.cudnn.is_available():\n            torch.backends.cudnn.benchmark = True\n        def _post_conv_impl(t):\n            return torch.nn.functional.gelu(self.layer_norm(t)) * self.scaling_factor\n        self._post_conv_eager = _post_conv_impl\n        try:\n            self._post_conv = torch.compile(_post_conv_impl, mode='reduce-overhead', fullgraph=True)\n        except Exception:\n            self._post_conv = self._post_conv_eager\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_channels, D, H, W).\n\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_channels, D', H', W').\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = self._post_conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = torch.nn.functional.gelu(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x * self.scaling_factor\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_07",
+      "plan_summary": "Compile only the post-conv epilogue so LayerNorm, GELU, and scaling can fuse without disturbing the restored cuDNN ConvTranspose3d fast path.",
+      "anchor_edits": [
+        {
+          "anchor_name": "init_body",
+          "instruction": "After setting `self.scaling_factor` and any cuDNN benchmark flag, define a local helper function or bound callable that returns `torch.nn.functional.gelu(self.layer_norm(t)) * self.scaling_factor`, assign it to an eager fallback attribute like `self._post_conv_eager`, and then assign `self._post_conv` to `torch.compile(self._post_conv_eager, mode='reduce-overhead', fullgraph=True)` inside a `try` block with `self._post_conv = self._post_conv_eager` in the `except` fallback.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the standalone LayerNorm step with a single call `x = self._post_conv(x)` so the compiled helper owns LayerNorm, GELU, and scaling; leave later forward anchors unchanged even though they become effectively redundant no-ops only if the coding agent can preserve scaffold safely, otherwise move the full epilogue into this anchor and convert `forward_stmt_4` and `forward_stmt_5` to identity assignments.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "normalized_python_region_indent:init_body",
+        "applied_region_patch:init_body:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "correctness_issue=Output mismatch",
+        "max_difference=['0.169972', '0.169972', '0.169972']",
+        "avg_difference=['0.092049', '0.092054', '0.092049']",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=583233",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/06_L2_P34_Auto_P34_20260719_233118/eval_traces/20260719_235841_578110_5245544f_kernelbench_l2_34_34_convtranspose3d_layernorm_gelu_scaling"
+      ],
+      "failure_type": "correctness_error",
+      "node_status": "correctness_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "correctness",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If the post-conv epilogue is routed through a precompiled helper that performs `layer_norm -> gelu -> scale` in one graph, Inductor can collapse the three eager ops into a single fused kernel and reduce launch plus memory traffic overhead without changing conv behavior.",
+      "single_change_focus": "Precompile a dedicated post-conv helper in `__init__` and replace the separate LayerNorm/GELU/scale steps with one call site.",
+      "mutation_family": "compiled_epilogue_fusion",
+      "target_metric": "speedup"
+    },
+    "phase2_n5": {
+      "node_id": "phase2_n5",
+      "parent_id": "phase2_n4",
+      "depth": 7,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p34_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a 3D transposed convolution, layer normalization, GELU activation, and scaling.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True, eps=1e-5, scaling_factor=1.0):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.layer_norm = nn.LayerNorm(out_channels, eps=eps)\n        self.scaling_factor = scaling_factor\n        if torch.backends.cudnn.is_available():\n            torch.backends.cudnn.benchmark = True\n        def _post_conv_impl(t):\n            return torch.nn.functional.gelu(self.layer_norm(t)) * self.scaling_factor\n        self._post_conv_eager = _post_conv_impl\n        try:\n            self._post_conv = torch.compile(_post_conv_impl, mode='reduce-overhead', fullgraph=True)\n        except Exception:\n            self._post_conv = self._post_conv_eager\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_channels, D, H, W).\n\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_channels, D', H', W').\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = self._post_conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = torch.nn.functional.gelu(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = x * self.scaling_factor\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_07",
+      "plan_summary": "Compile only the post-conv epilogue so LayerNorm, GELU, and scaling can fuse without disturbing the restored cuDNN ConvTranspose3d fast path.",
+      "anchor_edits": [
+        {
+          "anchor_name": "init_body",
+          "instruction": "After setting `self.scaling_factor` and any cuDNN benchmark flag, define a local helper function or bound callable that returns `torch.nn.functional.gelu(self.layer_norm(t)) * self.scaling_factor`, assign it to an eager fallback attribute like `self._post_conv_eager`, and then assign `self._post_conv` to `torch.compile(self._post_conv_eager, mode='reduce-overhead', fullgraph=True)` inside a `try` block with `self._post_conv = self._post_conv_eager` in the `except` fallback.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the standalone LayerNorm step with a single call `x = self._post_conv(x)` so the compiled helper owns LayerNorm, GELU, and scaling; leave later forward anchors unchanged even though they become effectively redundant no-ops only if the coding agent can preserve scaffold safely, otherwise move the full epilogue into this anchor and convert `forward_stmt_4` and `forward_stmt_5` to identity assignments.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "failed to apply region patch: region 'forward_stmt_4' is not active in current refinement policy"
+      ],
+      "failure_type": "region_apply_failed",
+      "node_status": "compile_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    }
+  }
+}

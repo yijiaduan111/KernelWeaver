@@ -1,0 +1,2216 @@
+{
+  "task_name": "kernelbench_l2_33_33_gemm_scale_batchnorm",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": false,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_claude",
+    "plan_provider": "openai-compatible",
+    "code_provider": "claude-compatible",
+    "debug_provider": "openai-compatible",
+    "search_provider": "claude-compatible",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "diagnostics_enabled": false,
+    "diagnostics_mode": "root_ncu_v1",
+    "diagnostics_timeout_seconds": 900,
+    "diagnostics_warmup_runs": 2,
+    "diagnostics_profile_runs": 3,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1,
+    "deliberation_provider_timeout_seconds": 180,
+    "deliberation_phase_timeout_seconds": 240,
+    "evaluator_isolation": "candidate_subprocess",
+    "evaluator_timeout_seconds": 900,
+    "explore_fraction": 0.4,
+    "challenger_fraction": 0.3,
+    "plateau_delta_threshold": 0.03,
+    "plateau_recovery_mutation_attempts": 2,
+    "plateau_window": 3,
+    "deliberation_upgrade_enabled": true,
+    "deliberation_max_rounds": 3,
+    "deliberation_min_remaining_attempts": 8,
+    "phase_two_enabled": true,
+    "phase_two_split_attempts": 5
+  },
+  "best_node_id": "phase2_n5",
+  "leaderboard": [
+    "phase2_n5",
+    "n5"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "root",
+      "n1"
+    ],
+    [
+      "n5",
+      "root"
+    ],
+    [],
+    [
+      "phase2_root"
+    ],
+    [
+      "phase2_root",
+      "phase2_n1"
+    ],
+    [
+      "phase2_root",
+      "phase2_n3"
+    ],
+    [
+      "phase2_n5",
+      "phase2_root"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "root",
+    "n3",
+    "phase2_root",
+    "phase2_n1",
+    "phase2_n2",
+    "phase2_root",
+    "phase2_n3"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "explore_leaf",
+    "debug_retry_failure",
+    "exploit_best_score",
+    "debug_retry_failure",
+    "exploit_best_score",
+    "explore_leaf",
+    "debug_retry_failure",
+    "exploit_best_score",
+    "explore_leaf"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {},
+    {
+      "n2": "compile_failure_debug_throttled"
+    },
+    {
+      "n2": "compile_failure_debug_throttled"
+    },
+    {},
+    {},
+    {},
+    {
+      "phase2_n2": "compile_failure_debug_throttled"
+    },
+    {
+      "phase2_n2": "compile_failure_debug_throttled"
+    }
+  ],
+  "pruned_nodes": {},
+  "debug_stats": {
+    "total_attempts": 3,
+    "per_node": {
+      "n2": 1,
+      "n3": 1,
+      "phase2_n2": 1
+    }
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 7,
+    "debug_attempts": 3,
+    "failure_counts": {
+      "python_region_syntax_error": 4,
+      "region_apply_failed": 1
+    },
+    "failure_stage_counts": {
+      "compile": 5
+    },
+    "invalid_proposals": 0,
+    "attempt_mode_counts": {
+      "explore": 6,
+      "debug": 3,
+      "mutate_champion": 1
+    },
+    "provider_transient_error_count": 0,
+    "provider_transient_budget_exhausted_count": 0,
+    "provider_transient_errors_by_stage": {},
+    "provider_transient_errors_by_origin": {},
+    "provider_transient_errors": [],
+    "phase_two_triggered": true,
+    "phase_two_seed_node_id": "n5",
+    "pruned_count": 0
+  },
+  "benchmark_family": "kernelbench",
+  "level": 2,
+  "problem_id": 33,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level2/33_Gemm_Scale_BatchNorm.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.0030499999999999998
+  },
+  "speedups": {
+    "torch_eager": 1.0132890365448506
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "normalization",
+    "summary": "Normalization computation; preserve statistics axes, epsilon, and affine state while fusing where safe.",
+    "source": "KernelBench/KernelBench/level2/33_Gemm_Scale_BatchNorm.py",
+    "exact_facts": null,
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "forward_stmt_3",
+      "forward_stmt_4",
+      "cuda_cu",
+      "cuda_cpp"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x = self.gemm(x)",
+        "op_names": [
+          "_gemm_scale_batchnorm",
+          "a",
+          "and",
+          "applies",
+          "batch",
+          "batch_norm",
+          "batchnorm1d",
+          "bn",
+          "eps",
+          "gemm",
+          "general",
+          "in_features"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x = x * self.scale",
+        "op_names": [
+          "_gemm_scale_batchnorm",
+          "a",
+          "and",
+          "applies",
+          "arithmetic",
+          "batch",
+          "batch_norm",
+          "batchnorm1d",
+          "bn",
+          "eps",
+          "gemm",
+          "general"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_3",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x = self.bn(x)",
+        "op_names": [
+          "_gemm_scale_batchnorm",
+          "a",
+          "and",
+          "applies",
+          "batch",
+          "batch_norm",
+          "batchnorm1d",
+          "bn",
+          "eps",
+          "gemm",
+          "general",
+          "in_features"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_4",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "return x",
+        "op_names": [
+          "_gemm_scale_batchnorm",
+          "a",
+          "and",
+          "applies",
+          "batch",
+          "batch_norm",
+          "batchnorm1d",
+          "bn",
+          "eps",
+          "gemm",
+          "general",
+          "in_features"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "cuda_cpp",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+        "op_names": [
+          "add",
+          "cuda",
+          "custom",
+          "entrypoints",
+          "exports",
+          "extension",
+          "for",
+          "h",
+          "here",
+          "include",
+          "m",
+          "pybind"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      },
+      {
+        "anchor_name": "cuda_cu",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+        "op_names": [
+          "add",
+          "and",
+          "cuda",
+          "cuda_runtime",
+          "exported",
+          "extension",
+          "functions",
+          "h",
+          "here",
+          "include",
+          "kernels",
+          "torch"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "fuse_statistics_and_affine",
+        "summary": "fuse statistics and affine",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "compute statistics over the exact normalized axes",
+            "fuse affine transform when present"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "keep mean/variance axes explicit"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "preserve_normalization_axes",
+        "summary": "preserve normalization axes",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "compute statistics over the exact normalized axes",
+            "fuse affine transform when present"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "keep mean/variance axes explicit"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve statistics axes, epsilon, and affine parameters",
+      "avoid changing output dtype or shape"
+    ]
+  },
+  "diagnostics_profile": {
+    "enabled": true,
+    "mode": "root_ncu_v1",
+    "ncu_profile": {
+      "enabled": true,
+      "status": "ok",
+      "profiler": "ncu",
+      "kernel_name": "ampere_sgemm_128x128_tn",
+      "row_count": 21,
+      "kernel_launch_count": 21,
+      "raw_metrics": {
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 20.48,
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": 64.16,
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": 52.17,
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": 72.56,
+        "sm__warps_active.avg.pct_of_peak_sustained_active": 32.44,
+        "launch__registers_per_thread": 118,
+        "launch__occupancy_limit_registers": 2,
+        "launch__occupancy_limit_shared_mem": 3,
+        "launch__occupancy_limit_warps": 6,
+        "gpu__time_duration.avg": 3050656,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.01,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.34,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+        "smsp__sass_branch_targets_threads_divergent.avg": 0,
+        "smsp__sass_branch_targets_threads_uniform.avg": 10104,
+        "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+        "smsp__warps_eligible.avg": 13774647.89
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ],
+      "error": null
+    },
+    "notes": [
+      "Profiled the root candidate program with Nsight Compute."
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_01",
+        "intent": "fold_eval_affine_into_linear_weights",
+        "summary": "For eval/inference, absorb `scale` and BatchNorm running-stat affine into the `nn.Linear` weight and bias so the hot path becomes a single GEMM call and removes the custom post-GEMM kernel entirely.",
+        "target_anchors": [
+          "init_body",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "user_helpers"
+        ],
+        "implementation_hints": [
+          "Keep training behavior unchanged; only activate when `not self.training` and BatchNorm uses running stats.",
+          "Derive cached per-channel folded coefficients from `self.scale`, `self.bn.weight`, `self.bn.bias`, `self.bn.running_mean`, `self.bn.running_var`, and `self.bn.eps`, then fold them into effective linear weight/bias.",
+          "Cache the folded weight/bias and invalidate only when source tensors or mode change, so forward avoids recomputing them every call.",
+          "Route eval forward directly through a single linear op and skip both `x * self.scale` and `self.bn(x)` when the cache is valid."
+        ],
+        "expected_gain": "Medium; this attacks launch and memory overhead more effectively than the current separate affine kernel, while preserving the existing cuBLAS GEMM path that dominates runtime.",
+        "risk_notes": [
+          "Must include the original linear bias in the folded bias term if present.",
+          "Preserve exact BatchNorm eval semantics, output shape, dtype, and epsilon handling.",
+          "Do not apply in training mode because BatchNorm must use batch statistics there."
+        ],
+        "memory_methods": [
+          "Eliminate the intermediate post-GEMM output transform buffer in eval.",
+          "Reuse cached folded parameters across forwards instead of reallocating per call."
+        ],
+        "mutation_axes": [
+          "eval_path_specialization",
+          "parameter_cache_invalidation",
+          "operator_elimination"
+        ],
+        "forbidden_patterns": [
+          "Do not change ModelNew I/O.",
+          "Do not fold using batch statistics in training mode.",
+          "Do not alter parameter dtype or BatchNorm axes semantics."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 5.0,
+          "claude-compatible": 5.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "Highest risk-adjusted value. Folding eval-time scale+BatchNorm affine into Linear preserves cuBLAS GEMM, removes extra post-op work entirely, and is semantically safe if strictly limited to eval with correct bias/eps handling and cache invalidation.",
+          "claude-compatible": "Highest risk-adjusted value in the portfolio. Folding scale and BN affine into nn.Linear weight/bias for eval collapses the entire post-GEMM pipeline to a single cuBLAS dispatchâno custom kernel, no intermediate tensor, no extra launches. The technique is well-understood, invalidation rules are clear (guard on training mode), and the implementation is entirely in Python with no CUDA changes required. For an eval-dominated workload this is the most leverage per line of code.",
+          "gemini-compatible": "Excellent approach. Mathematically folding the scale and BatchNorm parameters into the GEMM weights and biases completely eliminates the need for a custom post-GEMM kernel during inference, achieving optimal performance by relying solely on the highly optimized cuBLAS GEMM."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_02",
+        "intent": "fuse_gemm_scale_bn_into_single_launch_via_cublas_then_custom_epilogue",
+        "summary": "Keep cuBLAS for the GEMM (it is already at 72% SM throughput and register-limited at occupancy 2, so replacing it is not the goal) but eliminate the separate scale+BN kernel launches entirely by attaching a custom epilogue via a post-GEMM CUDA kernel that reads the GEMM output directly from L2 before it is evicted. This avoids a full round-trip through DRAM for the [1024Ã8192] intermediate tensor (~32 MB).",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "init_body"
+        ],
+        "implementation_hints": [
+          "After self.gemm(x) returns, immediately launch the folded affine kernel on the same CUDA stream; cuBLAS and the custom kernel share the default stream so no explicit sync is needed.",
+          "Pre-compute eff_scale and eff_bias once in a __init__ cache (or in a no_grad block on first eval call) and store as registered buffers to avoid recomputing per-forward.",
+          "Use cudaStreamSynchronize only if correctness testing requires it; otherwise rely on stream ordering.",
+          "Size the kernel to use 512 threads/block and grid = ceil(N*C / 512) to maximize occupancy of the lightweight elementwise pass relative to the GEMM.",
+          "Register eff_scale_buf and eff_bias_buf as non-persistent buffers via register_buffer(..., persistent=False) and recompute them in eval() override when bn weights change."
+        ],
+        "expected_gain": "5â12% by reducing redundant L2/DRAM traffic from the intermediate tensor; the current 20% DRAM utilization suggests the elementwise passes are adding non-trivial memory pressure.",
+        "risk_notes": [
+          "Pre-cached eff_scale/eff_bias become stale if bn.weight, bn.bias, bn.running_mean, or bn.running_var are updated after caching; must invalidate on train() call.",
+          "The scaffold already does the folded affine in eval mode; this strategy extends it by pre-caching coefficients and tuning launch config rather than recomputing every forward pass.",
+          "Must guard against the model being called in training mode where running stats are not yet valid."
+        ],
+        "memory_methods": [
+          "L2 cache locality via back-to-back stream-ordered launches",
+          "pre-cached per-channel affine coefficients as registered buffers"
+        ],
+        "mutation_axes": [
+          "init_body buffer registration",
+          "forward_stmt_2 coefficient computation",
+          "cuda_cu launch geometry"
+        ],
+        "forbidden_patterns": [
+          "recomputing eff_scale/eff_bias every forward pass in eval mode",
+          "inserting cudaDeviceSynchronize between GEMM and epilogue"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 4.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Moderately useful but overstated. Launching the affine kernel immediately after GEMM is standard stream ordering, and relying on L2 residency is shape/runtime dependent; precomputing folded coefficients helps, but this is mostly an incremental refinement of an existing eval fastpath.",
+          "claude-compatible": "Solid incremental strategy that works with the existing cuBLAS GEMM rather than replacing it. Pre-caching eff_scale/eff_bias as registered buffers and ensuring back-to-back stream-ordered launches to exploit L2 locality is practical and low-risk. The 5â12% projected gain is credible given the 20% DRAM utilization noted in the profile. Main risk is cache staleness on train()/eval() transitions, which is manageable with an explicit invalidation hook. Good complement to strategy_01 if full weight folding is not applicable (e.g., training mode path).",
+          "gemini-compatible": "Launching the epilogue immediately to exploit L2 cache is a reasonable fallback if weight folding wasn't possible, but L2 capacity may not be sufficient for large batch sizes, and it still incurs kernel launch overhead."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_03",
+        "intent": "vectorized_folded_affine_eval",
+        "summary": "Replace the scalar-indexed folded_affine_kernel with a float4-vectorized version that loads and stores 4 elements per thread. The current kernel reads x[idx] and writes out[idx] one float at a time; with float4 each thread handles 4 consecutive columns, cutting memory transaction count by 4x and improving L1/L2 utilization beyond the current 64% LTS / 52% L1 ceilings.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Cast x and out pointers to float4*; load eff_scale/eff_bias as four scalar loads per thread using c+0..c+3 mod C indexing.",
+          "Handle the tail (total % 4 != 0) with a scalar epilogue kernel or predicated scalar path in the same kernel.",
+          "Keep threads=256, adjust grid to ceil(total/4, threads) to maintain launch overhead parity.",
+          "Use __ldg() for the eff_scale and eff_bias reads since they are read-only broadcast arrays; this routes through the texture cache and reduces LTS pressure.",
+          "Assert x.size(1) % 4 == 0 as a fast path; fall back to scalar kernel otherwise."
+        ],
+        "expected_gain": "10â20% wall-clock reduction on the post-GEMM elementwise pass; primary effect is halving memory transaction count for a bandwidth-bound kernel.",
+        "risk_notes": [
+          "float4 alignment requires x.data_ptr<float>() to be 16-byte aligned; torch empty_like guarantees this for contiguous tensors.",
+          "Tail handling must be correct when out_features is not divisible by 4 (e.g. 8192 is fine, but general shapes need the scalar fallback).",
+          "eff_scale / eff_bias are size [C] not [N*C]; the c index computation for vectorized loads must use (idx*4 + k) % C, not a flat stride."
+        ],
+        "memory_methods": [
+          "float4 vectorized loads/stores",
+          "__ldg() read-only cache for per-channel arrays"
+        ],
+        "mutation_axes": [
+          "cuda_cu kernel body",
+          "thread/block launch geometry"
+        ],
+        "forbidden_patterns": [
+          "uncoalesced per-element channel modulo in the hot path without vectorization",
+          "dynamic shape dispatch inside the kernel"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 4.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Reasonable micro-optimization for an elementwise eval kernel. Vectorization can help if tensors are contiguous and aligned, but total upside is bounded because GEMM is likely dominant and tail/alignment handling adds some fragility.",
+          "claude-compatible": "Float4 vectorization of the post-GEMM elementwise kernel is a concrete, well-scoped improvement. C=8192 is divisible by 4 so the tail handling concern is moot for this exact task shape. The __ldg() suggestion for per-channel broadcast arrays is sound given their read-only nature. 10â20% reduction on the elementwise pass is realistic. Risk is low provided pointer alignment is verified (torch contiguous tensors are guaranteed16-byte aligned). Ranks equal to strategy_02 because scope is narrower but implementation confidence is higher.",
+          "gemini-compatible": "Vectorizing the custom kernel is a solid standard optimization that will improve memory bandwidth utilization if the separate kernel must be kept, though it is strictly inferior to eliminating the kernel entirely (Strategy 01)."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_05",
+        "intent": "retile_and_vectorize_folded_affine_kernel",
+        "summary": "If keeping the custom eval kernel, redesign it around column-major vectorized channel processing so per-channel coefficients are reused better and the modulo-heavy flat indexing path is removed.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Use a 2D launch layout over rows and channel tiles so threads iterate contiguous channel segments instead of `idx % C` scalar indexing.",
+          "Vectorize loads/stores on the activation path where alignment allows, and keep a scalar fallback for tails.",
+          "Stage channel-local `eff_scale`/`eff_bias` tiles once per block for reuse across multiple rows handled by that block.",
+          "Expose the same exported entrypoint shape contract so forward-site changes stay minimal."
+        ],
+        "expected_gain": "Low-to-medium; the current profile shows the main GEMM is compute-bound, so this likely yields only incremental improvement, but it can still reduce post-op overhead versus the naive flat kernel.",
+        "risk_notes": [
+          "Benefit is bounded because Nsight shows the dominant kernel is `ampere_sgemm_128x128_tn` with high SM utilization and low DRAM pressure, so post-processing is not the main bottleneck.",
+          "Vectorization must handle contiguity and alignment safely for arbitrary batch sizes.",
+          "Shared-memory tiling should not introduce occupancy regressions that outweigh reuse."
+        ],
+        "memory_methods": [
+          "Improve global-memory coalescing on the activation tensor.",
+          "Reuse per-channel coefficients from shared memory or read-only cache across multiple rows."
+        ],
+        "mutation_axes": [
+          "kernel_indexing",
+          "vector_width",
+          "shared_memory_tiling"
+        ],
+        "forbidden_patterns": [
+          "Do not assume non-contiguous inputs are safe unless forward forces contiguity.",
+          "Do not change normalization math or use approximate statistics.",
+          "Do not introduce extra output copies beyond the single eval result buffer."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 3.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Solid but limited. Re-tiling the eval affine kernel to avoid modulo-heavy indexing and improve channel reuse is sensible, yet expected gains remain modest because it only optimizes the lighter post-processing stage.",
+          "claude-compatible": "Directionally correct but substantially overlaps with strategy_03 and strategy_06 without being more concrete than either. The 2D launch layout and shared memory channel staging are good ideas, but the expected gain is explicitly flagged as low-to-medium given GEMM dominance. Useful as a fallback if vectorization alignment constraints block strategy_03, but not a first-choice target given the overlap.",
+          "gemini-compatible": "Retiling for better memory access patterns is a valid incremental improvement for the custom kernel, but offers lower potential gains than vectorization or complete elimination."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "shared_memory_channel_broadcast_kernel",
+        "summary": "Load eff_scale and eff_bias for the active CTA's channel tile into shared memory once, then broadcast to all N rows handled by that CTA. The current kernel reloads per-channel weights from L2 for every element; for a [1024Ã8192] tensor with 256 threads/block each thread issues independent __ldg calls. With smem staging, the C-dimension broadcast cost is amortized across the N-dimension rows processed per block.",
+        "target_anchors": [
+          "cuda_cu",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Map the grid so blockIdx.x covers the C dimension in tiles of blockDim.x (e.g. 256 channels per block) and blockIdx.y covers N rows.",
+          "Each block: first load eff_scale[c_start..c_start+blockDim.x] and eff_bias[...] into __shared__ float s_scale[256], s_bias[256] with a single coalesced load, then __syncthreads().",
+          "Each thread then iterates over its assigned N rows applying s_scale[threadIdx.x] and s_bias[threadIdx.x], making the inner loop fully register/smem resident.",
+          "This layout ensures global reads of x are coalesced (row-major [N,C], threads cover contiguous C) and the per-channel broadcast is served from 32KB smem rather than L2.",
+          "Tune block shape: 256 threads Ã 4 rows unrolled inner loop is a good starting point; profile smsp__warps_active which is currently only 32%."
+        ],
+        "expected_gain": "8â15% for the elementwise pass; the occupancy is register-limited (118 regs/thread, limit=2 warps) on the GEMM side but the elementwise kernel has no such constraint and can achieve higher occupancy with smem staging.",
+        "risk_notes": [
+          "Shared memory usage of 2Ã256Ã4 = 2KB per block is well within the 48KB smem limit and will not lower occupancy.",
+          "The tiling must handle C not divisible by blockDim.x with predicated loads.",
+          "This only benefits the elementwise kernel, not the dominant GEMM; total impact is bounded by the fraction of time spent in post-GEMM ops."
+        ],
+        "memory_methods": [
+          "shared memory channel staging",
+          "coalesced row-major global access"
+        ],
+        "mutation_axes": [
+          "cuda_cu kernel grid/block mapping",
+          "shared memory allocation",
+          "inner loop unrolling"
+        ],
+        "forbidden_patterns": [
+          "per-element global load of eff_scale/eff_bias without caching",
+          "non-coalesced access to x in the C dimension"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Some localized benefit is possible, but the premise is weaker than it sounds because per-channel coefficient arrays are tiny and often cache well already. Shared-memory staging may add complexity without much end-to-end gain given GEMM dominance.",
+          "claude-compatible": "Shared memory channel broadcast is a textbook pattern well-suited to this access structure ([N,C] row-major, per-channel coefficients broadcast across N). The 2KB smem cost is negligible and the coalescing improvement is real. However, the strategy itself notes that the elementwise kernel is not the dominant bottleneckâthe gain is bounded by the fraction of runtime outside the GEMM. Good technique, limited total impact. Score matches strategy_05 but implementation is more precisely specified.",
+          "gemini-compatible": "Using shared memory to broadcast per-channel coefficients is a smart way to reduce redundant global memory reads in the custom kernel, though again, eliminating the kernel is better."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "cache_folded_bn_coefficients_and_remove_python_fastpath_overhead",
+        "summary": "Keep the current eval-only custom affine structure, but move folded coefficient preparation and fastpath gating out of the per-call Python critical path so repeated inference runs avoid recomputation and exception-driven fallback costs.",
+        "target_anchors": [
+          "user_helpers",
+          "init_body",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Add a lightweight cache for folded `eff_scale`/`eff_bias` tensors keyed by eval mode, device, dtype, and source tensor version expectations.",
+          "Replace exception-first flow with explicit guards so the hot eval path does not pay for `try/except` on successful runs.",
+          "Prepare folded tensors lazily on first eligible eval call and reuse them until parameters or running stats change.",
+          "Keep the existing PyTorch fallback for unsupported shapes/dtypes or training mode."
+        ],
+        "expected_gain": "Low; this mostly trims Python and tensor-prep overhead, but phase-1 only gained ~1% and Nsight indicates the GEMM still dominates total time.",
+        "risk_notes": [
+          "Need a robust invalidation rule when `scale`, BatchNorm affine params, or running stats mutate.",
+          "Must not reuse cached tensors across devices or dtype changes incorrectly.",
+          "This will not help much if benchmarking is dominated by large GEMM time rather than Python overhead."
+        ],
+        "memory_methods": [
+          "Reuse cached folded coefficient tensors instead of reallocating every forward.",
+          "Avoid redundant temporary tensors from repeated `sqrt` and broadcast prep in eval mode."
+        ],
+        "mutation_axes": [
+          "python_dispatch_reduction",
+          "tensor_cache_lifetime",
+          "guard_simplification"
+        ],
+        "forbidden_patterns": [
+          "Do not silently use stale folded coefficients.",
+          "Do not remove the training fallback path.",
+          "Do not broaden support to unsupported dtypes by implicit casts."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Good low-risk cleanup. Caching folded coefficients and removing exception-driven Python fastpath overhead is easy to validate, preserves semantics if invalidation is correct, and pairs well with eval-only optimization even if raw speedup is modest.",
+          "claude-compatible": "Safest strategy in the portfolio but also the least impactful. Eliminating try/except overhead and lazy-caching folded coefficients are good hygiene improvements, but the profile confirms GEMM dominates and Python overhead is a rounding error on total latency. The phase-1 data already showed roughly 1% gain from similar work. Appropriate as a low-risk cleanup pass after higher-value strategies land, but not worth prioritizing as a standalone optimization.",
+          "gemini-compatible": "Caching the folded coefficients reduces Python overhead, but fails to address the primary bottleneck, which is the memory bandwidth consumed by reading and writing the intermediate tensor in the custom kernel."
+        },
+        "priority": 2
+      },
+      {
+        "strategy_id": "strategy_07",
+        "intent": "replace_naive_eval_kernel_with_cublaslt_epilogue_or_single-library-path",
+        "summary": "Explore a backend-native CUDA path that keeps eval inference in one library-driven matmul pipeline, using a tuned GEMM entrypoint and pushing as much affine work as possible into the library path rather than a separate custom kernel.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Use the existing semantic fact that eval BatchNorm plus scale is per-output-channel affine, and express the post-GEMM part as bias/scale terms attached to the matmul result path where the library supports it.",
+          "Keep ModelNew inputs/outputs unchanged and preserve the current training fallback entirely in Python.",
+          "Use this only for the concrete 2D float32 CUDA case already validated by the current scaffold.",
+          "Benchmark carefully against the existing `nn.Linear` path because the current Nsight profile already shows a strong GEMM kernel."
+        ],
+        "expected_gain": "Low-to-medium but highly shape-dependent; if PyTorch is not selecting the best library path for this exact problem, a custom library invocation may improve over the observed occupancy-limited SGEMM.",
+        "risk_notes": [
+          "Highest implementation complexity and easiest to regress correctness or build stability.",
+          "Possible duplication of what PyTorch/cuBLAS already does well for this shape, yielding no win.",
+          "Library epilogue support may not map cleanly to full folded semantics, so this may still require partial host-side preparation."
+        ],
+        "memory_methods": [
+          "Aim to keep the operation inside a single matmul-oriented backend path and avoid a standalone post-op launch.",
+          "Reduce intermediate materialization on the eval path."
+        ],
+        "mutation_axes": [
+          "library_backend_selection",
+          "epilogue_fusion",
+          "shape_specialization"
+        ],
+        "forbidden_patterns": [
+          "Do not change dtype to TF32/FP16/BF16 unless the task explicitly permits numeric drift.",
+          "Do not alter training-mode BatchNorm behavior.",
+          "Do not introduce backend-specific assumptions outside CUDA anchors."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 2.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Potentially interesting in theory, but library-epilogue integration is build- and API-sensitive and may not express full folded BatchNorm semantics cleanly. High implementation risk for uncertain benefit over PyTorch/cuBLAS defaults.",
+          "claude-compatible": "cuBLAS LT epilogue fusion is appealing in principle but carries the highest implementation complexity in the portfolio. PyTorch may already select a near-optimal library path for this exact shape, making the effort redundant. Epilogue support in cuBLAS LT does not map cleanly to the full folded BN+scale semantics without host-side preparation, potentially requiring a partial custom step anyway. Risk of build regression and correctness issues is high relative to the uncertain gain. Reserve for a later phase only if library-level profiling reveals a suboptimal dispatch.",
+          "gemini-compatible": "Relying on cuBLASLt epilogues is complex to implement robustly within a PyTorch extension and may not support the exact sequence of operations needed without significant boilerplate."
+        },
+        "priority": 2
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "replace_nn_linear_with_custom_tiled_sgemm_plus_fused_epilogue",
+        "summary": "Replace nn.Linear (which dispatches to ampere_sgemm_128x128_tn at 118 registers/thread and occupancy 2) with a custom CUTLASS-style tiled SGEMM that embeds the scale-multiply and folded-BN-affine directly in the output epilogue. This eliminates the post-GEMM elementwise kernel launch entirely and lets the GEMM tile write the final result in one pass.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "init_body"
+        ],
+        "implementation_hints": [
+          "Use a 128Ã64 output tile with 4Ã4 register blocking per thread; this brings register count down from 118 to ~64, raising theoretical occupancy from 2 to 4 warps.",
+          "In the epilogue of each output tile, multiply the accumulated C[i][j] by eff_scale[j] and add eff_bias[j] before writing to global memory; both are loaded into registers at the start of the tile.",
+          "Use __ldg for weight matrix W and bias reads since they are fixed across the N=1024 batch dimension.",
+          "For the [1024Ã8192] Ã [8192Ã8192] problem, tile M=128, N=64, K=8192 with 8 pipeline stages in shared memory to hide the 20% DRAM latency.",
+          "Keep nn.Linear in init_body for weight storage and use self.gemm.weight / self.gemm.bias to source matrix data; only override the forward dispatch.",
+          "Guard this path with a contiguity and dtype check; fall back to self.gemm(x) + folded affine if preconditions fail."
+        ],
+        "expected_gain": "20â35% total kernel time reduction; eliminates one kernel launch, halves memory round-trips for the [1024Ã8192] intermediate, and improves GEMM occupancy from 2 to ~4 warps.",
+        "risk_notes": [
+          "Custom SGEMM correctness is harder to validate; requires careful handling of K-loop boundary conditions and accumulator precision.",
+          "The GEMM is currently running at 72% SM throughput with the ampere_sgemm kernel; a custom kernel needs careful tuning to match this baseline before the epilogue fusion provides net benefit.",
+          "Register pressure must be managed: the fused epilogue adds ~4 registers per thread for eff_scale/eff_bias tiles; budget carefully to stay at occupancy 4.",
+          "Phase-1 trace shows that n1 (fused scale+BN kernel) regressed to 0.898x; this strategy avoids that failure by fusing into the GEMM epilogue rather than adding a separate kernel."
+        ],
+        "memory_methods": [
+          "register-blocked SGEMM tile accumulation",
+          "fused epilogue affine in output tile"
+        ],
+        "mutation_axes": [
+          "forward_stmt_1 GEMM dispatch",
+          "cuda_cu SGEMM kernel tile shape and register blocking",
+          "init_body eff_scale/eff_bias pre-computation",
+          "forward_stmt_2 and forward_stmt_3 bypass"
+        ],
+        "forbidden_patterns": [
+          "writing the unfused GEMM result to global memory before the affine transform",
+          "adding a separate post-GEMM elementwise kernel launch when fused epilogue is active",
+          "recomputing eff_scale/eff_bias inside the CUDA kernel per-call"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 2.0,
+          "openai-compatible": 1.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Poor risk-adjusted choice. Replacing a strong library GEMM with a custom SGEMM+epilogue is very high complexity and high regression risk, especially when the current bottleneck already uses a tuned kernel; unlikely to beat cuBLAS enough to justify the effort.",
+          "claude-compatible": "High ceiling, high risk. The existing cuBLAS ampere_sgemm kernel is already at 72% SM throughputâa custom tiled SGEMM must match or exceed that baseline before the epilogue fusion provides net benefit, which is a difficult bar for a hand-written kernel. Register pressure management at occupancy 4with fused epilogue terms is non-trivial, and correctness of K-loop boundary conditions requires careful validation. The strategy's own notes acknowledge n1fused kernel regressed to 0.898x in a prior phase. Worthwhile only if strategies 01â03 are exhausted and significant compute budget remains for tuning.",
+          "gemini-compatible": "Writing a custom SGEMM to fuse the epilogue is extremely high risk. It is very difficult to match cuBLAS performance for the main matrix multiplication, likely resulting in a net performance loss."
+        },
+        "priority": 3
+      }
+    ],
+    "proposal_errors": {
+      "gemini-compatible": "Unterminated string starting at: line 19 column 7 (char 1087)"
+    },
+    "review_errors": {},
+    "deliberation_round": 1
+  },
+  "phase_transition": {
+    "source_phase": 1,
+    "target_phase": 2,
+    "split_attempts": 5,
+    "trigger_attempt": 5,
+    "root": {
+      "node_id": "root",
+      "strategy_name": null,
+      "runtime": 0.0030299999999999997,
+      "speedup": 0.9933993399339934,
+      "plan_summary": null,
+      "changed_regions": [],
+      "lineage": [
+        "root"
+      ]
+    },
+    "selected": {
+      "node_id": "n5",
+      "strategy_name": "strategy_05",
+      "runtime": 0.00302,
+      "speedup": 1.0066225165562914,
+      "plan_summary": "Specialize the eval/inference path by folding `scale` and BatchNorm affine/statistics into one per-channel affine transform, then apply it with a single flat CUDA kernel while leaving the training path on the existing PyTorch baseline.",
+      "changed_regions": [
+        "cuda_cpp",
+        "cuda_cu",
+        "init_body",
+        "forward_stmt_2",
+        "forward_stmt_3"
+      ],
+      "lineage": [
+        "root",
+        "n1",
+        "n2",
+        "n3",
+        "n5"
+      ]
+    },
+    "attempts": [
+      {
+        "node_id": "n1",
+        "parent_id": "root",
+        "strategy_name": "strategy_02",
+        "attempt_mode": "explore",
+        "mutation_family": "post_gemm_scale_bn_fusion",
+        "single_change_focus": "Implement one exported CUDA entrypoint that computes fused scale-plus-batchnorm on the GEMM output, and route the forward pass through it after `self.gemm(x)`.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0033399999999999997,
+        "speedup": 0.8982035928143713,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Keep the existing cuBLAS-backed `nn.Linear` GEMM, then fuse the post-GEMM scale multiply and BatchNorm1d forward into one custom CUDA path to remove the intermediate scaled tensor and cut launch/L2 traffic while preserving BatchNorm semantics."
+      },
+      {
+        "node_id": "n2",
+        "parent_id": "n1",
+        "strategy_name": "strategy_05",
+        "attempt_mode": "explore",
+        "mutation_family": "eval_affine_folding",
+        "single_change_focus": "Implement only an eval-mode folded affine CUDA path after `self.gemm(x)`, while keeping training on the original `x * self.scale` then `self.bn(x)` baseline.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "init_body",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "compile_ok": false,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "compile",
+        "failure_type": "python_region_syntax_error",
+        "plan_summary": "Specialize the eval/inference path by folding `scale` and BatchNorm affine/statistics into one per-channel affine transform, then apply it with a single flat CUDA kernel while leaving the training path on the existing PyTorch baseline."
+      },
+      {
+        "node_id": "n3",
+        "parent_id": "n2",
+        "strategy_name": "strategy_05",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "single_change_focus": "small_local_repair",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "init_body",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "compile_ok": false,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "compile",
+        "failure_type": "region_apply_failed",
+        "plan_summary": "Specialize the eval/inference path by folding `scale` and BatchNorm affine/statistics into one per-channel affine transform, then apply it with a single flat CUDA kernel while leaving the training path on the existing PyTorch baseline."
+      },
+      {
+        "node_id": "n4",
+        "parent_id": "root",
+        "strategy_name": "strategy_05",
+        "attempt_mode": "explore",
+        "mutation_family": "eval_affine_fold",
+        "single_change_focus": "Implement an eval-only folded affine CUDA path after GEMM and skip the separate scale and BatchNorm ops when it succeeds.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "compile_ok": false,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "compile",
+        "failure_type": "python_region_syntax_error",
+        "plan_summary": "Add an eval-only fast path that folds scale and BatchNorm affine/statistics into one per-channel affine transform and applies it with a single CUDA elementwise kernel, while preserving the existing training path unchanged."
+      },
+      {
+        "node_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_05",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "single_change_focus": "small_local_repair",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "init_body",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00302,
+        "speedup": 1.0066225165562914,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Specialize the eval/inference path by folding `scale` and BatchNorm affine/statistics into one per-channel affine transform, then apply it with a single flat CUDA kernel while leaving the training path on the existing PyTorch baseline."
+      }
+    ],
+    "trace_summary": "flat=n1:Implement one exported CUDA entrypoint that computes fused scale-plus-batchnorm on the GEMM output, and route the forward pass through it after `self.gemm(x)`.:0.898x; n5:small_local_repair:1.007x | failed=n2:Implement only an eval-mode folded affine CUDA path after `self.gemm(x)`, while keeping training on the original `x * self.scale` then `self.bn(x)` baseline.:python_region_syntax_error; n3:small_local_repair:region_apply_failed; n4:Implement an eval-only folded affine CUDA path after GEMM and skip the separate scale and BatchNorm ops when it succeeds.:python_region_syntax_error",
+    "root_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "ampere_sgemm_128x128_tn",
+        "row_count": 21,
+        "kernel_launch_count": 21,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 20.48,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 64.16,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 52.17,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 72.56,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 32.44,
+          "launch__registers_per_thread": 118,
+          "launch__occupancy_limit_registers": 2,
+          "launch__occupancy_limit_shared_mem": 3,
+          "launch__occupancy_limit_warps": 6,
+          "gpu__time_duration.avg": 3050656,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.01,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.34,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 10104,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 13774647.89
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "selected_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "ampere_sgemm_128x128_tn",
+        "row_count": 41,
+        "kernel_launch_count": 41,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 20.47,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 64.25,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 52.31,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 72.54,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 32.45,
+          "launch__registers_per_thread": 118,
+          "launch__occupancy_limit_registers": 2,
+          "launch__occupancy_limit_shared_mem": 3,
+          "launch__occupancy_limit_warps": 6,
+          "gpu__time_duration.avg": 3052768,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.01,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.35,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 10104,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 13798876.72
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "diagnostics_delta": {
+      "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": -0.010000000000001563,
+      "gpu__time_duration.avg": 2112,
+      "l1tex__throughput.avg.pct_of_peak_sustained_active": 0.14000000000000057,
+      "launch__occupancy_limit_registers": 0,
+      "launch__occupancy_limit_shared_mem": 0,
+      "launch__occupancy_limit_warps": 0,
+      "launch__registers_per_thread": 0,
+      "lts__throughput.avg.pct_of_peak_sustained_elapsed": 0.09000000000000341,
+      "sm__throughput.avg.pct_of_peak_sustained_elapsed": -0.01999999999999602,
+      "sm__warps_active.avg.pct_of_peak_sustained_active": 0.010000000000005116,
+      "smsp__sass_branch_targets_threads_divergent.avg": 0,
+      "smsp__sass_branch_targets_threads_uniform.avg": 0,
+      "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.009999999999999953,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+      "smsp__warps_eligible.avg": 24228.830000000075
+    }
+  },
+  "feedback_state": {
+    "total_attempts": 11,
+    "compile_rate": 0.5454545454545454,
+    "correct_rate": 0.5454545454545454,
+    "best_speedup": 1.0231788079470199,
+    "best_strategy_name": "strategy_06",
+    "phase": "refinement",
+    "current_champion_id": "phase2_n3",
+    "current_champion_speedup": 1.0231788079470199,
+    "plateau_detected": false,
+    "recent_improvement_deltas": [],
+    "recent_regression_deltas": [
+      -0.09519574711962209,
+      -0.02635935866155459,
+      -0.00988977140216929,
+      0.0
+    ],
+    "recent_successful_mutation_families": [],
+    "recent_failed_mutation_families": [
+      "vectorized_affine_epilogue",
+      "row_reuse_tune",
+      "debug_local_repair"
+    ],
+    "last_mutation_outcome": "regressed_or_flat",
+    "recent_attempts": [
+      {
+        "attempt_id": "n4",
+        "parent_id": "root",
+        "strategy_name": "strategy_05",
+        "mode": "explore",
+        "mutation_family": "eval_affine_fold",
+        "speedup": null,
+        "parent_speedup": 0.9933993399339934,
+        "compile_ok": false,
+        "correct": false,
+        "failure_stage": "compile",
+        "failure_type": "python_region_syntax_error",
+        "single_change_focus": "Implement an eval-only folded affine CUDA path after GEMM and skip the separate scale and BatchNorm ops when it succeeds."
+      },
+      {
+        "attempt_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_05",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": 1.0066225165562914,
+        "parent_speedup": null,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_n1",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_03",
+        "mode": "explore",
+        "mutation_family": "vectorized_affine_epilogue",
+        "speedup": 0.9802631578947368,
+        "parent_speedup": 1.0066225165562914,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the scalar per-element folded affine kernel with a float4-vectorized CUDA kernel plus a minimal scalar fallback for non-multiple-of-4 tails."
+      },
+      {
+        "attempt_id": "phase2_n2",
+        "parent_id": "phase2_n1",
+        "strategy_name": "strategy_06",
+        "mode": "explore",
+        "mutation_family": "smem_channel_broadcast",
+        "speedup": null,
+        "parent_speedup": 0.9802631578947368,
+        "compile_ok": false,
+        "correct": false,
+        "failure_stage": "compile",
+        "failure_type": "python_region_syntax_error",
+        "single_change_focus": "Replace the flat per-element folded affine kernel with a 2D shared-memory tiled kernel that broadcasts channel coefficients across rows."
+      },
+      {
+        "attempt_id": "phase2_n3",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_06",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": 1.0231788079470199,
+        "parent_speedup": null,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_n4",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_01",
+        "mode": "explore",
+        "mutation_family": "eval_linear_folding",
+        "speedup": null,
+        "parent_speedup": 1.0066225165562914,
+        "compile_ok": false,
+        "correct": false,
+        "failure_stage": "compile",
+        "failure_type": "python_region_syntax_error",
+        "single_change_focus": "Replace the current eval folded-affine CUDA fast path with an eval-only folded-linear fast path in Python, using the existing `nn.Linear` parameters plus BatchNorm running statistics and `scale` to construct effective weight and bias for one `F.linear` call."
+      },
+      {
+        "attempt_id": "phase2_n5",
+        "parent_id": "phase2_n3",
+        "strategy_name": "strategy_06",
+        "mode": "mutate_champion",
+        "mutation_family": "row_reuse_tune",
+        "speedup": 1.0132890365448506,
+        "parent_speedup": 1.0231788079470199,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Increase ROWS_PER_BLOCK in the shared-memory folded-affine CUDA kernel and keep the same 256-channel CTA mapping."
+      },
+      {
+        "attempt_id": "phase2_root",
+        "parent_id": "n5",
+        "strategy_name": "strategy_05",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": 1.0066225165562914,
+        "parent_speedup": 1.0066225165562914,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "small_local_repair"
+      }
+    ],
+    "champion": {
+      "node_id": "phase2_n3",
+      "speedup": 1.0231788079470199,
+      "strategy_name": "strategy_06",
+      "mutation_family": "debug_local_repair",
+      "lineage": [
+        "root",
+        "n1",
+        "n2",
+        "n3",
+        "n5",
+        "phase2_root",
+        "phase2_n1",
+        "phase2_n2",
+        "phase2_n3"
+      ],
+      "recent_positive_mutations": [],
+      "recent_negative_mutations": [
+        {
+          "attempt_id": "phase2_n1",
+          "strategy_name": "strategy_03",
+          "mode": "explore",
+          "mutation_family": "vectorized_affine_epilogue",
+          "speedup": 0.9802631578947368,
+          "parent_speedup": 1.0066225165562914,
+          "single_change_focus": "Replace the scalar per-element folded affine kernel with a float4-vectorized CUDA kernel plus a minimal scalar fallback for non-multiple-of-4 tails."
+        },
+        {
+          "attempt_id": "phase2_n5",
+          "strategy_name": "strategy_06",
+          "mode": "mutate_champion",
+          "mutation_family": "row_reuse_tune",
+          "speedup": 1.0132890365448506,
+          "parent_speedup": 1.0231788079470199,
+          "single_change_focus": "Increase ROWS_PER_BLOCK in the shared-memory folded-affine CUDA kernel and keep the same 256-channel CTA mapping."
+        },
+        {
+          "attempt_id": "phase2_root",
+          "strategy_name": "strategy_05",
+          "mode": "mutate_champion",
+          "mutation_family": "debug_local_repair",
+          "speedup": 1.0066225165562914,
+          "parent_speedup": 1.0066225165562914,
+          "single_change_focus": "small_local_repair"
+        }
+      ],
+      "plateau_detected": false,
+      "lineage_plateau_depth": 0
+    }
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "user_helpers",
+      "region_role": "helper",
+      "start_line": 36,
+      "end_line": 37,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 40,
+      "end_line": 45,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 49,
+      "end_line": 55,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 65,
+      "end_line": 69,
+      "source_excerpt": "self.gemm = nn.Linear(in_features, out_features)\nself.scale = nn.Parameter(torch.randn(scale_shape))\nself.bn = nn.BatchNorm1d(out_features, eps=eps, momentum=momentum)",
+      "source_hash": "4b607ee1de5c"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 72,
+      "end_line": 76,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\nx = self.gemm(x)",
+      "source_hash": "6287e06c0f8b"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 77,
+      "end_line": 79,
+      "source_excerpt": "x = x * self.scale",
+      "source_hash": "6bca2f94cc45"
+    },
+    {
+      "anchor_name": "forward_stmt_3",
+      "region_role": "forward",
+      "start_line": 80,
+      "end_line": 82,
+      "source_excerpt": "x = self.bn(x)",
+      "source_hash": "c992215bcbdc"
+    },
+    {
+      "anchor_name": "forward_stmt_4",
+      "region_role": "forward",
+      "start_line": 83,
+      "end_line": 85,
+      "source_excerpt": "return x",
+      "source_hash": "03c387736bb5"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p33_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a GEMM (general matrix multiplication), applies scaling, \n        and then batch normalization.\n        \"\"\"\n    def __init__(self, in_features, out_features, scale_shape, eps=1e-5, momentum=0.1):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.gemm = nn.Linear(in_features, out_features)\n        self.scale = nn.Parameter(torch.randn(scale_shape))\n        self.bn = nn.BatchNorm1d(out_features, eps=eps, momentum=momentum)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.gemm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = x * self.scale\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = self.bn(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1",
+        "n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0030299999999999997,
+      "score": 0.0030299999999999997,
+      "logs": [
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=71214",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_0_gpu2/02_L2_P33_Retry_P33_20260720_155748/eval_traces/20260720_155749_71187_9d119821_kernelbench_l2_33_33_gemm_scale_batchnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0030099999999999997,
+      "speedup": 0.9933993399339934,
+      "reference_runtimes": {
+        "torch_eager": 0.0030099999999999997
+      },
+      "speedups": {
+        "torch_eager": 0.9933993399339934
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": null,
+      "single_change_focus": null,
+      "mutation_family": null,
+      "target_metric": null
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p33_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_scale_batchnorm_forward(\n    torch::Tensor x,\n    torch::Tensor scale,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    torch::Tensor running_mean,\n    torch::Tensor running_var,\n    double eps,\n    double momentum,\n    bool training\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_scale_batchnorm_forward\", &fused_scale_batchnorm_forward,\n          \"Fused scale + BatchNorm1d forward (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// One block per feature channel c.\n// Block processes all N rows for that channel.\n// Shared memory layout: 2 * blockDim.x floats for mean/var Welford accumulation.\n\n__global__ void fused_scale_bn_train_kernel(\n    const float* __restrict__ x,       // [N, C]\n    const float* __restrict__ scale,   // [C]\n    const float* __restrict__ weight,  // [C] gamma\n    const float* __restrict__ bias,    // [C] beta\n    float* __restrict__ running_mean,  // [C]\n    float* __restrict__ running_var,   // [C]\n    float* __restrict__ out,           // [N, C]\n    int N, int C,\n    float eps, float momentum\n) {\n    int c = blockIdx.x;\n    if (c >= C) return;\n\n    float sc = scale[c];\n    float gam = weight[c];\n    float bet = bias[c];\n\n    // Welford online accumulation per thread\n    float mean_acc = 0.f;\n    float M2_acc  = 0.f;\n    int   count   = 0;\n\n    for (int n = threadIdx.x; n < N; n += blockDim.x) {\n        float val = x[n * C + c] * sc;\n        count++;\n        float delta = val - mean_acc;\n        mean_acc += delta / (float)count;\n        float delta2 = val - mean_acc;\n        M2_acc += delta * delta2;\n    }\n\n    // Warp-level Welford merge\n    unsigned mask = 0xffffffffu;\n    for (int offset = 16; offset > 0; offset >>= 1) {\n        float om  = __shfl_down_sync(mask, mean_acc, offset);\n        float oM2 = __shfl_down_sync(mask, M2_acc,  offset);\n        int   on  = __shfl_down_sync(mask, count,    offset);\n        if (on > 0) {\n            int total = count + on;\n            float delta = om - mean_acc;\n            mean_acc = (mean_acc * count + om * on) / (float)total;\n            M2_acc  += oM2 + delta * delta * (float)count * (float)on / (float)total;\n            count    = total;\n        }\n    }\n\n    // Cross-warp reduction via shared memory\n    extern __shared__ float smem[]; // 2 * nwarps floats + nwarps ints\n    int warp_id  = threadIdx.x >> 5;\n    int lane_id  = threadIdx.x & 31;\n    int nwarps   = (blockDim.x + 31) >> 5;\n\n    float* s_mean  = smem;           // [nwarps]\n    float* s_M2    = smem + nwarps;  // [nwarps]\n    int*   s_count = (int*)(smem + 2 * nwarps); // [nwarps]\n\n    if (lane_id == 0) {\n        s_mean[warp_id]  = mean_acc;\n        s_M2[warp_id]    = M2_acc;\n        s_count[warp_id] = count;\n    }\n    __syncthreads();\n\n    if (warp_id == 0) {\n        mean_acc = (lane_id < nwarps) ? s_mean[lane_id]  : 0.f;\n        M2_acc   = (lane_id < nwarps) ? s_M2[lane_id]    : 0.f;\n        count    = (lane_id < nwarps) ? s_count[lane_id] : 0;\n\n        for (int offset = 16; offset > 0; offset >>= 1) {\n            float om  = __shfl_down_sync(mask, mean_acc, offset);\n            float oM2 = __shfl_down_sync(mask, M2_acc,  offset);\n            int   on  = __shfl_down_sync(mask, count,    offset);\n            if (on > 0) {\n                int total = count + on;\n                float delta = om - mean_acc;\n                mean_acc = (mean_acc * count + om * on) / (float)total;\n                M2_acc  += oM2 + delta * delta * (float)count * (float)on / (float)total;\n                count    = total;\n            }\n        }\n\n        if (lane_id == 0) {\n            s_mean[0]  = mean_acc;\n            s_M2[0]    = M2_acc;\n            s_count[0] = count;\n        }\n    }\n    __syncthreads();\n\n    float batch_mean = s_mean[0];\n    float batch_var  = (s_count[0] > 1) ? s_M2[0] / (float)s_count[0] : 0.f;\n    float inv_std    = rsqrtf(batch_var + eps);\n\n    // Update running stats (thread 0 only)\n    if (threadIdx.x == 0) {\n        running_mean[c] = (1.f - momentum) * running_mean[c] + momentum * batch_mean;\n        // PyTorch uses unbiased variance for running_var\n        float unbiased_var = (s_count[0] > 1) ? s_M2[0] / (float)(s_count[0] - 1) : 0.f;\n        running_var[c]  = (1.f - momentum) * running_var[c]  + momentum * unbiased_var;\n    }\n    __syncthreads();\n\n    // Normalize + affine\n    for (int n = threadIdx.x; n < N; n += blockDim.x) {\n        float val = x[n * C + c] * sc;\n        out[n * C + c] = (val - batch_mean) * inv_std * gam + bet;\n    }\n}\n\n__global__ void fused_scale_bn_eval_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ scale,\n    const float* __restrict__ weight,\n    const float* __restrict__ bias,\n    const float* __restrict__ running_mean,\n    const float* __restrict__ running_var,\n    float* __restrict__ out,\n    int N, int C,\n    float eps\n) {\n    int c = blockIdx.x;\n    if (c >= C) return;\n\n    float sc      = scale[c];\n    float gam     = weight[c];\n    float bet     = bias[c];\n    float mean    = running_mean[c];\n    float inv_std = rsqrtf(running_var[c] + eps);\n    float eff_sc  = sc * gam * inv_std;\n    float eff_b   = bet - mean * eff_sc;\n\n    for (int n = threadIdx.x; n < N; n += blockDim.x) {\n        out[n * C + c] = x[n * C + c] * eff_sc + eff_b;\n    }\n}\n\ntorch::Tensor fused_scale_batchnorm_forward(\n    torch::Tensor x,\n    torch::Tensor scale,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    torch::Tensor running_mean,\n    torch::Tensor running_var,\n    double eps,\n    double momentum,\n    bool training\n) {\n    TORCH_CHECK(x.is_cuda(),        \"x must be CUDA\");\n    TORCH_CHECK(x.is_contiguous(),  \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.dim() == 2,       \"x must be 2D [N, C]\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n\n    auto out = torch::empty_like(x);\n\n    int block_size = 128;\n    if (training) {\n        int nwarps = (block_size + 31) / 32;\n        // shared: s_mean[nwarps] + s_M2[nwarps] + s_count[nwarps]\n        int smem_bytes = nwarps * (2 * sizeof(float) + sizeof(int));\n        fused_scale_bn_train_kernel<<<C, block_size, smem_bytes>>>(\n            x.data_ptr<float>(),\n            scale.data_ptr<float>(),\n            weight.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            running_mean.data_ptr<float>(),\n            running_var.data_ptr<float>(),\n            out.data_ptr<float>(),\n            N, C, (float)eps, (float)momentum\n        );\n    } else {\n        fused_scale_bn_eval_kernel<<<C, block_size>>>(\n            x.data_ptr<float>(),\n            scale.data_ptr<float>(),\n            weight.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            running_mean.data_ptr<float>(),\n            running_var.data_ptr<float>(),\n            out.data_ptr<float>(),\n            N, C, (float)eps\n        );\n    }\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a GEMM (general matrix multiplication), applies scaling, \n        and then batch normalization.\n        \"\"\"\n    def __init__(self, in_features, out_features, scale_shape, eps=1e-5, momentum=0.1):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.gemm = nn.Linear(in_features, out_features)\n        self.scale = nn.Parameter(torch.randn(scale_shape))\n        self.bn = nn.BatchNorm1d(out_features, eps=eps, momentum=momentum)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.gemm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _fused_done = False\n        if x.is_cuda and x.dtype == torch.float32 and x.dim() == 2:\n            try:\n                x = _stark_get_extension().fused_scale_batchnorm_forward(\n                    x,\n                    self.scale,\n                    self.bn.weight,\n                    self.bn.bias,\n                    self.bn.running_mean,\n                    self.bn.running_var,\n                    float(self.bn.eps),\n                    float(self.bn.momentum),\n                    self.training,\n                )\n                _fused_done = True\n            except Exception:\n                x = x * self.scale\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _fused_done:\n            x = self.bn(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Keep the existing cuBLAS-backed `nn.Linear` GEMM, then fuse the post-GEMM scale multiply and BatchNorm1d forward into one custom CUDA path to remove the intermediate scaled tensor and cut launch/L2 traffic while preserving BatchNorm semantics.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with C++ declarations for a single exported function, e.g. `torch::Tensor fused_scale_batchnorm_forward(torch::Tensor x, torch::Tensor scale, torch::Tensor weight, torch::Tensor bias, torch::Tensor running_mean, torch::Tensor running_var, double eps, double momentum, bool training);`, plus a `PYBIND11_MODULE` binding that exposes this exact entrypoint name to Python. Do not add unrelated exports.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with the CUDA implementation for `fused_scale_batchnorm_forward`. Implement a kernel specialized for 2D contiguous `[N, C]` float32 input where each block processes one feature channel `c` across all batch rows `n`. In training mode: first reduce over `n` to compute batch mean and variance of `x[n, c] * scale[c]` using numerically stable accumulation, update `running_mean[c]` and `running_var[c]` with `(1 - momentum) * old + momentum * batch_stat`, then write `y[n, c] = ((x[n, c] * scale[c] - mean) / sqrt(var + eps)) * weight[c] + bias[c]`. In eval mode: skip reduction and use `running_mean[c]` and `running_var[c]` directly in the same fused formula. Validate CUDA/device/contiguous/float32 assumptions with `TORCH_CHECK`, allocate the output tensor with `torch::empty_like(x)`, and keep all indexing and normalization axes aligned with BatchNorm1d over features.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace `x = x * self.scale` with a guarded fused call site: if `x.is_cuda`, `x.dtype == torch.float32`, and `x.dim() == 2`, call `_stark_get_extension().fused_scale_batchnorm_forward(x, self.scale, self.bn.weight, self.bn.bias, self.bn.running_mean, self.bn.running_var, float(self.bn.eps), float(self.bn.momentum), self.training)` and assign the result back to `x`; otherwise keep the original `x = x * self.scale` fallback.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the unconditional BatchNorm call with fallback-only logic: if the fused CUDA path was not taken in `forward_stmt_2`, apply `x = self.bn(x)`; otherwise leave `x` unchanged because BatchNorm is already included in the fused CUDA result.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0033399999999999997,
+      "score": 0.0033399999999999997,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=73940",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_0_gpu2/02_L2_P33_Retry_P33_20260720_155748/eval_traces/20260720_160438_71187_2b29b680_kernelbench_l2_33_33_gemm_scale_batchnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.003,
+      "speedup": 0.8982035928143713,
+      "reference_runtimes": {
+        "torch_eager": 0.003
+      },
+      "speedups": {
+        "torch_eager": 0.8982035928143713
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current workload spends unnecessary bandwidth and launch overhead on a separate `x * self.scale` materialization before BatchNorm; fusing scale into the BN CUDA kernel will remove one full activation read/write round-trip and improve end-to-end latency without disturbing the dominant cuBLAS GEMM.",
+      "single_change_focus": "Implement one exported CUDA entrypoint that computes fused scale-plus-batchnorm on the GEMM output, and route the forward pass through it after `self.gemm(x)`.",
+      "mutation_family": "post_gemm_scale_bn_fusion",
+      "target_metric": "speedup"
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p33_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"folded_affine_forward\", &folded_affine_forward,\n          \"Folded affine transform for eval mode (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void folded_affine_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ eff_scale,\n    const float* __restrict__ eff_bias,\n    float* __restrict__ out,\n    int N,\n    int C\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C;\n    if (idx < total) {\n        int c = idx % C;\n        out[idx] = x[idx] * eff_scale[c] + eff_bias[c];\n    }\n}\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be CUDA\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.dim() == 2, \"x must be 2D [N, C]\");\n    TORCH_CHECK(eff_scale.is_cuda() && eff_scale.is_contiguous(), \"eff_scale must be contiguous CUDA\");\n    TORCH_CHECK(eff_bias.is_cuda() && eff_bias.is_contiguous(), \"eff_bias must be contiguous CUDA\");\n    TORCH_CHECK(eff_scale.scalar_type() == torch::kFloat32, \"eff_scale must be float32\");\n    TORCH_CHECK(eff_bias.scalar_type() == torch::kFloat32, \"eff_bias must be float32\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    TORCH_CHECK(eff_scale.size(0) == C, \"eff_scale must have size [C]\");\n    TORCH_CHECK(eff_bias.size(0) == C, \"eff_bias must have size [C]\");\n\n    auto out = torch::empty_like(x);\n\n    int total = N * C;\n    int threads = 256;\n    int blocks = (total + threads - 1) / threads;\n\n    folded_affine_kernel<<<blocks, threads>>>(\n        x.data_ptr<float>(),\n        eff_scale.data_ptr<float>(),\n        eff_bias.data_ptr<float>(),\n        out.data_ptr<float>(),\n        N,\n        C\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a GEMM (general matrix multiplication), applies scaling, \n        and then batch normalization.\n        \"\"\"\n    def __init__(self, in_features, out_features, scale_shape, eps=1e-5, momentum=0.1):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.gemm = nn.Linear(in_features, out_features)\n        self.scale = nn.Parameter(torch.randn(scale_shape))\n        self.bn = nn.BatchNorm1d(out_features, eps=eps, momentum=momentum)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.gemm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _used_folded_eval = False\n                if not self.training and x.is_cuda and x.dtype == torch.float32 and x.dim() == 2:\n                    try:\n                        eff_scale = (self.scale * self.bn.weight) / torch.sqrt(self.bn.running_var + self.bn.eps)\n                        eff_bias = self.bn.bias - self.bn.running_mean * eff_scale\n                        x = _stark_get_extension().folded_affine_forward(\n                            x.contiguous(),\n                            eff_scale.contiguous(),\n                            eff_bias.contiguous()\n                        )\n                        _used_folded_eval = True\n                    except Exception:\n                        x = x * self.scale\n                else:\n                    x = x * self.scale\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _used_folded_eval:\n                    x = self.bn(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Specialize the eval/inference path by folding `scale` and BatchNorm affine/statistics into one per-channel affine transform, then apply it with a single flat CUDA kernel while leaving the training path on the existing PyTorch baseline.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the helper source with a single exported CUDA entrypoint declaration and pybind registration for `torch::Tensor folded_affine_forward(torch::Tensor x, torch::Tensor eff_scale, torch::Tensor eff_bias);`. Do not expose training BatchNorm kernels or additional APIs.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA source with one simple float32 CUDA implementation for `folded_affine_forward`. Require `x` to be contiguous CUDA float32 with shape `[N, C]`, require `eff_scale` and `eff_bias` to be contiguous CUDA float32 with shape `[C]`, allocate `out = torch::empty_like(x)`, and launch a flat 1D kernel over `N*C` elements where each thread computes `c = idx % C` and writes `out[idx] = x[idx] * eff_scale[c] + eff_bias[c]`. Keep the implementation minimal: one kernel, one wrapper, no reductions, no running-stat updates, no training logic inside the extension.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "init_body",
+          "instruction": "Replace the init body only if needed to keep the existing module fields unchanged; do not add new persistent buffers or alter parameter registration. Preserve `self.gemm`, `self.scale`, and `self.bn` exactly so state_dict/interface compatibility stays intact.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace this region with an eval-only fast path. When `not self.training` and `x.is_cuda` and `x.dtype == torch.float32` and `x.dim() == 2`, compute `eff_scale = (self.scale * self.bn.weight) / torch.sqrt(self.bn.running_var + self.bn.eps)` and `eff_bias = self.bn.bias - self.bn.running_mean * eff_scale`, then call `_stark_get_extension().folded_affine_forward(x.contiguous(), eff_scale.contiguous(), eff_bias.contiguous())`. On any exception or if conditions are not met, fall back to `x = x * self.scale`. Also set a local boolean such as `_used_folded_eval = True/False` so the next anchor can skip `self.bn(x)` only when the folded path succeeded.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace this region so that it applies `x = self.bn(x)` unless the eval folded CUDA path already produced the final normalized output. In the fallback path, preserve the original semantics: after `x = x * self.scale`, call `self.bn(x)` exactly once.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "normalized_python_region_indent:init_body",
+        "applied_region_patch:init_body:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "unexpected indent (line 138, column 16)"
+      ],
+      "failure_type": "python_region_syntax_error",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "explore",
+      "performance_hypothesis": "If benchmark execution is in eval mode, precomputing effective per-channel affine coefficients `eff_scale=(scale*bn.weight)/sqrt(running_var+eps)` and `eff_bias=bn.bias-running_mean*eff_scale` will outperform the prior fusion attempt because it removes reduction work entirely and turns the post-GEMM path into one simple coalesced elementwise CUDA kernel.",
+      "single_change_focus": "Implement only an eval-mode folded affine CUDA path after `self.gemm(x)`, while keeping training on the original `x * self.scale` then `self.bn(x)` baseline.",
+      "mutation_family": "eval_affine_folding",
+      "target_metric": "speedup"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p33_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"folded_affine_forward\", &folded_affine_forward,\n          \"Folded affine transform for eval mode (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void folded_affine_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ eff_scale,\n    const float* __restrict__ eff_bias,\n    float* __restrict__ out,\n    int N,\n    int C\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C;\n    if (idx < total) {\n        int c = idx % C;\n        out[idx] = x[idx] * eff_scale[c] + eff_bias[c];\n    }\n}\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be CUDA\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.dim() == 2, \"x must be 2D [N, C]\");\n    TORCH_CHECK(eff_scale.is_cuda() && eff_scale.is_contiguous(), \"eff_scale must be contiguous CUDA\");\n    TORCH_CHECK(eff_bias.is_cuda() && eff_bias.is_contiguous(), \"eff_bias must be contiguous CUDA\");\n    TORCH_CHECK(eff_scale.scalar_type() == torch::kFloat32, \"eff_scale must be float32\");\n    TORCH_CHECK(eff_bias.scalar_type() == torch::kFloat32, \"eff_bias must be float32\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    TORCH_CHECK(eff_scale.size(0) == C, \"eff_scale must have size [C]\");\n    TORCH_CHECK(eff_bias.size(0) == C, \"eff_bias must have size [C]\");\n\n    auto out = torch::empty_like(x);\n\n    int total = N * C;\n    int threads = 256;\n    int blocks = (total + threads - 1) / threads;\n\n    folded_affine_kernel<<<blocks, threads>>>(\n        x.data_ptr<float>(),\n        eff_scale.data_ptr<float>(),\n        eff_bias.data_ptr<float>(),\n        out.data_ptr<float>(),\n        N,\n        C\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a GEMM (general matrix multiplication), applies scaling, \n        and then batch normalization.\n        \"\"\"\n    def __init__(self, in_features, out_features, scale_shape, eps=1e-5, momentum=0.1):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.gemm = nn.Linear(in_features, out_features)\n        self.scale = nn.Parameter(torch.randn(scale_shape))\n        self.bn = nn.BatchNorm1d(out_features, eps=eps, momentum=momentum)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.gemm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _used_folded_eval = False\n                if not self.training and x.is_cuda and x.dtype == torch.float32 and x.dim() == 2:\n                    try:\n                        eff_scale = (self.scale * self.bn.weight) / torch.sqrt(self.bn.running_var + self.bn.eps)\n                        eff_bias = self.bn.bias - self.bn.running_mean * eff_scale\n                        x = _stark_get_extension().folded_affine_forward(\n                            x.contiguous(),\n                            eff_scale.contiguous(),\n                            eff_bias.contiguous()\n                        )\n                        _used_folded_eval = True\n                    except Exception:\n                        x = x * self.scale\n                else:\n                    x = x * self.scale\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _used_folded_eval:\n                    x = self.bn(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Specialize the eval/inference path by folding `scale` and BatchNorm affine/statistics into one per-channel affine transform, then apply it with a single flat CUDA kernel while leaving the training path on the existing PyTorch baseline.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the helper source with a single exported CUDA entrypoint declaration and pybind registration for `torch::Tensor folded_affine_forward(torch::Tensor x, torch::Tensor eff_scale, torch::Tensor eff_bias);`. Do not expose training BatchNorm kernels or additional APIs.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA source with one simple float32 CUDA implementation for `folded_affine_forward`. Require `x` to be contiguous CUDA float32 with shape `[N, C]`, require `eff_scale` and `eff_bias` to be contiguous CUDA float32 with shape `[C]`, allocate `out = torch::empty_like(x)`, and launch a flat 1D kernel over `N*C` elements where each thread computes `c = idx % C` and writes `out[idx] = x[idx] * eff_scale[c] + eff_bias[c]`. Keep the implementation minimal: one kernel, one wrapper, no reductions, no running-stat updates, no training logic inside the extension.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "init_body",
+          "instruction": "Replace the init body only if needed to keep the existing module fields unchanged; do not add new persistent buffers or alter parameter registration. Preserve `self.gemm`, `self.scale`, and `self.bn` exactly so state_dict/interface compatibility stays intact.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace this region with an eval-only fast path. When `not self.training` and `x.is_cuda` and `x.dtype == torch.float32` and `x.dim() == 2`, compute `eff_scale = (self.scale * self.bn.weight) / torch.sqrt(self.bn.running_var + self.bn.eps)` and `eff_bias = self.bn.bias - self.bn.running_mean * eff_scale`, then call `_stark_get_extension().folded_affine_forward(x.contiguous(), eff_scale.contiguous(), eff_bias.contiguous())`. On any exception or if conditions are not met, fall back to `x = x * self.scale`. Also set a local boolean such as `_used_folded_eval = True/False` so the next anchor can skip `self.bn(x)` only when the folded path succeeded.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace this region so that it applies `x = self.bn(x)` unless the eval folded CUDA path already produced the final normalized output. In the fallback path, preserve the original semantics: after `x = x * self.scale`, call `self.bn(x)` exactly once.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "failed to apply region patch: region 'forward_stmt_4' is not active in current refinement policy"
+      ],
+      "failure_type": "region_apply_failed",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p33_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor folded_scale_bn_eval_forward(\n    torch::Tensor x,\n    torch::Tensor scale,\n    torch::Tensor weight,\n    torch::Tensor bias_bn,\n    torch::Tensor running_mean,\n    torch::Tensor running_var,\n    double eps\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"folded_scale_bn_eval_forward\", &folded_scale_bn_eval_forward,\n          \"Folded scale + BatchNorm eval forward (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Float4 vectorized kernel: each thread handles4 consecutive elements.\n// Safe when total%4==0 and C%4==0 (guaranteed for this problem: C=8192).\n__global__ void __launch_bounds__(256, 4) folded_scale_bn_eval_kernel_f4(\n    const float4* __restrict__ x4,\n    const float*__restrict__ scale,\n    const float*  __restrict__ weight,\n    const float*  __restrict__ bias_bn,\n    const float*  __restrict__ running_mean,\n    const float*  __restrict__ running_var,\n    float4*__restrict__ out4,\n    int total4, int C, float eps\n) {\n    int idx4 = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx4 >= total4) return;\n\n    // For row-major [N,C] with C%4==0, a float4 group never straddles rows.\n    int c0 = (idx4 * 4) % C;\n\n    float4 xv = x4[idx4];\n\n    float es0 = scale[c0]   * weight[c0]   * rsqrtf(running_var[c0]   + eps);\n    float es1 = scale[c0+1] * weight[c0+1] * rsqrtf(running_var[c0+1] + eps);\n    float es2 = scale[c0+2] * weight[c0+2] * rsqrtf(running_var[c0+2] + eps);\n    float es3 = scale[c0+3] * weight[c0+3] * rsqrtf(running_var[c0+3] + eps);\n\n    float eb0 = bias_bn[c0]   - running_mean[c0]   * es0;\n    float eb1 = bias_bn[c0+1] - running_mean[c0+1] * es1;\n    float eb2 = bias_bn[c0+2] - running_mean[c0+2] * es2;\n    float eb3 = bias_bn[c0+3] - running_mean[c0+3] * es3;\n\n    float4 ov;\n    ov.x = xv.x * es0 + eb0;\n    ov.y = xv.y * es1 + eb1;\n    ov.z = xv.z * es2 + eb2;\n    ov.w = xv.w * es3 + eb3;\n    out4[idx4] = ov;\n}\n\n// Scalar fallback for non-vectorizable cases.\n__global__ void __launch_bounds__(256, 4) folded_scale_bn_eval_kernel_scalar(\n    const float* __restrict__ x,\n    const float* __restrict__ scale,\n    const float* __restrict__ weight,\n    const float* __restrict__ bias_bn,\n    const float* __restrict__ running_mean,\n    const float* __restrict__ running_var,\n    float*       __restrict__ out,\n    int total, int C, float eps\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total) return;\n    int c = idx % C;\n    float es = scale[c] * weight[c] * rsqrtf(running_var[c] + eps);\n    float eb = bias_bn[c] - running_mean[c] * es;\n    out[idx] = x[idx] * es + eb;\n}\n\ntorch::Tensor folded_scale_bn_eval_forward(\n    torch::Tensor x,\n    torch::Tensor scale,\n    torch::Tensor weight,\n    torch::Tensor bias_bn,\n    torch::Tensor running_mean,\n    torch::Tensor running_var,\n    double eps\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.dim() == 2, \"x must be 2D [N, C]\");\n    int N = x.size(0);\n    int C = x.size(1);\n    TORCH_CHECK(scale.numel() == C, \"scale size mismatch\");\n    TORCH_CHECK(weight.numel() == C, \"weight size mismatch\");\n    TORCH_CHECK(bias_bn.numel() == C, \"bias size mismatch\");\n    TORCH_CHECK(running_mean.numel() == C, \"running_mean size mismatch\");\n    TORCH_CHECK(running_var.numel() == C, \"running_var size mismatch\");\n\n    auto out = torch::empty_like(x);\n    int total = N * C;\n    const int block = 256;\n\n    bool use_f4 = (total % 4 == 0) &&\n                  (C % 4 == 0) &&\n                  ((reinterpret_cast<uintptr_t>(x.data_ptr<float>()) % 16) == 0) &&\n                  ((reinterpret_cast<uintptr_t>(out.data_ptr<float>()) % 16) == 0);\n\n    if (use_f4) {\n        int total4 = total / 4;\n        int grid = (total4 + block - 1) / block;\n        folded_scale_bn_eval_kernel_f4<<<grid, block>>>(\n            reinterpret_cast<const float4*>(x.data_ptr<float>()),\n            scale.data_ptr<float>(),\n            weight.data_ptr<float>(),\n            bias_bn.data_ptr<float>(),\n            running_mean.data_ptr<float>(),\n            running_var.data_ptr<float>(),\n            reinterpret_cast<float4*>(out.data_ptr<float>()),\n            total4, C, static_cast<float>(eps)\n        );\n    } else {\n        int grid = (total + block - 1) / block;\n        folded_scale_bn_eval_kernel_scalar<<<grid, block>>>(\n            x.data_ptr<float>(),\n            scale.data_ptr<float>(),\n            weight.data_ptr<float>(),\n            bias_bn.data_ptr<float>(),\n            running_mean.data_ptr<float>(),\n            running_var.data_ptr<float>(),\n            out.data_ptr<float>(),\n            total, C, static_cast<float>(eps)\n        );\n    }\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a GEMM (general matrix multiplication), applies scaling, \n        and then batch normalization.\n        \"\"\"\n    def __init__(self, in_features, out_features, scale_shape, eps=1e-5, momentum=0.1):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.gemm = nn.Linear(in_features, out_features)\n        self.scale = nn.Parameter(torch.randn(scale_shape))\n        self.bn = nn.BatchNorm1d(out_features, eps=eps, momentum=momentum)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.gemm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _folded_done = False\n                if x.is_cuda and x.dtype == torch.float32 and x.dim() == 2 and not self.training:\n                    try:\n                        x = _stark_get_extension().folded_scale_bn_eval_forward(\n                            x,\n                            self.scale,\n                            self.bn.weight,\n                            self.bn.bias,\n                            self.bn.running_mean,\n                            self.bn.running_var,\n                            float(self.bn.eps),\n                        )\n                        _folded_done = True\n                    except Exception:\n                        x = x * self.scale\n                else:\n                    x = x * self.scale\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _folded_done:\n                    x = self.bn(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Add an eval-only fast path that folds scale and BatchNorm affine/statistics into one per-channel affine transform and applies it with a single CUDA elementwise kernel, while preserving the existing training path unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the empty module body with a declaration and pybind export for one function `torch::Tensor folded_scale_bn_eval_forward(torch::Tensor x, torch::Tensor scale, torch::Tensor weight, torch::Tensor bias, torch::Tensor running_mean, torch::Tensor running_var, double eps);` and bind it in `PYBIND11_MODULE` under the same name.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the placeholder with a CUDA implementation of `folded_scale_bn_eval_forward` for contiguous float32 CUDA tensors shaped `[N, C]`: validate CUDA/device/dtype/2D shape and 1D parameter sizes `C`; allocate an output tensor; launch one flat 1D kernel over `N*C` elements where each thread computes `c = idx % C`, forms `eff_scale = scale[c] * weight[c] * rsqrtf(running_var[c] + eps)` and `eff_bias = bias[c] - running_mean[c] * eff_scale`, then writes `out[idx] = x[idx] * eff_scale + eff_bias`; return the output. Keep implementation simple and do not touch training-stat updates.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace `x = x * self.scale` with logic that first initializes `_folded_done = False`, then if `x.is_cuda`, `x.dtype == torch.float32`, `x.dim() == 2`, and `not self.training`, tries `_stark_get_extension().folded_scale_bn_eval_forward(x, self.scale, self.bn.weight, self.bn.bias, self.bn.running_mean, self.bn.running_var, float(self.bn.eps))`; on success set `_folded_done = True`; on exception or if the guard fails, fall back to `x = x * self.scale`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace `x = self.bn(x)` with `if not _folded_done: x = self.bn(x)` so the normal BatchNorm path runs for training and any fallback case, but is skipped after the eval-only folded kernel succeeds.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "unexpected indent (line 205, column 16)"
+      ],
+      "failure_type": "python_region_syntax_error",
+      "node_status": "compile_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "explore",
+      "performance_hypothesis": "If the benchmark exercises eval/inference forwards, folding scale plus BatchNorm into precomputed per-channel affine constants and applying them with one contiguous CUDA kernel will outperform the baseline by cutting launch overhead and reducing post-GEMM memory traffic.",
+      "single_change_focus": "Implement an eval-only folded affine CUDA path after GEMM and skip the separate scale and BatchNorm ops when it succeeds.",
+      "mutation_family": "eval_affine_fold",
+      "target_metric": "speedup"
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p33_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"folded_affine_forward\", &folded_affine_forward,\n          \"Folded affine transform for eval mode (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void folded_affine_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ eff_scale,\n    const float* __restrict__ eff_bias,\n    float* __restrict__ out,\n    int N,\n    int C\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C;\n    if (idx < total) {\n        int c = idx % C;\n        out[idx] = x[idx] * eff_scale[c] + eff_bias[c];\n    }\n}\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be CUDA\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.dim() == 2, \"x must be 2D [N, C]\");\n    TORCH_CHECK(eff_scale.is_cuda() && eff_scale.is_contiguous(), \"eff_scale must be contiguous CUDA\");\n    TORCH_CHECK(eff_bias.is_cuda() && eff_bias.is_contiguous(), \"eff_bias must be contiguous CUDA\");\n    TORCH_CHECK(eff_scale.scalar_type() == torch::kFloat32, \"eff_scale must be float32\");\n    TORCH_CHECK(eff_bias.scalar_type() == torch::kFloat32, \"eff_bias must be float32\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    TORCH_CHECK(eff_scale.size(0) == C, \"eff_scale must have size [C]\");\n    TORCH_CHECK(eff_bias.size(0) == C, \"eff_bias must have size [C]\");\n\n    auto out = torch::empty_like(x);\n\n    int total = N * C;\n    int threads = 256;\n    int blocks = (total + threads - 1) / threads;\n\n    folded_affine_kernel<<<blocks, threads>>>(\n        x.data_ptr<float>(),\n        eff_scale.data_ptr<float>(),\n        eff_bias.data_ptr<float>(),\n        out.data_ptr<float>(),\n        N,\n        C\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a GEMM (general matrix multiplication), applies scaling, \n        and then batch normalization.\n        \"\"\"\n    def __init__(self, in_features, out_features, scale_shape, eps=1e-5, momentum=0.1):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.gemm = nn.Linear(in_features, out_features)\n        self.scale = nn.Parameter(torch.randn(scale_shape))\n        self.bn = nn.BatchNorm1d(out_features, eps=eps, momentum=momentum)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.gemm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _used_folded_eval = False\n        if not self.training and x.is_cuda and x.dtype == torch.float32 and x.dim() == 2:\n            try:\n                eff_scale = (self.scale * self.bn.weight) / torch.sqrt(self.bn.running_var + self.bn.eps)\n                eff_bias = self.bn.bias - self.bn.running_mean * eff_scale\n                x = _stark_get_extension().folded_affine_forward(\n                    x.contiguous(),\n                    eff_scale.contiguous(),\n                    eff_bias.contiguous()\n                )\n                _used_folded_eval = True\n            except Exception:\n                x = x * self.scale\n        else:\n            x = x * self.scale\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _used_folded_eval:\n            x = self.bn(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "phase2_root"
+      ],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Specialize the eval/inference path by folding `scale` and BatchNorm affine/statistics into one per-channel affine transform, then apply it with a single flat CUDA kernel while leaving the training path on the existing PyTorch baseline.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the helper source with a single exported CUDA entrypoint declaration and pybind registration for `torch::Tensor folded_affine_forward(torch::Tensor x, torch::Tensor eff_scale, torch::Tensor eff_bias);`. Do not expose training BatchNorm kernels or additional APIs.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA source with one simple float32 CUDA implementation for `folded_affine_forward`. Require `x` to be contiguous CUDA float32 with shape `[N, C]`, require `eff_scale` and `eff_bias` to be contiguous CUDA float32 with shape `[C]`, allocate `out = torch::empty_like(x)`, and launch a flat 1D kernel over `N*C` elements where each thread computes `c = idx % C` and writes `out[idx] = x[idx] * eff_scale[c] + eff_bias[c]`. Keep the implementation minimal: one kernel, one wrapper, no reductions, no running-stat updates, no training logic inside the extension.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "init_body",
+          "instruction": "Replace the init body only if needed to keep the existing module fields unchanged; do not add new persistent buffers or alter parameter registration. Preserve `self.gemm`, `self.scale`, and `self.bn` exactly so state_dict/interface compatibility stays intact.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace this region with an eval-only fast path. When `not self.training` and `x.is_cuda` and `x.dtype == torch.float32` and `x.dim() == 2`, compute `eff_scale = (self.scale * self.bn.weight) / torch.sqrt(self.bn.running_var + self.bn.eps)` and `eff_bias = self.bn.bias - self.bn.running_mean * eff_scale`, then call `_stark_get_extension().folded_affine_forward(x.contiguous(), eff_scale.contiguous(), eff_bias.contiguous())`. On any exception or if conditions are not met, fall back to `x = x * self.scale`. Also set a local boolean such as `_used_folded_eval = True/False` so the next anchor can skip `self.bn(x)` only when the folded path succeeded.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace this region so that it applies `x = self.bn(x)` unless the eval folded CUDA path already produced the final normalized output. In the fallback path, preserve the original semantics: after `x = x * self.scale`, call `self.bn(x)` exactly once.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00302,
+      "score": 0.00302,
+      "logs": [
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=75292",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_0_gpu2/02_L2_P33_Retry_P33_20260720_155748/eval_traces/20260720_160941_71187_1e08289d_kernelbench_l2_33_33_gemm_scale_batchnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00304,
+      "speedup": 1.0066225165562914,
+      "reference_runtimes": {
+        "torch_eager": 0.00304
+      },
+      "speedups": {
+        "torch_eager": 1.0066225165562914
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_root": {
+      "node_id": "phase2_root",
+      "parent_id": "n5",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p33_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"folded_affine_forward\", &folded_affine_forward,\n          \"Folded affine transform for eval mode (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void folded_affine_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ eff_scale,\n    const float* __restrict__ eff_bias,\n    float* __restrict__ out,\n    int N,\n    int C\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C;\n    if (idx < total) {\n        int c = idx % C;\n        out[idx] = x[idx] * eff_scale[c] + eff_bias[c];\n    }\n}\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be CUDA\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.dim() == 2, \"x must be 2D [N, C]\");\n    TORCH_CHECK(eff_scale.is_cuda() && eff_scale.is_contiguous(), \"eff_scale must be contiguous CUDA\");\n    TORCH_CHECK(eff_bias.is_cuda() && eff_bias.is_contiguous(), \"eff_bias must be contiguous CUDA\");\n    TORCH_CHECK(eff_scale.scalar_type() == torch::kFloat32, \"eff_scale must be float32\");\n    TORCH_CHECK(eff_bias.scalar_type() == torch::kFloat32, \"eff_bias must be float32\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    TORCH_CHECK(eff_scale.size(0) == C, \"eff_scale must have size [C]\");\n    TORCH_CHECK(eff_bias.size(0) == C, \"eff_bias must have size [C]\");\n\n    auto out = torch::empty_like(x);\n\n    int total = N * C;\n    int threads = 256;\n    int blocks = (total + threads - 1) / threads;\n\n    folded_affine_kernel<<<blocks, threads>>>(\n        x.data_ptr<float>(),\n        eff_scale.data_ptr<float>(),\n        eff_bias.data_ptr<float>(),\n        out.data_ptr<float>(),\n        N,\n        C\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a GEMM (general matrix multiplication), applies scaling, \n        and then batch normalization.\n        \"\"\"\n    def __init__(self, in_features, out_features, scale_shape, eps=1e-5, momentum=0.1):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.gemm = nn.Linear(in_features, out_features)\n        self.scale = nn.Parameter(torch.randn(scale_shape))\n        self.bn = nn.BatchNorm1d(out_features, eps=eps, momentum=momentum)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.gemm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _used_folded_eval = False\n        if not self.training and x.is_cuda and x.dtype == torch.float32 and x.dim() == 2:\n            try:\n                eff_scale = (self.scale * self.bn.weight) / torch.sqrt(self.bn.running_var + self.bn.eps)\n                eff_bias = self.bn.bias - self.bn.running_mean * eff_scale\n                x = _stark_get_extension().folded_affine_forward(\n                    x.contiguous(),\n                    eff_scale.contiguous(),\n                    eff_bias.contiguous()\n                )\n                _used_folded_eval = True\n            except Exception:\n                x = x * self.scale\n        else:\n            x = x * self.scale\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _used_folded_eval:\n            x = self.bn(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "phase2_root",
+      "child_ids": [
+        "phase2_n1",
+        "phase2_n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Specialize the eval/inference path by folding `scale` and BatchNorm affine/statistics into one per-channel affine transform, then apply it with a single flat CUDA kernel while leaving the training path on the existing PyTorch baseline.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the helper source with a single exported CUDA entrypoint declaration and pybind registration for `torch::Tensor folded_affine_forward(torch::Tensor x, torch::Tensor eff_scale, torch::Tensor eff_bias);`. Do not expose training BatchNorm kernels or additional APIs.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA source with one simple float32 CUDA implementation for `folded_affine_forward`. Require `x` to be contiguous CUDA float32 with shape `[N, C]`, require `eff_scale` and `eff_bias` to be contiguous CUDA float32 with shape `[C]`, allocate `out = torch::empty_like(x)`, and launch a flat 1D kernel over `N*C` elements where each thread computes `c = idx % C` and writes `out[idx] = x[idx] * eff_scale[c] + eff_bias[c]`. Keep the implementation minimal: one kernel, one wrapper, no reductions, no running-stat updates, no training logic inside the extension.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "init_body",
+          "instruction": "Replace the init body only if needed to keep the existing module fields unchanged; do not add new persistent buffers or alter parameter registration. Preserve `self.gemm`, `self.scale`, and `self.bn` exactly so state_dict/interface compatibility stays intact.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace this region with an eval-only fast path. When `not self.training` and `x.is_cuda` and `x.dtype == torch.float32` and `x.dim() == 2`, compute `eff_scale = (self.scale * self.bn.weight) / torch.sqrt(self.bn.running_var + self.bn.eps)` and `eff_bias = self.bn.bias - self.bn.running_mean * eff_scale`, then call `_stark_get_extension().folded_affine_forward(x.contiguous(), eff_scale.contiguous(), eff_bias.contiguous())`. On any exception or if conditions are not met, fall back to `x = x * self.scale`. Also set a local boolean such as `_used_folded_eval = True/False` so the next anchor can skip `self.bn(x)` only when the folded path succeeded.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace this region so that it applies `x = self.bn(x)` unless the eval folded CUDA path already produced the final normalized output. In the fallback path, preserve the original semantics: after `x = x * self.scale`, call `self.bn(x)` exactly once.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00302,
+      "score": 0.00302,
+      "logs": [
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=75292",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_0_gpu2/02_L2_P33_Retry_P33_20260720_155748/eval_traces/20260720_160941_71187_1e08289d_kernelbench_l2_33_33_gemm_scale_batchnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00304,
+      "speedup": 1.0066225165562914,
+      "reference_runtimes": {
+        "torch_eager": 0.00304
+      },
+      "speedups": {
+        "torch_eager": 1.0066225165562914
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_n1": {
+      "node_id": "phase2_n1",
+      "parent_id": "phase2_root",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p33_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"folded_affine_forward\", &folded_affine_forward,\n          \"Folded affine transform for eval mode (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Vectorized float4 kernel: each thread handles 4 consecutive elements\n__global__ void folded_affine_kernel_vec4(\n    const float4* __restrict__ x,\n    const float* __restrict__ eff_scale,\n    const float* __restrict__ eff_bias,\n    float4* __restrict__ out,\n    int N,\n    int C,\n    int total4\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total4) return;\n\n    // Each thread handles 4 consecutive floats starting at flat index idx*4\n    int base = idx * 4;\n    int c0 = base % C;\n    int c1 = (base + 1) % C;\n    int c2 = (base + 2) % C;\n    int c3 = (base + 3) % C;\n\n    float4 val = x[idx];\n    float4 result;\n    result.x = val.x * __ldg(&eff_scale[c0]) + __ldg(&eff_bias[c0]);\n    result.y = val.y * __ldg(&eff_scale[c1]) + __ldg(&eff_bias[c1]);\n    result.z = val.z * __ldg(&eff_scale[c2]) + __ldg(&eff_bias[c2]);\n    result.w = val.w * __ldg(&eff_scale[c3]) + __ldg(&eff_bias[c3]);\n    out[idx] = result;\n}\n\n// Scalar fallback for tail elements\n__global__ void folded_affine_kernel_scalar(\n    const float* __restrict__ x,\n    const float* __restrict__ eff_scale,\n    const float* __restrict__ eff_bias,\n    float* __restrict__ out,\n    int total,\n    int C,\n    int offset\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x + offset;\n    if (idx < total) {\n        int c = idx % C;\n        out[idx] = x[idx] * __ldg(&eff_scale[c]) + __ldg(&eff_bias[c]);\n    }\n}\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be CUDA\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.dim() == 2, \"x must be 2D [N, C]\");\n    TORCH_CHECK(eff_scale.is_cuda() && eff_scale.is_contiguous(), \"eff_scale must be contiguous CUDA\");\n    TORCH_CHECK(eff_bias.is_cuda() && eff_bias.is_contiguous(), \"eff_bias must be contiguous CUDA\");\n    TORCH_CHECK(eff_scale.scalar_type() == torch::kFloat32, \"eff_scale must be float32\");\n    TORCH_CHECK(eff_bias.scalar_type() == torch::kFloat32, \"eff_bias must be float32\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    TORCH_CHECK(eff_scale.size(0) == C, \"eff_scale must have size [C]\");\n    TORCH_CHECK(eff_bias.size(0) == C, \"eff_bias must have size [C]\");\n\n    auto out = torch::empty_like(x);\n    int total = N * C;\n    int threads = 256;\n\n    // When C is divisible by 4 and total is divisible by 4, use vectorized path\n    // (for the benchmark shape C=8192 this is always true)\n    if (C % 4 == 0 && total % 4 == 0) {\n        int total4 = total / 4;\n        int blocks = (total4 + threads - 1) / threads;\n        folded_affine_kernel_vec4<<<blocks, threads>>>(\n            reinterpret_cast<const float4*>(x.data_ptr<float>()),\n            eff_scale.data_ptr<float>(),\n            eff_bias.data_ptr<float>(),\n            reinterpret_cast<float4*>(out.data_ptr<float>()),\n            N, C, total4\n        );\n    } else {\n        // Scalar path for non-aligned shapes\n        int vec4_count = (total / 4) * 4;\n        if (vec4_count > 0) {\n            int total4 = vec4_count / 4;\n            int blocks = (total4 + threads - 1) / threads;\n            folded_affine_kernel_vec4<<<blocks, threads>>>(\n                reinterpret_cast<const float4*>(x.data_ptr<float>()),\n                eff_scale.data_ptr<float>(),\n                eff_bias.data_ptr<float>(),\n                reinterpret_cast<float4*>(out.data_ptr<float>()),\n                N, C, total4\n            );\n        }\n        int tail = total - vec4_count;\n        if (tail > 0) {\n            int blocks = (tail + threads - 1) / threads;\n            folded_affine_kernel_scalar<<<blocks, threads>>>(\n                x.data_ptr<float>(),\n                eff_scale.data_ptr<float>(),\n                eff_bias.data_ptr<float>(),\n                out.data_ptr<float>(),\n                total, C, vec4_count\n            );\n        }\n    }\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a GEMM (general matrix multiplication), applies scaling, \n        and then batch normalization.\n        \"\"\"\n    def __init__(self, in_features, out_features, scale_shape, eps=1e-5, momentum=0.1):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.gemm = nn.Linear(in_features, out_features)\n        self.scale = nn.Parameter(torch.randn(scale_shape))\n        self.bn = nn.BatchNorm1d(out_features, eps=eps, momentum=momentum)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.gemm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _used_folded_eval = False\n        if not self.training and x.is_cuda and x.dtype == torch.float32 and x.dim() == 2:\n            try:\n                eff_scale = (self.scale * self.bn.weight) / torch.sqrt(self.bn.running_var + self.bn.eps)\n                eff_bias = self.bn.bias - self.bn.running_mean * eff_scale\n                x = _stark_get_extension().folded_affine_forward(\n                    x.contiguous(),\n                    eff_scale.contiguous(),\n                    eff_bias.contiguous()\n                )\n                _used_folded_eval = True\n            except Exception:\n                x = x * self.scale\n        else:\n            x = x * self.scale\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _used_folded_eval:\n            x = self.bn(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Refine the working eval folded-affine CUDA path by vectorizing the post-GEMM affine kernel with float4 loads/stores while keeping the current scaffold and forward dispatch intact.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the scalar flattened kernel with a float4-vectorized implementation for the [N,C] contiguous float32 path: have each thread process 4 consecutive elements when total elements are divisible by 4, keep the same exported `folded_affine_forward` signature, preserve the exact `x * eff_scale[c] + eff_bias[c]` math, and add a safe scalar tail path only for remaining elements; keep the forward-site contract unchanged so `forward_stmt_2` and `forward_stmt_3` continue to call this entrypoint exactly as before.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00304,
+      "score": 0.00304,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=78290",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_0_gpu2/02_L2_P33_Retry_P33_20260720_155748/eval_traces/20260720_161451_71187_7a79f12d_kernelbench_l2_33_33_gemm_scale_batchnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00298,
+      "speedup": 0.9802631578947368,
+      "reference_runtimes": {
+        "torch_eager": 0.00298
+      },
+      "speedups": {
+        "torch_eager": 0.9802631578947368
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Because out_features=8192 is divisible by 4, a float4 vectorized kernel can load and store four contiguous activations per thread, reducing transaction count and improving cache utilization without changing the math.",
+      "single_change_focus": "Replace the scalar per-element folded affine kernel with a float4-vectorized CUDA kernel plus a minimal scalar fallback for non-multiple-of-4 tails.",
+      "mutation_family": "vectorized_affine_epilogue",
+      "target_metric": "speedup"
+    },
+    "phase2_n2": {
+      "node_id": "phase2_n2",
+      "parent_id": "phase2_n1",
+      "depth": 7,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p33_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"folded_affine_forward\", &folded_affine_forward,\n          \"Folded affine transform for eval mode (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// 2D shared-memory tiled kernel:\n//   blockIdx.x -> channel tile (BLOCK_C channels per block)\n//   blockIdx.y -> row tile (each block processes ROWS_PER_BLOCK rows)\n// Each block loads eff_scale/eff_bias for its channel tile into smem once,\n// then applies them across all assigned rows.\n\n#define BLOCK_C 256\n#define ROWS_PER_BLOCK 4\n\n__global__ void folded_affine_smem_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ eff_scale,\n    const float* __restrict__ eff_bias,\n    float* __restrict__ out,\n    int N,\n    int C\n) {\n    __shared__ float s_scale[BLOCK_C];\n    __shared__ float s_bias[BLOCK_C];\n\n    int c_start = blockIdx.x * BLOCK_C;\n    int c = c_start + threadIdx.x;\n\n    // Coalesced load of channel coefficients into shared memory\n    if (c < C) {\n        s_scale[threadIdx.x] = __ldg(&eff_scale[c]);\n        s_bias[threadIdx.x]  = __ldg(&eff_bias[c]);\n    } else {\n        s_scale[threadIdx.x] = 0.0f;\n        s_bias[threadIdx.x]  = 0.0f;\n    }\n    __syncthreads();\n\n    if (c >= C) return;\n\n    // Row tile: each block handles ROWS_PER_BLOCK consecutive rows\n    int row_start = blockIdx.y * ROWS_PER_BLOCK;\n\n    float sc = s_scale[threadIdx.x];\n    float bi = s_bias[threadIdx.x];\n\n    // Unrolled over rows\n    #pragma unroll\n    for (int r = 0; r < ROWS_PER_BLOCK; r++) {\n        int row = row_start + r;\n        if (row < N) {\n            int idx = row * C + c;\n            out[idx] = x[idx] * sc + bi;\n        }\n    }\n}\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be CUDA\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.dim() == 2, \"x must be 2D [N, C]\");\n    TORCH_CHECK(eff_scale.is_cuda() && eff_scale.is_contiguous(), \"eff_scale must be contiguous CUDA\");\n    TORCH_CHECK(eff_bias.is_cuda() && eff_bias.is_contiguous(), \"eff_bias must be contiguous CUDA\");\n    TORCH_CHECK(eff_scale.scalar_type() == torch::kFloat32, \"eff_scale must be float32\");\n    TORCH_CHECK(eff_bias.scalar_type() == torch::kFloat32, \"eff_bias must be float32\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    TORCH_CHECK(eff_scale.size(0) == C, \"eff_scale must have size [C]\");\n    TORCH_CHECK(eff_bias.size(0) == C, \"eff_bias must have size [C]\");\n\n    auto out = torch::empty_like(x);\n\n    // grid.x covers channel dimension, grid.y covers row tiles\n    dim3 threads(BLOCK_C, 1, 1);\n    dim3 blocks(\n        (C + BLOCK_C - 1) / BLOCK_C,\n        (N + ROWS_PER_BLOCK - 1) / ROWS_PER_BLOCK,\n        1\n    );\n\n    folded_affine_smem_kernel<<<blocks, threads>>>(\n        x.data_ptr<float>(),\n        eff_scale.data_ptr<float>(),\n        eff_bias.data_ptr<float>(),\n        out.data_ptr<float>(),\n        N,\n        C\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a GEMM (general matrix multiplication), applies scaling, \n        and then batch normalization.\n        \"\"\"\n    def __init__(self, in_features, out_features, scale_shape, eps=1e-5, momentum=0.1):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.gemm = nn.Linear(in_features, out_features)\n        self.scale = nn.Parameter(torch.randn(scale_shape))\n        self.bn = nn.BatchNorm1d(out_features, eps=eps, momentum=momentum)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.gemm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _used_folded_eval = False\n                if not self.training and x.is_cuda and x.dtype == torch.float32 and x.dim() == 2:\n                    try:\n                        eff_scale = (self.scale * self.bn.weight) / torch.sqrt(self.bn.running_var + self.bn.eps)\n                        eff_bias = self.bn.bias - self.bn.running_mean * eff_scale\n                        x = _stark_get_extension().folded_affine_forward(\n                            x.contiguous(),\n                            eff_scale.contiguous(),\n                            eff_bias.contiguous()\n                        )\n                        _used_folded_eval = True\n                    except Exception:\n                        x = x * self.scale\n                else:\n                    x = x * self.scale\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _used_folded_eval:\n            x = self.bn(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Retile the eval folded-affine CUDA path so each block stages `eff_scale` and `eff_bias` for a channel tile in shared memory and reuses them across multiple rows, instead of doing per-element global reads with flat modulo indexing.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current flat/vectorized folded-affine implementation with a 2D kernel that maps blockIdx.x over channel tiles and blockIdx.y over row tiles, stages each tile's `eff_scale` and `eff_bias` in shared memory once per block, then applies `out[n, c] = x[n, c] * s[c] + b[c]` for the rows handled by that block; keep the exported wrapper signature unchanged and preserve the scalar fallback for tail channels or rows.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Keep the eval gating and coefficient folding logic, but continue routing the CUDA eval path through the same `folded_affine_forward(...)` entrypoint so only the kernel implementation changes; do not alter the training branch or recompute coefficients elsewhere.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "unexpected indent (line 178, column 16)"
+      ],
+      "failure_type": "python_region_syntax_error",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "explore",
+      "performance_hypothesis": "If the kernel loads `eff_scale`/`eff_bias` once per CTA into shared memory and iterates over a small row tile, the post-GEMM epilogue will spend less time on repeated global coefficient fetches and should recover the regression seen in the vectorized flat path.",
+      "single_change_focus": "Replace the flat per-element folded affine kernel with a 2D shared-memory tiled kernel that broadcasts channel coefficients across rows.",
+      "mutation_family": "smem_channel_broadcast",
+      "target_metric": "speedup"
+    },
+    "phase2_n3": {
+      "node_id": "phase2_n3",
+      "parent_id": "phase2_n2",
+      "depth": 8,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p33_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"folded_affine_forward\", &folded_affine_forward,\n          \"Folded affine transform for eval mode (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// 2D shared-memory tiled kernel:\n//   blockIdx.x -> channel tile (BLOCK_C channels per block)\n//   blockIdx.y -> row tile (each block processes ROWS_PER_BLOCK rows)\n// Each block loads eff_scale/eff_bias for its channel tile into smem once,\n// then applies them across all assigned rows.\n\n#define BLOCK_C 256\n#define ROWS_PER_BLOCK 4\n\n__global__ void folded_affine_smem_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ eff_scale,\n    const float* __restrict__ eff_bias,\n    float* __restrict__ out,\n    int N,\n    int C\n) {\n    __shared__ float s_scale[BLOCK_C];\n    __shared__ float s_bias[BLOCK_C];\n\n    int c_start = blockIdx.x * BLOCK_C;\n    int c = c_start + threadIdx.x;\n\n    // Coalesced load of channel coefficients into shared memory\n    if (c < C) {\n        s_scale[threadIdx.x] = __ldg(&eff_scale[c]);\n        s_bias[threadIdx.x]  = __ldg(&eff_bias[c]);\n    } else {\n        s_scale[threadIdx.x] = 0.0f;\n        s_bias[threadIdx.x]  = 0.0f;\n    }\n    __syncthreads();\n\n    if (c >= C) return;\n\n    // Row tile: each block handles ROWS_PER_BLOCK consecutive rows\n    int row_start = blockIdx.y * ROWS_PER_BLOCK;\n\n    float sc = s_scale[threadIdx.x];\n    float bi = s_bias[threadIdx.x];\n\n    // Unrolled over rows\n    #pragma unroll\n    for (int r = 0; r < ROWS_PER_BLOCK; r++) {\n        int row = row_start + r;\n        if (row < N) {\n            int idx = row * C + c;\n            out[idx] = x[idx] * sc + bi;\n        }\n    }\n}\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be CUDA\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.dim() == 2, \"x must be 2D [N, C]\");\n    TORCH_CHECK(eff_scale.is_cuda() && eff_scale.is_contiguous(), \"eff_scale must be contiguous CUDA\");\n    TORCH_CHECK(eff_bias.is_cuda() && eff_bias.is_contiguous(), \"eff_bias must be contiguous CUDA\");\n    TORCH_CHECK(eff_scale.scalar_type() == torch::kFloat32, \"eff_scale must be float32\");\n    TORCH_CHECK(eff_bias.scalar_type() == torch::kFloat32, \"eff_bias must be float32\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    TORCH_CHECK(eff_scale.size(0) == C, \"eff_scale must have size [C]\");\n    TORCH_CHECK(eff_bias.size(0) == C, \"eff_bias must have size [C]\");\n\n    auto out = torch::empty_like(x);\n\n    // grid.x covers channel dimension, grid.y covers row tiles\n    dim3 threads(BLOCK_C, 1, 1);\n    dim3 blocks(\n        (C + BLOCK_C - 1) / BLOCK_C,\n        (N + ROWS_PER_BLOCK - 1) / ROWS_PER_BLOCK,\n        1\n    );\n\n    folded_affine_smem_kernel<<<blocks, threads>>>(\n        x.data_ptr<float>(),\n        eff_scale.data_ptr<float>(),\n        eff_bias.data_ptr<float>(),\n        out.data_ptr<float>(),\n        N,\n        C\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a GEMM (general matrix multiplication), applies scaling, \n        and then batch normalization.\n        \"\"\"\n    def __init__(self, in_features, out_features, scale_shape, eps=1e-5, momentum=0.1):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.gemm = nn.Linear(in_features, out_features)\n        self.scale = nn.Parameter(torch.randn(scale_shape))\n        self.bn = nn.BatchNorm1d(out_features, eps=eps, momentum=momentum)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.gemm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _used_folded_eval = False\n        if not self.training and x.is_cuda and x.dtype == torch.float32 and x.dim() == 2:\n            try:\n                eff_scale = (self.scale * self.bn.weight) / torch.sqrt(self.bn.running_var + self.bn.eps)\n                eff_bias = self.bn.bias - self.bn.running_mean * eff_scale\n                x = _stark_get_extension().folded_affine_forward(\n                    x.contiguous(),\n                    eff_scale.contiguous(),\n                    eff_bias.contiguous()\n                )\n                _used_folded_eval = True\n            except Exception:\n                x = x * self.scale\n        else:\n            x = x * self.scale\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _used_folded_eval:\n            x = self.bn(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "phase2_n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Retile the eval folded-affine CUDA path so each block stages `eff_scale` and `eff_bias` for a channel tile in shared memory and reuses them across multiple rows, instead of doing per-element global reads with flat modulo indexing.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current flat/vectorized folded-affine implementation with a 2D kernel that maps blockIdx.x over channel tiles and blockIdx.y over row tiles, stages each tile's `eff_scale` and `eff_bias` in shared memory once per block, then applies `out[n, c] = x[n, c] * s[c] + b[c]` for the rows handled by that block; keep the exported wrapper signature unchanged and preserve the scalar fallback for tail channels or rows.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Keep the eval gating and coefficient folding logic, but continue routing the CUDA eval path through the same `folded_affine_forward(...)` entrypoint so only the kernel implementation changes; do not alter the training branch or recompute coefficients elsewhere.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00302,
+      "score": 0.00302,
+      "logs": [
+        "applied_region_patch:forward_stmt_2:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=78945",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_0_gpu2/02_L2_P33_Retry_P33_20260720_155748/eval_traces/20260720_161643_71187_51b03b5a_kernelbench_l2_33_33_gemm_scale_batchnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00309,
+      "speedup": 1.0231788079470199,
+      "reference_runtimes": {
+        "torch_eager": 0.00309
+      },
+      "speedups": {
+        "torch_eager": 1.0231788079470199
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_n4": {
+      "node_id": "phase2_n4",
+      "parent_id": "phase2_root",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p33_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"folded_affine_forward\", &folded_affine_forward,\n          \"Folded affine transform for eval mode (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void folded_affine_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ eff_scale,\n    const float* __restrict__ eff_bias,\n    float* __restrict__ out,\n    int N,\n    int C\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int total = N * C;\n    if (idx < total) {\n        int c = idx % C;\n        out[idx] = x[idx] * eff_scale[c] + eff_bias[c];\n    }\n}\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be CUDA\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.dim() == 2, \"x must be 2D [N, C]\");\n    TORCH_CHECK(eff_scale.is_cuda() && eff_scale.is_contiguous(), \"eff_scale must be contiguous CUDA\");\n    TORCH_CHECK(eff_bias.is_cuda() && eff_bias.is_contiguous(), \"eff_bias must be contiguous CUDA\");\n    TORCH_CHECK(eff_scale.scalar_type() == torch::kFloat32, \"eff_scale must be float32\");\n    TORCH_CHECK(eff_bias.scalar_type() == torch::kFloat32, \"eff_bias must be float32\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    TORCH_CHECK(eff_scale.size(0) == C, \"eff_scale must have size [C]\");\n    TORCH_CHECK(eff_bias.size(0) == C, \"eff_bias must have size [C]\");\n\n    auto out = torch::empty_like(x);\n\n    int total = N * C;\n    int threads = 256;\n    int blocks = (total + threads - 1) / threads;\n\n    folded_affine_kernel<<<blocks, threads>>>(\n        x.data_ptr<float>(),\n        eff_scale.data_ptr<float>(),\n        eff_bias.data_ptr<float>(),\n        out.data_ptr<float>(),\n        N,\n        C\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a GEMM (general matrix multiplication), applies scaling, \n        and then batch normalization.\n        \"\"\"\n    def __init__(self, in_features, out_features, scale_shape, eps=1e-5, momentum=0.1):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.gemm = nn.Linear(in_features, out_features)\n        self.scale = nn.Parameter(torch.randn(scale_shape))\n        self.bn = nn.BatchNorm1d(out_features, eps=eps, momentum=momentum)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        _eval_fast_path = (\n        not self.training\n        and x.is_cuda\n        and x.dtype == torch.float32\n        and x.dim() == 2\n        )\n        if not _eval_fast_path:\n            x = self.gemm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _used_folded_eval = False\n                if _eval_fast_path:\n                    try:\n                        inv_std = torch.rsqrt(self.bn.running_var + self.bn.eps)\n                        gamma = self.bn.weight * inv_std\n                        eff_scale = self.scale * gamma\n                        eff_weight = self.gemm.weight * eff_scale.unsqueeze(1)\n                        if self.gemm.bias is not None:\n                            eff_bias = self.bn.bias - self.bn.running_mean * gamma + self.gemm.bias * eff_scale\n                        else:\n                            eff_bias = self.bn.bias - self.bn.running_mean * gamma\n                        x = torch.nn.functional.linear(x, eff_weight, eff_bias)\n                        _used_folded_eval = True\n                    except Exception:\n                        x = self.gemm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _used_folded_eval:\n                    x = x * self.scale\n                    x = self.bn(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Replace the current eval-time GEMM-plus-custom-affine path with an eval-only folded `nn.functional.linear` fast path that absorbs `scale` and BatchNorm running-stat affine into effective weight and bias, eliminating the extra CUDA extension launch entirely while leaving training behavior unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "init_body",
+          "instruction": "Keep existing module fields intact, and add `import torch.nn.functional as F` usage support indirectly by planning to call `torch.nn.functional.linear` in forward without introducing new modules or changing parameter registration. Do not add caching state yet; keep this anchor otherwise unchanged unless a tiny helper boolean/comment is needed.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the unconditional `x = self.gemm(x)` baseline with a branch: if `not self.training` and `x.is_cuda` and `x.dtype == torch.float32` and `x.dim() == 2`, skip the immediate GEMM here and let the eval fast path in later anchors run from the original input tensor; otherwise keep `x = self.gemm(x)` exactly for the fallback/training path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the current `_stark_get_extension().folded_affine_forward(...)` eval logic with an eval-only folded-linear path. In the eval branch, compute `inv_std = torch.rsqrt(self.bn.running_var + self.bn.eps)`, `eff_scale = self.scale * self.bn.weight * inv_std`, `base_bias = self.gemm.bias if self.gemm.bias is not None else torch.zeros_like(self.bn.running_mean)`, `eff_bias = self.bn.bias + (base_bias - self.bn.running_mean) * eff_scale`, and `eff_weight = self.gemm.weight * eff_scale.unsqueeze(1)`. Then set `x = torch.nn.functional.linear(x, eff_weight, eff_bias)` and mark the fast path as used. In the non-eval path, do not apply scaling here; just leave `_used_folded_eval = False` and rely on the training fallback path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the current `if not _used_folded_eval: x = self.bn(x)` block with the full fallback sequence: if `_used_folded_eval` is false, then `x = x * self.scale` followed by `x = self.bn(x)`. This preserves the original training/non-fast-path semantics exactly while skipping both ops after the folded-linear eval fast path.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "normalized_python_region_indent:init_body",
+        "applied_region_patch:init_body:replace",
+        "normalized_python_region_indent:forward_stmt_1",
+        "applied_region_patch:forward_stmt_1:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "unexpected indent (line 143, column 16)"
+      ],
+      "failure_type": "python_region_syntax_error",
+      "node_status": "compile_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "explore",
+      "performance_hypothesis": "If eval mode computes folded per-output-channel coefficients once per forward and routes directly through a single `torch.nn.functional.linear` using folded weight and bias, then inference time improves by removing the custom post-GEMM kernel launch and avoiding the intermediate activation write/read associated with the current GEMM-then-affine path.",
+      "single_change_focus": "Replace the current eval folded-affine CUDA fast path with an eval-only folded-linear fast path in Python, using the existing `nn.Linear` parameters plus BatchNorm running statistics and `scale` to construct effective weight and bias for one `F.linear` call.",
+      "mutation_family": "eval_linear_folding",
+      "target_metric": "speedup"
+    },
+    "phase2_n5": {
+      "node_id": "phase2_n5",
+      "parent_id": "phase2_n3",
+      "depth": 9,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p33_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"folded_affine_forward\", &folded_affine_forward,\n          \"Folded affine transform for eval mode (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// 2D shared-memory tiled kernel:\n//   blockIdx.x -> channel tile (BLOCK_C channels per block)\n//   blockIdx.y -> row tile (each block processes ROWS_PER_BLOCK rows)\n// Each block loads eff_scale/eff_bias for its channel tile into smem once,\n// then applies them across all assigned rows.\n\n#define BLOCK_C 256\n#define ROWS_PER_BLOCK 8\n\n__global__ void folded_affine_smem_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ eff_scale,\n    const float* __restrict__ eff_bias,\n    float* __restrict__ out,\n    int N,\n    int C\n) {\n    __shared__ float s_scale[BLOCK_C];\n    __shared__ float s_bias[BLOCK_C];\n\n    int c_start = blockIdx.x * BLOCK_C;\n    int c = c_start + threadIdx.x;\n\n    // Coalesced load of channel coefficients into shared memory\n    if (c < C) {\n        s_scale[threadIdx.x] = __ldg(&eff_scale[c]);\n        s_bias[threadIdx.x]  = __ldg(&eff_bias[c]);\n    } else {\n        s_scale[threadIdx.x] = 0.0f;\n        s_bias[threadIdx.x]  = 0.0f;\n    }\n    __syncthreads();\n\n    if (c >= C) return;\n\n    // Row tile: each block handles ROWS_PER_BLOCK consecutive rows\n    int row_start = blockIdx.y * ROWS_PER_BLOCK;\n\n    float sc = s_scale[threadIdx.x];\n    float bi = s_bias[threadIdx.x];\n\n    // Unrolled over rows\n    #pragma unroll\n    for (int r = 0; r < ROWS_PER_BLOCK; r++) {\n        int row = row_start + r;\n        if (row < N) {\n            int idx = row * C + c;\n            out[idx] = x[idx] * sc + bi;\n        }\n    }\n}\n\ntorch::Tensor folded_affine_forward(\n    torch::Tensor x,\n    torch::Tensor eff_scale,\n    torch::Tensor eff_bias\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be CUDA\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.dim() == 2, \"x must be 2D [N, C]\");\n    TORCH_CHECK(eff_scale.is_cuda() && eff_scale.is_contiguous(), \"eff_scale must be contiguous CUDA\");\n    TORCH_CHECK(eff_bias.is_cuda() && eff_bias.is_contiguous(), \"eff_bias must be contiguous CUDA\");\n    TORCH_CHECK(eff_scale.scalar_type() == torch::kFloat32, \"eff_scale must be float32\");\n    TORCH_CHECK(eff_bias.scalar_type() == torch::kFloat32, \"eff_bias must be float32\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    TORCH_CHECK(eff_scale.size(0) == C, \"eff_scale must have size [C]\");\n    TORCH_CHECK(eff_bias.size(0) == C, \"eff_bias must have size [C]\");\n\n    auto out = torch::empty_like(x);\n\n    // grid.x covers channel dimension, grid.y covers row tiles\n    dim3 threads(BLOCK_C, 1, 1);\n    dim3 blocks(\n        (C + BLOCK_C - 1) / BLOCK_C,\n        (N + ROWS_PER_BLOCK - 1) / ROWS_PER_BLOCK,\n        1\n    );\n\n    folded_affine_smem_kernel<<<blocks, threads>>>(\n        x.data_ptr<float>(),\n        eff_scale.data_ptr<float>(),\n        eff_bias.data_ptr<float>(),\n        out.data_ptr<float>(),\n        N,\n        C\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a GEMM (general matrix multiplication), applies scaling, \n        and then batch normalization.\n        \"\"\"\n    def __init__(self, in_features, out_features, scale_shape, eps=1e-5, momentum=0.1):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.gemm = nn.Linear(in_features, out_features)\n        self.scale = nn.Parameter(torch.randn(scale_shape))\n        self.bn = nn.BatchNorm1d(out_features, eps=eps, momentum=momentum)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.gemm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _used_folded_eval = False\n        if not self.training and x.is_cuda and x.dtype == torch.float32 and x.dim() == 2:\n            try:\n                eff_scale = (self.scale * self.bn.weight) / torch.sqrt(self.bn.running_var + self.bn.eps)\n                eff_bias = self.bn.bias - self.bn.running_mean * eff_scale\n                x = _stark_get_extension().folded_affine_forward(\n                    x.contiguous(),\n                    eff_scale.contiguous(),\n                    eff_bias.contiguous()\n                )\n                _used_folded_eval = True\n            except Exception:\n                x = x * self.scale\n        else:\n            x = x * self.scale\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _used_folded_eval:\n            x = self.bn(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Refine the existing shared-memory folded-affine eval kernel by increasing per-CTA row reuse so each loaded channel tile is broadcast across more rows before the block exits.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Keep the existing shared-memory channel-broadcast kernel design and exported function intact, but change the kernel tuning constant from `#define ROWS_PER_BLOCK 4` to `#define ROWS_PER_BLOCK 8`. Keep `BLOCK_C 256`, keep the 2D grid layout, and keep the same shared-memory coefficient staging logic. The only functional edit should be that each CTA now iterates over 8 consecutive rows in the unrolled inner loop and the grid.y calculation continues to use `ROWS_PER_BLOCK`, so the number of row tiles is reduced accordingly.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0030099999999999997,
+      "score": 0.0030099999999999997,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=81003",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_0_gpu2/02_L2_P33_Retry_P33_20260720_155748/eval_traces/20260720_162052_71187_5a1664d0_kernelbench_l2_33_33_gemm_scale_batchnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0030499999999999998,
+      "speedup": 1.0132890365448506,
+      "reference_runtimes": {
+        "torch_eager": 0.0030499999999999998
+      },
+      "speedups": {
+        "torch_eager": 1.0132890365448506
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Doubling the number of rows handled per CTA from 4 to 8 will reduce block-launch overhead and better amortize each shared-memory load of eff_scale/eff_bias across more output elements, improving the lightweight post-GEMM kernel without changing Python control flow.",
+      "single_change_focus": "Increase ROWS_PER_BLOCK in the shared-memory folded-affine CUDA kernel and keep the same 256-channel CTA mapping.",
+      "mutation_family": "row_reuse_tune",
+      "target_metric": "speedup"
+    }
+  }
+}

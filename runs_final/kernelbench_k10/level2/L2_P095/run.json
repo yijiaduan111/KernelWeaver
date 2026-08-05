@@ -1,0 +1,2313 @@
+{
+  "task_name": "kernelbench_l2_95_95_matmul_add_swish_tanh_gelu_hardtanh",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": false,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_claude",
+    "plan_provider": "openai-compatible",
+    "code_provider": "claude-compatible",
+    "debug_provider": "openai-compatible",
+    "search_provider": "claude-compatible",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "diagnostics_enabled": false,
+    "diagnostics_mode": "root_ncu_v1",
+    "diagnostics_timeout_seconds": 900,
+    "diagnostics_warmup_runs": 2,
+    "diagnostics_profile_runs": 3,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1,
+    "deliberation_provider_timeout_seconds": 180,
+    "deliberation_phase_timeout_seconds": 240,
+    "evaluator_isolation": "candidate_subprocess",
+    "evaluator_timeout_seconds": 900,
+    "explore_fraction": 0.4,
+    "challenger_fraction": 0.3,
+    "plateau_delta_threshold": 0.03,
+    "plateau_recovery_mutation_attempts": 2,
+    "plateau_window": 3,
+    "deliberation_upgrade_enabled": true,
+    "deliberation_max_rounds": 3,
+    "deliberation_min_remaining_attempts": 8,
+    "phase_two_enabled": true,
+    "phase_two_split_attempts": 5
+  },
+  "best_node_id": "n1",
+  "leaderboard": [
+    "n1",
+    "phase2_root"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "n1",
+      "root"
+    ],
+    [
+      "n1",
+      "n2"
+    ],
+    [
+      "n1",
+      "n3"
+    ],
+    [],
+    [
+      "phase2_root"
+    ],
+    [
+      "phase2_root",
+      "phase2_n1"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "n1",
+    "n3",
+    "phase2_root",
+    "phase2_n1",
+    "phase2_n2",
+    "phase2_root",
+    "phase2_n3"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "debug_retry_failure"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {}
+  ],
+  "pruned_nodes": {},
+  "debug_stats": {
+    "total_attempts": 1,
+    "per_node": {
+      "phase2_n3": 1
+    }
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 9,
+    "debug_attempts": 1,
+    "failure_counts": {
+      "builtins.ImportError": 1
+    },
+    "failure_stage_counts": {
+      "runtime": 1
+    },
+    "invalid_proposals": 0,
+    "attempt_mode_counts": {
+      "explore": 5,
+      "mutate_champion": 3,
+      "best_lineage_push": 1,
+      "debug": 1
+    },
+    "provider_transient_error_count": 0,
+    "provider_transient_budget_exhausted_count": 0,
+    "provider_transient_errors_by_stage": {},
+    "provider_transient_errors_by_origin": {},
+    "provider_transient_errors": [],
+    "phase_two_triggered": true,
+    "phase_two_seed_node_id": "n1",
+    "pruned_count": 0
+  },
+  "benchmark_family": "kernelbench",
+  "level": 2,
+  "problem_id": 95,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level2/95_Matmul_Add_Swish_Tanh_GELU_Hardtanh.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.00313
+  },
+  "speedups": {
+    "torch_eager": 1.064625850340136
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "matmul",
+    "summary": "Matrix multiplication style computation; preserve dimensions and consider tiled implementations.",
+    "source": "KernelBench/KernelBench/level2/95_Matmul_Add_Swish_Tanh_GELU_Hardtanh.py",
+    "exact_facts": null,
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "forward_stmt_3",
+      "forward_stmt_4",
+      "forward_stmt_5",
+      "forward_stmt_6"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "matmul",
+        "source_excerpt": "x = self.matmul(x)",
+        "op_names": [
+          "_matmul_add_swish_tanh_gelu_hardtanh",
+          "a",
+          "activation",
+          "add_value",
+          "add_value_shape",
+          "adds",
+          "and",
+          "applies",
+          "functional",
+          "functions",
+          "gelu",
+          "hardtanh"
+        ],
+        "optimization_intents": [
+          "use_tiled_matrix_multiply",
+          "preserve_matrix_shapes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use tiled GEMM structure",
+          "preserve strides and matrix dimensions"
+        ],
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "matmul",
+        "source_excerpt": "x = x + self.add_value",
+        "op_names": [
+          "_matmul_add_swish_tanh_gelu_hardtanh",
+          "a",
+          "activation",
+          "add_value",
+          "add_value_shape",
+          "adds",
+          "and",
+          "applies",
+          "arithmetic",
+          "functional",
+          "functions",
+          "gelu"
+        ],
+        "optimization_intents": [
+          "use_tiled_matrix_multiply",
+          "preserve_matrix_shapes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use tiled GEMM structure",
+          "preserve strides and matrix dimensions"
+        ],
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_3",
+        "region_role": "forward",
+        "semantic_type": "matmul",
+        "source_excerpt": "x = torch.sigmoid(x) * x",
+        "op_names": [
+          "_matmul_add_swish_tanh_gelu_hardtanh",
+          "a",
+          "activation",
+          "add_value",
+          "add_value_shape",
+          "adds",
+          "and",
+          "applies",
+          "arithmetic",
+          "functional",
+          "functions",
+          "gelu"
+        ],
+        "optimization_intents": [
+          "use_tiled_matrix_multiply",
+          "preserve_matrix_shapes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use tiled GEMM structure",
+          "preserve strides and matrix dimensions"
+        ],
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_4",
+        "region_role": "forward",
+        "semantic_type": "matmul",
+        "source_excerpt": "x = torch.tanh(x)",
+        "op_names": [
+          "_matmul_add_swish_tanh_gelu_hardtanh",
+          "a",
+          "activation",
+          "add_value",
+          "add_value_shape",
+          "adds",
+          "and",
+          "applies",
+          "functional",
+          "functions",
+          "gelu",
+          "hardtanh"
+        ],
+        "optimization_intents": [
+          "use_tiled_matrix_multiply",
+          "preserve_matrix_shapes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use tiled GEMM structure",
+          "preserve strides and matrix dimensions"
+        ],
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_5",
+        "region_role": "forward",
+        "semantic_type": "matmul",
+        "source_excerpt": "x = torch.nn.functional.gelu(x)",
+        "op_names": [
+          "_matmul_add_swish_tanh_gelu_hardtanh",
+          "a",
+          "activation",
+          "add_value",
+          "add_value_shape",
+          "adds",
+          "and",
+          "applies",
+          "functional",
+          "functions",
+          "gelu",
+          "hardtanh"
+        ],
+        "optimization_intents": [
+          "use_tiled_matrix_multiply",
+          "preserve_matrix_shapes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use tiled GEMM structure",
+          "preserve strides and matrix dimensions"
+        ],
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_6",
+        "region_role": "forward",
+        "semantic_type": "matmul",
+        "source_excerpt": "x = torch.nn.functional.hardtanh(x, min_val=-1, max_val=1)",
+        "op_names": [
+          "_matmul_add_swish_tanh_gelu_hardtanh",
+          "a",
+          "activation",
+          "add_value",
+          "add_value_shape",
+          "adds",
+          "and",
+          "applies",
+          "functional",
+          "functions",
+          "gelu",
+          "hardtanh"
+        ],
+        "optimization_intents": [
+          "use_tiled_matrix_multiply",
+          "preserve_matrix_shapes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use tiled GEMM structure",
+          "preserve strides and matrix dimensions"
+        ],
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "use_tiled_matrix_multiply",
+        "summary": "use tiled matrix multiply",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "use tiled GEMM structure",
+            "preserve strides and matrix dimensions"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use block_m/block_n/block_k tiling"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "preserve_matrix_shapes",
+        "summary": "preserve matrix shapes",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "use tiled GEMM structure",
+            "preserve strides and matrix dimensions"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use block_m/block_n/block_k tiling"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve M/N/K dimensions and transpose semantics",
+      "handle tensor contiguity assumptions"
+    ]
+  },
+  "diagnostics_profile": {
+    "enabled": true,
+    "mode": "root_ncu_v1",
+    "ncu_profile": {
+      "enabled": true,
+      "status": "ok",
+      "profiler": "ncu",
+      "kernel_name": "ampere_sgemm_128x128_tn",
+      "row_count": 36,
+      "kernel_launch_count": 36,
+      "raw_metrics": {
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 20.47,
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": 64.11,
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": 52.29,
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": 72.55,
+        "sm__warps_active.avg.pct_of_peak_sustained_active": 32.44,
+        "launch__registers_per_thread": 118,
+        "launch__occupancy_limit_registers": 2,
+        "launch__occupancy_limit_shared_mem": 3,
+        "launch__occupancy_limit_warps": 6,
+        "gpu__time_duration.avg": 3053536,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.01,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.35,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+        "smsp__sass_branch_targets_threads_divergent.avg": 0,
+        "smsp__sass_branch_targets_threads_uniform.avg": 10104,
+        "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+        "smsp__warps_eligible.avg": 13813740.48
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ],
+      "error": null
+    },
+    "notes": [
+      "Profiled the root candidate program with Nsight Compute."
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_01",
+        "intent": "Replace cuBLAS nn.Linear + separate epilogue with a CUTLASS GEMM that fuses add+swish+tanh+gelu directly into the tile epilogue",
+        "summary": "The dominant cost is the cuBLAS GEMM (~3ms, 8192Ã8192Ã1024 matmul). The current champion still pays for a full [1024,8192] tensor round-trip through VRAM between the GEMM and the fused epilogue. A CUTLASS epilogue visitor tree (EVT) can apply add_value+swish+tanh+gelu inline as each output tile is written, eliminating the 32MB intermediate tensor write and re-read entirely. CUTLASS 3.x on Ampere supports epilogue fusion with custom per-element functors via the `EpilogueWithVisitorCallbacks` pattern.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "implementation_hints": [
+          "Use CUTLASS 3.x `cutlass::gemm::kernel::GemmUniversal` with a custom `EpilogueFunctorOp` that applies: (1) broadcast-add add_value[col], (2) swish, (3) tanh, (4) GELU",
+          "The CUTLASS epilogue receives the GEMM accumulator tile in registers; apply the activation chain before writing to global memory",
+          "Use `cutlass::epilogue::threadblock::EpilogueWithBroadcast` for the add_value broadcast (1D along N dimension)",
+          "Tile configuration: try SM80 `cutlass::gemm::GemmShape<128,128,32>` or `<256,128,32>` with `<16,8,16>` warp shape for Ampere tensor cores",
+          "Extract CUTLASS headers via pip-installed cutlass-python or copy headers into the cuda_cu source string; avoid external file dependencies",
+          "Bind via pybind11 in cuda_cpp; keep the same function signature as `fused_post_ops` but accept the weight matrix and input directly"
+        ],
+        "expected_gain": "8-20% total speedup by eliminating the 32 MB intermediate VRAM write+read; secondary gain from tensor core utilization if cuBLAS was using SGEMM (fp32 non-TC) pathâNCU shows ampere_sgemm_128x128_tn which is non-TC sgemm, suggesting TC is unused; switching to CUTLASS with tensor cores (TF32 or FP16âFP32 accumulation) could give 2-4Ã GEMM throughput",
+        "risk_notes": [
+          "CUTLASS header availability inside load_inline compilation environment is the primary blocker; headers must be bundled or found via include path",
+          "TF32 accumulation introduces ~0.03% numerical error vs FP32; may fail strict equality checksâuse torch.allclose with rtol=1e-3",
+          "Warp occupancy on the CUTLASS GEMM will differ from cuBLAS; profile with NCU to confirm improvement",
+          "Compilation time increases significantly; may need to cache the extension aggressively"
+        ],
+        "memory_methods": [
+          "register-stage epilogue fusion",
+          "eliminate intermediate VRAM tensor"
+        ],
+        "mutation_axes": [
+          "gemm_backend_replacement",
+          "epilogue_fusion_into_gemm",
+          "tensor_core_enablement"
+        ],
+        "forbidden_patterns": [
+          "changing M/N/K dimensions",
+          "transposing weight layout without updating bias broadcast",
+          "using FP16 accumulation (risk of overflow for large K=8192)"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 4.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "High upside from epilogue fusion, but CUTLASS integration and build risk are substantial; strong only if headers/tooling are already in place.",
+          "claude-compatible": "Highest upside: CUTLASS EVT eliminates the 32MB VRAM round-trip AND enables tensor cores (NCU shows non-TC ampere_sgemm, so this is a compounding win). Docked one point because CUTLASS header availability inside load_inline is a real environment blocker, and TF32 precision may fail strict correctness checks. If headers are bundled, this is the strongest candidate.",
+          "gemini-compatible": "Using CUTLASS to fuse the entire activation chain into the GEMM epilogue is the optimal approach for CUDA C++ to eliminate the memory roundtrip."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_02",
+        "intent": "use_tiled_matrix_multiply",
+        "summary": "Bypass the CUDA C++ extension and implement the entire GEMM and activation chain in a single Triton kernel to eliminate global memory round-trips for the intermediate GEMM output.",
+        "target_anchors": [
+          "user_helpers",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "implementation_hints": [
+          "Define a `@triton.jit` kernel in `user_helpers`.",
+          "Use `tl.dot` for the matrix multiplication of block tiles (load blocks of `x` and `weight`).",
+          "Load the corresponding block of `add_value` and add it to the accumulator.",
+          "Apply the activation chain using Triton's math functions (`tl.sigmoid`, `tl.math.tanh`, etc.) on the SRAM tiles.",
+          "Store the final result to global memory, replacing all forward statements."
+        ],
+        "expected_gain": "Triton can generate a highly optimized GEMM that matches cuBLAS while completely fusing the epilogue, yielding both compute and memory efficiency and eliminating the 32MB intermediate write.",
+        "risk_notes": [
+          "Requires Triton to be available in the environment.",
+          "Tuning block sizes (BLOCK_M, BLOCK_N, BLOCK_K) is necessary for optimal performance."
+        ],
+        "memory_methods": [
+          "sram_tiling",
+          "block_pointers"
+        ],
+        "mutation_axes": [
+          "triton_rewrite",
+          "epilogue_fusion"
+        ],
+        "forbidden_patterns": [
+          "using separate kernels for GEMM and activations"
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 5.0,
+          "openai-compatible": 2.0,
+          "claude-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "A full Triton rewrite can fuse everything, but it is a large rewrite with environment/tuning risk and uncertain gain versus an already-strong GEMM.",
+          "claude-compatible": "Triton is typically available and fusing GEMM+epilogue in a single kernel is architecturally sound. The main risk is that matching cuBLAS throughput on an 8192x8192x1024 shape requires careful block size autotuningâwithout it, fusion gains can be offset by a slower GEMM. Good risk/reward profile if the author budgets for tuning.",
+          "gemini-compatible": "Triton is an excellent and highly effective way to implement a fused GEMM + epilogue, often matching or exceeding cuBLAS performance with much less code than CUTLASS."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_03",
+        "intent": "reduce_fused_epilogue_register_pressure",
+        "summary": "Keep cuBLAS for the dominant GEMM and rework the fused post-op CUDA kernel into a row-aware 2D/vec path that eliminates `% N`, avoids temporary `float vals[4]` arrays, and computes directly from contiguous column vectors to cut registers and improve active warps.",
+        "target_anchors": [
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "implementation_hints": [
+          "Use the known last-dimension layout to map threads to contiguous column quads within a row so column indices come from base lane offsets rather than modulo arithmetic.",
+          "Prefer straight-line component-wise `float4` math over loop-carried temporaries; the current phase-1 attempts suggest indexing overhead still matters more than bias traffic.",
+          "Tune block size against register count because runtime evidence shows only ~32% warps active and occupancy is register-limited while DRAM is far from saturated.",
+          "Keep a scalar fallback for tails/non-aligned tensors, but make the benchmark-hot path explicitly optimized for `N=8192` and contiguous float32."
+        ],
+        "expected_gain": "1-3% over the current fused-epilogue champion if the post-op kernel is still the main non-GEMM cost.",
+        "risk_notes": [
+          "Gains are capped because the Nsight profile shows the root is already GEMM-dominated with ~72% SM throughput and low memory pressure.",
+          "Over-specializing for `N=8192` can hurt generality if hidden benchmark shapes differ.",
+          "Aggressive unrolling can raise register pressure further and negate occupancy gains."
+        ],
+        "memory_methods": [
+          "Vectorized global loads/stores for `x` and output.",
+          "Read `add_value` as contiguous vector slices matched to the row-aware mapping."
+        ],
+        "mutation_axes": [
+          "thread_to_data_mapping",
+          "vec4_component_handling",
+          "loop_unrolling_level",
+          "block_size_vs_register_pressure",
+          "specialization_for_fixed_N"
+        ],
+        "forbidden_patterns": [
+          "Do not replace cuBLAS GEMM with a handwritten SGEMM kernel.",
+          "Do not introduce extra full-tensor intermediates between fused activations.",
+          "Do not rely on modulo-based column recovery in the hot vec path."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Low-risk, targeted epilogue optimization with likely small but reliable gains; good risk-adjusted value if the benchmark is still post-op limited.",
+          "claude-compatible": "Low risk but capped upside. The profile already shows GEMM dominance (~72% SM throughput); epilogue micro-optimizations deliver at most 1-3% end-to-end. Worth doing as a compound improvement alongside a GEMM-level strategy, not as a standalone bet.",
+          "gemini-compatible": "Optimizing the standalone epilogue kernel with vectorization is helpful, but fails to address the primary bottleneck which is the memory roundtrip between the GEMM and the epilogue."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_05",
+        "intent": "move_bias_into_matmul_backend",
+        "summary": "Replace `nn.Linear` plus separate bias-add handling with a custom cuBLASLt matmul call that folds `add_value` into the GEMM epilogue, then launch a smaller fused activation kernel for Swish/Tanh/GELU/Hardtanh only.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "init_body",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "implementation_hints": [
+          "Expose one extension entrypoint that performs matmul with cuBLASLt and epilogue bias, preserving tensor shapes and PyTorch-visible module I/O.",
+          "Keep `self.add_value` semantics unchanged; reinterpret it as the GEMM bias vector when wiring the extension.",
+          "Retain the existing fused activation kernel but drop the explicit broadcast add from it, reducing hot-path arithmetic and one auxiliary memory stream.",
+          "Profile whether cuBLASLt chooses a tensor-op kernel comparable to the current `ampere_sgemm_128x128_tn`; if not, fall back to the existing `nn.Linear` route."
+        ],
+        "expected_gain": "2-5% if bias integration removes enough epilogue overhead without regressing GEMM kernel quality.",
+        "risk_notes": [
+          "cuBLASLt algorithm selection can underperform the current PyTorch-backed GEMM on some shapes.",
+          "This is a larger integration change than phase-1 epilogue tuning and may increase maintenance complexity.",
+          "Bias folding helps only modestly because the current profile suggests compute-heavy GEMM, not bandwidth saturation."
+        ],
+        "memory_methods": [
+          "Fuse bias application inside GEMM epilogue to avoid separate bias reads in the post-op kernel.",
+          "Keep activation kernel single-pass over the GEMM output."
+        ],
+        "mutation_axes": [
+          "library_backend_swap",
+          "epilogue_fusion_boundary",
+          "fallback_policy",
+          "algorithm_selection",
+          "activation_kernel_scope"
+        ],
+        "forbidden_patterns": [
+          "Do not change public module inputs/outputs.",
+          "Do not enable reduced-precision math modes unless accuracy is explicitly validated.",
+          "Do not split activations back into multiple PyTorch ops."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "cuBLASLt bias folding is a practical middle ground: moderate upside, limited surface area, and preserves the overall structure.",
+          "claude-compatible": "Folding bias into cuBLASLt epilogue is architecturally sound but cuBLASLt algorithm selection for this shape may choose a slower kernel than the current PyTorch-backed path. The gain from bias elimination is modest given the GEMM dominates. More complex than strategy_04 for comparable or lesser gain.",
+          "gemini-compatible": "cuBLASLt can fuse the bias addition, but cannot fuse the complex activation chain (Swish, Tanh, GELU, Hardtanh), leaving the main memory roundtrip intact."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "accelerate_gemm_compute",
+        "summary": "Enable TF32 matrix multiplication in PyTorch to accelerate the cuBLAS GEMM, and optimize the custom CUDA epilogue by using float4 vectorized loads for the bias tensor.",
+        "target_anchors": [
+          "init_body",
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "In `init_body`, set `torch.backends.cuda.matmul.allow_tf32 = True` to speed up the dominant cuBLAS GEMM.",
+          "In `cuda_cu`, modify `fused_post_ops_vec4_kernel` to load `add_value` as `float4` instead of using a scalar loop.",
+          "Calculate the column base index once per thread and cast the `add_value` pointer to `float4*` for a single vectorized load."
+        ],
+        "expected_gain": "Enabling TF32 can drastically increase GEMM throughput on Ampere+ GPUs. Vectorizing the bias load further shaves off epilogue overhead.",
+        "risk_notes": [
+          "TF32 reduces precision, which might affect strict numerical correctness checks if the benchmark enforces high tolerance.",
+          "Vectorized loads require strict alignment guarantees."
+        ],
+        "memory_methods": [
+          "vectorized_loads",
+          "float4_casting"
+        ],
+        "mutation_axes": [
+          "precision_tuning",
+          "memory_vectorization"
+        ],
+        "forbidden_patterns": [
+          "scalar memory accesses in the vectorized kernel path"
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 3.0,
+          "openai-compatible": 2.0,
+          "claude-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "TF32 may help GEMM throughput, but precision regression risk is meaningful and the bias-load tweak is minor.",
+          "claude-compatible": "Enabling TF32 is a one-liner with potentially large GEMM throughput gains on Ampere. The NCU evidence of non-TC sgemm makes this particularly compelling. The only real risk is numerical tolerance; if the benchmark uses torch.allclose with default rtol=1e-5 it may fail. Vectorizing the bias load is a free secondary gain. High value-per-line-of-code ratio.",
+          "gemini-compatible": "Enabling TF32 is a framework-level setting that may violate strict precision requirements. Vectorizing the epilogue is good but doesn't fuse the GEMM."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_07",
+        "intent": "Eliminate hardtanh (provable no-op) and replace second tanhf in GELU with a bounded-domain polynomial",
+        "summary": "After the Tanh activation, values are strictly in (-1, 1). GELU applied to this domain yields output in approximately (-0.182, 0.818), which is entirely within [-1, 1]. Hardtanh[-1,1] is therefore a mathematical no-op and its computation (fmaxf + fminf) can be removed entirely. Separately, the GELU tanhf approximationâwhich is the second tanhf call in the epilogueâcan be replaced with a degree-4 minimax polynomial accurate to ~1e-5 on the bounded GELU inner argument range, removing one expensive transcendental call per element.",
+        "target_anchors": [
+          "cuda_cu",
+          "forward_stmt_6"
+        ],
+        "implementation_hints": [
+          "Remove the fmaxf(-1.0f, fminf(1.0f, v)) hardtanh line entirely from both fused_post_ops_kernel and fused_post_ops_vec4_kernel",
+          "Replace `tanhf(inner)` inside the GELU block with a polynomial: t = inner; p = t * (1.0f + t*t * (0.3333333f + t*t * 0.1333333f)); result = p / (1.0f + fabsf(p)) scaled to match tanhf; or use the PadÃ© approximant (3,2) for tanhf on the range |inner| < 1.2",
+          "Validate that the bounded-input guarantee holds: assert add_value values are not anomalously large so swish input remains bounded after the GEMM",
+          "Keep the scalar fallback kernel consistent with the vec4 path"
+        ],
+        "expected_gain": "2-5% reduction in epilogue kernel latency from eliminating 2 FP ops per element and one transcendental; minimal impact on dominant GEMM time but compound with vec4 path",
+        "risk_notes": [
+          "Numerical correctness: the polynomial must match tanhf to within PyTorch's tolerance for the GELU test; verify with the existing correctness check",
+          "If add_value parameter values are large, swish output may escape the bounded domain assumed for hardtanh eliminationâadd an assert or guard if needed"
+        ],
+        "memory_methods": [
+          "register reuse within thread for eliminated ops"
+        ],
+        "mutation_axes": [
+          "activation_math_simplification",
+          "dead_code_elimination"
+        ],
+        "forbidden_patterns": [
+          "changing GELU variant type",
+          "altering output dtype",
+          "skipping hardtanh if domain assumption cannot be verified"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 4.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Removing hardtanh and approximating tanh may help a little, but the domain assumptions and numerical risk make it shaky.",
+          "claude-compatible": "Strong mathematical insight: tanh output is bounded in (-1,1), so hardtanh[-1,1] is provably a no-op. Removing fmaxf+fminf and replacing the GELU inner tanhf with a polynomial on the bounded domain are both low-risk arithmetic reductions. The main precision concern is the polynomial approximation for GELUâneeds validation against torch tolerance. Good compound gain on top of any GEMM-level strategy.",
+          "gemini-compatible": "Mathematical simplifications (like removing a redundant Hardtanh) are clever and reduce compute, but the standalone epilogue remains memory-bandwidth bound."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_09",
+        "intent": "leverage_cublas_bias_fusion",
+        "summary": "Fold the `add_value` parameter into the `nn.Linear` bias during the forward pass to leverage cuBLAS's fused bias addition, simplifying the custom CUDA epilogue to only perform activations.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "In `forward_stmt_1`, compute the linear layer using `torch.nn.functional.linear(x, self.matmul.weight, self.matmul.bias + self.add_value)`.",
+          "Update the custom CUDA kernel in `cuda_cu` and bindings in `cuda_cpp` to remove the `add_value` input and addition logic.",
+          "The streamlined epilogue kernel now only reads the GEMM output, applies the activation chain, and writes the result."
+        ],
+        "expected_gain": "Reduces the memory bandwidth of the custom epilogue by eliminating the read of the 8192-element bias vector, relying on cuBLAS's optimized bias addition.",
+        "risk_notes": [
+          "The addition `self.matmul.bias + self.add_value` creates a small temporary tensor, though its overhead is negligible.",
+          "The main GEMM output is still written to global memory."
+        ],
+        "memory_methods": [
+          "framework_bias_fusion"
+        ],
+        "mutation_axes": [
+          "graph_level_fusion",
+          "kernel_simplification"
+        ],
+        "forbidden_patterns": [
+          "passing add_value to the custom CUDA kernel"
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 3.0,
+          "openai-compatible": 3.0,
+          "claude-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Simple and safe enough, but the gain is small because it only removes a minor bias-handling cost.",
+          "claude-compatible": "Folding add_value into nn.Linear bias is elegant and reduces epilogue complexity, but the bandwidth saved is the8192-element bias vector (32KB)ânegligible versus the 32MB GEMM output. Safe to implement as a cleanup, but the expected gain is too small to justify as a primary strategy. Best combined with a larger epilogue or GEMM change.",
+          "gemini-compatible": "Folding the bias addition into the PyTorch linear call is a minor optimization that simplifies the custom kernel but doesn't fuse the heavy activations into the GEMM."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "use_tiled_matrix_multiply",
+        "summary": "Implement a block-tiled shared-memory GEMM in CUDA C++ that computes the matrix multiplication and applies the bias and activation chain directly to the thread-local registers before writing to global memory.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "implementation_hints": [
+          "Replace the cuBLAS `nn.Linear` call with a custom CUDA kernel invocation.",
+          "Use shared memory to load tiles of the input tensor and the weight matrix.",
+          "Accumulate the dot product in registers.",
+          "After the K-loop, add `add_value` and apply Swish, Tanh, GELU, and Hardtanh to the accumulated results.",
+          "Write the final activated values to the output tensor."
+        ],
+        "expected_gain": "Eliminates the 32MB global memory round-trip between the GEMM and the activation epilogue, potentially saving ~0.1ms.",
+        "risk_notes": [
+          "A custom CUDA GEMM may struggle to match cuBLAS's highly optimized compute throughput, potentially resulting in a net slowdown despite the memory savings."
+        ],
+        "memory_methods": [
+          "shared_memory_tiling",
+          "register_accumulation"
+        ],
+        "mutation_axes": [
+          "kernel_fusion",
+          "loop_tiling"
+        ],
+        "forbidden_patterns": [
+          "writing intermediate GEMM results to global memory"
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 2.0,
+          "openai-compatible": 2.0,
+          "claude-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Handwritten GEMM fusion is too likely to underperform cuBLAS on compute efficiency despite memory savings.",
+          "claude-compatible": "A handwritten tiled CUDA GEMM for an 8192x8192x1024 problem will almost certainly underperform cuBLAS, negating the memory-round-trip savings from fusion. The risk note in the strategy itself acknowledges this. Only worthwhile as a vehicle for fusion if CUTLASS/Triton are unavailableâand even then, a Triton kernel is a better starting point.",
+          "gemini-compatible": "Writing a custom block-tiled GEMM in raw CUDA C++ is extremely unlikely to match the compute throughput of cuBLAS or CUTLASS, likely resulting in a net slowdown despite fusion."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_10",
+        "intent": "Exploit GEMM output tile locality by using a persistent warp-specialized epilogue that processes cuBLAS output in L2-hot cache lines",
+        "summary": "The cuBLAS GEMM writes [1024Ã8192] in row-major order, filling L2 progressively. The current epilogue launches immediately after but reads back cold data. By launching the epilogue kernel with a grid-stride loop sized to match the L2 eviction pattern (L2 cache on A100 is 40MB, tensor is 32 MBâit fits entirely), and by ordering thread blocks to process rows in the same sequence cuBLAS writes them, we maximize L2 hit rate. This is achieved by using CUDA stream dependencies + a grid configuration that matches the GEMM tile write order ([128Ã128] tiles in row-major CTA order), combined with streaming stores in the epilogue to avoid L1 pollution.",
+        "target_anchors": [
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Use `cudaStreamCreateWithPriority` for the epilogue launch on the same stream as the cuBLAS call to enforce ordering",
+          "Configure epilogue grid as `dim3(N/128, M/32)` with 128-wide CTA footprint matching the 128-column GEMM tile width to maximize L2 reuse of freshly-written tiles",
+          "Use `__stcs` (streaming store cache operator) for epilogue outputs to avoid re-polluting L1/L2 with the outputâit will be consumed downstream and not reread",
+          "Use `__ldcs` for the input read to mark data as streaming and avoid L1 thrashing",
+          "Add `cudaFuncSetCacheConfig(fused_post_ops_kernel, cudaFuncCachePreferL1)` to give epilogue kernel more L1 for the32-byte add_value broadcast fetch per row"
+        ],
+        "expected_gain": "3-7% from improved L2 hit rate on the GEMMâepilogue data path; the [1024,8192] tensor at 32 MB fits in the A100 40 MB L2, so with correct ordering essentially all epilogue reads are L2 hits rather than DRAM readsâNCU shows dram_throughput at 21.79% which has room to drop further",
+        "risk_notes": [
+          "cuBLAS internal CTA scheduling order is not documented and may not match assumed row-major tile ordering, making cache locality gains non-deterministic",
+          "__stcs and __ldcs require explicit cache control annotations not available through torch::Tensor data pointers without casting; ensure pointer alignment",
+          "Streaming store path skips L2 on write, which could hurt if any downstream op reads the tensor again before eviction"
+        ],
+        "memory_methods": [
+          "L2 locality exploitation",
+          "streaming cache operators(__stcs/__ldcs)"
+        ],
+        "mutation_axes": [
+          "memory_access_pattern",
+          "cache_operator_selection",
+          "grid_configuration_to_match_producer_tile_order"
+        ],
+        "forbidden_patterns": [
+          "altering stream synchronization in ways that break correctness",
+          "using __stcg (global cache bypass) which skips L2 entirely and would worsen performance"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 1.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Cache-order assumptions about cuBLAS output are fragile and the proposed operators/scheduling are unlikely to be robust or portable.",
+          "claude-compatible": "Creative use of L2 locality, and the 32MB tensor fitting within A100's 40MB L2 is a legitimate observation. However, cuBLAS CTA write ordering is undocumented and not controllable, making the cache-alignment benefit non-deterministic. Streaming stores(__stcs) can hurt if downstream ops re-read the output before eviction. Interesting but speculative; the profile already shows low DRAM utilization (21.79%), suggesting some L2 hits already occur.",
+          "gemini-compatible": "Attempting to exploit L2 locality by guessing cuBLAS's opaque tile scheduling is highly fragile and unlikely to yield consistent performance improvements."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "approximate_transcendental_chain_more_aggressively",
+        "summary": "Exploit the fact that the post-GEMM chain is transcendental-heavy by replacing the exact sequence implementation inside the fused CUDA kernel with a cheaper approximation strategy that minimizes SFU usage while preserving acceptable benchmark correctness.",
+        "target_anchors": [
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "implementation_hints": [
+          "Treat the fused kernel as compute-bound rather than bandwidth-bound: the root profile has low DRAM utilization and low scoreboard stalls, so reducing transcendental instruction count is more promising than extra caching.",
+          "Consider using a cheaper sigmoid/tanh formulation or algebraic simplifications across Swish -> Tanh -> GELU -> Hardtanh, especially since Hardtanh clips the final range.",
+          "Benchmark several approximation levels behind a shape/dtype-gated fast path and keep the existing implementation as a correctness fallback.",
+          "Watch register count while simplifying math; fewer transcendental calls are only useful if the replacement does not bloat instruction count or control flow."
+        ],
+        "expected_gain": "1-4% if SFU pressure in the fused kernel is material; less if GEMM fully dominates wall time.",
+        "risk_notes": [
+          "Numerical drift is the main risk, especially through the composed nonlinearity chain.",
+          "Benchmark acceptance may reject approximations that differ too much from PyTorch defaults.",
+          "Because phase-1 speedup came mainly from fusion, pure math approximation may have limited headroom."
+        ],
+        "memory_methods": [
+          "Keep the current single-read/single-write fused pass.",
+          "Prioritize instruction-count reduction over cache changes."
+        ],
+        "mutation_axes": [
+          "sigmoid_approximation",
+          "tanh_approximation",
+          "gelu_formulation",
+          "fast_math_level",
+          "clamp_reordering"
+        ],
+        "forbidden_patterns": [
+          "Do not materialize intermediate tensors for individual activations.",
+          "Do not add branchy piecewise logic that increases divergence.",
+          "Do not alter shape/stride assumptions for the contiguous fast path."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 1.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Aggressive transcendental approximations have the highest correctness risk and likely limited payoff on a GEMM-dominated workload.",
+          "claude-compatible": "More aggressive approximation than strategy_07 without the clean mathematical justification. Numerical drift through a composed swishâtanhâgelu chain is hard to bound, and benchmark rejection risk is high. Limited headroom since the fused kernel is already not the bottleneck. Strategy_07 captures the safe portion of this idea; this one adds risk without proportional benefit.",
+          "gemini-compatible": "Aggressive approximations of transcendentals risk failing correctness checks and only optimize the compute of a memory-bound standalone epilogue."
+        },
+        "priority": 3
+      }
+    ],
+    "proposal_errors": {},
+    "review_errors": {},
+    "deliberation_round": 1
+  },
+  "phase_transition": {
+    "source_phase": 1,
+    "target_phase": 2,
+    "split_attempts": 5,
+    "trigger_attempt": 5,
+    "root": {
+      "node_id": "root",
+      "strategy_name": null,
+      "runtime": 0.00314,
+      "speedup": 1.0,
+      "plan_summary": null,
+      "changed_regions": [],
+      "lineage": [
+        "root"
+      ]
+    },
+    "selected": {
+      "node_id": "n1",
+      "strategy_name": "strategy_02",
+      "runtime": 0.00294,
+      "speedup": 1.064625850340136,
+      "plan_summary": "Keep cuBLAS-backed `nn.Linear` for the dominant GEMM and fuse the broadcast add plus Swish/Tanh/GELU/Hardtanh chain into one custom CUDA elementwise kernel so the post-GEMM tensor is read and written only once.",
+      "changed_regions": [
+        "cuda_cpp",
+        "cuda_cu",
+        "forward_stmt_2",
+        "forward_stmt_3",
+        "forward_stmt_4",
+        "forward_stmt_5",
+        "forward_stmt_6"
+      ],
+      "lineage": [
+        "root",
+        "n1"
+      ]
+    },
+    "attempts": [
+      {
+        "node_id": "n1",
+        "parent_id": "root",
+        "strategy_name": "strategy_02",
+        "attempt_mode": "explore",
+        "mutation_family": "post_gemm_epilogue_fusion",
+        "single_change_focus": "Fuse the entire post-matmul elementwise chain into a single custom CUDA op invoked immediately after `self.matmul(x)`.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00294,
+        "speedup": 1.064625850340136,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Keep cuBLAS-backed `nn.Linear` for the dominant GEMM and fuse the broadcast add plus Swish/Tanh/GELU/Hardtanh chain into one custom CUDA elementwise kernel so the post-GEMM tensor is read and written only once."
+      },
+      {
+        "node_id": "n2",
+        "parent_id": "n1",
+        "strategy_name": "strategy_02",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "broadcast_cache_tiling",
+        "single_change_focus": "Replace the per-element add_value read in the fused CUDA epilogue with a block-tiled broadcast cache so each column tile is loaded once and reused.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00297,
+        "speedup": 1.0572390572390573,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing fused post-GEMM epilogue by reducing repeated add_value traffic inside the CUDA kernel, while keeping the championâs overall structure intact."
+      },
+      {
+        "node_id": "n3",
+        "parent_id": "n2",
+        "strategy_name": "strategy_02",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "vec4_bias_vectorization",
+        "single_change_focus": "Specialize `fused_post_ops_vec4_kernel` to use row/vec-column indexing plus one `float4` bias load from `add_value`, replacing the scalar per-lane bias fetch loop while keeping the same activation math.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00296,
+        "speedup": 1.0574324324324325,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing fused post-GEMM epilogue by specializing the active vec4 path for the benchmark's N=8192 layout, replacing per-lane modulo/scalar bias fetches with aligned float4 bias loads and straight-line activation code."
+      },
+      {
+        "node_id": "n4",
+        "parent_id": "n1",
+        "strategy_name": "strategy_02",
+        "attempt_mode": "best_lineage_push",
+        "mutation_family": "vec4_row_bias_load",
+        "single_change_focus": "Replace the current vec4 kernelâs per-lane scalar bias/index loop with a row-aware `float4` bias load and direct component-wise activation computation while keeping the launch logic and scalar fallback intact.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00299,
+        "speedup": 1.0334448160535117,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the winning fused post-GEMM epilogue by making the vec4 fast path truly row-aware and bias-vectorized, so each thread performs one aligned `float4` bias load and avoids per-lane modulo/index recomputation inside the activation loop."
+      },
+      {
+        "node_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_02",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "pow2_vec_indexing",
+        "single_change_focus": "Specialize the vec4 epilogue index calculation for N=8192 by replacing `idx % vec_cols` with a bitmask-based float4 column index in the CUDA kernel.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00298,
+        "speedup": 1.0536912751677852,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the validated fused post-matmul CUDA epilogue by trimming hot-path index arithmetic in the vec4 kernel while keeping the fused activation structure unchanged."
+      }
+    ],
+    "trace_summary": "effective=n1:Fuse the entire post-matmul elementwise chain into a single custom CUDA op invoked immediately after `self.matmul(x)`.:1.065x; n3:Specialize `fused_post_ops_vec4_kernel` to use row/vec-column indexing plus one `float4` bias load from `add_value`, replacing the scalar per-lane bias fetch loop while keeping the same activation math.:1.057x | flat=n2:Replace the per-element add_value read in the fused CUDA epilogue with a block-tiled broadcast cache so each column tile is loaded once and reused.:1.057x; n4:Replace the current vec4 kernelâs per-lane scalar bias/index loop with a row-aware `float4` bias load and direct component-wise activation computation while keeping the launch logic and scalar fallback intact.:1.033x; n5:Specialize the vec4 epilogue index calculation for N=8192 by replacing `idx % vec_cols` with a bitmask-based float4 column index in the CUDA kernel.:1.054x",
+    "root_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "ampere_sgemm_128x128_tn",
+        "row_count": 36,
+        "kernel_launch_count": 36,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 20.47,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 64.11,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 52.29,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 72.55,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 32.44,
+          "launch__registers_per_thread": 118,
+          "launch__occupancy_limit_registers": 2,
+          "launch__occupancy_limit_shared_mem": 3,
+          "launch__occupancy_limit_warps": 6,
+          "gpu__time_duration.avg": 3053536,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.01,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.35,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 10104,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 13813740.48
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "selected_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "ampere_sgemm_128x128_tn",
+        "row_count": 11,
+        "kernel_launch_count": 11,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 21.79,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 64.63,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 51.51,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 71.98,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 32.35,
+          "launch__registers_per_thread": 118,
+          "launch__occupancy_limit_registers": 2,
+          "launch__occupancy_limit_shared_mem": 3,
+          "launch__occupancy_limit_warps": 6,
+          "gpu__time_duration.avg": 3030208,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.02,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.34,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 10104,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 13701997.63
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "diagnostics_delta": {
+      "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 1.3200000000000003,
+      "gpu__time_duration.avg": -23328,
+      "l1tex__throughput.avg.pct_of_peak_sustained_active": -0.7800000000000011,
+      "launch__occupancy_limit_registers": 0,
+      "launch__occupancy_limit_shared_mem": 0,
+      "launch__occupancy_limit_warps": 0,
+      "launch__registers_per_thread": 0,
+      "lts__throughput.avg.pct_of_peak_sustained_elapsed": 0.519999999999996,
+      "sm__throughput.avg.pct_of_peak_sustained_elapsed": -0.5699999999999932,
+      "sm__warps_active.avg.pct_of_peak_sustained_active": -0.0899999999999963,
+      "smsp__sass_branch_targets_threads_divergent.avg": 0,
+      "smsp__sass_branch_targets_threads_uniform.avg": 0,
+      "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.01,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": -0.009999999999999953,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+      "smsp__warps_eligible.avg": -111742.84999999963
+    }
+  },
+  "feedback_state": {
+    "total_attempts": 11,
+    "compile_rate": 1.0,
+    "correct_rate": 0.9090909090909091,
+    "best_speedup": 1.064625850340136,
+    "best_strategy_name": "strategy_02",
+    "phase": "refinement",
+    "current_champion_id": "n1",
+    "current_champion_speedup": 1.064625850340136,
+    "plateau_detected": false,
+    "recent_improvement_deltas": [
+      0.06462585034013602,
+      0.00019337519337514486
+    ],
+    "recent_regression_deltas": [
+      -0.003741157264647299,
+      -0.010934575172350858,
+      -0.013691275167785122,
+      -0.034824525836824716,
+      0.0
+    ],
+    "recent_successful_mutation_families": [],
+    "recent_failed_mutation_families": [
+      "bias_fusion_to_linear",
+      "vec4_register_simplification",
+      "noop_activation_elision",
+      "post_gemm_epilogue_fusion"
+    ],
+    "last_mutation_outcome": "regressed_or_flat",
+    "recent_attempts": [
+      {
+        "attempt_id": "n4",
+        "parent_id": "n1",
+        "strategy_name": "strategy_02",
+        "mode": "best_lineage_push",
+        "mutation_family": "vec4_row_bias_load",
+        "speedup": 1.0334448160535117,
+        "parent_speedup": 1.064625850340136,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the current vec4 kernelâs per-lane scalar bias/index loop with a row-aware `float4` bias load and direct component-wise activation computation while keeping the launch logic and scalar fallback intact."
+      },
+      {
+        "attempt_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_02",
+        "mode": "mutate_champion",
+        "mutation_family": "pow2_vec_indexing",
+        "speedup": 1.0536912751677852,
+        "parent_speedup": 1.0574324324324325,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Specialize the vec4 epilogue index calculation for N=8192 by replacing `idx % vec_cols` with a bitmask-based float4 column index in the CUDA kernel."
+      },
+      {
+        "attempt_id": "phase2_n1",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_09",
+        "mode": "explore",
+        "mutation_family": "bias_fusion_to_linear",
+        "speedup": 1.0536912751677852,
+        "parent_speedup": 1.064625850340136,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Move the broadcast add from the CUDA epilogue into the linear call by using `F.linear(x, weight, bias + add_value)`, and update the extension so its kernel only applies the activation chain to the GEMM result."
+      },
+      {
+        "attempt_id": "phase2_n2",
+        "parent_id": "phase2_n1",
+        "strategy_name": "strategy_03",
+        "mode": "explore",
+        "mutation_family": "vec4_register_simplification",
+        "speedup": 1.04,
+        "parent_speedup": 1.0536912751677852,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Specialize the vec4 CUDA epilogue into direct component-wise math with no temporary float array or per-lane loop."
+      },
+      {
+        "attempt_id": "phase2_n3",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_07",
+        "mode": "explore",
+        "mutation_family": "dead_hardtanh_elimination",
+        "speedup": null,
+        "parent_speedup": 1.04,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "runtime",
+        "failure_type": "builtins.ImportError",
+        "single_change_focus": "Remove the redundant final Hardtanh clamp from the fused CUDA activation chain while leaving all earlier math and launch behavior unchanged."
+      },
+      {
+        "attempt_id": "phase2_n4",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_07",
+        "mode": "explore",
+        "mutation_family": "noop_activation_elision",
+        "speedup": 1.0298013245033113,
+        "parent_speedup": 1.064625850340136,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Delete the redundant Hardtanh operation from the fused CUDA epilogue and update the Python anchor comment to mark Hardtanh as provably elided."
+      },
+      {
+        "attempt_id": "phase2_n5",
+        "parent_id": "phase2_n3",
+        "strategy_name": "strategy_07",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": 1.03,
+        "parent_speedup": null,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_root",
+        "parent_id": "n1",
+        "strategy_name": "strategy_02",
+        "mode": "explore",
+        "mutation_family": "post_gemm_epilogue_fusion",
+        "speedup": 1.064625850340136,
+        "parent_speedup": 1.064625850340136,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Fuse the entire post-matmul elementwise chain into a single custom CUDA op invoked immediately after `self.matmul(x)`."
+      }
+    ],
+    "champion": {
+      "node_id": "n1",
+      "speedup": 1.064625850340136,
+      "strategy_name": "strategy_02",
+      "mutation_family": "post_gemm_epilogue_fusion",
+      "lineage": [
+        "root",
+        "n1"
+      ],
+      "recent_positive_mutations": [],
+      "recent_negative_mutations": [
+        {
+          "attempt_id": "phase2_n1",
+          "strategy_name": "strategy_09",
+          "mode": "explore",
+          "mutation_family": "bias_fusion_to_linear",
+          "speedup": 1.0536912751677852,
+          "parent_speedup": 1.064625850340136,
+          "single_change_focus": "Move the broadcast add from the CUDA epilogue into the linear call by using `F.linear(x, weight, bias + add_value)`, and update the extension so its kernel only applies the activation chain to the GEMM result."
+        },
+        {
+          "attempt_id": "phase2_n2",
+          "strategy_name": "strategy_03",
+          "mode": "explore",
+          "mutation_family": "vec4_register_simplification",
+          "speedup": 1.04,
+          "parent_speedup": 1.0536912751677852,
+          "single_change_focus": "Specialize the vec4 CUDA epilogue into direct component-wise math with no temporary float array or per-lane loop."
+        },
+        {
+          "attempt_id": "phase2_n4",
+          "strategy_name": "strategy_07",
+          "mode": "explore",
+          "mutation_family": "noop_activation_elision",
+          "speedup": 1.0298013245033113,
+          "parent_speedup": 1.064625850340136,
+          "single_change_focus": "Delete the redundant Hardtanh operation from the fused CUDA epilogue and update the Python anchor comment to mark Hardtanh as provably elided."
+        },
+        {
+          "attempt_id": "phase2_root",
+          "strategy_name": "strategy_02",
+          "mode": "explore",
+          "mutation_family": "post_gemm_epilogue_fusion",
+          "speedup": 1.064625850340136,
+          "parent_speedup": 1.064625850340136,
+          "single_change_focus": "Fuse the entire post-matmul elementwise chain into a single custom CUDA op invoked immediately after `self.matmul(x)`."
+        }
+      ],
+      "plateau_detected": false,
+      "lineage_plateau_depth": 0
+    }
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "user_helpers",
+      "region_role": "helper",
+      "start_line": 36,
+      "end_line": 37,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 40,
+      "end_line": 45,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 49,
+      "end_line": 55,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 64,
+      "end_line": 67,
+      "source_excerpt": "self.matmul = nn.Linear(in_features, out_features)\nself.add_value = nn.Parameter(torch.randn(add_value_shape))",
+      "source_hash": "c08f28d11547"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 70,
+      "end_line": 74,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\nx = self.matmul(x)",
+      "source_hash": "5039da6ed7e2"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 75,
+      "end_line": 77,
+      "source_excerpt": "x = x + self.add_value",
+      "source_hash": "ebba329c1f19"
+    },
+    {
+      "anchor_name": "forward_stmt_3",
+      "region_role": "forward",
+      "start_line": 78,
+      "end_line": 80,
+      "source_excerpt": "x = torch.sigmoid(x) * x",
+      "source_hash": "73b045712d5a"
+    },
+    {
+      "anchor_name": "forward_stmt_4",
+      "region_role": "forward",
+      "start_line": 81,
+      "end_line": 83,
+      "source_excerpt": "x = torch.tanh(x)",
+      "source_hash": "49b8121ae39e"
+    },
+    {
+      "anchor_name": "forward_stmt_5",
+      "region_role": "forward",
+      "start_line": 84,
+      "end_line": 86,
+      "source_excerpt": "x = torch.nn.functional.gelu(x)",
+      "source_hash": "13a7c736a1ef"
+    },
+    {
+      "anchor_name": "forward_stmt_6",
+      "region_role": "forward",
+      "start_line": 87,
+      "end_line": 89,
+      "source_excerpt": "x = torch.nn.functional.hardtanh(x, min_val=-1, max_val=1)",
+      "source_hash": "669143ad1e6c"
+    },
+    {
+      "anchor_name": "forward_stmt_7",
+      "region_role": "forward",
+      "start_line": 90,
+      "end_line": 92,
+      "source_excerpt": "return x",
+      "source_hash": "03c387736bb5"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p95_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, adds a value, applies Swish, Tanh, GELU, and Hardtanh activation functions.\n        \"\"\"\n    def __init__(self, in_features, out_features, add_value_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.add_value = nn.Parameter(torch.randn(add_value_shape))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = x + self.add_value\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = torch.sigmoid(x) * x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = torch.tanh(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = torch.nn.functional.gelu(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        x = torch.nn.functional.hardtanh(x, min_val=-1, max_val=1)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00314,
+      "score": 0.00314,
+      "logs": [
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=117077",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/05_L2_P95_Retry_P95_20260720_174346/eval_traces/20260720_174346_117050_22c048e0_kernelbench_l2_95_95_matmul_add_swish_tanh_gelu_hardtanh"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00314,
+      "speedup": 1.0,
+      "reference_runtimes": {
+        "torch_eager": 0.00314
+      },
+      "speedups": {
+        "torch_eager": 1.0
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": null,
+      "single_change_focus": null,
+      "mutation_family": null,
+      "target_metric": null
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p95_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_post_ops\", &fused_post_ops, \"Fused add+swish+tanh+gelu+hardtanh (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void fused_post_ops_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ add_value,\n    float* __restrict__ out,\n    int N,\n    int total\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total) return;\n\n    int col = idx % N;\n    float v = x[idx] + __ldg(&add_value[col]);\n\n    // Swish: v * sigmoid(v)\n    float sig = 1.0f / (1.0f + __expf(-v));\n    v = v * sig;\n\n    // Tanh\n    v = tanhf(v);\n\n    // GELU (tanh approximation matching PyTorch default)\n    float v3 = v * v * v;\n    float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n    v = 0.5f * v * (1.0f + tanhf(inner));\n\n    // Hardtanh [-1, 1]\n    v = fmaxf(-1.0f, fminf(1.0f, v));\n\n    out[idx] = v;\n}\n\n__global__ void fused_post_ops_vec4_kernel(\n    const float4* __restrict__ x,\n    const float* __restrict__ add_value,\n    float4* __restrict__ out,\n    int N,\n    int total4\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total4) return;\n\n    int base = idx * 4;\n    float4 v4 = x[idx];\n    float vals[4] = {v4.x, v4.y, v4.z, v4.w};\n\n    #pragma unroll\n    for (int i = 0; i < 4; i++) {\n        int col = (base + i) % N;\n        float v = vals[i] + __ldg(&add_value[col]);\n\n        // Swish\n        float sig = 1.0f / (1.0f + __expf(-v));\n        v = v * sig;\n\n        // Tanh\n        v = tanhf(v);\n\n        // GELU (tanh approximation)\n        float v3 = v * v * v;\n        float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n        v = 0.5f * v * (1.0f + tanhf(inner));\n\n        // Hardtanh [-1, 1]\n        v = fmaxf(-1.0f, fminf(1.0f, v));\n\n        vals[i] = v;\n    }\n\n    float4 res;\n    res.x = vals[0]; res.y = vals[1]; res.z = vals[2]; res.w = vals[3];\n    out[idx] = res;\n}\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(add_value.is_cuda(), \"add_value must be a CUDA tensor\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(add_value.scalar_type() == torch::kFloat32, \"add_value must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(add_value.is_contiguous(), \"add_value must be contiguous\");\n\n    int total = x.numel();\n    int N = x.size(x.dim() - 1);\n    auto out = torch::empty_like(x);\n\n    bool use_vec4 = (total % 4 == 0) && (N % 4 == 0) &&\n                    ((reinterpret_cast<uintptr_t>(x.data_ptr<float>()) % 16) == 0) &&\n                    ((reinterpret_cast<uintptr_t>(out.data_ptr<float>()) % 16) == 0);\n\n    const int threads = 256;\n    if (use_vec4) {\n        int total4 = total / 4;\n        int blocks = (total4 + threads - 1) / threads;\n        fused_post_ops_vec4_kernel<<<blocks, threads>>>(\n            reinterpret_cast<const float4*>(x.data_ptr<float>()),\n            add_value.data_ptr<float>(),\n            reinterpret_cast<float4*>(out.data_ptr<float>()),\n            N,\n            total4\n        );\n    } else {\n        int blocks = (total + threads - 1) / threads;\n        fused_post_ops_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            add_value.data_ptr<float>(),\n            out.data_ptr<float>(),\n            N,\n            total\n        );\n    }\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, adds a value, applies Swish, Tanh, GELU, and Hardtanh activation functions.\n        \"\"\"\n    def __init__(self, in_features, out_features, add_value_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.add_value = nn.Parameter(torch.randn(add_value_shape))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_post_ops(x.contiguous(), self.add_value.contiguous())\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # swish fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # tanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        # gelu fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        # hardtanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2",
+        "n4",
+        "phase2_root"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Keep cuBLAS-backed `nn.Linear` for the dominant GEMM and fuse the broadcast add plus Swish/Tanh/GELU/Hardtanh chain into one custom CUDA elementwise kernel so the post-GEMM tensor is read and written only once.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a declaration for a CUDA wrapper `torch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value);` and export it via pybind as `m.def(\"fused_post_ops\", &fused_post_ops, \"Fused add+swish+tanh+gelu+hardtanh (CUDA)\");`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a complete CUDA implementation of `fused_post_ops`. Add input checks for CUDA, float32, contiguous 2D `x` and contiguous 1D `add_value`; allocate an output tensor matching `x`; launch one 1D CUDA kernel over `x.numel()` elements; for each linear index compute `col = idx % N`, load `v = x[idx] + add_value[col]`, then compute `v = v / (1.0f + __expf(-v))`, `v = tanhf(v)`, `v = 0.5f * v * (1.0f + tanhf(0.7978845608f * (v + 0.044715f * v * v * v)))`, clamp to `[-1.0f, 1.0f]`, and store to output. Export the C++ wrapper function matching the pybind declaration.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace `x = x + self.add_value` with `x = _stark_get_extension().fused_post_ops(x.contiguous(), self.add_value.contiguous())` so the add and all later activations are handled by the custom CUDA op.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the current statement with a no-op comment indicating Swish is fused inside `fused_post_ops`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Replace the current statement with a no-op comment indicating Tanh is fused inside `fused_post_ops`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_5",
+          "instruction": "Replace the current statement with a no-op comment indicating GELU is fused inside `fused_post_ops`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_6",
+          "instruction": "Replace the current statement with a no-op comment indicating Hardtanh is fused inside `fused_post_ops`.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00294,
+      "score": 0.00294,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "applied_region_patch:forward_stmt_4:replace",
+        "applied_region_patch:forward_stmt_5:replace",
+        "applied_region_patch:forward_stmt_6:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=118448",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/05_L2_P95_Retry_P95_20260720_174346/eval_traces/20260720_174712_117050_8ead5723_kernelbench_l2_95_95_matmul_add_swish_tanh_gelu_hardtanh"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00313,
+      "speedup": 1.064625850340136,
+      "reference_runtimes": {
+        "torch_eager": 0.00313
+      },
+      "speedups": {
+        "torch_eager": 1.064625850340136
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If the model keeps `self.matmul(x)` as-is and replaces the five eager elementwise ops with one fused CUDA kernel over the contiguous GEMM output, total runtime improves because the 8M-element activation tail stops paying repeated launch overhead and repeated global/L2 traffic.",
+      "single_change_focus": "Fuse the entire post-matmul elementwise chain into a single custom CUDA op invoked immediately after `self.matmul(x)`.",
+      "mutation_family": "post_gemm_epilogue_fusion",
+      "target_metric": "speedup"
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p95_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_post_ops\", &fused_post_ops, \"Fused add+swish+tanh+gelu+hardtanh (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\ntemplate <int TILE_N>\n__global__ void fused_post_ops_tiled_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ add_value,\n    float* __restrict__ out,\n    int M,\n    int N\n) {\n    __shared__ float s_add_value[TILE_N];\n\n    const int tid = threadIdx.x;\n    const int threads = blockDim.x;\n    const int block_col_start = blockIdx.x * TILE_N;\n\n    if (block_col_start >= N) return;\n\n    const int tile_cols = min(TILE_N, N - block_col_start);\n\n    for (int i = tid; i < tile_cols; i += threads) {\n        s_add_value[i] = add_value[block_col_start + i];\n    }\n    __syncthreads();\n\n    const int row = blockIdx.y;\n    if (row >= M) return;\n\n    const int base_idx = row * N + block_col_start;\n\n    for (int col = tid; col < tile_cols; col += threads) {\n        const int idx = base_idx + col;\n        float v = x[idx] + s_add_value[col];\n\n        float sig = 1.0f / (1.0f + __expf(-v));\n        v = v * sig;\n\n        v = tanhf(v);\n\n        float v3 = v * v * v;\n        float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n        v = 0.5f * v * (1.0f + tanhf(inner));\n\n        v = fmaxf(-1.0f, fminf(1.0f, v));\n\n        out[idx] = v;\n    }\n}\n\n__global__ void fused_post_ops_vec4_kernel(\n    const float4* __restrict__ x,\n    const float* __restrict__ add_value,\n    float4* __restrict__ out,\n    int N,\n    int total4\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total4) return;\n\n    int base = idx * 4;\n    float4 v4 = x[idx];\n    float vals[4] = {v4.x, v4.y, v4.z, v4.w};\n\n    #pragma unroll\n    for (int i = 0; i < 4; i++) {\n        int col = (base + i) % N;\n        float v = vals[i] + __ldg(&add_value[col]);\n\n        float sig = 1.0f / (1.0f + __expf(-v));\n        v = v * sig;\n\n        v = tanhf(v);\n\n        float v3 = v * v * v;\n        float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n        v = 0.5f * v * (1.0f + tanhf(inner));\n\n        v = fmaxf(-1.0f, fminf(1.0f, v));\n\n        vals[i] = v;\n    }\n\n    float4 res;\n    res.x = vals[0]; res.y = vals[1]; res.z = vals[2]; res.w = vals[3];\n    out[idx] = res;\n}\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(add_value.is_cuda(), \"add_value must be a CUDA tensor\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(add_value.scalar_type() == torch::kFloat32, \"add_value must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(add_value.is_contiguous(), \"add_value must be contiguous\");\n    TORCH_CHECK(x.dim() == 2, \"x must be 2D\");\n\n    int M = x.size(0);\n    int N = x.size(1);\n    int total = x.numel();\n    auto out = torch::empty_like(x);\n\n    bool use_vec4 = (N >= 2048) && (total % 4 == 0) && (N % 4 == 0) &&\n                    ((reinterpret_cast<uintptr_t>(x.data_ptr<float>()) % 16) == 0) &&\n                    ((reinterpret_cast<uintptr_t>(out.data_ptr<float>()) % 16) == 0);\n\n    if (use_vec4) {\n        const int threads = 256;\n        int total4 = total / 4;\n        int blocks = (total4 + threads - 1) / threads;\n        fused_post_ops_vec4_kernel<<<blocks, threads>>>(\n            reinterpret_cast<const float4*>(x.data_ptr<float>()),\n            add_value.data_ptr<float>(),\n            reinterpret_cast<float4*>(out.data_ptr<float>()),\n            N,\n            total4\n        );\n    } else {\n        constexpr int TILE_N = 256;\n        const int threads = 256;\n        dim3 grid((N + TILE_N - 1) / TILE_N, M);\n        fused_post_ops_tiled_kernel<TILE_N><<<grid, threads>>>(\n            x.data_ptr<float>(),\n            add_value.data_ptr<float>(),\n            out.data_ptr<float>(),\n            M,\n            N\n        );\n    }\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, adds a value, applies Swish, Tanh, GELU, and Hardtanh activation functions.\n        \"\"\"\n    def __init__(self, in_features, out_features, add_value_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.add_value = nn.Parameter(torch.randn(add_value_shape))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_post_ops(x.contiguous(), self.add_value.contiguous())\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # swish fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # tanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        # gelu fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        # hardtanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Refine the existing fused post-GEMM epilogue by reducing repeated add_value traffic inside the CUDA kernel, while keeping the championâs overall structure intact.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current scalar/float4 fused_post_ops kernels with a block-tiled version that processes contiguous column tiles, stages the corresponding add_value slice once per block in shared memory or registers, then applies swish, tanh, gelu, and hardtanh in-place before writing the final output. Keep the exported fused_post_ops signature unchanged and preserve the existing vec4 fallback only if it remains strictly local to the new tiled implementation.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00297,
+      "score": 0.00297,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=119443",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/05_L2_P95_Retry_P95_20260720_174346/eval_traces/20260720_174919_117050_1606602b_kernelbench_l2_95_95_matmul_add_swish_tanh_gelu_hardtanh"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00314,
+      "speedup": 1.0572390572390573,
+      "reference_runtimes": {
+        "torch_eager": 0.00314
+      },
+      "speedups": {
+        "torch_eager": 1.0572390572390573
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "If each block stages the relevant add_value tile once and reuses it across threads, the fused epilogue will issue fewer global loads and run slightly faster than the current per-element __ldg path.",
+      "single_change_focus": "Replace the per-element add_value read in the fused CUDA epilogue with a block-tiled broadcast cache so each column tile is loaded once and reused.",
+      "mutation_family": "broadcast_cache_tiling",
+      "target_metric": "speedup"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p95_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_post_ops\", &fused_post_ops, \"Fused add+swish+tanh+gelu+hardtanh (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda_runtime.h>\n\n__global__ void fused_post_ops_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ add_value,\n    float* __restrict__ out,\n    int N,\n    int total\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total) return;\n\n    int col = idx % N;\n    float v = x[idx] + __ldg(&add_value[col]);\n\n    float sig = 1.0f / (1.0f + __expf(-v));\n    v = v * sig;\n\n    v = tanhf(v);\n\n    float v3 = v * v * v;\n    float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n    v = 0.5f * v * (1.0f + tanhf(inner));\n\n    v = fmaxf(-1.0f, fminf(1.0f, v));\n\n    out[idx] = v;\n}\n\n// Specialized vec4 kernel: assumes N % 4 == 0 so each float4 pack is\n// fully contained within one row. Uses a single float4 bias load per thread.\n__global__ void fused_post_ops_vec4_kernel(\n    const float4* __restrict__ x,\n    const float* __restrict__ add_value,\n    float4* __restrict__ out,\n    int N,\n    int total4\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total4) return;\n\n    // N%4==0 guaranteed by caller; each float4 stays within a single row\n    int vec_cols = N >> 2;// number of float4 packs per row\n    int col4 = idx % vec_cols;      // float4 column index within its row\n\n    float4 v4 = __ldg(&x[idx]);\n    float4 b4 = __ldg(reinterpret_cast<const float4*>(add_value) + col4);\n\n    float4 res;\n    float v;\n\n    // .x lane\n    v = v4.x + b4.x;\n    v = v * (1.0f / (1.0f + __expf(-v)));\n    v = tanhf(v);\n    { float c = v * v * v; v = 0.5f * v * (1.0f + tanhf(0.7978845608028654f * (v + 0.044715f * c))); }\n    res.x = fmaxf(-1.0f, fminf(1.0f, v));\n\n    // .y lane\n    v = v4.y + b4.y;\n    v = v * (1.0f / (1.0f + __expf(-v)));\n    v = tanhf(v);\n    { float c = v * v * v; v = 0.5f * v * (1.0f + tanhf(0.7978845608028654f * (v + 0.044715f * c))); }\n    res.y = fmaxf(-1.0f, fminf(1.0f, v));\n\n    // .z lane\n    v = v4.z + b4.z;\n    v = v * (1.0f / (1.0f + __expf(-v)));\n    v = tanhf(v);\n    { float c = v * v * v; v = 0.5f * v * (1.0f + tanhf(0.7978845608028654f * (v + 0.044715f * c))); }\n    res.z = fmaxf(-1.0f, fminf(1.0f, v));\n\n    // .w lane\n    v = v4.w + b4.w;\n    v = v * (1.0f / (1.0f + __expf(-v)));\n    v = tanhf(v);\n    { float c = v * v * v; v = 0.5f * v * (1.0f + tanhf(0.7978845608028654f * (v + 0.044715f * c))); }\n    res.w = fmaxf(-1.0f, fminf(1.0f, v));\n\n    out[idx] = res;\n}\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(add_value.is_cuda(), \"add_value must be a CUDA tensor\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(add_value.scalar_type() == torch::kFloat32, \"add_value must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(add_value.is_contiguous(), \"add_value must be contiguous\");\n\n    int total = x.numel();\n    int N = x.size(x.dim() - 1);\n    auto out = torch::empty_like(x);\n\n    bool use_vec4 = (total % 4 == 0) && (N % 4 == 0) &&\n                    ((reinterpret_cast<uintptr_t>(x.data_ptr<float>()) % 16) == 0) &&\n                    ((reinterpret_cast<uintptr_t>(out.data_ptr<float>()) % 16) == 0);\n\n    const int threads = 256;\n    if (use_vec4) {\n        int total4 = total / 4;\n        int blocks = (total4 + threads - 1) / threads;\n        fused_post_ops_vec4_kernel<<<blocks, threads>>>(\n            reinterpret_cast<const float4*>(x.data_ptr<float>()),\n            add_value.data_ptr<float>(),\n            reinterpret_cast<float4*>(out.data_ptr<float>()),\n            N,\n            total4\n        );\n    } else {\n        int blocks = (total + threads - 1) / threads;\n        fused_post_ops_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            add_value.data_ptr<float>(),\n            out.data_ptr<float>(),\n            N,\n            total\n        );\n    }\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, adds a value, applies Swish, Tanh, GELU, and Hardtanh activation functions.\n        \"\"\"\n    def __init__(self, in_features, out_features, add_value_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.add_value = nn.Parameter(torch.randn(add_value_shape))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_post_ops(x.contiguous(), self.add_value.contiguous())\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # swish fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # tanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        # gelu fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        # hardtanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Refine the existing fused post-GEMM epilogue by specializing the active vec4 path for the benchmark's N=8192 layout, replacing per-lane modulo/scalar bias fetches with aligned float4 bias loads and straight-line activation code.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current `fused_post_ops_vec4_kernel` implementation with a specialized version that assumes each vector maps to four contiguous columns within one row when `N % 4 == 0`. Compute `vec_cols = N >> 2`, `row = idx / vec_cols`, and `col4 = idx - row * vec_cols`. Load `float4 x4 = x[idx]` and `float4 b4 = reinterpret_cast<const float4*>(add_value)[col4]`, then apply the existing activation chain independently to `x4.x + b4.x`, `x4.y + b4.y`, `x4.z + b4.z`, and `x4.w + b4.w` using straight-line code (no `for` loop and no `% N` inside the kernel). Write the result back as one `float4`. Keep the wrapper logic and the tiled/scalar fallback unchanged, still guarding vec4 usage on alignment and `N % 4 == 0`.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00296,
+      "score": 0.00296,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=120050",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/05_L2_P95_Retry_P95_20260720_174346/eval_traces/20260720_175139_117050_c307df00_kernelbench_l2_95_95_matmul_add_swish_tanh_gelu_hardtanh"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00313,
+      "speedup": 1.0574324324324325,
+      "reference_runtimes": {
+        "torch_eager": 0.00313
+      },
+      "speedups": {
+        "torch_eager": 1.0574324324324325
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "On this workload the fused post-ops kernel likely spends avoidable cycles in the vec4 path on `% N` column recovery and four scalar `__ldg` bias fetches per pack; since N=8192 is divisible by 4 and each float4 stays within a row, loading `add_value` as `float4` and removing the per-element loop/modulo should improve the fused kernel enough to beat the current 1.065x champion.",
+      "single_change_focus": "Specialize `fused_post_ops_vec4_kernel` to use row/vec-column indexing plus one `float4` bias load from `add_value`, replacing the scalar per-lane bias fetch loop while keeping the same activation math.",
+      "mutation_family": "vec4_bias_vectorization",
+      "target_metric": "speedup"
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p95_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_post_ops\", &fused_post_ops, \"Fused add+swish+tanh+gelu+hardtanh (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void fused_post_ops_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ add_value,\n    float* __restrict__ out,\n    int N,\n    int total\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total) return;\n\n    int col = idx % N;\n    float v = x[idx] + __ldg(&add_value[col]);\n\n    // Swish: v * sigmoid(v)\n    float sig = 1.0f / (1.0f + __expf(-v));\n    v = v * sig;\n\n    // Tanh\n    v = tanhf(v);\n\n    // GELU (tanh approximation matching PyTorch default)\n    float v3 = v * v * v;\n    float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n    v = 0.5f * v * (1.0f + tanhf(inner));\n\n    // Hardtanh [-1, 1]\n    v = fmaxf(-1.0f, fminf(1.0f, v));\n\n    out[idx] = v;\n}\n\n// Row-aware vec4 kernel: each float4 is fully within one row (N % 4 == 0 guaranteed).\n// Loads bias as float4 to eliminate per-lane scalar fetch and modulo arithmetic.\n__global__ void fused_post_ops_vec4_kernel(\n    const float4* __restrict__ x,\n    const float* __restrict__ add_value,\n    float4* __restrict__ out,\n    int N,\n    int total4\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total4) return;\n\n    // N % 4 == 0, so each float4 pack is fully contained within a row.\n    int vec_cols = N >> 2;  // number of float4 packs per row\n    int vec_col  = idx % vec_cols;\n    int col_base = vec_col << 2;\n\n    float4 x4    = x[idx];\n    // Single aligned float4 bias load for all 4 components\n    float4 bias4 = *reinterpret_cast<const float4*>(add_value + col_base);\n\n    // Component .x\n    float v;\n    float v3, inner;\n\n    v = x4.x + bias4.x;\n    v = v * (1.0f / (1.0f + __expf(-v)));\n    v = tanhf(v);\n    v3 = v * v * v; inner = 0.7978845608028654f * (v + 0.044715f * v3);\n    v = 0.5f * v * (1.0f + tanhf(inner));\n    float rx = fmaxf(-1.0f, fminf(1.0f, v));\n\n    // Component .y\n    v = x4.y + bias4.y;\n    v = v * (1.0f / (1.0f + __expf(-v)));\n    v = tanhf(v);\n    v3 = v * v * v; inner = 0.7978845608028654f * (v + 0.044715f * v3);\n    v = 0.5f * v * (1.0f + tanhf(inner));\n    float ry = fmaxf(-1.0f, fminf(1.0f, v));\n\n    // Component .z\n    v = x4.z + bias4.z;\n    v = v * (1.0f / (1.0f + __expf(-v)));\n    v = tanhf(v);\n    v3 = v * v * v; inner = 0.7978845608028654f * (v + 0.044715f * v3);\n    v = 0.5f * v * (1.0f + tanhf(inner));\n    float rz = fmaxf(-1.0f, fminf(1.0f, v));\n\n    // Component .w\n    v = x4.w + bias4.w;\n    v = v * (1.0f / (1.0f + __expf(-v)));\n    v = tanhf(v);\n    v3 = v * v * v; inner = 0.7978845608028654f * (v + 0.044715f * v3);\n    v = 0.5f * v * (1.0f + tanhf(inner));\n    float rw = fmaxf(-1.0f, fminf(1.0f, v));\n\n    float4 res;\n    res.x = rx; res.y = ry; res.z = rz; res.w = rw;\n    out[idx] = res;\n}\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(add_value.is_cuda(), \"add_value must be a CUDA tensor\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(add_value.scalar_type() == torch::kFloat32, \"add_value must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(add_value.is_contiguous(), \"add_value must be contiguous\");\n\n    int total = x.numel();\n    int N = x.size(x.dim() - 1);\n    auto out = torch::empty_like(x);\n\n    bool use_vec4 = (total % 4 == 0) && (N % 4 == 0) &&\n                    ((reinterpret_cast<uintptr_t>(x.data_ptr<float>()) % 16) == 0) &&\n                    ((reinterpret_cast<uintptr_t>(out.data_ptr<float>()) % 16) == 0) &&\n                    ((reinterpret_cast<uintptr_t>(add_value.data_ptr<float>()) % 16) == 0);\n\n    const int threads = 256;\n    if (use_vec4) {\n        int total4 = total / 4;\n        int blocks = (total4 + threads - 1) / threads;\n        fused_post_ops_vec4_kernel<<<blocks, threads>>>(\n            reinterpret_cast<const float4*>(x.data_ptr<float>()),\n            add_value.data_ptr<float>(),\n            reinterpret_cast<float4*>(out.data_ptr<float>()),\n            N,\n            total4\n        );\n    } else {\n        int blocks = (total + threads - 1) / threads;\n        fused_post_ops_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            add_value.data_ptr<float>(),\n            out.data_ptr<float>(),\n            N,\n            total\n        );\n    }\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, adds a value, applies Swish, Tanh, GELU, and Hardtanh activation functions.\n        \"\"\"\n    def __init__(self, in_features, out_features, add_value_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.add_value = nn.Parameter(torch.randn(add_value_shape))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_post_ops(x.contiguous(), self.add_value.contiguous())\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # swish fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # tanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        # gelu fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        # hardtanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Refine the winning fused post-GEMM epilogue by making the vec4 fast path truly row-aware and bias-vectorized, so each thread performs one aligned `float4` bias load and avoids per-lane modulo/index recomputation inside the activation loop.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current `fused_post_ops_vec4_kernel` implementation with a row-aware vec4 specialization: compute `int vec_cols = N >> 2; int row = idx / vec_cols; int vec_col = idx - row * vec_cols; int col_base = vec_col << 2;` then load `float4 x4 = x[idx];` and `float4 bias4 = *reinterpret_cast<const float4*>(add_value + col_base);` (safe because vec4 path is only used when `N % 4 == 0` and pointer alignment checks already pass). Apply the existing activation chain independently to `x4.{x,y,z,w} + bias4.{x,y,z,w}` without a `for` loop or `% N` arithmetic, then store one `float4` result. Keep `fused_post_ops_kernel` unchanged, keep the existing vec4 gating in `fused_post_ops`, and keep the wrapper signature/export unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00299,
+      "score": 0.00299,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=121037",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/05_L2_P95_Retry_P95_20260720_174346/eval_traces/20260720_175340_117050_d7b49d0b_kernelbench_l2_95_95_matmul_add_swish_tanh_gelu_hardtanh"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00309,
+      "speedup": 1.0334448160535117,
+      "reference_runtimes": {
+        "torch_eager": 0.00309
+      },
+      "speedups": {
+        "torch_eager": 1.0334448160535117
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "best_lineage_push",
+      "performance_hypothesis": "If the vec4 kernel computes `row = idx / (N/4)` and `vec_col = idx % (N/4)`, then loads `float4 bias4` from `add_value + vec_col*4`, it will cut per-thread scalar bias loads and modulo work versus the current per-lane loop, improving the fused epilogue enough to beat the current champion.",
+      "single_change_focus": "Replace the current vec4 kernelâs per-lane scalar bias/index loop with a row-aware `float4` bias load and direct component-wise activation computation while keeping the launch logic and scalar fallback intact.",
+      "mutation_family": "vec4_row_bias_load",
+      "target_metric": "speedup"
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p95_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_post_ops\", &fused_post_ops, \"Fused add+swish+tanh+gelu+hardtanh (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda_runtime.h>\n\n__global__ void fused_post_ops_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ add_value,\n    float* __restrict__ out,\n    int N,\n    int total\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total) return;\n\n    int col = idx % N;\n    float v = x[idx] + __ldg(&add_value[col]);\n\n    float sig = 1.0f / (1.0f + __expf(-v));\n    v = v * sig;\n\n    v = tanhf(v);\n\n    float v3 = v * v * v;\n    float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n    v = 0.5f * v * (1.0f + tanhf(inner));\n\n    v = fmaxf(-1.0f, fminf(1.0f, v));\n\n    out[idx] = v;\n}\n\n// Specialized vec4 kernel: assumes N % 4 == 0 so each float4 pack is\n// fully contained within one row. Uses a single float4 bias load per thread.\n// Uses power-of-two bitmask for column index when vec_cols is a power of two.\n__global__ void fused_post_ops_vec4_kernel(\n    const float4* __restrict__ x,\n    const float* __restrict__ add_value,\n    float4* __restrict__ out,\n    int vec_cols,        // N/4, passed from host\n    int vec_cols_mask,   // vec_cols - 1 if power-of-two, else -1\n    int total4\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total4) return;\n\n    // Compute float4 column index within its row\n    int col4 = (vec_cols_mask >= 0) ? (idx & vec_cols_mask) : (idx % vec_cols);\n\n    float4 v4 = __ldg(&x[idx]);\n    float4 b4 = __ldg(reinterpret_cast<const float4*>(add_value) + col4);\n\n    float4 res;\n    float v;\n\n    // .x lane\n    v = v4.x + b4.x;\n    v = v * (1.0f / (1.0f + __expf(-v)));\n    v = tanhf(v);\n    { float c = v * v * v; v = 0.5f * v * (1.0f + tanhf(0.7978845608028654f * (v + 0.044715f * c))); }\n    res.x = fmaxf(-1.0f, fminf(1.0f, v));\n\n    // .y lane\n    v = v4.y + b4.y;\n    v = v * (1.0f / (1.0f + __expf(-v)));\n    v = tanhf(v);\n    { float c = v * v * v; v = 0.5f * v * (1.0f + tanhf(0.7978845608028654f * (v + 0.044715f * c))); }\n    res.y = fmaxf(-1.0f, fminf(1.0f, v));\n\n    // .z lane\n    v = v4.z + b4.z;\n    v = v * (1.0f / (1.0f + __expf(-v)));\n    v = tanhf(v);\n    { float c = v * v * v; v = 0.5f * v * (1.0f + tanhf(0.7978845608028654f * (v + 0.044715f * c))); }\n    res.z = fmaxf(-1.0f, fminf(1.0f, v));\n\n    // .w lane\n    v = v4.w + b4.w;\n    v = v * (1.0f / (1.0f + __expf(-v)));\n    v = tanhf(v);\n    { float c = v * v * v; v = 0.5f * v * (1.0f + tanhf(0.7978845608028654f * (v + 0.044715f * c))); }\n    res.w = fmaxf(-1.0f, fminf(1.0f, v));\n\n    out[idx] = res;\n}\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(add_value.is_cuda(), \"add_value must be a CUDA tensor\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(add_value.scalar_type() == torch::kFloat32, \"add_value must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(add_value.is_contiguous(), \"add_value must be contiguous\");\n\n    int total = x.numel();\n    int N = x.size(x.dim() - 1);\n    auto out = torch::empty_like(x);\n\n    bool use_vec4 = (total % 4 == 0) && (N % 4 == 0) &&\n                    ((reinterpret_cast<uintptr_t>(x.data_ptr<float>()) % 16) == 0) &&\n                    ((reinterpret_cast<uintptr_t>(out.data_ptr<float>()) % 16) == 0);\n\n    const int threads = 256;\n    if (use_vec4) {\n        int vec_cols = N >> 2;\n        // Check if vec_cols is a power of two for bitmask optimization\n        int vec_cols_mask = ((vec_cols & (vec_cols - 1)) == 0) ? (vec_cols - 1) : -1;\n        int total4 = total / 4;\n        int blocks = (total4 + threads - 1) / threads;\n        fused_post_ops_vec4_kernel<<<blocks, threads>>>(\n            reinterpret_cast<const float4*>(x.data_ptr<float>()),\n            add_value.data_ptr<float>(),\n            reinterpret_cast<float4*>(out.data_ptr<float>()),\n            vec_cols,\n            vec_cols_mask,\n            total4\n        );\n    } else {\n        int blocks = (total + threads - 1) / threads;\n        fused_post_ops_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            add_value.data_ptr<float>(),\n            out.data_ptr<float>(),\n            N,\n            total\n        );\n    }\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, adds a value, applies Swish, Tanh, GELU, and Hardtanh activation functions.\n        \"\"\"\n    def __init__(self, in_features, out_features, add_value_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.add_value = nn.Parameter(torch.randn(add_value_shape))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_post_ops(x.contiguous(), self.add_value.contiguous())\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # swish fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # tanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        # gelu fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        # hardtanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Refine the validated fused post-matmul CUDA epilogue by trimming hot-path index arithmetic in the vec4 kernel while keeping the fused activation structure unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "In `fused_post_ops_vec4_kernel`, keep the current float4 bias load and activation math, but replace the `vec_cols` modulo indexing with a fixed power-of-two column index computation for the benchmark shape: compute `col4 = idx & (vec_cols - 1)` (or an equivalent bitmask form) and remove any remaining per-thread division/modulo in the vec4 hot path; preserve the scalar fallback and all existing guards.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00298,
+      "score": 0.00298,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=123385",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/05_L2_P95_Retry_P95_20260720_174346/eval_traces/20260720_175611_117050_a38c47f6_kernelbench_l2_95_95_matmul_add_swish_tanh_gelu_hardtanh"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00314,
+      "speedup": 1.0536912751677852,
+      "reference_runtimes": {
+        "torch_eager": 0.00314
+      },
+      "speedups": {
+        "torch_eager": 1.0536912751677852
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Replacing the vec4 kernel's modulo-based column calculation with a power-of-two mask for the fixed 8192-wide row layout will reduce integer ALU overhead and slightly improve throughput in the hottest fused epilogue.",
+      "single_change_focus": "Specialize the vec4 epilogue index calculation for N=8192 by replacing `idx % vec_cols` with a bitmask-based float4 column index in the CUDA kernel.",
+      "mutation_family": "pow2_vec_indexing",
+      "target_metric": "speedup"
+    },
+    "phase2_root": {
+      "node_id": "phase2_root",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p95_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_post_ops\", &fused_post_ops, \"Fused add+swish+tanh+gelu+hardtanh (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void fused_post_ops_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ add_value,\n    float* __restrict__ out,\n    int N,\n    int total\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total) return;\n\n    int col = idx % N;\n    float v = x[idx] + __ldg(&add_value[col]);\n\n    // Swish: v * sigmoid(v)\n    float sig = 1.0f / (1.0f + __expf(-v));\n    v = v * sig;\n\n    // Tanh\n    v = tanhf(v);\n\n    // GELU (tanh approximation matching PyTorch default)\n    float v3 = v * v * v;\n    float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n    v = 0.5f * v * (1.0f + tanhf(inner));\n\n    // Hardtanh [-1, 1]\n    v = fmaxf(-1.0f, fminf(1.0f, v));\n\n    out[idx] = v;\n}\n\n__global__ void fused_post_ops_vec4_kernel(\n    const float4* __restrict__ x,\n    const float* __restrict__ add_value,\n    float4* __restrict__ out,\n    int N,\n    int total4\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total4) return;\n\n    int base = idx * 4;\n    float4 v4 = x[idx];\n    float vals[4] = {v4.x, v4.y, v4.z, v4.w};\n\n    #pragma unroll\n    for (int i = 0; i < 4; i++) {\n        int col = (base + i) % N;\n        float v = vals[i] + __ldg(&add_value[col]);\n\n        // Swish\n        float sig = 1.0f / (1.0f + __expf(-v));\n        v = v * sig;\n\n        // Tanh\n        v = tanhf(v);\n\n        // GELU (tanh approximation)\n        float v3 = v * v * v;\n        float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n        v = 0.5f * v * (1.0f + tanhf(inner));\n\n        // Hardtanh [-1, 1]\n        v = fmaxf(-1.0f, fminf(1.0f, v));\n\n        vals[i] = v;\n    }\n\n    float4 res;\n    res.x = vals[0]; res.y = vals[1]; res.z = vals[2]; res.w = vals[3];\n    out[idx] = res;\n}\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(add_value.is_cuda(), \"add_value must be a CUDA tensor\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(add_value.scalar_type() == torch::kFloat32, \"add_value must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(add_value.is_contiguous(), \"add_value must be contiguous\");\n\n    int total = x.numel();\n    int N = x.size(x.dim() - 1);\n    auto out = torch::empty_like(x);\n\n    bool use_vec4 = (total % 4 == 0) && (N % 4 == 0) &&\n                    ((reinterpret_cast<uintptr_t>(x.data_ptr<float>()) % 16) == 0) &&\n                    ((reinterpret_cast<uintptr_t>(out.data_ptr<float>()) % 16) == 0);\n\n    const int threads = 256;\n    if (use_vec4) {\n        int total4 = total / 4;\n        int blocks = (total4 + threads - 1) / threads;\n        fused_post_ops_vec4_kernel<<<blocks, threads>>>(\n            reinterpret_cast<const float4*>(x.data_ptr<float>()),\n            add_value.data_ptr<float>(),\n            reinterpret_cast<float4*>(out.data_ptr<float>()),\n            N,\n            total4\n        );\n    } else {\n        int blocks = (total + threads - 1) / threads;\n        fused_post_ops_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            add_value.data_ptr<float>(),\n            out.data_ptr<float>(),\n            N,\n            total\n        );\n    }\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, adds a value, applies Swish, Tanh, GELU, and Hardtanh activation functions.\n        \"\"\"\n    def __init__(self, in_features, out_features, add_value_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.add_value = nn.Parameter(torch.randn(add_value_shape))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_post_ops(x.contiguous(), self.add_value.contiguous())\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # swish fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # tanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        # gelu fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        # hardtanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "phase2_root",
+      "child_ids": [
+        "phase2_n1",
+        "phase2_n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Keep cuBLAS-backed `nn.Linear` for the dominant GEMM and fuse the broadcast add plus Swish/Tanh/GELU/Hardtanh chain into one custom CUDA elementwise kernel so the post-GEMM tensor is read and written only once.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a declaration for a CUDA wrapper `torch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value);` and export it via pybind as `m.def(\"fused_post_ops\", &fused_post_ops, \"Fused add+swish+tanh+gelu+hardtanh (CUDA)\");`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a complete CUDA implementation of `fused_post_ops`. Add input checks for CUDA, float32, contiguous 2D `x` and contiguous 1D `add_value`; allocate an output tensor matching `x`; launch one 1D CUDA kernel over `x.numel()` elements; for each linear index compute `col = idx % N`, load `v = x[idx] + add_value[col]`, then compute `v = v / (1.0f + __expf(-v))`, `v = tanhf(v)`, `v = 0.5f * v * (1.0f + tanhf(0.7978845608f * (v + 0.044715f * v * v * v)))`, clamp to `[-1.0f, 1.0f]`, and store to output. Export the C++ wrapper function matching the pybind declaration.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace `x = x + self.add_value` with `x = _stark_get_extension().fused_post_ops(x.contiguous(), self.add_value.contiguous())` so the add and all later activations are handled by the custom CUDA op.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the current statement with a no-op comment indicating Swish is fused inside `fused_post_ops`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Replace the current statement with a no-op comment indicating Tanh is fused inside `fused_post_ops`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_5",
+          "instruction": "Replace the current statement with a no-op comment indicating GELU is fused inside `fused_post_ops`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_6",
+          "instruction": "Replace the current statement with a no-op comment indicating Hardtanh is fused inside `fused_post_ops`.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00294,
+      "score": 0.00294,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "applied_region_patch:forward_stmt_4:replace",
+        "applied_region_patch:forward_stmt_5:replace",
+        "applied_region_patch:forward_stmt_6:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=118448",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/05_L2_P95_Retry_P95_20260720_174346/eval_traces/20260720_174712_117050_8ead5723_kernelbench_l2_95_95_matmul_add_swish_tanh_gelu_hardtanh"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00313,
+      "speedup": 1.064625850340136,
+      "reference_runtimes": {
+        "torch_eager": 0.00313
+      },
+      "speedups": {
+        "torch_eager": 1.064625850340136
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If the model keeps `self.matmul(x)` as-is and replaces the five eager elementwise ops with one fused CUDA kernel over the contiguous GEMM output, total runtime improves because the 8M-element activation tail stops paying repeated launch overhead and repeated global/L2 traffic.",
+      "single_change_focus": "Fuse the entire post-matmul elementwise chain into a single custom CUDA op invoked immediately after `self.matmul(x)`.",
+      "mutation_family": "post_gemm_epilogue_fusion",
+      "target_metric": "speedup"
+    },
+    "phase2_n1": {
+      "node_id": "phase2_n1",
+      "parent_id": "phase2_root",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p95_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_activations(torch::Tensor x);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_activations\", &fused_activations, \"Fused swish+tanh+gelu+hardtanh (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void fused_activations_kernel(\n    const float* __restrict__ x,\n    float* __restrict__ out,\n    int total\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total) return;\n\n    float v = x[idx];\n\n    // Swish: v * sigmoid(v)\n    float sig = 1.0f / (1.0f + __expf(-v));\n    v = v * sig;\n\n    // Tanh\n    v = tanhf(v);\n\n    // GELU (tanh approximation matching PyTorch default)\n    float v3 = v * v * v;\n    float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n    v = 0.5f * v * (1.0f + tanhf(inner));\n\n    // Hardtanh [-1, 1]\n    v = fmaxf(-1.0f, fminf(1.0f, v));\n\n    out[idx] = v;\n}\n\n__global__ void fused_activations_vec4_kernel(\n    const float4* __restrict__ x,\n    float4* __restrict__ out,\n    int total4\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total4) return;\n\n    float4 v4 = x[idx];\n    float vals[4] = {v4.x, v4.y, v4.z, v4.w};\n\n    #pragma unroll\n    for (int i = 0; i < 4; i++) {\n        float v = vals[i];\n\n        // Swish\n        float sig = 1.0f / (1.0f + __expf(-v));\n        v = v * sig;\n\n        // Tanh\n        v = tanhf(v);\n\n        // GELU (tanh approximation)\n        float v3 = v * v * v;\n        float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n        v = 0.5f * v * (1.0f + tanhf(inner));\n\n        // Hardtanh [-1, 1]\n        v = fmaxf(-1.0f, fminf(1.0f, v));\n\n        vals[i] = v;\n    }\n\n    float4 res;\n    res.x = vals[0]; res.y = vals[1]; res.z = vals[2]; res.w = vals[3];\n    out[idx] = res;\n}\n\ntorch::Tensor fused_activations(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n\n    int total = x.numel();\n    auto out = torch::empty_like(x);\n\n    bool use_vec4 = (total % 4 == 0) &&\n                    ((reinterpret_cast<uintptr_t>(x.data_ptr<float>()) % 16) == 0) &&\n                    ((reinterpret_cast<uintptr_t>(out.data_ptr<float>()) % 16) == 0);\n\n    const int threads = 256;\n    if (use_vec4) {\n        int total4 = total / 4;\n        int blocks = (total4 + threads - 1) / threads;\n        fused_activations_vec4_kernel<<<blocks, threads>>>(\n            reinterpret_cast<const float4*>(x.data_ptr<float>()),\n            reinterpret_cast<float4*>(out.data_ptr<float>()),\n            total4\n        );\n    } else {\n        int blocks = (total + threads - 1) / threads;\n        fused_activations_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            out.data_ptr<float>(),\n            total\n        );\n    }\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, adds a value, applies Swish, Tanh, GELU, and Hardtanh activation functions.\n        \"\"\"\n    def __init__(self, in_features, out_features, add_value_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.add_value = nn.Parameter(torch.randn(add_value_shape))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = torch.nn.functional.linear(x, self.matmul.weight, self.matmul.bias + self.add_value)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_activations(x.contiguous())\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # swish fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # tanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        # gelu fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        # hardtanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_09",
+      "plan_summary": "Push a materially different phase-2 refinement by folding `add_value` into the GEMM bias at the forward call site, then simplifying the custom CUDA epilogue to activations only. This keeps cuBLAS for the dominant matmul, avoids the unproductive vec4/indexing micro-tuning direction, and removes one extra bias read/add from the fused kernel hot path.",
+      "anchor_edits": [
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the current matmul line with a `torch.nn.functional.linear` call that uses `self.matmul.weight` and a fused bias expression `self.matmul.bias + self.add_value`, assigning the result back to `x`. Keep the output tensor shape unchanged and do not alter `ModelNew` state in-place.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the current extension call with an activation-only CUDA entrypoint invocation, passing only `x.contiguous()` and assigning the returned tensor back to `x`. Do not pass `self.add_value` anymore.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the exported declaration/binding so the extension exposes a single function named for activation-only post-ops that accepts one `torch::Tensor x` argument and returns the activated tensor. Remove the `add_value` parameter from the declaration and pybind registration.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA implementation so both scalar and vec4 kernels take only the input/output tensors plus shape metadata, remove all `add_value` loads and additions, and preserve the same activation chain (Swish, then Tanh, then GELU tanh approximation, then Hardtanh). Update the wrapper signature, checks, launch code, and kernel calls accordingly while keeping the vec4 fast path and scalar fallback structure intact.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00298,
+      "score": 0.00298,
+      "logs": [
+        "applied_region_patch:forward_stmt_1:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=126177",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/05_L2_P95_Retry_P95_20260720_174346/eval_traces/20260720_180308_117050_79c12c6f_kernelbench_l2_95_95_matmul_add_swish_tanh_gelu_hardtanh"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00314,
+      "speedup": 1.0536912751677852,
+      "reference_runtimes": {
+        "torch_eager": 0.00314
+      },
+      "speedups": {
+        "torch_eager": 1.0536912751677852
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If `add_value` is fused into the cuBLAS-backed linear bias path, the custom CUDA epilogue becomes activation-only, eliminating one broadcast bias read and one add per output element while preserving the successful cuBLAS+single-kernel structure.",
+      "single_change_focus": "Move the broadcast add from the CUDA epilogue into the linear call by using `F.linear(x, weight, bias + add_value)`, and update the extension so its kernel only applies the activation chain to the GEMM result.",
+      "mutation_family": "bias_fusion_to_linear",
+      "target_metric": "speedup"
+    },
+    "phase2_n2": {
+      "node_id": "phase2_n2",
+      "parent_id": "phase2_n1",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p95_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_activations(torch::Tensor x);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_activations\", &fused_activations, \"Fused swish+tanh+gelu+hardtanh (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float apply_chain(float v) {\n    // Swish: v * sigmoid(v)\n    v = v * (1.0f / (1.0f + __expf(-v)));\n    // Tanh\n    v = tanhf(v);\n    // GELU (tanh approximation matching PyTorch default)\n    float inner = 0.7978845608028654f * (v + 0.044715f * v * v * v);\n    v = 0.5f * v * (1.0f + tanhf(inner));\n    // Hardtanh [-1, 1]\n    return fmaxf(-1.0f, fminf(1.0f, v));\n}\n\n__global__ void fused_activations_kernel(\n    const float* __restrict__ x,\n    float* __restrict__ out,\n    int total\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total) return;\n    out[idx] = apply_chain(x[idx]);\n}\n\n__global__ void fused_activations_vec4_kernel(\n    const float4* __restrict__ x,\n    float4* __restrict__ out,\n    int total4\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total4) return;\n\n    float4 v4 = x[idx];\n    float x0 = apply_chain(v4.x);\n    float x1 = apply_chain(v4.y);\n    float x2 = apply_chain(v4.z);\n    float x3 = apply_chain(v4.w);\n    out[idx] = make_float4(x0, x1, x2, x3);\n}\n\ntorch::Tensor fused_activations(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n\n    int total = x.numel();\n    auto out = torch::empty_like(x);\n\n    bool use_vec4 = (total % 4 == 0) &&\n                    ((reinterpret_cast<uintptr_t>(x.data_ptr<float>()) % 16) == 0) &&\n                    ((reinterpret_cast<uintptr_t>(out.data_ptr<float>()) % 16) == 0);\n\n    const int threads = 256;\n    if (use_vec4) {\n        int total4 = total / 4;\n        int blocks = (total4 + threads - 1) / threads;\n        fused_activations_vec4_kernel<<<blocks, threads>>>(\n            reinterpret_cast<const float4*>(x.data_ptr<float>()),\n            reinterpret_cast<float4*>(out.data_ptr<float>()),\n            total4\n        );\n    } else {\n        int blocks = (total + threads - 1) / threads;\n        fused_activations_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            out.data_ptr<float>(),\n            total\n        );\n    }\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, adds a value, applies Swish, Tanh, GELU, and Hardtanh activation functions.\n        \"\"\"\n    def __init__(self, in_features, out_features, add_value_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.add_value = nn.Parameter(torch.randn(add_value_shape))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = torch.nn.functional.linear(x, self.matmul.weight, self.matmul.bias + self.add_value)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_activations(x.contiguous())\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # swish fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # tanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        # gelu fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        # hardtanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Keep the fused post-GEMM structure, but trim register pressure in the hot CUDA epilogue by making the vec4 path fully straight-line and row-aware, avoiding temporary arrays and per-lane index work.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the vec4 kernel body so it loads one float4, computes swish/tanh/GELU/hardtanh directly on four named scalars (`x0..x3`) instead of using `float vals[4]` plus a loop, then writes a reconstructed float4. Keep the scalar kernel and launch logic unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.003,
+      "score": 0.003,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=127460",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/05_L2_P95_Retry_P95_20260720_174346/eval_traces/20260720_180528_117050_859222e4_kernelbench_l2_95_95_matmul_add_swish_tanh_gelu_hardtanh"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00312,
+      "speedup": 1.04,
+      "reference_runtimes": {
+        "torch_eager": 0.00312
+      },
+      "speedups": {
+        "torch_eager": 1.04
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The vec4 epilogue still spends cycles on unnecessary local temporaries and indexing overhead; replacing it with explicit x/y/z/w handling will reduce register pressure and slightly improve throughput.",
+      "single_change_focus": "Specialize the vec4 CUDA epilogue into direct component-wise math with no temporary float array or per-lane loop.",
+      "mutation_family": "vec4_register_simplification",
+      "target_metric": "speedup"
+    },
+    "phase2_n3": {
+      "node_id": "phase2_n3",
+      "parent_id": "phase2_n2",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p95_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_activations(torch::Tensor x);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_activations\", &fused_activations, \"Fused swish+tanh+gelu+hardtanh (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void fused_post_ops_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ add_value,\n    float* __restrict__ out,\n    int N,\n    int total\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total) return;\n\n    int col = idx % N;\n    float v = x[idx] + __ldg(&add_value[col]);\n\n    // Swish: v * sigmoid(v)\n    float sig = 1.0f / (1.0f + __expf(-v));\n    v = v * sig;\n\n    // Tanh\n    v = tanhf(v);\n\n    // GELU (tanh approximation matching PyTorch default)\n    float v3 = v * v * v;\n    float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n    v = 0.5f * v * (1.0f + tanhf(inner));\n\n    // Hardtanh [-1,1] is a provable no-op: after tanh, input to GELU is in (-1,1),\n    // so GELU output is in (-0.182, 0.818) which is strictly inside [-1,1].\n    out[idx] = v;\n}\n\n__global__ void fused_post_ops_vec4_kernel(\n    const float4* __restrict__ x,\n    const float* __restrict__ add_value,\n    float4* __restrict__ out,\n    int N,\n    int total4\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total4) return;\n\n    int base = idx * 4;\n    float4 v4 = x[idx];\n    float vals[4] = {v4.x, v4.y, v4.z, v4.w};\n\n    #pragma unroll\n    for (int i = 0; i < 4; i++) {\n        int col = (base + i) % N;\n        float v = vals[i] + __ldg(&add_value[col]);\n\n        // Swish\n        float sig = 1.0f / (1.0f + __expf(-v));\n        v = v * sig;\n\n        // Tanh\n        v = tanhf(v);\n\n        // GELU (tanh approximation)\n        float v3 = v * v * v;\n        float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n        v = 0.5f * v * (1.0f + tanhf(inner));\n\n        // Hardtanh [-1,1] eliminated: GELU output after tanh is bounded in (-0.182, 0.818)\n        vals[i] = v;\n    }\n\n    float4 res;\n    res.x = vals[0]; res.y = vals[1]; res.z = vals[2]; res.w = vals[3];\n    out[idx] = res;\n}\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(add_value.is_cuda(), \"add_value must be a CUDA tensor\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(add_value.scalar_type() == torch::kFloat32, \"add_value must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(add_value.is_contiguous(), \"add_value must be contiguous\");\n\n    int total = x.numel();\n    int N = x.size(x.dim() - 1);\n    auto out = torch::empty_like(x);\n\n    bool use_vec4 = (total % 4 == 0) && (N % 4 == 0) &&\n                    ((reinterpret_cast<uintptr_t>(x.data_ptr<float>()) % 16) == 0) &&\n                    ((reinterpret_cast<uintptr_t>(out.data_ptr<float>()) % 16) == 0);\n\n    const int threads = 256;\n    if (use_vec4) {\n        int total4 = total / 4;\n        int blocks = (total4 + threads - 1) / threads;\n        fused_post_ops_vec4_kernel<<<blocks, threads>>>(\n            reinterpret_cast<const float4*>(x.data_ptr<float>()),\n            add_value.data_ptr<float>(),\n            reinterpret_cast<float4*>(out.data_ptr<float>()),\n            N,\n            total4\n        );\n    } else {\n        int blocks = (total + threads - 1) / threads;\n        fused_post_ops_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            add_value.data_ptr<float>(),\n            out.data_ptr<float>(),\n            N,\n            total\n        );\n    }\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, adds a value, applies Swish, Tanh, GELU, and Hardtanh activation functions.\n        \"\"\"\n    def __init__(self, in_features, out_features, add_value_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.add_value = nn.Parameter(torch.randn(add_value_shape))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = torch.nn.functional.linear(x, self.matmul.weight, self.matmul.bias + self.add_value)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_activations(x.contiguous())\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # swish fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # tanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        # gelu fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        # hardtanh eliminated as provable no-op: tanh bounds GELU input to (-1,1),\n                # so GELU output is in (-0.182, 0.818), strictly within [-1,1]\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_07",
+      "plan_summary": "Refine the winning fused post-GEMM epilogue by exploiting a provable range property: after `tanh`, the subsequent GELU output stays within `[-1, 1]`, so the final Hardtanh clamp is redundant and can be removed from the CUDA fast path without changing results.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "In the CUDA source, edit the shared activation helper/function used by both scalar and vec4 kernels so it still performs Swish, then `tanhf`, then the existing tanh-based GELU approximation exactly as today, but returns the GELU result directly instead of applying `fmaxf(-1.0f, fminf(1.0f, v))`. If there is duplicated scalar/vec4 epilogue math rather than a shared helper, remove the final Hardtanh clamp statement from every active kernel path consistently and keep all other arithmetic unchanged.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_6",
+          "instruction": "Replace the forward anchor body with a comment indicating Hardtanh is fused away as a provable no-op inside the CUDA epilogue, without adding any runtime PyTorch op.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_6:replace",
+        "runtime_error_name=builtins.ImportError",
+        "runtime_error=/data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p95_33a5c45925a2/stark_cuda_l2_p95_33a5c45925a2.so: undefined symbol: _Z17fused_activationsN2at6TensorE",
+        "runtime_error_traceback=ImportError: /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p95_33a5c45925a2/stark_cuda_l2_p95_33a5c45925a2.so: undefined symbol: _Z17fused_activationsN2at6TensorE",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=128959",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/05_L2_P95_Retry_P95_20260720_174346/eval_traces/20260720_180809_117050_83f7d419_kernelbench_l2_95_95_matmul_add_swish_tanh_gelu_hardtanh",
+        "isolated_worker_stderr_tail=Traceback (most recent call last):\n  File \"/data/dyj/cuda_kernel_eval/refs/KernelBench/src/kernelbench/eval.py\", line 782, in run_and_check_correctness\n    output_new = model_new(*inputs)\n  File \"/data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/nn/modules/module.py\", line 1776, in _wrapped_call_impl\n    return self._call_impl(*args, **kwargs)\n  File \"/data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/nn/modules/module.py\", line 1787, in _call_impl\n    return forward_call(*args, **kwargs)\n  File \"<string>\", line 186, in forward\n  File \"<string>\", line 24, in _stark_get_extension\n  File \"/data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/utils/cpp_extension.py\", line 2123, in load_inline\n    return _jit_compile(\n  File \"/data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/utils/cpp_extension.py\", line 2233, in _jit_compile\n    return _import_module_from_library(name, build_directory, is_python_module)\n  File \"/data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/utils/cpp_extension.py\", line 2731, in _import_module_from_library\n    module = importlib.util.module_from_spec(spec)\n  File \"<frozen importlib._bootstrap>\", line 571, in module_from_spec\n  File \"<frozen importlib._bootstrap_external>\", line 1176, in create_module\n  File \"<frozen importlib._bootstrap>\", line 241, in _call_with_frames_removed\nImportError: /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p95_33a5c45925a2/stark_cuda_l2_p95_33a5c45925a2.so: undefined symbol: _Z17fused_activationsN2at6TensorE"
+      ],
+      "failure_type": "builtins.ImportError",
+      "node_status": "runtime_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "runtime",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If the fused epilogue still contributes measurable tail latency, deleting the final `fmaxf/fminf` Hardtanh clamp from both scalar and vec4 paths will reduce hot-path instruction count without changing outputs because `tanh` bounds inputs to GELU tightly enough that GELU's result remains inside `[-1,1]`.",
+      "single_change_focus": "Remove the redundant final Hardtanh clamp from the fused CUDA activation chain while leaving all earlier math and launch behavior unchanged.",
+      "mutation_family": "dead_hardtanh_elimination",
+      "target_metric": "speedup"
+    },
+    "phase2_n4": {
+      "node_id": "phase2_n4",
+      "parent_id": "phase2_root",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p95_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_post_ops\", &fused_post_ops, \"Fused add+swish+tanh+gelu+hardtanh (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void fused_post_ops_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ add_value,\n    float* __restrict__ out,\n    int N,\n    int total\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total) return;\n\n    int col = idx % N;\n    float v = x[idx] + __ldg(&add_value[col]);\n\n    // Swish: v * sigmoid(v)\n    float sig = 1.0f / (1.0f + __expf(-v));\n    v = v * sig;\n\n    // Tanh\n    v = tanhf(v);\n\n    // GELU (tanh approximation matching PyTorch default)\n    float v3 = v * v * v;\n    float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n    v = 0.5f * v * (1.0f + tanhf(inner));\n\n    // Hardtanh [-1,1] is a provable no-op here: after tanh, inputs to GELU are in (-1,1),\n    // and GELU over that domain stays within [-1,1], so the clamp is intentionally omitted.\n\n    out[idx] = v;\n}\n\n__global__ void fused_post_ops_vec4_kernel(\n    const float4* __restrict__ x,\n    const float* __restrict__ add_value,\n    float4* __restrict__ out,\n    int N,\n    int total4\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total4) return;\n\n    int base = idx * 4;\n    float4 v4 = x[idx];\n    float vals[4] = {v4.x, v4.y, v4.z, v4.w};\n\n    #pragma unroll\n    for (int i = 0; i < 4; i++) {\n        int col = (base + i) % N;\n        float v = vals[i] + __ldg(&add_value[col]);\n\n        // Swish\n        float sig = 1.0f / (1.0f + __expf(-v));\n        v = v * sig;\n\n        // Tanh\n        v = tanhf(v);\n\n        // GELU (tanh approximation)\n        float v3 = v * v * v;\n        float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n        v = 0.5f * v * (1.0f + tanhf(inner));\n\n        // Hardtanh [-1,1] is a provable no-op after tanh->GELU on this bounded domain; omitted.\n\n        vals[i] = v;\n    }\n\n    float4 res;\n    res.x = vals[0]; res.y = vals[1]; res.z = vals[2]; res.w = vals[3];\n    out[idx] = res;\n}\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(add_value.is_cuda(), \"add_value must be a CUDA tensor\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(add_value.scalar_type() == torch::kFloat32, \"add_value must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(add_value.is_contiguous(), \"add_value must be contiguous\");\n\n    int total = x.numel();\n    int N = x.size(x.dim() - 1);\n    auto out = torch::empty_like(x);\n\n    bool use_vec4 = (total % 4 == 0) && (N % 4 == 0) &&\n                    ((reinterpret_cast<uintptr_t>(x.data_ptr<float>()) % 16) == 0) &&\n                    ((reinterpret_cast<uintptr_t>(out.data_ptr<float>()) % 16) == 0);\n\n    const int threads = 256;\n    if (use_vec4) {\n        int total4 = total / 4;\n        int blocks = (total4 + threads - 1) / threads;\n        fused_post_ops_vec4_kernel<<<blocks, threads>>>(\n            reinterpret_cast<const float4*>(x.data_ptr<float>()),\n            add_value.data_ptr<float>(),\n            reinterpret_cast<float4*>(out.data_ptr<float>()),\n            N,\n            total4\n        );\n    } else {\n        int blocks = (total + threads - 1) / threads;\n        fused_post_ops_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            add_value.data_ptr<float>(),\n            out.data_ptr<float>(),\n            N,\n            total\n        );\n    }\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, adds a value, applies Swish, Tanh, GELU, and Hardtanh activation functions.\n        \"\"\"\n    def __init__(self, in_features, out_features, add_value_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.add_value = nn.Parameter(torch.randn(add_value_shape))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_post_ops(x.contiguous(), self.add_value.contiguous())\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # swish fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # tanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        # gelu fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        # hardtanh is a provable no-op after tanh->GELU on this bounded domain; intentionally omitted from fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_07",
+      "plan_summary": "Refine the current fused post-GEMM CUDA epilogue by deleting the mathematically redundant Hardtanh clamp, keeping the successful single-pass fusion structure and avoiding the already-regressing bias-move and vec4-reshaping directions.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the fused CUDA kernel implementation so both `fused_post_ops_kernel` and `fused_post_ops_vec4_kernel` keep the current add + swish + tanh + GELU computation exactly as-is but remove the final Hardtanh clamp (`fmaxf(-1.0f, fminf(1.0f, v))`) before storing. Keep function names, wrapper signature, launch logic, vec4/scalar split, and all existing tensor checks unchanged.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_6",
+          "instruction": "Replace the comment-only anchor with a comment stating that Hardtanh is provably a no-op after `tanh` followed by GELU on this bounded domain and is therefore intentionally omitted from the fused CUDA epilogue.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00302,
+      "score": 0.00302,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_6:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=129804",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/05_L2_P95_Retry_P95_20260720_174346/eval_traces/20260720_180959_117050_9a1bfc4e_kernelbench_l2_95_95_matmul_add_swish_tanh_gelu_hardtanh"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00311,
+      "speedup": 1.0298013245033113,
+      "reference_runtimes": {
+        "torch_eager": 0.00311
+      },
+      "speedups": {
+        "torch_eager": 1.0298013245033113
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Removing the final `fmaxf/fminf` Hardtanh clamp from both scalar and vec4 epilogue kernels reduces per-element ALU work and register lifetimes without changing outputs, giving a small but real win on the hot fused post-op kernel.",
+      "single_change_focus": "Delete the redundant Hardtanh operation from the fused CUDA epilogue and update the Python anchor comment to mark Hardtanh as provably elided.",
+      "mutation_family": "noop_activation_elision",
+      "target_metric": "speedup"
+    },
+    "phase2_n5": {
+      "node_id": "phase2_n5",
+      "parent_id": "phase2_n3",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p95_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_activations(torch::Tensor x);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_activations\", &fused_activations, \"Fused swish+tanh+gelu+hardtanh (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void fused_post_ops_kernel(\n    const float* __restrict__ x,\n    const float* __restrict__ add_value,\n    float* __restrict__ out,\n    int N,\n    int total\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total) return;\n\n    int col = idx % N;\n    float v = x[idx] + __ldg(&add_value[col]);\n\n    float sig = 1.0f / (1.0f + __expf(-v));\n    v = v * sig;\n    v = tanhf(v);\n\n    float v3 = v * v * v;\n    float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n    v = 0.5f * v * (1.0f + tanhf(inner));\n\n    out[idx] = v;\n}\n\n__global__ void fused_post_ops_vec4_kernel(\n    const float4* __restrict__ x,\n    const float* __restrict__ add_value,\n    float4* __restrict__ out,\n    int N,\n    int total4\n) {\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx >= total4) return;\n\n    int base = idx * 4;\n    float4 v4 = x[idx];\n    float vals[4] = {v4.x, v4.y, v4.z, v4.w};\n\n    #pragma unroll\n    for (int i = 0; i < 4; i++) {\n        int col = (base + i) % N;\n        float v = vals[i] + __ldg(&add_value[col]);\n\n        float sig = 1.0f / (1.0f + __expf(-v));\n        v = v * sig;\n        v = tanhf(v);\n\n        float v3 = v * v * v;\n        float inner = 0.7978845608028654f * (v + 0.044715f * v3);\n        v = 0.5f * v * (1.0f + tanhf(inner));\n\n        vals[i] = v;\n    }\n\n    float4 res;\n    res.x = vals[0];\n    res.y = vals[1];\n    res.z = vals[2];\n    res.w = vals[3];\n    out[idx] = res;\n}\n\ntorch::Tensor fused_post_ops(torch::Tensor x, torch::Tensor add_value) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(add_value.is_cuda(), \"add_value must be a CUDA tensor\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(add_value.scalar_type() == torch::kFloat32, \"add_value must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(add_value.is_contiguous(), \"add_value must be contiguous\");\n\n    int total = x.numel();\n    int N = x.size(x.dim() - 1);\n    auto out = torch::empty_like(x);\n\n    bool use_vec4 = (total % 4 == 0) && (N % 4 == 0) &&\n                    ((reinterpret_cast<uintptr_t>(x.data_ptr<float>()) % 16) == 0) &&\n                    ((reinterpret_cast<uintptr_t>(out.data_ptr<float>()) % 16) == 0);\n\n    const int threads = 256;\n    if (use_vec4) {\n        int total4 = total / 4;\n        int blocks = (total4 + threads - 1) / threads;\n        fused_post_ops_vec4_kernel<<<blocks, threads>>>(\n            reinterpret_cast<const float4*>(x.data_ptr<float>()),\n            add_value.data_ptr<float>(),\n            reinterpret_cast<float4*>(out.data_ptr<float>()),\n            N,\n            total4\n        );\n    } else {\n        int blocks = (total + threads - 1) / threads;\n        fused_post_ops_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            add_value.data_ptr<float>(),\n            out.data_ptr<float>(),\n            N,\n            total\n        );\n    }\n\n    return out;\n}\n\ntorch::Tensor fused_activations(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    auto add_value = torch::zeros({x.size(x.dim() - 1)}, x.options());\n    return fused_post_ops(x, add_value);\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, adds a value, applies Swish, Tanh, GELU, and Hardtanh activation functions.\n        \"\"\"\n    def __init__(self, in_features, out_features, add_value_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.add_value = nn.Parameter(torch.randn(add_value_shape))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = torch.nn.functional.linear(x, self.matmul.weight, self.matmul.bias + self.add_value)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().fused_activations(x.contiguous())\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # swish fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # tanh fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        # gelu fused in fused_post_ops\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        # hardtanh eliminated as provable no-op: tanh bounds GELU input to (-1,1),\n                # so GELU output is in (-0.182, 0.818), strictly within [-1,1]\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_7>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_07",
+      "plan_summary": "Refine the winning fused post-GEMM epilogue by exploiting a provable range property: after `tanh`, the subsequent GELU output stays within `[-1, 1]`, so the final Hardtanh clamp is redundant and can be removed from the CUDA fast path without changing results.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "In the CUDA source, edit the shared activation helper/function used by both scalar and vec4 kernels so it still performs Swish, then `tanhf`, then the existing tanh-based GELU approximation exactly as today, but returns the GELU result directly instead of applying `fmaxf(-1.0f, fminf(1.0f, v))`. If there is duplicated scalar/vec4 epilogue math rather than a shared helper, remove the final Hardtanh clamp statement from every active kernel path consistently and keep all other arithmetic unchanged.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_6",
+          "instruction": "Replace the forward anchor body with a comment indicating Hardtanh is fused away as a provable no-op inside the CUDA epilogue, without adding any runtime PyTorch op.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.003,
+      "score": 0.003,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=131062",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/05_L2_P95_Retry_P95_20260720_174346/eval_traces/20260720_181156_117050_eeab8c49_kernelbench_l2_95_95_matmul_add_swish_tanh_gelu_hardtanh"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00309,
+      "speedup": 1.03,
+      "reference_runtimes": {
+        "torch_eager": 0.00309
+      },
+      "speedups": {
+        "torch_eager": 1.03
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    }
+  }
+}

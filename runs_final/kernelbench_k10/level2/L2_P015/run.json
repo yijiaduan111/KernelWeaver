@@ -1,0 +1,2255 @@
+{
+  "task_name": "kernelbench_l2_15_15_convtranspose3d_batchnorm_subtract",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": false,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_claude",
+    "plan_provider": "openai-compatible",
+    "code_provider": "claude-compatible",
+    "debug_provider": "openai-compatible",
+    "search_provider": "claude-compatible",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "diagnostics_enabled": false,
+    "diagnostics_mode": "root_ncu_v1",
+    "diagnostics_timeout_seconds": 300,
+    "diagnostics_warmup_runs": 2,
+    "diagnostics_profile_runs": 3,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1,
+    "deliberation_provider_timeout_seconds": 180,
+    "deliberation_phase_timeout_seconds": 240,
+    "evaluator_isolation": "candidate_subprocess",
+    "evaluator_timeout_seconds": 900,
+    "explore_fraction": 0.4,
+    "challenger_fraction": 0.3,
+    "plateau_delta_threshold": 0.03,
+    "plateau_recovery_mutation_attempts": 2,
+    "plateau_window": 3,
+    "deliberation_upgrade_enabled": true,
+    "deliberation_max_rounds": 3,
+    "deliberation_min_remaining_attempts": 8,
+    "phase_two_enabled": true,
+    "phase_two_split_attempts": 5
+  },
+  "best_node_id": "root",
+  "leaderboard": [
+    "root",
+    "phase2_n1"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "root",
+      "n1"
+    ],
+    [],
+    [
+      "phase2_root"
+    ],
+    [
+      "phase2_n1",
+      "phase2_root"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "root",
+    "n3",
+    "phase2_root",
+    "phase2_n1",
+    "phase2_n2",
+    "phase2_n1",
+    "phase2_n3"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "explore_leaf",
+    "debug_retry_failure",
+    "exploit_best_score",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {},
+    {
+      "n2": "compile_failure_debug_throttled"
+    },
+    {
+      "n2": "compile_failure_debug_throttled"
+    },
+    {},
+    {},
+    {},
+    {},
+    {}
+  ],
+  "pruned_nodes": {},
+  "debug_stats": {
+    "total_attempts": 1,
+    "per_node": {
+      "n2": 1
+    }
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 9,
+    "debug_attempts": 1,
+    "failure_counts": {
+      "region_apply_failed": 1,
+      "correctness_error": 2,
+      "acceleratorerror": 1
+    },
+    "failure_stage_counts": {
+      "compile": 1,
+      "correctness": 2,
+      "runtime": 1
+    },
+    "invalid_proposals": 0,
+    "attempt_mode_counts": {
+      "explore": 9,
+      "debug": 1
+    },
+    "provider_transient_error_count": 0,
+    "provider_transient_budget_exhausted_count": 0,
+    "provider_transient_errors_by_stage": {},
+    "provider_transient_errors_by_origin": {},
+    "provider_transient_errors": [],
+    "phase_two_triggered": true,
+    "phase_two_seed_node_id": "n1",
+    "pruned_count": 0
+  },
+  "benchmark_family": "kernelbench",
+  "level": 2,
+  "problem_id": 15,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level2/15_ConvTranspose3d_BatchNorm_Subtract.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.006860000000000001
+  },
+  "speedups": {
+    "torch_eager": 0.9970930232558141
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "normalization",
+    "summary": "Normalization computation; preserve statistics axes, epsilon, and affine state while fusing where safe.",
+    "source": "KernelBench/KernelBench/level2/15_ConvTranspose3d_BatchNorm_Subtract.py",
+    "exact_facts": null,
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "forward_stmt_3",
+      "forward_stmt_4",
+      "cuda_cu",
+      "cuda_cpp"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x = self.conv_transpose(x)",
+        "op_names": [
+          "_convtranspose3d_batchnorm_subtract",
+          "a",
+          "and",
+          "batch",
+          "batch_norm",
+          "batchnorm3d",
+          "bias",
+          "by",
+          "conv_transpose",
+          "convolutional",
+          "convtranspose3d",
+          "d"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x = self.batch_norm(x)",
+        "op_names": [
+          "_convtranspose3d_batchnorm_subtract",
+          "a",
+          "and",
+          "batch",
+          "batch_norm",
+          "batchnorm3d",
+          "bias",
+          "by",
+          "conv_transpose",
+          "convolutional",
+          "convtranspose3d",
+          "d"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_3",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)",
+        "op_names": [
+          "_convtranspose3d_batchnorm_subtract",
+          "a",
+          "and",
+          "arithmetic",
+          "batch",
+          "batch_norm",
+          "batchnorm3d",
+          "bias",
+          "by",
+          "conv_transpose",
+          "convolutional",
+          "convtranspose3d"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_4",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "return x",
+        "op_names": [
+          "_convtranspose3d_batchnorm_subtract",
+          "a",
+          "and",
+          "batch",
+          "batch_norm",
+          "batchnorm3d",
+          "bias",
+          "by",
+          "conv_transpose",
+          "convolutional",
+          "convtranspose3d",
+          "d"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "cuda_cpp",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+        "op_names": [
+          "add",
+          "cuda",
+          "custom",
+          "entrypoints",
+          "exports",
+          "extension",
+          "for",
+          "h",
+          "here",
+          "include",
+          "m",
+          "pybind"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      },
+      {
+        "anchor_name": "cuda_cu",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+        "op_names": [
+          "add",
+          "and",
+          "cuda",
+          "cuda_runtime",
+          "exported",
+          "extension",
+          "functions",
+          "h",
+          "here",
+          "include",
+          "kernels",
+          "torch"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "fuse_statistics_and_affine",
+        "summary": "fuse statistics and affine",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "compute statistics over the exact normalized axes",
+            "fuse affine transform when present"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "keep mean/variance axes explicit"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "preserve_normalization_axes",
+        "summary": "preserve normalization axes",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "compute statistics over the exact normalized axes",
+            "fuse affine transform when present"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "keep mean/variance axes explicit"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve statistics axes, epsilon, and affine parameters",
+      "avoid changing output dtype or shape"
+    ]
+  },
+  "diagnostics_profile": {
+    "enabled": true,
+    "mode": "root_ncu_v1",
+    "ncu_profile": {
+      "enabled": true,
+      "status": "ok",
+      "profiler": "ncu",
+      "kernel_name": "void convolveNd_dgrad_float_engine<float, 3, 128, 6, 8, 3, 3, 5, 0>(int, int, int, const T1 *, int, const T1 *, int, T1 *, kernel_gradNd_params, unsigned long long, int, unsigned long long, int, float, int)",
+      "row_count": 31,
+      "kernel_launch_count": 31,
+      "raw_metrics": {
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 14.24,
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": 90.09,
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": 45.11,
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": 9.38,
+        "sm__warps_active.avg.pct_of_peak_sustained_active": 31.71,
+        "launch__registers_per_thread": 122,
+        "launch__occupancy_limit_registers": 2,
+        "launch__occupancy_limit_shared_mem": 5,
+        "launch__occupancy_limit_warps": 6,
+        "gpu__time_duration.avg": 4565920,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.49,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.06,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+        "smsp__sass_branch_targets_threads_divergent.avg": 6924.31,
+        "smsp__sass_branch_targets_threads_uniform.avg": 40675.69,
+        "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+        "smsp__warps_eligible.avg": 1136789.1
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ],
+      "error": null
+    },
+    "notes": [
+      "Profiled the root candidate program with Nsight Compute."
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_07",
+        "intent": "vectorized_warp_shuffle_mean_subtract",
+        "summary": "Replace the shared-memory tree reduction in spatial_mean_subtract_kernel with a warp-shuffle based reduction (__shfl_down_sync). The current kernel uses a 256-thread block with a full __syncthreads barrier tree; warp shuffles eliminate most barriers and reduce instruction count, directly lowering the long-scoreboard stall ratio (currently 0.49). Use float4 vectorized loads to exploit the high LTS throughput (90.21%) and amortize memory latency. Each warp handles a contiguous chunk of the spatial dimension, accumulates a partial sum via shuffle reduction, and one thread per warp atomically adds to a shared accumulator.",
+        "target_anchors": [
+          "cuda_cu",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Load 4 floats at a time using float4 reinterpret_cast on the input pointer; ensure the spatial dimension D*H*W is padded or handled with a scalar tail loop for non-multiple-of-4 sizes",
+          "Use __shfl_down_sync(0xffffffff, val, offset) within each warp to reduce partial sums to lane 0",
+          "Use a small shared array of size (blockDim.x / 32) to accumulate warp-level sums before a final inter-warp reduction",
+          "After computing mean_val, write back using float4 stores in the subtraction pass",
+          "Launch with blockDim.x=128 (4 warps) and gridDim.x=N*C; this keeps register pressure lower than 256-thread blocks"
+        ],
+        "expected_gain": "8-18% speedup on the custom kernel pass; overall forward speedup limited by cuDNN convtranspose dominance but measurable at 2-5% end-to-end",
+        "risk_notes": [
+          "float4 vectorized access requires the tensor to be contiguous and 16-byte aligned; add TORCH_CHECK for contiguity",
+          "Warp shuffle mask must be 0xffffffff only when all 32 lanes are active; use a masked variant if cols is not a multiple of 32",
+          "The phase-1 selected candidate (n1) already uses a correct mean-subtract path; this is a drop-in replacement for the kernel body only"
+        ],
+        "memory_methods": [
+          "warp shuffle reduction (__shfl_down_sync)",
+          "float4 vectorized loads and stores"
+        ],
+        "mutation_axes": [
+          "cuda_cu",
+          "forward_stmt_3"
+        ],
+        "forbidden_patterns": [
+          "Do not attempt to fuse BatchNorm into this kernel â correctness failures in n4 and n5 demonstrate this is unsafe without reimplementing running-stats updates",
+          "Do not use atomicAdd to global memory for the mean accumulation â keep it in shared memory",
+          "Do not change the normalization reduction axes"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 4.0,
+          "openai-compatible": 4.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Strong backend optimization candidate: warp shuffles plus vectorized loads directly address the current reduction bottlenecks.",
+          "claude-compatible": "Strongest technical approach for improving the custom mean-subtract kernel: combines warp-shuffle reduction to cut barrier overhead (addressing the0.49 long-scoreboard stall ratio) with float4 vectorized loads to exploit the 90% LTS throughput. Replaces shared-memory tree reduction without correctness risk. 8-18% on the custom kernel is credible; 2-5% end-to-end is realistic given cuDNN dominance. Float4 alignment guard and warp-mask handling for non-multiple-of-32 cols are necessary but well-understood.",
+          "gemini-compatible": "Warp shuffle reductions and float4 memory accesses directly address the long-scoreboard stalls and memory bandwidth bottlenecks in the custom kernel."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_01",
+        "intent": "prefer_layout_and_algo_optimizations_on_the_dominant_convtranspose_kernel",
+        "summary": "The Nsight profile shows the runtime is dominated by CuDNN's ConvTranspose3D kernel, not the custom mean-subtract tail: SM throughput is only about 9.4% while L2 is about 90% and occupancy is register-limited at 122 regs/thread. Focus phase-2 on changing tensor/layout conditions so CuDNN can pick a better kernel, rather than further tail fusion.",
+        "target_anchors": [
+          "init_body",
+          "forward_stmt_1",
+          "forward_stmt_3",
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Investigate a `channels_last_3d` fast path for the module weights and activations around the conv-transpose call, while preserving external I/O shape and dtype.",
+          "If adopting NDHWC layout, either update the custom mean-subtract kernel to consume that layout directly or bypass the extension and use the native subtract path to avoid forced relayouts.",
+          "Keep the optimization gated to CUDA tensors where memory-format conversion cost is amortized by the conv-transpose kernel.",
+          "Treat the extension as secondary; the primary goal is to improve the CuDNN kernel selected for `forward_stmt_1`."
+        ],
+        "expected_gain": "Medium if CuDNN switches to a better kernel; otherwise low.",
+        "risk_notes": [
+          "`channels_last_3d` support can be shape- and version-sensitive for ConvTranspose3D.",
+          "A forced format conversion before or after BatchNorm can erase any kernel win.",
+          "Do not assume the current custom kernel's contiguous NCDHW contract still holds after a layout change."
+        ],
+        "memory_methods": [
+          "Exploit backend-native tensor layout tuning instead of adding more global-memory epilogues.",
+          "Avoid extra NCDHW<->NDHWC transposes unless the conv kernel speedup clearly dominates."
+        ],
+        "mutation_axes": [
+          "memory_format",
+          "dispatch_gating",
+          "convtranspose_call_path",
+          "tail_kernel_layout_support"
+        ],
+        "forbidden_patterns": [
+          "Do not rewrite the ConvTranspose3D math in a custom CUDA kernel.",
+          "Do not silently change output dtype or normalization axes.",
+          "Do not force `.contiguous()` after every stage just to satisfy the current extension."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 4.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Potentially high leverage because it targets the dominant ConvTranspose3D kernel, but layout changes are risky and version-sensitive.",
+          "claude-compatible": "Correctly targets the dominant bottleneck: the CuDNN ConvTranspose3D kernel consuming ~90% L2 bandwidth with only9.4% SM throughput. Channels_last_3d is the right lever to let CuDNN pick a faster algorithm. Risk-adjusted down from 5 because channels_last_3d support for ConvTranspose3d is version-sensitive and a forced layout round-trip before/after BatchNorm can negate the gain. Highest-leverage strategy if the format change sticks.",
+          "gemini-compatible": "channels_last_3d support for ConvTranspose3D is often limited or poorly optimized in cuDNN, making this a risky approach, though targeting the dominant kernel is conceptually correct."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_02",
+        "intent": "vectorize_memory_access",
+        "summary": "Enhance the spatial mean subtract kernel with `float4` vectorized memory accesses and warp-level reductions to improve memory bandwidth and L1 cache throughput.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Cast pointers to `float4*` for the bulk of the elements.",
+          "Process 4 elements per thread per iteration.",
+          "Use `__shfl_down_sync` for warp reduction before writing to shared memory.",
+          "Handle `cols % 4` remainder with scalar operations."
+        ],
+        "expected_gain": "Up to 2x speedup on the custom kernel due to reduced instruction count and better memory coalescing.",
+        "risk_notes": [
+          "Must carefully handle unaligned sizes (`cols % 4 != 0`)."
+        ],
+        "memory_methods": [
+          "float4 vectorization"
+        ],
+        "mutation_axes": [
+          "memory_access_pattern",
+          "reduction_algorithm"
+        ],
+        "forbidden_patterns": [
+          "Assuming cols is always a multiple of 4."
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 4.0,
+          "openai-compatible": 3.0,
+          "claude-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Straightforward kernel-level bandwidth optimization, but gains are limited by the non-dominant tail and alignment/remainder risk.",
+          "claude-compatible": "Technically sound float4 vectorization of the custom mean-subtract kernel. However, the custom kernel is not the dominant cost; ConvTranspose3D dominates runtime, so even a theoretical 2x speedup on the tail yields limited end-to-end gain. Low implementation risk, but low expected impact given the profiled bottleneck.",
+          "gemini-compatible": "Vectorized memory accesses (float4) and warp-level reductions are standard, highly effective optimizations for memory-bound custom CUDA kernels."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "retune_or_disable_the_custom_spatial_mean_subtract_kernel_with_shape_aware_dispatch",
+        "summary": "Phase-1 already showed the standalone fused mean-subtract kernel is slightly slower than baseline, so phase-2 should treat it as a conditional optimization rather than a universal replacement. Add shape-aware dispatch and only use the custom kernel when `(N*C, D*H*W)` is large enough to offset launch and reduction overhead.",
+        "target_anchors": [
+          "forward_stmt_3",
+          "cuda_cpp",
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Benchmark or infer thresholds from `rows=N*C` and `cols=D*H*W`; fall back to native PyTorch for small spatial volumes or when launch overhead dominates.",
+          "Specialize the CUDA path for common `cols` regimes: tiny rows should avoid block-wide shared-memory reductions; larger rows can use more aggressive vectorized or warp-level reductions.",
+          "Consider multiple kernel variants selected by `cols` instead of one fixed `SMS_BLOCK_SIZE=256` path.",
+          "Keep the forward-site logic simple: dispatch based on CUDA, dtype, contiguity, and size heuristics."
+        ],
+        "expected_gain": "Low-to-medium by avoiding regressions on the current benchmark while preserving upside on larger shapes.",
+        "risk_notes": [
+          "Poor thresholds can create noisy performance across shapes.",
+          "Too many variants can increase compile time and maintenance cost.",
+          "The benefit may be negligible because ConvTranspose3D remains the dominant cost."
+        ],
+        "memory_methods": [
+          "Avoid unnecessary kernel launches for small tensors where native reduction+broadcast is already efficient.",
+          "Use warp-shuffle reductions or vectorized loads for larger contiguous rows to reduce shared-memory traffic."
+        ],
+        "mutation_axes": [
+          "dispatch_thresholds",
+          "kernel_variant_selection",
+          "block_size",
+          "reduction_primitive"
+        ],
+        "forbidden_patterns": [
+          "Do not assume one block size fits all spatial extents.",
+          "Do not force the extension on every CUDA tensor.",
+          "Do not change the reduction axes away from `(2,3,4)`."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Pragmatic and likely useful; avoids regressions by gating the custom kernel to shapes where it actually helps.",
+          "claude-compatible": "Shape-aware dispatch is a pragmatic regression-prevention strategy rather than a performance driver. Avoids making things worse on small shapes where the current custom kernel underperforms. The expected gain is low-to-medium and capped by ConvTranspose3D dominance. Threshold tuning risk is real but contained. Useful as a complement to other strategies, not as a primary optimization.",
+          "gemini-compatible": "Shape-aware dispatch is a reasonable fallback mechanism, but it doesn't actively improve the performance of the custom kernel for the target shapes."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_03",
+        "intent": "add_an_eval_only_fused_batchnorm_plus_spatial_center_epilogue",
+        "summary": "Previous full BN fusion attempts failed correctness, which strongly suggests training-mode statistics or affine handling was mishandled. Restrict fusion to inference/eval mode only, where BatchNorm reduces to a fixed per-channel affine and can be safely fused with the per-(N,C) spatial mean subtraction in one CUDA pass.",
+        "target_anchors": [
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "cuda_cpp",
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Keep training mode on the official PyTorch path; only dispatch to the fused extension when `self.batch_norm.training` is false and running stats are valid.",
+          "Fuse the exact BatchNorm eval transform using running mean, running variance, epsilon, weight, and bias before computing the spatial mean over `(D,H,W)`.",
+          "Use a two-phase per-row implementation inside one kernel launch or one cooperative kernel structure so the normalized values are not written back before centering.",
+          "Preserve the existing model interface and place all backend wiring behind the current extension entrypoint pattern."
+        ],
+        "expected_gain": "Low-to-medium overall, but safer than training-mode BN fusion and more likely to be correct.",
+        "risk_notes": [
+          "This does not accelerate training-mode BatchNorm.",
+          "Numerical drift is possible if epsilon or affine application order differs from PyTorch.",
+          "Broadcast semantics for per-channel affine must exactly match `BatchNorm3d`."
+        ],
+        "memory_methods": [
+          "Reduce one global round trip by combining BN affine application and spatial centering in one epilogue for eval mode.",
+          "Keep reductions scoped to `(N,C)` rows so statistics axes remain exact."
+        ],
+        "mutation_axes": [
+          "mode_gated_dispatch",
+          "eval_path_fusion",
+          "affine_application_order",
+          "reduction_structure"
+        ],
+        "forbidden_patterns": [
+          "Do not fuse training-mode BatchNorm statistics unless the exact semantics are reproduced.",
+          "Do not reuse batch statistics from the wrong axes.",
+          "Do not drop epsilon, weight, or bias handling."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Good risk-adjusted idea: eval-only fusion is much safer than training-mode BN fusion and can remove a global round trip.",
+          "claude-compatible": "Eval-only BN fusion is the right scoping given that prior training-mode fusion attempts failed correctness. Risk is reduced but not eliminated: epsilon application order and per-channel affine broadcast semantics must exactly match PyTorch BatchNorm3d. Limited to inference paths, so training workloads see no benefit. Moderate expected gain, moderate risk.",
+          "gemini-compatible": "Eval-only optimizations are safe but will likely not yield any performance benefit if the benchmark evaluates the module in training mode (which is typical for KernelBench L2)."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_05",
+        "intent": "register_pressure_reduction_via_kernel_split",
+        "summary": "The dominant bottleneck is register pressure: 122 registers/thread caps occupancy at 2 warps/SM (launch__occupancy_limit_registers=2), leaving only 31.85% warp active. The convtranspose3d dgrad kernel is cuDNN-owned and cannot be edited, but the custom spatial_mean_subtract kernel also runs at high register count. Split the two-pass reduction (sum then subtract) into two separate simpler kernels, each with lower register footprint, to improve occupancy on the subtraction pass. Use __launch_bounds__ to guide nvcc register allocation on the custom kernel.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Annotate the spatial_mean_subtract_kernel with __launch_bounds__(256, 4) or __launch_bounds__(128, 8) to signal nvcc to limit registers and increase theoretical occupancy",
+          "Split into a mean_reduction_kernel (writes per-row means to a small float buffer) and a subtract_kernel (reads that buffer and subtracts), each simpler and lower in register usage",
+          "Use a separate intermediate tensor of shape [N*C] for the computed means between the two sub-kernels",
+          "Keep SMS_BLOCK_SIZE at 128 or 256 but prefer 128 since fewer threads per block with __launch_bounds__ allows more blocks resident simultaneously",
+          "For the subtract pass, use vectorized float4 loads/stores to maximize L1/LTS bandwidth given the 90% LTS utilization already observed"
+        ],
+        "expected_gain": "5-15% reduction in total forward time by raising custom kernel occupancy; the cuDNN kernel is unaffected but its latency dominates so gains are bounded",
+        "risk_notes": [
+          "Two-kernel approach adds a second launch overhead; only worthwhile if the mean buffer write is L2-resident between launches",
+          "Do not alter the normalization axes: mean must still be over dims (2,3,4) per (N,C) row",
+          "__launch_bounds__ hints are advisory; verify actual register count with -Xptxas -v in extra_cuda_cflags"
+        ],
+        "memory_methods": [
+          "shared memory reduction",
+          "vectorized float4 global loads/stores"
+        ],
+        "mutation_axes": [
+          "cuda_cu",
+          "forward_stmt_3"
+        ],
+        "forbidden_patterns": [
+          "Do not fuse BatchNorm3d statistics into the custom kernel â phase-1 correctness failures (n4, n5) confirm this path is broken",
+          "Do not change the output shape or dtype",
+          "Do not skip the mean subtraction or alter which axes are reduced"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Could help the custom kernel via lower register pressure, but added launch overhead and bounded end-to-end impact reduce value.",
+          "claude-compatible": "Register pressure reduction via __launch_bounds__ and kernel split is technically well-motivated:122 regs/thread capping occupancy at 2warps/SM is a documented profile finding. However, the custom kernel is not the dominant runtime cost, and the two-kernel split adds launch overhead that only pays off if the mean buffer stays L2-resident. Expected5-15% on the custom kernel translates to a small end-to-end delta.",
+          "gemini-compatible": "Splitting the kernel into two might reduce register pressure, but introduces additional kernel launch overhead and intermediate memory traffic which could negate the benefits."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_10",
+        "intent": "reduce_latency_in_the_tail_kernel_by_lowering_register_pressure_and_branchy_reduction_overhead",
+        "summary": "Even if the tail kernel is not dominant, it can still be cleaned up: the root profile shows high long-scoreboard stalls and a generally latency-bound regime. A lighter-weight reduction kernel can modestly reduce the post-BN overhead without touching the correctness-sensitive BN math.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Replace the pure shared-memory tree reduction style with warp-level reductions plus a small shared-memory cross-warp combine to cut synchronization overhead.",
+          "Explore processing more than one element per thread via vectorized loads when alignment permits, while keeping exact FP32 accumulation.",
+          "Tune launch geometry around the actual `cols=D*H*W` shape instead of a hardcoded 256-thread block for every case.",
+          "Keep the wrapper interface unchanged so only the backend implementation mutates."
+        ],
+        "expected_gain": "Low; primarily a cleanup path if other higher-leverage changes are not viable.",
+        "risk_notes": [
+          "Because ConvTranspose3D dominates runtime, this may not move end-to-end timing much.",
+          "Vectorization assumptions can break on misaligned tensors if not guarded.",
+          "More aggressive unrolling can increase register use and worsen occupancy."
+        ],
+        "memory_methods": [
+          "Use warp shuffles to reduce shared-memory dependence.",
+          "Vectorize contiguous row reads/writes when alignment and `cols` divisibility allow."
+        ],
+        "mutation_axes": [
+          "warp_vs_shared_reduction",
+          "vector_width",
+          "unroll_factor",
+          "threads_per_block"
+        ],
+        "forbidden_patterns": [
+          "Do not introduce approximate reductions that change numerical results materially.",
+          "Do not increase register pressure substantially beyond the current path.",
+          "Do not add atomics across rows or channels."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 2.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "General tail-kernel cleanup with modest upside; unlikely to move the overall benchmark much.",
+          "claude-compatible": "Explicitly labeled as a 'low expected gain cleanup path' and is functionally a less-specific overlap of strategy_07 (warp shuffles, vectorized loads, launch geometry tuning). Contains no novel mechanism beyond what strategy_07 already covers more precisely. Risk of increased register pressure from aggressive unrolling is noted. Only warranted if higher-leverage strategies are unavailable or already exhausted.",
+          "gemini-compatible": "Solid approach focusing on reducing latency and synchronization overhead via warp-level primitives and vectorization."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "shared_memory_caching",
+        "summary": "Cache the row in shared memory if its size is small enough, avoiding the second global memory read during the subtraction phase.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Add a dynamic shared memory allocation.",
+          "In the kernel, check if `cols * sizeof(float) <= max_shared_memory`.",
+          "If so, load the row into shared memory, compute the mean, and write back from shared memory to global memory.",
+          "Keep the current two-pass global memory approach as a fallback for large `cols`."
+        ],
+        "expected_gain": "Halves global memory reads for small spatial dimensions.",
+        "risk_notes": [
+          "Requires dynamic shared memory and a fallback for large `cols`."
+        ],
+        "memory_methods": [
+          "shared memory caching"
+        ],
+        "mutation_axes": [
+          "memory_hierarchy_utilization"
+        ],
+        "forbidden_patterns": [
+          "Exceeding maximum shared memory per block."
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 3.0,
+          "openai-compatible": 2.0,
+          "claude-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Only helps for small tensors that fit shared memory; narrow applicability makes it lower value.",
+          "claude-compatible": "Shared memory caching of the row is only beneficial when cols*sizeof(float) fits within shared memory limits, which is a narrow regime for3D spatial tensors. Requires dynamic shmem allocation and a fallback code path, adding complexity for a benefit that is already bounded by the tail kernel's minor contribution to total runtime. The strategy duplicates some of strategy_07's intent but with less general applicability.",
+          "gemini-compatible": "Shared memory caching is a good idea, but spatial dimensions in 3D convolutions can easily exceed shared memory limits, making the fallback path frequently used."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_09",
+        "intent": "fuse_eval_batchnorm",
+        "summary": "Fuse the BatchNorm operation and spatial mean subtraction into a single custom kernel when the module is in evaluation mode.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "In `forward`, check `if not self.batch_norm.training:`.",
+          "If true, call a custom kernel passing `x`, `weight`, `bias`, `running_mean`, `running_var`, and `eps`.",
+          "The kernel applies batch norm, computes the spatial mean, and subtracts it in one pass."
+        ],
+        "expected_gain": "Eliminates one full read/write pass over the tensor.",
+        "risk_notes": [
+          "Only provides speedup in eval mode.",
+          "Must correctly implement BatchNorm inference math."
+        ],
+        "memory_methods": [
+          "kernel fusion"
+        ],
+        "mutation_axes": [
+          "operator_fusion"
+        ],
+        "forbidden_patterns": [
+          "Fusing in training mode without handling batch statistics."
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 2.0,
+          "openai-compatible": 3.0,
+          "claude-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Reasonable eval-only fusion, but it is less specific and less complete than the safer fused-path strategy above.",
+          "claude-compatible": "Largely overlaps with strategy_03 in intent (eval-mode BN + spatial center fusion) but is less carefully specified on the correctness requirements. The 'eliminates one full read/write pass' gain is real only for eval mode, and the risk notes are underspecified compared to strategy_03. Superseded by strategy_03's more detailed treatment; adding both would be redundant without differentiated implementation.",
+          "gemini-compatible": "Similar to strategy_03, fusing only in eval mode is unlikely to improve benchmark metrics if training mode is tested."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "inplace_operation",
+        "summary": "Modify the custom CUDA extension to perform the spatial mean subtraction in-place, avoiding the allocation of a new output tensor.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Remove `torch::empty_like(x)` in the C++ wrapper.",
+          "Pass `x.data_ptr<float>()` as both input and output to the kernel.",
+          "Return `x` directly."
+        ],
+        "expected_gain": "Reduces memory allocation overhead and halves the memory write bandwidth.",
+        "risk_notes": [
+          "Could cause issues if the tensor is required for backward pass and autograd detects in-place modification, though BatchNorm typically saves its input, not output."
+        ],
+        "memory_methods": [
+          "in-place modification"
+        ],
+        "mutation_axes": [
+          "memory_allocation"
+        ],
+        "forbidden_patterns": [
+          "Allocating new tensors for the output."
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 2.0,
+          "openai-compatible": 1.0,
+          "claude-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "In-place modification is high risk for autograd/correctness and offers limited benefit compared with safer options.",
+          "claude-compatible": "In-place modification is the simplest change in the portfolio. Halves global memory writes for the tail kernel and avoids an allocation. Risk is real but narrow: autograd graph invalidation on in-place ops during training. If the module is only used in eval or the output is not observed by autograd before the in-place op, this is safe. Limited end-to-end impact since the tail is not dominant.",
+          "gemini-compatible": "In-place modification of the BatchNorm output in a custom C++ extension without careful autograd handling (marking dirty, etc.) is highly likely to cause correctness failures in the backward pass."
+        },
+        "priority": 4
+      }
+    ],
+    "proposal_errors": {},
+    "review_errors": {},
+    "deliberation_round": 1
+  },
+  "phase_transition": {
+    "source_phase": 1,
+    "target_phase": 2,
+    "split_attempts": 5,
+    "trigger_attempt": 5,
+    "root": {
+      "node_id": "root",
+      "strategy_name": null,
+      "runtime": 0.00688,
+      "speedup": 0.9970930232558141,
+      "plan_summary": null,
+      "changed_regions": [],
+      "lineage": [
+        "root"
+      ]
+    },
+    "selected": {
+      "node_id": "n1",
+      "strategy_name": "strategy_03",
+      "runtime": 0.0070999999999999995,
+      "speedup": 0.9661971830985917,
+      "plan_summary": "Implement a custom CUDA kernel that fuses the spatial mean reduction and subtraction for the post-BatchNorm tensor, replacing the separate `torch.mean(..., keepdim=True)` and broadcast subtraction with one extension call.",
+      "changed_regions": [
+        "cuda_cpp",
+        "cuda_cu",
+        "forward_stmt_3"
+      ],
+      "lineage": [
+        "root",
+        "n1"
+      ]
+    },
+    "attempts": [
+      {
+        "node_id": "n1",
+        "parent_id": "root",
+        "strategy_name": "strategy_03",
+        "attempt_mode": "explore",
+        "mutation_family": "epilogue_mean_subtract_fusion",
+        "single_change_focus": "Replace the PyTorch spatial mean-subtract expression with a single custom CUDA extension call that computes each `(N,C)` row mean and subtracts it in one kernel.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0070999999999999995,
+        "speedup": 0.9661971830985917,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Implement a custom CUDA kernel that fuses the spatial mean reduction and subtraction for the post-BatchNorm tensor, replacing the separate `torch.mean(..., keepdim=True)` and broadcast subtraction with one extension call."
+      },
+      {
+        "node_id": "n2",
+        "parent_id": "n1",
+        "strategy_name": "strategy_01",
+        "attempt_mode": "explore",
+        "mutation_family": "bn_center_fusion",
+        "single_change_focus": "Fuse BatchNorm3d output centering into a single custom CUDA post-processing kernel.",
+        "changed_regions": [
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "cuda_cpp",
+          "cuda_cu"
+        ],
+        "compile_ok": false,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "compile",
+        "failure_type": "region_apply_failed",
+        "plan_summary": "Fuse BatchNorm3d and the subtract-mean step into the CUDA path so the conv-transpose output is normalized once before any extra global write/read round trip."
+      },
+      {
+        "node_id": "n3",
+        "parent_id": "n2",
+        "strategy_name": "strategy_01",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "single_change_focus": "small_local_repair",
+        "changed_regions": [
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "cuda_cpp",
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00725,
+        "speedup": 0.9448275862068964,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Fuse BatchNorm3d and the subtract-mean step into the CUDA path so the conv-transpose output is normalized once before any extra global write/read round trip."
+      },
+      {
+        "node_id": "n4",
+        "parent_id": "root",
+        "strategy_name": "strategy_01",
+        "attempt_mode": "explore",
+        "mutation_family": "norm_tail_fusion",
+        "single_change_focus": "Replace the separate BatchNorm3d and spatial mean-subtract steps with one CUDA extension call that normalizes the conv-transpose output and subtracts its spatial mean in a single pass.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "compile_ok": true,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "plan_summary": "Fuse BatchNorm3d and the trailing spatial mean subtraction into one CUDA epilogue after ConvTranspose3D so the normalized tensor is written once instead of twice."
+      },
+      {
+        "node_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_02",
+        "attempt_mode": "explore",
+        "mutation_family": "postnorm_fusion",
+        "single_change_focus": "Fuse the BatchNorm3d epilogue and mean-subtract epilogue into one CUDA kernel behind the existing extension entrypoint.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4"
+        ],
+        "compile_ok": true,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "plan_summary": "Fuse BatchNorm3d and the final spatial subtract into one CUDA post-conv kernel so the ConvTranspose3d output is normalized once before any extra global memory round trip."
+      }
+    ],
+    "trace_summary": "flat=n1:Replace the PyTorch spatial mean-subtract expression with a single custom CUDA extension call that computes each `(N,C)` row mean and subtracts it in one kernel.:0.966x; n3:small_local_repair:0.945x | failed=n2:Fuse BatchNorm3d output centering into a single custom CUDA post-processing kernel.:region_apply_failed; n4:Replace the separate BatchNorm3d and spatial mean-subtract steps with one CUDA extension call that normalizes the conv-transpose output and subtracts its spatial mean in a single pass.:correctness_error; n5:Fuse the BatchNorm3d epilogue and mean-subtract epilogue into one CUDA kernel behind the existing extension entrypoint.:correctness_error",
+    "root_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void convolveNd_dgrad_float_engine<float, 3, 128, 6, 8, 3, 3, 5, 0>(int, int, int, const T1 *, int, const T1 *, int, T1 *, kernel_gradNd_params, unsigned long long, int, unsigned long long, int, float, int)",
+        "row_count": 31,
+        "kernel_launch_count": 31,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 14.24,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 90.09,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 45.11,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 9.38,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 31.71,
+          "launch__registers_per_thread": 122,
+          "launch__occupancy_limit_registers": 2,
+          "launch__occupancy_limit_shared_mem": 5,
+          "launch__occupancy_limit_warps": 6,
+          "gpu__time_duration.avg": 4565920,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.49,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.06,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 6924.31,
+          "smsp__sass_branch_targets_threads_uniform.avg": 40675.69,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 1136789.1
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "selected_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void convolveNd_dgrad_float_engine<float, 3, 128, 6, 8, 3, 3, 5, 0>(int, int, int, const T1 *, int, const T1 *, int, T1 *, kernel_gradNd_params, unsigned long long, int, unsigned long long, int, float, int)",
+        "row_count": 26,
+        "kernel_launch_count": 26,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 14.18,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 90.21,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 45.18,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 9.4,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 31.85,
+          "launch__registers_per_thread": 122,
+          "launch__occupancy_limit_registers": 2,
+          "launch__occupancy_limit_shared_mem": 5,
+          "launch__occupancy_limit_warps": 6,
+          "gpu__time_duration.avg": 4587520,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.49,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.06,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 6924.31,
+          "smsp__sass_branch_targets_threads_uniform.avg": 40675.69,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 1136247.46
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "diagnostics_delta": {
+      "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": -0.0600000000000005,
+      "gpu__time_duration.avg": 21600,
+      "l1tex__throughput.avg.pct_of_peak_sustained_active": 0.07000000000000028,
+      "launch__occupancy_limit_registers": 0,
+      "launch__occupancy_limit_shared_mem": 0,
+      "launch__occupancy_limit_warps": 0,
+      "launch__registers_per_thread": 0,
+      "lts__throughput.avg.pct_of_peak_sustained_elapsed": 0.11999999999999034,
+      "sm__throughput.avg.pct_of_peak_sustained_elapsed": 0.019999999999999574,
+      "sm__warps_active.avg.pct_of_peak_sustained_active": 0.14000000000000057,
+      "smsp__sass_branch_targets_threads_divergent.avg": 0.0,
+      "smsp__sass_branch_targets_threads_uniform.avg": 0.0,
+      "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+      "smsp__warps_eligible.avg": -541.6400000001304
+    }
+  },
+  "feedback_state": {
+    "total_attempts": 11,
+    "compile_rate": 0.9090909090909091,
+    "correct_rate": 0.6363636363636364,
+    "best_speedup": 0.9970930232558141,
+    "best_strategy_name": null,
+    "phase": "exploration",
+    "current_champion_id": "root",
+    "current_champion_speedup": 0.9970930232558141,
+    "plateau_detected": false,
+    "recent_improvement_deltas": [
+      0.01237424547283672,
+      0.018102084617498182,
+      0.0032609357401599537
+    ],
+    "recent_regression_deltas": [
+      -0.030895840157222354,
+      -0.05900038299502075,
+      0.0
+    ],
+    "recent_successful_mutation_families": [
+      "dispatch_threshold",
+      "warp_shuffle_vectorized_reduction",
+      "split_reduction_lower_register_pressure"
+    ],
+    "recent_failed_mutation_families": [
+      "layout_dispatch",
+      "epilogue_mean_subtract_fusion"
+    ],
+    "last_mutation_outcome": "regressed_or_flat",
+    "recent_attempts": [
+      {
+        "attempt_id": "n4",
+        "parent_id": "root",
+        "strategy_name": "strategy_01",
+        "mode": "explore",
+        "mutation_family": "norm_tail_fusion",
+        "speedup": null,
+        "parent_speedup": 0.9970930232558141,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "single_change_focus": "Replace the separate BatchNorm3d and spatial mean-subtract steps with one CUDA extension call that normalizes the conv-transpose output and subtracts its spatial mean in a single pass."
+      },
+      {
+        "attempt_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_02",
+        "mode": "explore",
+        "mutation_family": "postnorm_fusion",
+        "speedup": null,
+        "parent_speedup": 0.9448275862068964,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "single_change_focus": "Fuse the BatchNorm3d epilogue and mean-subtract epilogue into one CUDA kernel behind the existing extension entrypoint."
+      },
+      {
+        "attempt_id": "phase2_n1",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_04",
+        "mode": "explore",
+        "mutation_family": "dispatch_threshold",
+        "speedup": 0.9785714285714284,
+        "parent_speedup": 0.9661971830985917,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the unconditional CUDA-extension dispatch in `forward_stmt_3` with a size-gated dispatch that falls back to native `x - torch.mean(x, dim=(2, 3, 4), keepdim=True)` unless the spatial volume and total elements exceed a conservative threshold."
+      },
+      {
+        "attempt_id": "phase2_n2",
+        "parent_id": "phase2_n1",
+        "strategy_name": "strategy_01",
+        "mode": "explore",
+        "mutation_family": "layout_dispatch",
+        "speedup": 0.9195710455764077,
+        "parent_speedup": 0.9785714285714284,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Introduce a CUDA-only `channels_last_3d` conv-transpose fast path and bypass the custom spatial-mean-subtract extension when that layout is active."
+      },
+      {
+        "attempt_id": "phase2_n3",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_07",
+        "mode": "explore",
+        "mutation_family": "warp_shuffle_vectorized_reduction",
+        "speedup": 0.9376731301939059,
+        "parent_speedup": 0.9195710455764077,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the existing shared-memory tree reduction in `spatial_mean_subtract_kernel` with a warp-shuffle based reduction and vectorized float4 row traversal, keeping the exported entrypoint and forward dispatch unchanged."
+      },
+      {
+        "attempt_id": "phase2_n4",
+        "parent_id": "phase2_n1",
+        "strategy_name": "strategy_05",
+        "mode": "explore",
+        "mutation_family": "split_reduction_launch_bounds",
+        "speedup": null,
+        "parent_speedup": 0.9785714285714284,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "runtime",
+        "failure_type": "acceleratorerror",
+        "single_change_focus": "Split the current one-kernel mean-subtract implementation into a dedicated row-sum reduction kernel plus a simpler subtract kernel, and cap the block with launch bounds to encourage lower register usage."
+      },
+      {
+        "attempt_id": "phase2_n5",
+        "parent_id": "phase2_n3",
+        "strategy_name": "strategy_05",
+        "mode": "explore",
+        "mutation_family": "split_reduction_lower_register_pressure",
+        "speedup": 0.9409340659340658,
+        "parent_speedup": 0.9376731301939059,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the single fused reduction/subtraction kernel with a two-stage mean-reduction plus subtract implementation inside the CUDA extension, while keeping the Python dispatch and extension entrypoint unchanged."
+      },
+      {
+        "attempt_id": "phase2_root",
+        "parent_id": "n1",
+        "strategy_name": "strategy_03",
+        "mode": "explore",
+        "mutation_family": "epilogue_mean_subtract_fusion",
+        "speedup": 0.9661971830985917,
+        "parent_speedup": 0.9661971830985917,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the PyTorch spatial mean-subtract expression with a single custom CUDA extension call that computes each `(N,C)` row mean and subtracts it in one kernel."
+      }
+    ],
+    "champion": {
+      "node_id": "root",
+      "speedup": 0.9970930232558141,
+      "strategy_name": null,
+      "mutation_family": null,
+      "lineage": [
+        "root"
+      ],
+      "recent_positive_mutations": [
+        {
+          "attempt_id": "phase2_n1",
+          "strategy_name": "strategy_04",
+          "mode": "explore",
+          "mutation_family": "dispatch_threshold",
+          "speedup": 0.9785714285714284,
+          "parent_speedup": 0.9661971830985917,
+          "single_change_focus": "Replace the unconditional CUDA-extension dispatch in `forward_stmt_3` with a size-gated dispatch that falls back to native `x - torch.mean(x, dim=(2, 3, 4), keepdim=True)` unless the spatial volume and total elements exceed a conservative threshold."
+        },
+        {
+          "attempt_id": "phase2_n3",
+          "strategy_name": "strategy_07",
+          "mode": "explore",
+          "mutation_family": "warp_shuffle_vectorized_reduction",
+          "speedup": 0.9376731301939059,
+          "parent_speedup": 0.9195710455764077,
+          "single_change_focus": "Replace the existing shared-memory tree reduction in `spatial_mean_subtract_kernel` with a warp-shuffle based reduction and vectorized float4 row traversal, keeping the exported entrypoint and forward dispatch unchanged."
+        },
+        {
+          "attempt_id": "phase2_n5",
+          "strategy_name": "strategy_05",
+          "mode": "explore",
+          "mutation_family": "split_reduction_lower_register_pressure",
+          "speedup": 0.9409340659340658,
+          "parent_speedup": 0.9376731301939059,
+          "single_change_focus": "Replace the single fused reduction/subtraction kernel with a two-stage mean-reduction plus subtract implementation inside the CUDA extension, while keeping the Python dispatch and extension entrypoint unchanged."
+        }
+      ],
+      "recent_negative_mutations": [
+        {
+          "attempt_id": "phase2_n2",
+          "strategy_name": "strategy_01",
+          "mode": "explore",
+          "mutation_family": "layout_dispatch",
+          "speedup": 0.9195710455764077,
+          "parent_speedup": 0.9785714285714284,
+          "single_change_focus": "Introduce a CUDA-only `channels_last_3d` conv-transpose fast path and bypass the custom spatial-mean-subtract extension when that layout is active."
+        },
+        {
+          "attempt_id": "phase2_root",
+          "strategy_name": "strategy_03",
+          "mode": "explore",
+          "mutation_family": "epilogue_mean_subtract_fusion",
+          "speedup": 0.9661971830985917,
+          "parent_speedup": 0.9661971830985917,
+          "single_change_focus": "Replace the PyTorch spatial mean-subtract expression with a single custom CUDA extension call that computes each `(N,C)` row mean and subtracts it in one kernel."
+        }
+      ],
+      "plateau_detected": false,
+      "lineage_plateau_depth": 0
+    }
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "user_helpers",
+      "region_role": "helper",
+      "start_line": 36,
+      "end_line": 37,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 40,
+      "end_line": 45,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 49,
+      "end_line": 55,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 64,
+      "end_line": 67,
+      "source_excerpt": "self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\nself.batch_norm = nn.BatchNorm3d(out_channels)",
+      "source_hash": "e9be6fe7f97b"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 70,
+      "end_line": 74,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\nx = self.conv_transpose(x)",
+      "source_hash": "e02149985fc6"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 75,
+      "end_line": 77,
+      "source_excerpt": "x = self.batch_norm(x)",
+      "source_hash": "06ae1e6b5e93"
+    },
+    {
+      "anchor_name": "forward_stmt_3",
+      "region_role": "forward",
+      "start_line": 78,
+      "end_line": 80,
+      "source_excerpt": "x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)",
+      "source_hash": "4828ee7c01dc"
+    },
+    {
+      "anchor_name": "forward_stmt_4",
+      "region_role": "forward",
+      "start_line": 81,
+      "end_line": 83,
+      "source_excerpt": "return x",
+      "source_hash": "03c387736bb5"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p15_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A 3D convolutional transpose layer followed by Batch Normalization and subtraction.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.batch_norm = nn.BatchNorm3d(out_channels)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.batch_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1",
+        "n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00688,
+      "score": 0.00688,
+      "logs": [
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=357506",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_repair_plus_l2_p1_p30_claude_cuda_main_20260718_222714/l2_p1_p30_gpu4/15_L2_P15_Auto_P15_20260719_071133/eval_traces/20260719_071134_357479_dfaeab53_kernelbench_l2_15_15_convtranspose3d_batchnorm_subtract"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.006860000000000001,
+      "speedup": 0.9970930232558141,
+      "reference_runtimes": {
+        "torch_eager": 0.006860000000000001
+      },
+      "speedups": {
+        "torch_eager": 0.9970930232558141
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": null,
+      "single_change_focus": null,
+      "mutation_family": null,
+      "target_metric": null
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p15_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x);\n\ntorch::Tensor spatial_mean_subtract(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D (N, C, D, H, W)\");\n    return spatial_mean_subtract_cuda(x);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"spatial_mean_subtract\", &spatial_mean_subtract, \"Spatial mean subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n#define SMS_BLOCK_SIZE 256\n\n__global__ void spatial_mean_subtract_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    int cols\n) {\n    int row = blockIdx.x;\n    const float* row_in  = input  + (long long)row * cols;\n    float*       row_out = output + (long long)row * cols;\n\n    __shared__ float sdata[SMS_BLOCK_SIZE];\n\n    float sum = 0.0f;\n    for (int i = threadIdx.x; i < cols; i += SMS_BLOCK_SIZE) {\n        sum += row_in[i];\n    }\n    sdata[threadIdx.x] = sum;\n    __syncthreads();\n\n    for (int s = SMS_BLOCK_SIZE / 2; s > 0; s >>= 1) {\n        if (threadIdx.x < s) {\n            sdata[threadIdx.x] += sdata[threadIdx.x + s];\n        }\n        __syncthreads();\n    }\n\n    __shared__ float mean_val;\n    if (threadIdx.x == 0) {\n        mean_val = sdata[0] / (float)cols;\n    }\n    __syncthreads();\n\n    for (int i = threadIdx.x; i < cols; i += SMS_BLOCK_SIZE) {\n        row_out[i] = row_in[i] - mean_val;\n    }\n}\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"Input must be contiguous\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"Input must be float32\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    int D = x.size(2);\n    int H = x.size(3);\n    int W = x.size(4);\n\n    int rows = N * C;\n    int cols = D * H * W;\n\n    auto output = torch::empty_like(x);\n\n    spatial_mean_subtract_kernel<<<rows, SMS_BLOCK_SIZE>>>(\n        x.data_ptr<float>(),\n        output.data_ptr<float>(),\n        cols\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A 3D convolutional transpose layer followed by Batch Normalization and subtraction.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.batch_norm = nn.BatchNorm3d(out_channels)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.batch_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous():\n            x = _stark_get_extension().spatial_mean_subtract(x)\n        else:\n            x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2",
+        "phase2_root"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Implement a custom CUDA kernel that fuses the spatial mean reduction and subtraction for the post-BatchNorm tensor, replacing the separate `torch.mean(..., keepdim=True)` and broadcast subtraction with one extension call.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ declaration for a CUDA function `torch::Tensor spatial_mean_subtract_cuda(torch::Tensor x);`, add a small C++ wrapper `torch::Tensor spatial_mean_subtract(torch::Tensor x)` that checks `x.is_cuda()`, `x.dim() == 5`, and forwards to the CUDA implementation, and export it in `PYBIND11_MODULE` as `m.def(\"spatial_mean_subtract\", &spatial_mean_subtract, \"Spatial mean subtract (CUDA)\");`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a CUDA implementation of `torch::Tensor spatial_mean_subtract_cuda(torch::Tensor x)` for contiguous CUDA float tensors shaped `(N,C,D,H,W)`: flatten logical rows to `rows = N*C` and `cols = D*H*W`, allocate an output tensor with `torch::empty_like(x)`, launch one block per row, use block reduction in shared memory to sum that row across `cols`, divide by `cols` to get the mean, then in the same kernel write `out[row,col] = x[row,col] - mean`. Add runtime checks for CUDA, contiguity, dtype float32, and handle arbitrary `cols` with strided loops and shared-memory reduction.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace `x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)` with a guarded extension call such as: if `x.is_cuda`, `x.dtype == torch.float32`, and `x.is_contiguous()`, call `_stark_get_extension().spatial_mean_subtract(x)`; otherwise keep the existing PyTorch fallback expression unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0070999999999999995,
+      "score": 0.0070999999999999995,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=358202",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_repair_plus_l2_p1_p30_claude_cuda_main_20260718_222714/l2_p1_p30_gpu4/15_L2_P15_Auto_P15_20260719_071133/eval_traces/20260719_071538_357479_edfe9d12_kernelbench_l2_15_15_convtranspose3d_batchnorm_subtract"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.006860000000000001,
+      "speedup": 0.9661971830985917,
+      "reference_runtimes": {
+        "torch_eager": 0.006860000000000001
+      },
+      "speedups": {
+        "torch_eager": 0.9661971830985917
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "A fused CUDA rowwise mean-subtract kernel over flattened `(N*C, D*H*W)` rows will outperform the separate `torch.mean` plus broadcast subtraction by reducing kernel launch overhead and global memory traffic for the normalization epilogue.",
+      "single_change_focus": "Replace the PyTorch spatial mean-subtract expression with a single custom CUDA extension call that computes each `(N,C)` row mean and subtracts it in one kernel.",
+      "mutation_family": "epilogue_mean_subtract_fusion",
+      "target_metric": "speedup"
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p15_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x);\n\ntorch::Tensor spatial_mean_subtract(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D (N, C, D, H, W)\");\n    return spatial_mean_subtract_cuda(x);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"spatial_mean_subtract\", &spatial_mean_subtract, \"Spatial mean subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n#define SMS_BLOCK_SIZE 256\n\n__global__ void spatial_mean_subtract_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    int cols\n) {\n    int row = blockIdx.x;\n    const float* row_in  = input  + (long long)row * cols;\n    float*       row_out = output + (long long)row * cols;\n\n    __shared__ float sdata[SMS_BLOCK_SIZE];\n\n    float sum = 0.0f;\n    for (int i = threadIdx.x; i < cols; i += SMS_BLOCK_SIZE) {\n        sum += row_in[i];\n    }\n    sdata[threadIdx.x] = sum;\n    __syncthreads();\n\n    for (int s = SMS_BLOCK_SIZE / 2; s > 0; s >>= 1) {\n        if (threadIdx.x < s) {\n            sdata[threadIdx.x] += sdata[threadIdx.x + s];\n        }\n        __syncthreads();\n    }\n\n    __shared__ float mean_val;\n    if (threadIdx.x == 0) {\n        mean_val = sdata[0] / (float)cols;\n    }\n    __syncthreads();\n\n    for (int i = threadIdx.x; i < cols; i += SMS_BLOCK_SIZE) {\n        row_out[i] = row_in[i] - mean_val;\n    }\n}\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"Input must be contiguous\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"Input must be float32\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    int D = x.size(2);\n    int H = x.size(3);\n    int W = x.size(4);\n\n    int rows = N * C;\n    int cols = D * H * W;\n\n    auto output = torch::empty_like(x);\n\n    spatial_mean_subtract_kernel<<<rows, SMS_BLOCK_SIZE>>>(\n        x.data_ptr<float>(),\n        output.data_ptr<float>(),\n        cols\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A 3D convolutional transpose layer followed by Batch Normalization and subtraction.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.batch_norm = nn.BatchNorm3d(out_channels)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.batch_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous():\n            x = _stark_get_extension().spatial_mean_subtract(x)\n        else:\n            x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Fuse BatchNorm3d and the subtract-mean step into the CUDA path so the conv-transpose output is normalized once before any extra global write/read round trip.",
+      "anchor_edits": [
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the separate `self.batch_norm(x)` call with a fused CUDA extension entrypoint that takes the conv-transpose output and returns the BatchNorm3d-normalized tensor ready for centering.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the explicit `torch.mean(...); subtract` expression with a no-op identity line because centering will already be performed inside the fused CUDA kernel.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Export a new fused binding such as `batchnorm_center_cuda(...)` alongside the existing extension wiring, keeping the ModelNew interface unchanged and routing the hot path through the fused entrypoint.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Implement a CUDA kernel that computes BatchNorm3d statistics over the exact `(N,D,H,W)` axes, applies affine scale/bias, folds the spatial centering step into the same epilogue, and writes the final tensor once.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "failed to apply region patch: region 'forward_stmt_4' is not active in current refinement policy"
+      ],
+      "failure_type": "region_apply_failed",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "explore",
+      "performance_hypothesis": "If BatchNorm3d normalization and the spatial mean subtraction are fused into one CUDA kernel, the normalized tensor will be written once instead of twice, reducing memory traffic and improving end-to-end latency.",
+      "single_change_focus": "Fuse BatchNorm3d output centering into a single custom CUDA post-processing kernel.",
+      "mutation_family": "bn_center_fusion",
+      "target_metric": "speedup"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p15_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x);\n\ntorch::Tensor spatial_mean_subtract(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D (N, C, D, H, W)\");\n    return spatial_mean_subtract_cuda(x);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"spatial_mean_subtract\", &spatial_mean_subtract, \"Spatial mean subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n#define SMS_BLOCK_SIZE 256\n\n__global__ void spatial_mean_subtract_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    int cols\n) {\n    int row = blockIdx.x;\n    const float* row_in = input + (long long)row * cols;\n    float* row_out = output + (long long)row * cols;\n\n    __shared__ float sdata[SMS_BLOCK_SIZE];\n\n    float sum = 0.0f;\n    for (int i = threadIdx.x; i < cols; i += SMS_BLOCK_SIZE) {\n        sum += row_in[i];\n    }\n    sdata[threadIdx.x] = sum;\n    __syncthreads();\n\n    for (int s = SMS_BLOCK_SIZE / 2; s > 0; s >>= 1) {\n        if (threadIdx.x < s) {\n            sdata[threadIdx.x] += sdata[threadIdx.x + s];\n        }\n        __syncthreads();\n    }\n\n    __shared__ float mean_val;\n    if (threadIdx.x == 0) {\n        mean_val = sdata[0] / (float)cols;\n    }\n    __syncthreads();\n\n    for (int i = threadIdx.x; i < cols; i += SMS_BLOCK_SIZE) {\n        row_out[i] = row_in[i] - mean_val;\n    }\n}\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"Input must be contiguous\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"Input must be float32\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    int D = x.size(2);\n    int H = x.size(3);\n    int W = x.size(4);\n\n    int rows = N * C;\n    int cols = D * H * W;\n\n    auto output = torch::empty_like(x);\n    spatial_mean_subtract_kernel<<<rows, SMS_BLOCK_SIZE>>>(\n        x.data_ptr<float>(),\n        output.data_ptr<float>(),\n        cols\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A 3D convolutional transpose layer followed by Batch Normalization and subtraction.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.batch_norm = nn.BatchNorm3d(out_channels)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.batch_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if x.is_cuda and x.dtype == torch.float32:\n            x = _stark_get_extension().spatial_mean_subtract(x.contiguous())\n        else:\n            x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Fuse BatchNorm3d and the subtract-mean step into the CUDA path so the conv-transpose output is normalized once before any extra global write/read round trip.",
+      "anchor_edits": [
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the separate `self.batch_norm(x)` call with a fused CUDA extension entrypoint that takes the conv-transpose output and returns the BatchNorm3d-normalized tensor ready for centering.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the explicit `torch.mean(...); subtract` expression with a no-op identity line because centering will already be performed inside the fused CUDA kernel.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Export a new fused binding such as `batchnorm_center_cuda(...)` alongside the existing extension wiring, keeping the ModelNew interface unchanged and routing the hot path through the fused entrypoint.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Implement a CUDA kernel that computes BatchNorm3d statistics over the exact `(N,D,H,W)` axes, applies affine scale/bias, folds the spatial centering step into the same epilogue, and writes the final tensor once.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00725,
+      "score": 0.00725,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "normalized_python_region_indent:forward_stmt_3",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=358659",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_repair_plus_l2_p1_p30_claude_cuda_main_20260718_222714/l2_p1_p30_gpu4/15_L2_P15_Auto_P15_20260719_071133/eval_traces/20260719_072020_357479_38bf8400_kernelbench_l2_15_15_convtranspose3d_batchnorm_subtract"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.006849999999999999,
+      "speedup": 0.9448275862068964,
+      "reference_runtimes": {
+        "torch_eager": 0.006849999999999999
+      },
+      "speedups": {
+        "torch_eager": 0.9448275862068964
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p15_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_batchnorm3d_meansub_cuda(\n    torch::Tensor x,\n    torch::Tensor running_mean,\n    torch::Tensor running_var,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    bool training\n);\n\ntorch::Tensor fused_batchnorm3d_meansub(\n    torch::Tensor x,\n    torch::Tensor running_mean,\n    torch::Tensor running_var,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    bool training\n) {\n    TORCH_CHECK(x.is_cuda(), \"x must be CUDA tensor\");\n    TORCH_CHECK(x.dim() == 5, \"x must be 5D (N,C,D,H,W)\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    return fused_batchnorm3d_meansub_cuda(x, running_mean, running_var, weight, bias, eps, training);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_batchnorm3d_meansub\", &fused_batchnorm3d_meansub, \"Fused BatchNorm3d + spatial mean subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n#define BLOCK_SIZE 256\n#define WARP_SIZE 32\n\n__inline__ __device__ float warpReduceSum(float val) {\n    for (int offset = WARP_SIZE / 2; offset > 0; offset /= 2) {\n        val += __shfl_down_sync(0xffffffff, val, offset);\n    }\n    return val;\n}\n\n__global__ void fused_batchnorm3d_meansub_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    const float* __restrict__ running_mean,\n    const float* __restrict__ running_var,\n    const float* __restrict__ weight,\n    const float* __restrict__ bias,\n    int N, int C, int spatial_size,\n    float eps\n) {\n    int nc = blockIdx.x;\n    int n = nc / C;\n    int c = nc % C;\n\n    const float* in_ptr = input + (long long)nc * spatial_size;\n    float* out_ptr = output + (long long)nc * spatial_size;\n\n    float rm = running_mean[c];\n    float rv = running_var[c];\n    float w = weight[c];\n    float b = bias[c];\n    float inv_std = rsqrtf(rv + eps);\n\n    __shared__ float shared_sum[BLOCK_SIZE / WARP_SIZE];\n\n    float local_sum = 0.0f;\n    for (int i = threadIdx.x; i < spatial_size; i += BLOCK_SIZE) {\n        float val = in_ptr[i];\n        float normalized = (val - rm) * inv_std * w + b;\n        out_ptr[i] = normalized;\n        local_sum += normalized;\n    }\n\n    float warp_sum = warpReduceSum(local_sum);\n    int lane = threadIdx.x % WARP_SIZE;\n    int wid = threadIdx.x / WARP_SIZE;\n\n    if (lane == 0) {\n        shared_sum[wid] = warp_sum;\n    }\n    __syncthreads();\n\n    float block_sum = 0.0f;\n    if (threadIdx.x < BLOCK_SIZE / WARP_SIZE) {\n        block_sum = shared_sum[threadIdx.x];\n    }\n    block_sum = warpReduceSum(block_sum);\n\n    __shared__ float spatial_mean;\n    if (threadIdx.x == 0) {\n        spatial_mean = block_sum / (float)spatial_size;\n    }\n    __syncthreads();\n\n    for (int i = threadIdx.x; i < spatial_size; i += BLOCK_SIZE) {\n        out_ptr[i] -= spatial_mean;\n    }\n}\n\ntorch::Tensor fused_batchnorm3d_meansub_cuda(\n    torch::Tensor x,\n    torch::Tensor running_mean,\n    torch::Tensor running_var,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double eps,\n    bool training\n) {\n    int N = x.size(0);\n    int C = x.size(1);\n    int D = x.size(2);\n    int H = x.size(3);\n    int W = x.size(4);\n    int spatial_size = D * H * W;\n\n    auto output = torch::empty_like(x);\n\n    int num_blocks = N * C;\n\n    fused_batchnorm3d_meansub_kernel<<<num_blocks, BLOCK_SIZE>>>(\n        x.data_ptr<float>(),\n        output.data_ptr<float>(),\n        running_mean.data_ptr<float>(),\n        running_var.data_ptr<float>(),\n        weight.data_ptr<float>(),\n        bias.data_ptr<float>(),\n        N, C, spatial_size,\n        (float)eps\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A 3D convolutional transpose layer followed by Batch Normalization and subtraction.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.batch_norm = nn.BatchNorm3d(out_channels)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous():\n            x = _stark_get_extension().fused_batchnorm3d_meansub(\n                x,\n                self.batch_norm.running_mean,\n                self.batch_norm.running_var,\n                self.batch_norm.weight,\n                self.batch_norm.bias,\n                self.batch_norm.eps,\n                self.training\n            )\n        else:\n            x = self.batch_norm(x)\n            x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Fuse BatchNorm3d and the trailing spatial mean subtraction into one CUDA epilogue after ConvTranspose3D so the normalized tensor is written once instead of twice.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the placeholder pybind stub with a CUDA extension wrapper named for the fused normalization path. Expose one entrypoint that accepts the 5D conv-transpose output plus BatchNorm3d state (running_mean, running_var, weight, bias, eps, momentum/training metadata as needed), checks CUDA/shape/dtype/contiguity, and dispatches to the CUDA implementation without changing the ModelNew interface.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the placeholder CUDA file with a fused kernel and exported wrapper that computes BatchNorm normalization over the exact 3D batch-norm axes, applies affine scale/bias, then subtracts the per-(N,C) spatial mean over dims (2,3,4) before writing the final tensor. Keep the implementation float32-safe, preserve broadcast semantics, and avoid extra intermediate full-tensor writes.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the standalone BatchNorm call with a single `_stark_get_extension()` call to the fused CUDA entrypoint, passing the current tensor and BatchNorm3d parameters so normalization and the trailing mean-subtraction happen inside the extension.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the PyTorch mean-subtraction statement with a short no-op/comment indicating the subtraction is already fused into the CUDA extension above, so no second tensor pass runs here.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "correctness_issue=Output mismatch",
+        "max_difference=['6.884905', '6.622960', '6.667127']",
+        "avg_difference=['0.723978', '0.723978', '0.723911']",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=359818",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_repair_plus_l2_p1_p30_claude_cuda_main_20260718_222714/l2_p1_p30_gpu4/15_L2_P15_Auto_P15_20260719_071133/eval_traces/20260719_072534_357479_a76b05d0_kernelbench_l2_15_15_convtranspose3d_batchnorm_subtract"
+      ],
+      "failure_type": "correctness_error",
+      "node_status": "correctness_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "correctness",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If BatchNorm3d and the subtract-mean epilogue are fused, the kernel will avoid an extra full-tensor round trip and reduce the current memory-pressure bottleneck enough to beat the mean-subtract-only attempt.",
+      "single_change_focus": "Replace the separate BatchNorm3d and spatial mean-subtract steps with one CUDA extension call that normalizes the conv-transpose output and subtracts its spatial mean in a single pass.",
+      "mutation_family": "norm_tail_fusion",
+      "target_metric": "speedup"
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p15_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_batchnorm_spatial_subtract_cuda(\n    torch::Tensor x,\n    torch::Tensor running_mean,\n    torch::Tensor running_var,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    float eps,\n    bool training\n);\n\ntorch::Tensor fused_batchnorm_spatial_subtract(\n    torch::Tensor x,\n    torch::Tensor running_mean,\n    torch::Tensor running_var,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    float eps,\n    bool training\n) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D (N, C, D, H, W)\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"Input must be float32\");\n    return fused_batchnorm_spatial_subtract_cuda(\n        x, running_mean, running_var, weight, bias, eps, training\n    );\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_batchnorm_spatial_subtract\", &fused_batchnorm_spatial_subtract, \"Fused BatchNorm3d + Spatial Mean Subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n#define WARP_SIZE 32\n#define BLOCK_SIZE 256\n\n__device__ __forceinline__ float warpReduceSum(float val) {\n    for (int offset = WARP_SIZE / 2; offset > 0; offset >>= 1) {\n        val += __shfl_down_sync(0xffffffff, val, offset);\n    }\n    return val;\n}\n\n__device__ __forceinline__ float blockReduceSum(float val) {\n    __shared__ float shared[WARP_SIZE];\n    int lane = threadIdx.x % WARP_SIZE;\n    int wid = threadIdx.x / WARP_SIZE;\n\n    val = warpReduceSum(val);\n\n    if (lane == 0) shared[wid] = val;\n    __syncthreads();\n\n    val = (threadIdx.x < blockDim.x / WARP_SIZE) ? shared[lane] : 0.0f;\n    if (wid == 0) val = warpReduceSum(val);\n\n    return val;\n}\n\n__global__ void fused_batchnorm_spatial_subtract_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    const float* __restrict__ running_mean,\n    const float* __restrict__ running_var,\n    const float* __restrict__ weight,\n    const float* __restrict__ bias,\n    float eps,\n    int N, int C, int spatial_size\n) {\n    int nc = blockIdx.x;\n    int n = nc / C;\n    int c = nc % C;\n\n    const float* in_ptr = input + (long long)nc * spatial_size;\n    float* out_ptr = output + (long long)nc * spatial_size;\n\n    float bn_mean = running_mean[c];\n    float bn_var = running_var[c];\n    float bn_weight = weight[c];\n    float bn_bias = bias[c];\n    float bn_std_inv = rsqrtf(bn_var + eps);\n\n    float spatial_sum = 0.0f;\n    for (int i = threadIdx.x; i < spatial_size; i += blockDim.x) {\n        float val = in_ptr[i];\n        float normalized = (val - bn_mean) * bn_std_inv * bn_weight + bn_bias;\n        out_ptr[i] = normalized;\n        spatial_sum += normalized;\n    }\n\n    spatial_sum = blockReduceSum(spatial_sum);\n\n    __shared__ float spatial_mean;\n    if (threadIdx.x == 0) {\n        spatial_mean = spatial_sum / (float)spatial_size;\n    }\n    __syncthreads();\n\n    for (int i = threadIdx.x; i < spatial_size; i += blockDim.x) {\n        out_ptr[i] -= spatial_mean;\n    }\n}\n\ntorch::Tensor fused_batchnorm_spatial_subtract_cuda(\n    torch::Tensor x,\n    torch::Tensor running_mean,\n    torch::Tensor running_var,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    float eps,\n    bool training\n) {\n    TORCH_CHECK(x.is_cuda() && x.is_contiguous(), \"Input must be contiguous CUDA tensor\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"Input must be float32\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    int D = x.size(2);\n    int H = x.size(3);\n    int W = x.size(4);\n    int spatial_size = D * H * W;\n\n    auto output = torch::empty_like(x);\n\n    int grid_size = N * C;\n    fused_batchnorm_spatial_subtract_kernel<<<grid_size, BLOCK_SIZE>>>(\n        x.data_ptr<float>(),\n        output.data_ptr<float>(),\n        running_mean.data_ptr<float>(),\n        running_var.data_ptr<float>(),\n        weight.data_ptr<float>(),\n        bias.data_ptr<float>(),\n        eps,\n        N, C, spatial_size\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A 3D convolutional transpose layer followed by Batch Normalization and subtraction.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.batch_norm = nn.BatchNorm3d(out_channels)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous():\n            x = _stark_get_extension().fused_batchnorm_spatial_subtract(\n                x,\n                self.batch_norm.running_mean,\n                self.batch_norm.running_var,\n                self.batch_norm.weight,\n                self.batch_norm.bias,\n                self.batch_norm.eps,\n                self.batch_norm.training\n            )\n        else:\n            x = self.batch_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not (x.is_cuda and x.dtype == torch.float32):\n            x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Fuse BatchNorm3d and the final spatial subtract into one CUDA post-conv kernel so the ConvTranspose3d output is normalized once before any extra global memory round trip.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the current single-purpose spatial_mean_subtract export with a fused post-conv normalization export that accepts the ConvTranspose3d output plus BatchNorm parameters (running_mean, running_var, weight, bias, eps, training flag) and returns the normalized tensor after subtracting the spatial mean over dims (2,3,4). Keep the pybind module name and add only one new entrypoint used by forward_stmt_2/3.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the row-wise mean-subtract kernel with a fused CUDA implementation that (1) computes per-channel BatchNorm statistics over exact (N,D,H,W) axes for each channel, (2) applies affine normalization using the BatchNorm parameters, and (3) computes and subtracts the per-(N,C) spatial mean in the same kernel or immediately fused epilogue. Use contiguous float32 tensors, preserve exact output shape, and keep a safe fallback path for unsupported dtypes/shapes.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Change the BatchNorm call site to invoke the fused CUDA extension on CUDA float32 tensors, passing the batch_norm module state needed for exact semantics; retain the existing PyTorch BatchNorm3d path as fallback for other cases.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Remove the separate torch.mean subtraction on the fused CUDA path; keep the original PyTorch subtraction as fallback when the extension is not used.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Keep the return unchanged; no additional tensor reshaping or dtype conversion.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "applied_region_patch:forward_stmt_4:replace",
+        "correctness_issue=Output mismatch",
+        "max_difference=['6.884905', '6.622959', '6.667127']",
+        "avg_difference=['0.723978', '0.723978', '0.723911']",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=360208",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_repair_plus_l2_p1_p30_claude_cuda_main_20260718_222714/l2_p1_p30_gpu4/15_L2_P15_Auto_P15_20260719_071133/eval_traces/20260719_072838_357479_33cc13f8_kernelbench_l2_15_15_convtranspose3d_batchnorm_subtract"
+      ],
+      "failure_type": "correctness_error",
+      "node_status": "correctness_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "correctness",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "A single CUDA kernel that computes BatchNorm stats, applies affine normalization, and performs the spatial mean subtraction will cut activation traffic and launch overhead enough to beat the current separate PyTorch ops.",
+      "single_change_focus": "Fuse the BatchNorm3d epilogue and mean-subtract epilogue into one CUDA kernel behind the existing extension entrypoint.",
+      "mutation_family": "postnorm_fusion",
+      "target_metric": "speedup"
+    },
+    "phase2_root": {
+      "node_id": "phase2_root",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p15_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x);\n\ntorch::Tensor spatial_mean_subtract(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D (N, C, D, H, W)\");\n    return spatial_mean_subtract_cuda(x);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"spatial_mean_subtract\", &spatial_mean_subtract, \"Spatial mean subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n#define SMS_BLOCK_SIZE 256\n\n__global__ void spatial_mean_subtract_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    int cols\n) {\n    int row = blockIdx.x;\n    const float* row_in  = input  + (long long)row * cols;\n    float*       row_out = output + (long long)row * cols;\n\n    __shared__ float sdata[SMS_BLOCK_SIZE];\n\n    float sum = 0.0f;\n    for (int i = threadIdx.x; i < cols; i += SMS_BLOCK_SIZE) {\n        sum += row_in[i];\n    }\n    sdata[threadIdx.x] = sum;\n    __syncthreads();\n\n    for (int s = SMS_BLOCK_SIZE / 2; s > 0; s >>= 1) {\n        if (threadIdx.x < s) {\n            sdata[threadIdx.x] += sdata[threadIdx.x + s];\n        }\n        __syncthreads();\n    }\n\n    __shared__ float mean_val;\n    if (threadIdx.x == 0) {\n        mean_val = sdata[0] / (float)cols;\n    }\n    __syncthreads();\n\n    for (int i = threadIdx.x; i < cols; i += SMS_BLOCK_SIZE) {\n        row_out[i] = row_in[i] - mean_val;\n    }\n}\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"Input must be contiguous\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"Input must be float32\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    int D = x.size(2);\n    int H = x.size(3);\n    int W = x.size(4);\n\n    int rows = N * C;\n    int cols = D * H * W;\n\n    auto output = torch::empty_like(x);\n\n    spatial_mean_subtract_kernel<<<rows, SMS_BLOCK_SIZE>>>(\n        x.data_ptr<float>(),\n        output.data_ptr<float>(),\n        cols\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A 3D convolutional transpose layer followed by Batch Normalization and subtraction.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.batch_norm = nn.BatchNorm3d(out_channels)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.batch_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous():\n            x = _stark_get_extension().spatial_mean_subtract(x)\n        else:\n            x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "phase2_root",
+      "child_ids": [
+        "phase2_n1"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Implement a custom CUDA kernel that fuses the spatial mean reduction and subtraction for the post-BatchNorm tensor, replacing the separate `torch.mean(..., keepdim=True)` and broadcast subtraction with one extension call.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ declaration for a CUDA function `torch::Tensor spatial_mean_subtract_cuda(torch::Tensor x);`, add a small C++ wrapper `torch::Tensor spatial_mean_subtract(torch::Tensor x)` that checks `x.is_cuda()`, `x.dim() == 5`, and forwards to the CUDA implementation, and export it in `PYBIND11_MODULE` as `m.def(\"spatial_mean_subtract\", &spatial_mean_subtract, \"Spatial mean subtract (CUDA)\");`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a CUDA implementation of `torch::Tensor spatial_mean_subtract_cuda(torch::Tensor x)` for contiguous CUDA float tensors shaped `(N,C,D,H,W)`: flatten logical rows to `rows = N*C` and `cols = D*H*W`, allocate an output tensor with `torch::empty_like(x)`, launch one block per row, use block reduction in shared memory to sum that row across `cols`, divide by `cols` to get the mean, then in the same kernel write `out[row,col] = x[row,col] - mean`. Add runtime checks for CUDA, contiguity, dtype float32, and handle arbitrary `cols` with strided loops and shared-memory reduction.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace `x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)` with a guarded extension call such as: if `x.is_cuda`, `x.dtype == torch.float32`, and `x.is_contiguous()`, call `_stark_get_extension().spatial_mean_subtract(x)`; otherwise keep the existing PyTorch fallback expression unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0070999999999999995,
+      "score": 0.0070999999999999995,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=358202",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_repair_plus_l2_p1_p30_claude_cuda_main_20260718_222714/l2_p1_p30_gpu4/15_L2_P15_Auto_P15_20260719_071133/eval_traces/20260719_071538_357479_edfe9d12_kernelbench_l2_15_15_convtranspose3d_batchnorm_subtract"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.006860000000000001,
+      "speedup": 0.9661971830985917,
+      "reference_runtimes": {
+        "torch_eager": 0.006860000000000001
+      },
+      "speedups": {
+        "torch_eager": 0.9661971830985917
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "A fused CUDA rowwise mean-subtract kernel over flattened `(N*C, D*H*W)` rows will outperform the separate `torch.mean` plus broadcast subtraction by reducing kernel launch overhead and global memory traffic for the normalization epilogue.",
+      "single_change_focus": "Replace the PyTorch spatial mean-subtract expression with a single custom CUDA extension call that computes each `(N,C)` row mean and subtracts it in one kernel.",
+      "mutation_family": "epilogue_mean_subtract_fusion",
+      "target_metric": "speedup"
+    },
+    "phase2_n1": {
+      "node_id": "phase2_n1",
+      "parent_id": "phase2_root",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p15_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x);\n\ntorch::Tensor spatial_mean_subtract(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D (N, C, D, H, W)\");\n    return spatial_mean_subtract_cuda(x);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"spatial_mean_subtract\", &spatial_mean_subtract, \"Spatial mean subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n#define SMS_BLOCK_SIZE 256\n\n__global__ void spatial_mean_subtract_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    int cols\n) {\n    int row = blockIdx.x;\n    const float* row_in  = input  + (long long)row * cols;\n    float*       row_out = output + (long long)row * cols;\n\n    __shared__ float sdata[SMS_BLOCK_SIZE];\n\n    float sum = 0.0f;\n    for (int i = threadIdx.x; i < cols; i += SMS_BLOCK_SIZE) {\n        sum += row_in[i];\n    }\n    sdata[threadIdx.x] = sum;\n    __syncthreads();\n\n    for (int s = SMS_BLOCK_SIZE / 2; s > 0; s >>= 1) {\n        if (threadIdx.x < s) {\n            sdata[threadIdx.x] += sdata[threadIdx.x + s];\n        }\n        __syncthreads();\n    }\n\n    __shared__ float mean_val;\n    if (threadIdx.x == 0) {\n        mean_val = sdata[0] / (float)cols;\n    }\n    __syncthreads();\n\n    for (int i = threadIdx.x; i < cols; i += SMS_BLOCK_SIZE) {\n        row_out[i] = row_in[i] - mean_val;\n    }\n}\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"Input must be contiguous\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"Input must be float32\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    int D = x.size(2);\n    int H = x.size(3);\n    int W = x.size(4);\n\n    int rows = N * C;\n    int cols = D * H * W;\n\n    auto output = torch::empty_like(x);\n\n    spatial_mean_subtract_kernel<<<rows, SMS_BLOCK_SIZE>>>(\n        x.data_ptr<float>(),\n        output.data_ptr<float>(),\n        cols\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A 3D convolutional transpose layer followed by Batch Normalization and subtraction.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.batch_norm = nn.BatchNorm3d(out_channels)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.batch_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        spatial = x.size(2) * x.size(3) * x.size(4)\n        total = x.numel()\n        if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous() and spatial >= 1024 and total >= 262144:\n            x = _stark_get_extension().spatial_mean_subtract(x)\n        else:\n            x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n2",
+        "phase2_n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Add a simple shape-aware dispatch so the custom CUDA mean-subtract kernel is only used when the tensor is large enough to amortize launch and reduction overhead; otherwise keep the native PyTorch reduction+broadcast path.",
+      "anchor_edits": [
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the current `if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous(): ... else: ...` block with a heuristic gate: compute `spatial = x.size(2) * x.size(3) * x.size(4)` and `total = x.numel()`. Use the custom extension only when `x.is_cuda`, `x.dtype == torch.float32`, `x.is_contiguous()`, `spatial >= 1024`, and `total >= 262144`; otherwise use the native PyTorch expression `x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)`. Keep the native expression exactly unchanged for the fallback path.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.007,
+      "score": 0.007,
+      "logs": [
+        "normalized_python_region_indent:forward_stmt_3",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=361410",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_repair_plus_l2_p1_p30_claude_cuda_main_20260718_222714/l2_p1_p30_gpu4/15_L2_P15_Auto_P15_20260719_071133/eval_traces/20260719_073641_357479_f82aa849_kernelbench_l2_15_15_convtranspose3d_batchnorm_subtract"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.006849999999999999,
+      "speedup": 0.9785714285714284,
+      "reference_runtimes": {
+        "torch_eager": 0.006849999999999999
+      },
+      "speedups": {
+        "torch_eager": 0.9785714285714284
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current custom mean-subtract kernel loses to PyTorch on this workload because its launch plus block-wide shared-memory reduction overhead is not amortized at the benchmark's `(N*C, D*H*W)` size; bypassing it for smaller tensors should improve end-to-end runtime.",
+      "single_change_focus": "Replace the unconditional CUDA-extension dispatch in `forward_stmt_3` with a size-gated dispatch that falls back to native `x - torch.mean(x, dim=(2, 3, 4), keepdim=True)` unless the spatial volume and total elements exceed a conservative threshold.",
+      "mutation_family": "dispatch_threshold",
+      "target_metric": "speedup"
+    },
+    "phase2_n2": {
+      "node_id": "phase2_n2",
+      "parent_id": "phase2_n1",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p15_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x);\n\ntorch::Tensor spatial_mean_subtract(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D (N, C, D, H, W)\");\n    return spatial_mean_subtract_cuda(x);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"spatial_mean_subtract\", &spatial_mean_subtract, \"Spatial mean subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n#define SMS_BLOCK_SIZE 256\n\n__global__ void spatial_mean_subtract_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    int cols\n) {\n    int row = blockIdx.x;\n    const float* row_in  = input  + (long long)row * cols;\n    float*       row_out = output + (long long)row * cols;\n\n    __shared__ float sdata[SMS_BLOCK_SIZE];\n\n    float sum = 0.0f;\n    for (int i = threadIdx.x; i < cols; i += SMS_BLOCK_SIZE) {\n        sum += row_in[i];\n    }\n    sdata[threadIdx.x] = sum;\n    __syncthreads();\n\n    for (int s = SMS_BLOCK_SIZE / 2; s > 0; s >>= 1) {\n        if (threadIdx.x < s) {\n            sdata[threadIdx.x] += sdata[threadIdx.x + s];\n        }\n        __syncthreads();\n    }\n\n    __shared__ float mean_val;\n    if (threadIdx.x == 0) {\n        mean_val = sdata[0] / (float)cols;\n    }\n    __syncthreads();\n\n    for (int i = threadIdx.x; i < cols; i += SMS_BLOCK_SIZE) {\n        row_out[i] = row_in[i] - mean_val;\n    }\n}\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"Input must be contiguous\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"Input must be float32\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    int D = x.size(2);\n    int H = x.size(3);\n    int W = x.size(4);\n\n    int rows = N * C;\n    int cols = D * H * W;\n\n    auto output = torch::empty_like(x);\n\n    spatial_mean_subtract_kernel<<<rows, SMS_BLOCK_SIZE>>>(\n        x.data_ptr<float>(),\n        output.data_ptr<float>(),\n        cols\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A 3D convolutional transpose layer followed by Batch Normalization and subtraction.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.batch_norm = nn.BatchNorm3d(out_channels)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        if x.is_cuda and x.dtype == torch.float32:\n            x = x.contiguous(memory_format=torch.channels_last_3d)\n            x = self.conv_transpose(x)\n        else:\n            x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.batch_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Explore a `channels_last_3d` fast path around the dominant `ConvTranspose3d` call and keep the tail on native PyTorch so CuDNN can potentially choose a better deconvolution kernel without forcing the current custom NCDHW-only epilogue.",
+      "anchor_edits": [
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the current single conv-transpose call with a CUDA-only memory-format fast path: if `x.is_cuda` and `x.dtype == torch.float32`, first convert `x` to `x.contiguous(memory_format=torch.channels_last_3d)` and pass that tensor into `self.conv_transpose`; otherwise keep the existing `self.conv_transpose(x)` path. Do not add any extra relayout after the convolution in this anchor.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the current size-gated custom-extension dispatch with a pure PyTorch subtraction path that works for both contiguous and `channels_last_3d` outputs: compute `x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)` unconditionally here, with no call to `_stark_get_extension()` in this anchor.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00746,
+      "score": 0.00746,
+      "logs": [
+        "normalized_python_region_indent:forward_stmt_1",
+        "applied_region_patch:forward_stmt_1:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=361534",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_repair_plus_l2_p1_p30_claude_cuda_main_20260718_222714/l2_p1_p30_gpu4/15_L2_P15_Auto_P15_20260719_071133/eval_traces/20260719_073754_357479_9cad873c_kernelbench_l2_15_15_convtranspose3d_batchnorm_subtract"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.006860000000000001,
+      "speedup": 0.9195710455764077,
+      "reference_runtimes": {
+        "torch_eager": 0.006860000000000001
+      },
+      "speedups": {
+        "torch_eager": 0.9195710455764077
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If the input to `ConvTranspose3d` is converted to `torch.channels_last_3d` on CUDA, CuDNN may select a more efficient transposed-convolution kernel for this shape; keeping the post-BN centering on native PyTorch avoids undoing that layout advantage or re-entering the slower custom tail path.",
+      "single_change_focus": "Introduce a CUDA-only `channels_last_3d` conv-transpose fast path and bypass the custom spatial-mean-subtract extension when that layout is active.",
+      "mutation_family": "layout_dispatch",
+      "target_metric": "speedup"
+    },
+    "phase2_n3": {
+      "node_id": "phase2_n3",
+      "parent_id": "phase2_n2",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p15_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x);\n\ntorch::Tensor spatial_mean_subtract(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D (N, C, D, H, W)\");\n    return spatial_mean_subtract_cuda(x);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"spatial_mean_subtract\", &spatial_mean_subtract, \"Spatial mean subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n#define SMS_BLOCK_SIZE 128\n#define WARP_SIZE 32\n\n__global__ __launch_bounds__(SMS_BLOCK_SIZE, 8)\nvoid spatial_mean_subtract_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    int cols\n) {\n    int row = blockIdx.x;\n    const float* row_in  = input  + (long long)row * cols;\n    float*       row_out = output + (long long)row * cols;\n\n    // Number of warps per block\n    const int num_warps = SMS_BLOCK_SIZE / WARP_SIZE;\n    __shared__ float warp_sums[num_warps];\n\n    float sum = 0.0f;\n\n    // Vectorized load with float4 (4 floats at a time)\n    int cols4 = cols / 4;\n    int rem   = cols - cols4 * 4;\n    const float4* row_in4 = reinterpret_cast<const float4*>(row_in);\n\n    for (int i = threadIdx.x; i < cols4; i += SMS_BLOCK_SIZE) {\n        float4 v = row_in4[i];\n        sum += v.x + v.y + v.z + v.w;\n    }\n    // Scalar tail\n    for (int i = cols4 * 4 + threadIdx.x; i < cols; i += SMS_BLOCK_SIZE) {\n        sum += row_in[i];\n    }\n\n    // Warp-level reduction using shuffle\n    unsigned int mask = 0xffffffff;\n    for (int offset = WARP_SIZE / 2; offset > 0; offset >>= 1) {\n        sum += __shfl_down_sync(mask, sum, offset);\n    }\n\n    int lane   = threadIdx.x % WARP_SIZE;\n    int warp_id = threadIdx.x / WARP_SIZE;\n\n    if (lane == 0) {\n        warp_sums[warp_id] = sum;\n    }\n    __syncthreads();\n\n    // Final reduction across warps (done by first warp)\n    float block_sum = 0.0f;\n    if (threadIdx.x < num_warps) {\n        block_sum = warp_sums[threadIdx.x];\n    }\n    if (threadIdx.x < WARP_SIZE) {\n        for (int offset = WARP_SIZE / 2; offset > 0; offset >>= 1) {\n            block_sum += __shfl_down_sync(mask, block_sum, offset);\n        }\n    }\n\n    __shared__ float mean_val;\n    if (threadIdx.x == 0) {\n        mean_val = block_sum / (float)cols;\n    }\n    __syncthreads();\n\n    float mv = mean_val;\n\n    // Vectorized subtract with float4\n    float4* row_out4 = reinterpret_cast<float4*>(row_out);\n    for (int i = threadIdx.x; i < cols4; i += SMS_BLOCK_SIZE) {\n        float4 v = row_in4[i];\n        v.x -= mv;\n        v.y -= mv;\n        v.z -= mv;\n        v.w -= mv;\n        row_out4[i] = v;\n    }\n    // Scalar tail\n    for (int i = cols4 * 4 + threadIdx.x; i < cols; i += SMS_BLOCK_SIZE) {\n        row_out[i] = row_in[i] - mv;\n    }\n}\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"Input must be contiguous\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"Input must be float32\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    int D = x.size(2);\n    int H = x.size(3);\n    int W = x.size(4);\n\n    int rows = N * C;\n    int cols = D * H * W;\n\n    auto output = torch::empty_like(x);\n\n    spatial_mean_subtract_kernel<<<rows, SMS_BLOCK_SIZE>>>(\n        x.data_ptr<float>(),\n        output.data_ptr<float>(),\n        cols\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A 3D convolutional transpose layer followed by Batch Normalization and subtraction.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.batch_norm = nn.BatchNorm3d(out_channels)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        if x.is_cuda and x.dtype == torch.float32:\n            x = x.contiguous(memory_format=torch.channels_last_3d)\n            x = self.conv_transpose(x)\n        else:\n            x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.batch_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        spatial = x.size(2) * x.size(3) * x.size(4)\n        total = x.numel()\n        if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous() and spatial >= 512 and total >= 65536:\n            x = _stark_get_extension().spatial_mean_subtract(x)\n        else:\n            x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_07",
+      "plan_summary": "Replace the shared-memory tree reduction in the custom spatial mean-subtract kernel with a warp-shuffle reduction and float4 vectorized row processing, while keeping the existing dispatch gate and model interface unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Rewrite `spatial_mean_subtract_kernel` to load contiguous rows in float4 chunks when aligned, accumulate per-thread partial sums, reduce within warps using `__shfl_down_sync`, combine warp sums through a small shared buffer, and then subtract the computed mean with vectorized stores plus a scalar tail path for any remainder.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00722,
+      "score": 0.00722,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "normalized_python_region_indent:forward_stmt_3",
+        "autofix_tensor_property_call",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=361694",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_repair_plus_l2_p1_p30_claude_cuda_main_20260718_222714/l2_p1_p30_gpu4/15_L2_P15_Auto_P15_20260719_071133/eval_traces/20260719_073938_357479_412d07ca_kernelbench_l2_15_15_convtranspose3d_batchnorm_subtract"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00677,
+      "speedup": 0.9376731301939059,
+      "reference_runtimes": {
+        "torch_eager": 0.00677
+      },
+      "speedups": {
+        "torch_eager": 0.9376731301939059
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current kernel is latency-bound by shared-memory reduction and barriers, so warp shuffles plus vectorized contiguous loads/stores should reduce instruction count and synchronization overhead enough to improve the tail path.",
+      "single_change_focus": "Replace the existing shared-memory tree reduction in `spatial_mean_subtract_kernel` with a warp-shuffle based reduction and vectorized float4 row traversal, keeping the exported entrypoint and forward dispatch unchanged.",
+      "mutation_family": "warp_shuffle_vectorized_reduction",
+      "target_metric": "speedup"
+    },
+    "phase2_n4": {
+      "node_id": "phase2_n4",
+      "parent_id": "phase2_n1",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p15_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x);\n\ntorch::Tensor spatial_mean_subtract(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D (N, C, D, H, W)\");\n    return spatial_mean_subtract_cuda(x);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"spatial_mean_subtract\", &spatial_mean_subtract, \"Spatial mean subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n#define SMS_REDUCE_BLOCK 128\n#define SMS_SUBTRACT_BLOCK 128\n\n// Kernel 1: compute per-row mean into a float buffer.\n// Each block handles one row; uses warp shuffles + minimal shared memory.\n__launch_bounds__(SMS_REDUCE_BLOCK, 8)\n__global__ void row_mean_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ means,\n    int cols\n) {\n    int row = blockIdx.x;\n    const float* row_in = input + (long long)row * cols;\n\n    float sum = 0.0f;\n    // stride loop over the row\n    for (int i = threadIdx.x; i < cols; i += SMS_REDUCE_BLOCK) {\n        sum += row_in[i];\n    }\n\n    // warp-level reduction\n    unsigned mask = 0xffffffffu;\n    sum += __shfl_down_sync(mask, sum, 16);\n    sum += __shfl_down_sync(mask, sum, 8);\n    sum += __shfl_down_sync(mask, sum, 4);\n    sum += __shfl_down_sync(mask, sum, 2);\n    sum += __shfl_down_sync(mask, sum, 1);\n\n    // inter-warp reduction via shared memory (SMS_REDUCE_BLOCK/32 warps)\n    __shared__ float warp_sums[SMS_REDUCE_BLOCK / 32];\n    int lane = threadIdx.x & 31;\n    int wid  = threadIdx.x >> 5;\n    if (lane == 0) warp_sums[wid] = sum;\n    __syncthreads();\n\n    if (wid == 0) {\n        sum = (lane < (SMS_REDUCE_BLOCK / 32)) ? warp_sums[lane] : 0.0f;\n        sum += __shfl_down_sync(mask, sum, 16);\n        sum += __shfl_down_sync(mask, sum, 8);\n        sum += __shfl_down_sync(mask, sum, 4);\n        sum += __shfl_down_sync(mask, sum, 2);\n        sum += __shfl_down_sync(mask, sum, 1);\n        if (lane == 0) means[row] = sum / (float)cols;\n    }\n}\n\n// Kernel 2: subtract per-row mean using float4 vectorized loads/stores.\n// Each block handles one row.\n__launch_bounds__(SMS_SUBTRACT_BLOCK, 8)\n__global__ void row_subtract_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    const float* __restrict__ means,\n    int cols\n) {\n    int row = blockIdx.x;\n    float mean_val = means[row];\n    const float* row_in  = input  + (long long)row * cols;\n    float*       row_out = output + (long long)row * cols;\n\n    // vectorized path: process 4 floats at a time\n    int cols4 = cols / 4;\n    const float4* in4  = reinterpret_cast<const float4*>(row_in);\n    float4*       out4 = reinterpret_cast<float4*>(row_out);\n    for (int i = threadIdx.x; i < cols4; i += SMS_SUBTRACT_BLOCK) {\n        float4 v = in4[i];\n        v.x -= mean_val;\n        v.y -= mean_val;\n        v.z -= mean_val;\n        v.w -= mean_val;\n        out4[i] = v;\n    }\n    // scalar tail\n    for (int i = cols4 * 4 + threadIdx.x; i < cols; i += SMS_SUBTRACT_BLOCK) {\n        row_out[i] = row_in[i] - mean_val;\n    }\n}\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"Input must be contiguous\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"Input must be float32\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    int D = x.size(2);\n    int H = x.size(3);\n    int W = x.size(4);\n\n    int rows = N * C;\n    int cols = D * H * W;\n\n    // temporary buffer for per-row means; stays L2-resident between the two launches\n    auto means = torch::empty({rows}, x.options());\n    auto output = torch::empty_like(x);\n\n    row_mean_kernel<<<rows, SMS_REDUCE_BLOCK>>>(\n        x.data_ptr<float>(),\n        means.data_ptr<float>(),\n        cols\n    );\n\n    row_subtract_kernel<<<rows, SMS_SUBTRACT_BLOCK>>>(\n        x.data_ptr<float>(),\n        output.data_ptr<float>(),\n        means.data_ptr<float>(),\n        cols\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A 3D convolutional transpose layer followed by Batch Normalization and subtraction.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.batch_norm = nn.BatchNorm3d(out_channels)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.batch_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        spatial = x.size(2) * x.size(3) * x.size(4)\n        total = x.numel()\n        if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous() and spatial >= 512 and total >= 131072:\n            x = _stark_get_extension().spatial_mean_subtract(x)\n        else:\n            x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Reduce register pressure in the custom spatial mean-subtract backend by splitting reduction and subtraction into simpler CUDA kernels with launch bounds, while keeping the existing dispatch gating in `forward_stmt_3`.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current single shared-memory tree reduction kernel with two CUDA kernels: one that computes per-row means into a temporary `[N*C]` float buffer, and a second that subtracts those means from the original tensor; add `__launch_bounds__` to the kernels and prefer a 128-thread block if it reduces registers without changing the `(N,C)` reduction axes.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Keep the existing size-gated CUDA dispatch, but ensure it still routes the benchmark-sized CUDA float32 contiguous tensor through the custom extension so the new split backend is exercised; leave the native PyTorch fallback unchanged for smaller or unsupported inputs.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "normalized_python_region_indent:forward_stmt_3",
+        "applied_region_patch:forward_stmt_3:replace",
+        "paper_eval_error: CUDA error: misaligned address\nSearch for `cudaErrorMisalignedAddress' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=361988",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_repair_plus_l2_p1_p30_claude_cuda_main_20260718_222714/l2_p1_p30_gpu4/15_L2_P15_Auto_P15_20260719_071133/eval_traces/20260719_074145_357479_5bfa42cc_kernelbench_l2_15_15_convtranspose3d_batchnorm_subtract",
+        "isolated_worker_stderr_tail=Traceback (most recent call last):\n  File \"/data/dyj/cuda_kernel_eval/refs/KernelBench/src/kernelbench/eval.py\", line 783, in run_and_check_correctness\n    torch.cuda.synchronize(device=device)\n  File \"/data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/cuda/__init__.py\", line 1108, in synchronize\n    return torch._C._cuda_synchronize()\ntorch.AcceleratorError: CUDA error: misaligned address\nSearch for `cudaErrorMisalignedAddress' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions."
+      ],
+      "failure_type": "acceleratorerror",
+      "node_status": "runtime_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "runtime",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Lowering register pressure in the tail kernel will improve occupancy enough to outweigh the added decomposition overhead, making the custom path faster on the benchmark shape without changing numerics.",
+      "single_change_focus": "Split the current one-kernel mean-subtract implementation into a dedicated row-sum reduction kernel plus a simpler subtract kernel, and cap the block with launch bounds to encourage lower register usage.",
+      "mutation_family": "split_reduction_launch_bounds",
+      "target_metric": "speedup"
+    },
+    "phase2_n5": {
+      "node_id": "phase2_n5",
+      "parent_id": "phase2_n3",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p15_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x);\n\ntorch::Tensor spatial_mean_subtract(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D (N, C, D, H, W)\");\n    return spatial_mean_subtract_cuda(x);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"spatial_mean_subtract\", &spatial_mean_subtract, \"Spatial mean subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n#define MEAN_BLOCK_SIZE 128\n#define SUB_BLOCK_SIZE  128\n#define WARP_SIZE 32\n\n// Kernel 1: compute per-row mean into means[row]\n__global__ __launch_bounds__(MEAN_BLOCK_SIZE, 8)\nvoid row_mean_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ means,\n    int cols\n) {\n    int row = blockIdx.x;\n    const float* row_in = input + (long long)row * cols;\n\n    const int num_warps = MEAN_BLOCK_SIZE / WARP_SIZE;\n    __shared__ float warp_sums[num_warps];\n\n    float sum = 0.0f;\n\n    int cols4 = cols / 4;\n    const float4* row_in4 = reinterpret_cast<const float4*>(row_in);\n\n    for (int i = threadIdx.x; i < cols4; i += MEAN_BLOCK_SIZE) {\n        float4 v = row_in4[i];\n        sum += v.x + v.y + v.z + v.w;\n    }\n    for (int i = cols4 * 4 + threadIdx.x; i < cols; i += MEAN_BLOCK_SIZE) {\n        sum += row_in[i];\n    }\n\n    // Warp-level reduction\n    unsigned int mask = 0xffffffff;\n    for (int offset = WARP_SIZE / 2; offset > 0; offset >>= 1) {\n        sum += __shfl_down_sync(mask, sum, offset);\n    }\n\n    int lane    = threadIdx.x % WARP_SIZE;\n    int warp_id = threadIdx.x / WARP_SIZE;\n    if (lane == 0) {\n        warp_sums[warp_id] = sum;\n    }\n    __syncthreads();\n\n    // Cross-warp reduction in first warp\n    float block_sum = (threadIdx.x < num_warps) ? warp_sums[threadIdx.x] : 0.0f;\n    if (threadIdx.x < WARP_SIZE) {\n        for (int offset = WARP_SIZE / 2; offset > 0; offset >>= 1) {\n            block_sum += __shfl_down_sync(mask, block_sum, offset);\n        }\n    }\n    if (threadIdx.x == 0) {\n        means[row] = block_sum / (float)cols;\n    }\n}\n\n// Kernel 2: subtract per-row mean (vectorized)\n__global__ __launch_bounds__(SUB_BLOCK_SIZE, 8)\nvoid row_subtract_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    const float* __restrict__ means,\n    int cols\n) {\n    int row = blockIdx.x;\n    const float* row_in  = input  + (long long)row * cols;\n    float*       row_out = output + (long long)row * cols;\n    float mv = means[row];\n\n    int cols4 = cols / 4;\n    const float4* row_in4  = reinterpret_cast<const float4*>(row_in);\n    float4*       row_out4 = reinterpret_cast<float4*>(row_out);\n\n    for (int i = threadIdx.x; i < cols4; i += SUB_BLOCK_SIZE) {\n        float4 v = row_in4[i];\n        v.x -= mv; v.y -= mv; v.z -= mv; v.w -= mv;\n        row_out4[i] = v;\n    }\n    for (int i = cols4 * 4 + threadIdx.x; i < cols; i += SUB_BLOCK_SIZE) {\n        row_out[i] = row_in[i] - mv;\n    }\n}\n\ntorch::Tensor spatial_mean_subtract_cuda(torch::Tensor x) {\n    TORCH_CHECK(x.is_cuda(), \"Input must be a CUDA tensor\");\n    TORCH_CHECK(x.is_contiguous(), \"Input must be contiguous\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"Input must be float32\");\n    TORCH_CHECK(x.dim() == 5, \"Input must be 5D\");\n\n    int N = x.size(0);\n    int C = x.size(1);\n    int D = x.size(2);\n    int H = x.size(3);\n    int W = x.size(4);\n\n    int rows = N * C;\n    int cols = D * H * W;\n\n    auto means  = torch::empty({rows}, x.options());\n    auto output = torch::empty_like(x);\n\n    row_mean_kernel<<<rows, MEAN_BLOCK_SIZE>>>(\n        x.data_ptr<float>(),\n        means.data_ptr<float>(),\n        cols\n    );\n\n    row_subtract_kernel<<<rows, SUB_BLOCK_SIZE>>>(\n        x.data_ptr<float>(),\n        output.data_ptr<float>(),\n        means.data_ptr<float>(),\n        cols\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A 3D convolutional transpose layer followed by Batch Normalization and subtraction.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=True):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias)\n        self.batch_norm = nn.BatchNorm3d(out_channels)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        if x.is_cuda and x.dtype == torch.float32:\n            x = x.contiguous(memory_format=torch.channels_last_3d)\n            x = self.conv_transpose(x)\n        else:\n            x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.batch_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        spatial = x.size(2) * x.size(3) * x.size(4)\n        total = x.numel()\n        if x.is_cuda and x.dtype == torch.float32 and x.is_contiguous() and spatial >= 512 and total >= 65536:\n            x = _stark_get_extension().spatial_mean_subtract(x)\n        else:\n            x = x - torch.mean(x, dim=(2, 3, 4), keepdim=True)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Reduce register pressure in the post-BN mean-subtract extension by splitting the reduction and subtraction into simpler kernels, with launch bounds to encourage higher occupancy.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current warp-shuffle/vectorized single-kernel implementation with two CUDA kernels: one kernel computes one mean per `(N,C)` row into a temporary `float` buffer, and a second kernel subtracts that mean from the row. Keep the exported `spatial_mean_subtract_cuda(torch::Tensor x)` entrypoint, preserve contiguous float32 input checks, and launch the mean kernel before the subtract kernel using the same row-major flattening. Add `__launch_bounds__` to both kernels to bias register allocation downward, and avoid any BatchNorm fusion or layout changes.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00728,
+      "score": 0.00728,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "normalized_python_region_indent:forward_stmt_3",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=362659",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_repair_plus_l2_p1_p30_claude_cuda_main_20260718_222714/l2_p1_p30_gpu4/15_L2_P15_Auto_P15_20260719_071133/eval_traces/20260719_074542_357479_aced0601_kernelbench_l2_15_15_convtranspose3d_batchnorm_subtract"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.006849999999999999,
+      "speedup": 0.9409340659340658,
+      "reference_runtimes": {
+        "torch_eager": 0.006849999999999999
+      },
+      "speedups": {
+        "torch_eager": 0.9409340659340658
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current custom kernel is register-limited and latency-bound; splitting mean computation from subtraction should lower registers per thread, raise occupancy, and reduce scoreboard stalls enough to improve the tail path.",
+      "single_change_focus": "Replace the single fused reduction/subtraction kernel with a two-stage mean-reduction plus subtract implementation inside the CUDA extension, while keeping the Python dispatch and extension entrypoint unchanged.",
+      "mutation_family": "split_reduction_lower_register_pressure",
+      "target_metric": "speedup"
+    }
+  }
+}

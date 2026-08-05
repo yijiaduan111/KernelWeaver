@@ -1,0 +1,2161 @@
+{
+  "task_name": "kernelbench_l2_87_87_conv2d_subtract_subtract_mish",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": false,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_claude",
+    "plan_provider": "openai-compatible",
+    "code_provider": "claude-compatible",
+    "debug_provider": "openai-compatible",
+    "search_provider": "claude-compatible",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "diagnostics_enabled": false,
+    "diagnostics_mode": "root_ncu_v1",
+    "diagnostics_timeout_seconds": 900,
+    "diagnostics_warmup_runs": 2,
+    "diagnostics_profile_runs": 3,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1,
+    "deliberation_provider_timeout_seconds": 180,
+    "deliberation_phase_timeout_seconds": 240,
+    "evaluator_isolation": "candidate_subprocess",
+    "evaluator_timeout_seconds": 900,
+    "explore_fraction": 0.4,
+    "challenger_fraction": 0.3,
+    "plateau_delta_threshold": 0.03,
+    "plateau_recovery_mutation_attempts": 2,
+    "plateau_window": 3,
+    "deliberation_upgrade_enabled": true,
+    "deliberation_max_rounds": 3,
+    "deliberation_min_remaining_attempts": 8,
+    "phase_two_enabled": true,
+    "phase_two_split_attempts": 5
+  },
+  "best_node_id": "n1",
+  "leaderboard": [
+    "n1",
+    "phase2_root"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "n1",
+      "root"
+    ],
+    [
+      "n1",
+      "n2"
+    ],
+    [],
+    [
+      "phase2_root"
+    ],
+    [
+      "phase2_root",
+      "phase2_n1"
+    ],
+    [
+      "phase2_root",
+      "phase2_n2"
+    ],
+    [
+      "phase2_root",
+      "phase2_n4"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "n1",
+    "n3",
+    "phase2_root",
+    "phase2_n1",
+    "phase2_n2",
+    "phase2_root",
+    "phase2_n3"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "debug_retry_failure",
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {}
+  ],
+  "pruned_nodes": {},
+  "debug_stats": {
+    "total_attempts": 1,
+    "per_node": {
+      "n3": 1
+    }
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 9,
+    "debug_attempts": 1,
+    "failure_counts": {
+      "correctness_error": 2
+    },
+    "failure_stage_counts": {
+      "correctness": 2
+    },
+    "invalid_proposals": 0,
+    "attempt_mode_counts": {
+      "explore": 6,
+      "mutate_champion": 2,
+      "best_lineage_push": 1,
+      "debug": 1
+    },
+    "provider_transient_error_count": 0,
+    "provider_transient_budget_exhausted_count": 0,
+    "provider_transient_errors_by_stage": {},
+    "provider_transient_errors_by_origin": {},
+    "provider_transient_errors": [],
+    "phase_two_triggered": true,
+    "phase_two_seed_node_id": "n1",
+    "pruned_count": 0
+  },
+  "benchmark_family": "kernelbench",
+  "level": 2,
+  "problem_id": 87,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level2/87_Conv2d_Subtract_Subtract_Mish.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.0207
+  },
+  "speedups": {
+    "torch_eager": 1.754237288135593
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "convolution",
+    "summary": "Convolution style computation; preserve module state and spatial layout.",
+    "source": "KernelBench/KernelBench/level2/87_Conv2d_Subtract_Subtract_Mish.py",
+    "exact_facts": null,
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "forward_stmt_3",
+      "forward_stmt_4",
+      "forward_stmt_5",
+      "cuda_cu"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = self.conv(x)",
+        "op_names": [
+          "_conv2d_subtract_subtract_mish",
+          "a",
+          "activation",
+          "applies",
+          "conv",
+          "conv2d",
+          "convolution",
+          "functional",
+          "in_channels",
+          "kernel_size",
+          "kernelbench",
+          "level2"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = x - self.subtract_value_1",
+        "op_names": [
+          "_conv2d_subtract_subtract_mish",
+          "a",
+          "activation",
+          "applies",
+          "arithmetic",
+          "conv",
+          "conv2d",
+          "convolution",
+          "functional",
+          "in_channels",
+          "kernel_size",
+          "kernelbench"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_3",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = x - self.subtract_value_2",
+        "op_names": [
+          "_conv2d_subtract_subtract_mish",
+          "a",
+          "activation",
+          "applies",
+          "arithmetic",
+          "conv",
+          "conv2d",
+          "convolution",
+          "functional",
+          "in_channels",
+          "kernel_size",
+          "kernelbench"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_4",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = torch.nn.functional.mish(x)",
+        "op_names": [
+          "_conv2d_subtract_subtract_mish",
+          "a",
+          "activation",
+          "applies",
+          "conv",
+          "conv2d",
+          "convolution",
+          "functional",
+          "in_channels",
+          "kernel_size",
+          "kernelbench",
+          "level2"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_5",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "return x",
+        "op_names": [
+          "_conv2d_subtract_subtract_mish",
+          "a",
+          "activation",
+          "applies",
+          "conv",
+          "conv2d",
+          "convolution",
+          "functional",
+          "in_channels",
+          "kernel_size",
+          "kernelbench",
+          "level2"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "cuda_cpp",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+        "op_names": [
+          "add",
+          "cuda",
+          "custom",
+          "entrypoints",
+          "exports",
+          "extension",
+          "for",
+          "h",
+          "here",
+          "include",
+          "m",
+          "pybind"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "preserve_layout_and_kernel_window",
+        "summary": "preserve layout and kernel window",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "cuda_cu"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "preserve NCHW layout unless explicitly transformed",
+            "guard boundary indices"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use masks for spatial boundaries"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "reuse_input_tiles",
+        "summary": "reuse input tiles",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "cuda_cu"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "preserve NCHW layout unless explicitly transformed",
+            "guard boundary indices"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use masks for spatial boundaries"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve padding, stride, dilation, groups, and layout",
+      "guard spatial boundaries"
+    ]
+  },
+  "diagnostics_profile": {
+    "enabled": true,
+    "mode": "root_ncu_v1",
+    "ncu_profile": {
+      "enabled": true,
+      "status": "ok",
+      "profiler": "ncu",
+      "kernel_name": "void at::vectorized_elementwise_kernel<4, at::CUDAFunctorOnSelf_add<float>, std::array<char *, 2>>(int, T2, T3)",
+      "row_count": 31,
+      "kernel_launch_count": 31,
+      "raw_metrics": {
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 92.72,
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": 20.91,
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": 10.29,
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": 1.4,
+        "sm__warps_active.avg.pct_of_peak_sustained_active": 81.77,
+        "launch__registers_per_thread": 32,
+        "launch__occupancy_limit_registers": 16,
+        "launch__occupancy_limit_shared_mem": 32,
+        "launch__occupancy_limit_warps": 12,
+        "gpu__time_duration.avg": 5180928,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.4,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.09,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+        "smsp__sass_branch_targets_threads_divergent.avg": 0,
+        "smsp__sass_branch_targets_threads_uniform.avg": 4032.25,
+        "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+        "smsp__warps_eligible.avg": 142703.93
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ],
+      "error": null
+    },
+    "notes": [
+      "Profiled the root candidate program with Nsight Compute."
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_01",
+        "intent": "Fuse convolution and epilogue into one cuDNN-backed graph so the conv result is never materialized before Mish.",
+        "summary": "The current champion is still overwhelmingly memory-bound in the post-conv kernel (`gpu__dram_throughput` ~91%, `sm__throughput` ~10%, `long_scoreboard` ~0.85), so the biggest remaining win is to remove the extra global read/write of the convolution output entirely. On CUDA, the most credible path is a cuDNN op-graph/frontend plan that performs conv -> subtract constant -> subtract constant -> Mish as one backend execution while keeping Python-visible module inputs/outputs unchanged.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1"
+        ],
+        "implementation_hints": [
+          "Keep `ModelNew` I/O unchanged, but route `forward_stmt_1` through one extension entrypoint that receives input, conv weights, optional bias, stride/padding/dilation/groups, and the two subtract scalars.",
+          "Prefer a cuDNN op-graph style implementation on the CUDA side so the pointwise chain is attached to the convolution epilogue rather than launched as a separate kernel.",
+          "Fold the two subtract scalars into one scalar bias term inside the epilogue if the backend API allows only one add/sub pointwise stage before Mish.",
+          "Retain the current fused standalone epilogue as a fallback when the cuDNN fused plan is unsupported for a given shape/dtype/layout."
+        ],
+        "expected_gain": "High if supported; this is the only strategy that directly attacks the remaining DRAM bottleneck by removing an entire tensor roundtrip.",
+        "risk_notes": [
+          "Highest implementation complexity and backend-fragility; support depends on cuDNN version and exact pointwise graph capabilities.",
+          "Must preserve padding, stride, dilation, groups, and NCHW-visible semantics.",
+          "Need a robust fallback path for unsupported layouts/dtypes/shapes."
+        ],
+        "memory_methods": [
+          "Eliminate the separate post-conv output tensor traversal.",
+          "Use backend-managed workspace instead of manual intermediate tensors when the fused plan is available."
+        ],
+        "mutation_axes": [
+          "conv_epilogue_fusion",
+          "backend_graph_execution",
+          "forward_call_rewire"
+        ],
+        "forbidden_patterns": [
+          "Do not change Python module state semantics or reorder observable ops.",
+          "Do not assume a fixed convolution shape beyond provided runtime metadata.",
+          "Do not drop fallback handling for unsupported cuDNN fusion cases."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 5.0,
+          "claude-compatible": 4.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Highest upside and best risk-adjusted path if supported: directly removes the extra conv-output roundtrip by fusing conv plus subtracts plus Mish. Main risk is cuDNN op-graph support fragility, so value depends on keeping a solid fallback.",
+          "claude-compatible": "Strongest theoretical upside â cuDNN op-graph fusion directly eliminates the DRAM roundtrip that causes the 91% memory-bound profile. Scored 4 rather than 5 because cuDNN pointwise graph support for this exact epilogue chain (subtract+subtract+Mish) is version-dependent and the fallback path adds significant implementation surface. High reward but also highest implementation risk and fragility across hardware.",
+          "gemini-compatible": "Fusing the entire epilogue into a cuDNN graph would be optimal for performance but carries extremely high implementation complexity and risk of backend fragility. It may not be worth the effort if simpler algebraic simplifications exist."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_05",
+        "intent": "cudnn_conv_with_fused_bias_epilogue_via_at_conv2d_options",
+        "summary": "The current scaffold calls self.conv(x) via PyTorch's standard Conv2d, then passes the result into the custom epilogue. cuDNN and CUTLASS both support bias-add and activation epilogues natively within the GEMM/convolution itself. By replacing self.conv(x) with at::conv2d(...) called from within the custom CUDA extension (passing weight, bias, stride, padding etc. as parameters), we can investigate whether cuDNN's implicit GEMM + pointwise epilogue path eliminates one full tensor materialization. The subtract values become a modified bias vector (original bias - subtract1 - subtract2 per output channel), collapsing the entire pipeline into one kernel launch.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "init_body"
+        ],
+        "implementation_hints": [
+          "In init_body, store self.conv.weight, self.conv.bias, self.conv.stride, self.conv.padding, self.conv.dilation, self.conv.groups as separate attributes",
+          "Compute a fused_bias tensor: self.fused_bias = self.conv.bias - subtract_value_1 - subtract_value_2 (scalar broadcast, shape [out_channels])",
+          "In forward_stmt_1, call at::conv2d(x, weight, fused_bias, stride, padding, dilation, groups) directly â this produces output with the combined subtract already applied via cuDNN bias path",
+          "Then apply only the mish activation in the custom CUDA epilogue (single subtract-free mish kernel), reducing the epilogue math by 2 FLOPs/element",
+          "Alternatively pass the fused bias as a tensor argument to the custom extension entrypoint and absorb it into the epilogue kernel alongside mish"
+        ],
+        "expected_gain": "Eliminates one tensor write+read round trip if cuDNN fuses bias into the convolution output; the epilogue kernel becomes pure mish with no subtract, slightly reducing arithmetic. Net gain over n1 may be modest (5-15%) but depends on conv dominance.",
+        "risk_notes": [
+          "Requires storing weight/bias/conv hyperparameters explicitly â changes init_body",
+          "cuDNN bias fusion behavior varies by GPU architecture and cuDNN version; not guaranteed to eliminate memory traffic",
+          "Must preserve groups, dilation, padding, stride exactly",
+          "fused_bias must be recomputed if subtract values change at runtime (they don't for this model but worth noting)"
+        ],
+        "memory_methods": [
+          "bias_folding",
+          "cudnn_epilogue_fusion"
+        ],
+        "mutation_axes": [
+          "conv_call_site",
+          "bias_folding",
+          "epilogue_op_count"
+        ],
+        "forbidden_patterns": [
+          "modifying conv weight tensor in-place",
+          "changing NCHW layout",
+          "removing bias from the conv path if original model has bias=True"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "Bias folding of the two subtracts is semantically attractive and low arithmetic risk, but it does not reliably eliminate the main materialization unless backend fusion actually happens. Moderate value, but less compelling than full graph fusion.",
+          "claude-compatible": "Bias-folding (fused_bias = bias - subtract1 - subtract2) is a clean algebraic simplification that costs nothing at runtime and removes 2 FLOPs per element from the epilogue. The cuDNN bias-in-conv fusion benefit is speculative and architecture-dependent. The bias folding alone is worth doing as a low-risk cleanup; the full strategy score reflects uncertainty about whether cuDNN actually fuses the bias into the convolution output on the target hardware.",
+          "gemini-compatible": "Brilliant algebraic simplification. Folding the scalar subtractions into the convolution's bias tensor completely removes them from the custom epilogue, reducing both arithmetic and parameter passing overhead with very low risk."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_02",
+        "intent": "replace_float4_with_scalar_vectorized_via_launch_bounds",
+        "summary": "The current kernel is occupancy-throttled: launch__occupancy_limit_registers=8 and launch__occupancy_limit_warps=6, meaning only 6 warps/SM are active despite sm__warps_active being 89.6%. The long-scoreboard stall ratio is 0.85, indicating the kernel is purely memory-latency bound with insufficient in-flight warps to hide it. The float4 vectorized path uses 26 registers/thread; switching to a pure scalar kernel with __launch_bounds__(256,4) or __launch_bounds__(128,8) will lower register pressure, raise occupancy limit from 6 to 12+ warps/SM, and give the memory subsystem more outstanding transactions to tolerate the 5.2ms DRAM latency. Remove the dual-loop float4/tail structure entirely and replace with a single flat scalar loop â DRAM is already at 91.4% peak so throughput is not the bottleneck; latency hiding via occupancy is.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Declare the kernel with __launch_bounds__(128, 8) to hint the compiler to cap registers per thread and target 8 warps/SM minimum",
+          "Remove the float4 cast and dual-loop structure; use a single flat loop over all elements with stride gridDim.x*blockDim.x",
+          "Use __fmaf_rn or inline the mish as x*tanhf(__log1pf(__expf(x))) and rely on --use_fast_math for expf/tanhf approximations",
+          "Keep blockDim=128 threads; this halves shared-memory pressure and doubles the register budget per warp without changing the block count formula",
+          "The bias scalar subtract stays as a single fused subtraction before the mish math â no change to API or forward call site",
+          "Verify launch config: blocks = min((total + 127) / 128, 65535)"
+        ],
+        "expected_gain": "Raising from 6 to 10-12 active warps/SM should reduce long-scoreboard stall from 0.85 to 0.4-0.5, potentially cutting kernel time by 25-35% over current n1 champion (~0.0118s -> ~0.008-0.009s), for a total speedup of ~2.3-2.7x over root.",
+        "risk_notes": [
+          "launch_bounds changes can backfire if the compiler spills registers to local memory â verify ptxas register count in verbose build output",
+          "Fast-math tanhf/expf approximations are already enabled via --use_fast_math flag; no extra risk",
+          "Do not change the API signature or forward_stmt wiring â only cuda_cu changes"
+        ],
+        "memory_methods": [
+          "latency_hiding_via_occupancy",
+          "scalar_flat_loop"
+        ],
+        "mutation_axes": [
+          "launch_bounds",
+          "thread_block_size",
+          "loop_structure"
+        ],
+        "forbidden_patterns": [
+          "float4 reinterpret_cast in this kernel",
+          "dual-loop tail handling",
+          "blockDim > 256"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 5.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Plausible occupancy-oriented idea, but the rationale overstates likely gains on an already bandwidth-saturated pointwise kernel. Removing vectorization and forcing launch bounds could easily trade one bottleneck for spills or lower memory efficiency.",
+          "claude-compatible": "Best risk-adjusted strategy. Root cause is correctly identified: 6 active warps/SM with 0.85 long-scoreboard stall ratio means latency hiding is the binding constraint, not arithmetic throughput. Switching to scalar loop with __launch_bounds__(128,8) is a targeted, low-complexity fix that directly addresses occupancy throttling. Expected 25-35% kernel time reduction is credible and the change is confined to cuda_cu with no API surface risk.",
+          "gemini-compatible": "While increasing occupancy to hide latency is a valid theory, if DRAM throughput is already at 91.4%, the kernel is fundamentally bandwidth-bound. Moving from float4 to scalar might actually hurt memory transaction efficiency."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_03",
+        "intent": "Make the existing fused CUDA epilogue safely vectorized with explicit alignment/stride gating and a proven scalar fallback.",
+        "summary": "The current kernel is already memory-bound, so vectorization is only worth pursuing if it is correctness-safe and minimizes instruction/address overhead. A careful `float4` fast path for truly aligned contiguous FP32 tensors, plus a scalar fallback for misalignment and tails, is still a reasonable phase-2 refinement despite the earlier failed attempt; the failure suggests implementation bugs, not that the optimization direction is invalid.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1"
+        ],
+        "implementation_hints": [
+          "Gate the vector path on contiguous FP32 tensors and explicit pointer alignment for both input and output; avoid reinterpret-casting unless those checks pass.",
+          "Use a separate scalar kernel or scalar branch for tails and any misaligned leading elements so the vectorized region is correctness-clean.",
+          "Keep the exported API unchanged and preserve the out-of-place structure of the current champion unless alias safety is fully proven.",
+          "Benchmark multiple vector widths conservatively; `float4` is the natural first target, but only when alignment and numel shape make it worthwhile."
+        ],
+        "expected_gain": "Low-to-moderate; likely incremental, but plausible because the selected kernel still spends most cycles waiting on memory while doing simple elementwise work.",
+        "risk_notes": [
+          "A prior vectorization mutation failed correctness, so this path needs stricter gating and simpler control flow than the failed attempt.",
+          "Wins may be small if DRAM is already near saturation.",
+          "Overly aggressive vector assumptions can silently corrupt tail or misaligned cases."
+        ],
+        "memory_methods": [
+          "Increase bytes moved per instruction only on aligned contiguous slices.",
+          "Keep a scalar fallback to preserve correctness on non-ideal layouts."
+        ],
+        "mutation_axes": [
+          "alignment_gated_vectorization",
+          "tail_handling",
+          "fastpath_fallback_split"
+        ],
+        "forbidden_patterns": [
+          "Do not reinterpret contiguous tensors as vector types without alignment proof.",
+          "Do not mix vector and scalar writes in a way that can double-write tail elements.",
+          "Do not broaden the fast path to non-FP32 or non-contiguous tensors."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Good incremental strategy: alignment-gated vectorization with strict scalar fallback is practical and contains correctness risk. Upside is modest, but implementation is localized and safer than more aggressive rewrites.",
+          "claude-compatible": "A prior vectorization attempt already failed correctness. The strategy acknowledges this but proposes retry with stricter alignment gating. Since DRAM is at 91% saturation, the upside from float4 is marginal at best â more bytes per transaction don't help when bandwidth is already the ceiling. The incremental gain does not justify re-traversing a path that already demonstrated correctness risk.",
+          "gemini-compatible": "Properly gated float4 vectorization is the standard way to optimize memory-bound elementwise kernels. Ensuring alignment and providing a scalar fallback is the correct approach to fix prior correctness issues."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "grid_stride_with_increased_work_per_thread",
+        "summary": "At 91.4% DRAM throughput the kernel is memory-bandwidth saturated, but SM throughput is only 10.38% â arithmetic pipelines are almost entirely idle. Each thread currently processes 4 elements (via float4) but stalls 0.85 cycles/cycle waiting for memory. Increasing work per thread to 8-16 elements per thread (manual unroll of the scalar path) with #pragma unroll amortizes the address-generation and loop overhead over more arithmetic work per load, and allows the compiler to schedule the independent mish computations to overlap with memory latency. This is distinct from occupancy-raising: it reduces total kernel invocations per warp and gives ILP within a warp.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Process 8 elements per thread using a local float array of size 8 and #pragma unroll 8 over the load, subtract, mish, store sequence",
+          "Use __ldg() for all input reads to route through the read-only texture cache path (L1 is only 10.13% utilized, suggesting cache is bypassed)",
+          "Adjust grid size: blocks = min((total/8 + 255)/256, 65535) with a scalar fallback loop for the tail",
+          "Keep blockDim=256 for this variant to maintain warps_eligible density",
+          "Combine with __launch_bounds__(256, 4) to signal expected minimum occupancy"
+        ],
+        "expected_gain": "ILP from 8-element unroll plus __ldg cache routing could reduce long-scoreboard stall ratio by 0.2-0.3 and improve effective memory throughput utilization, targeting ~15-20% wall-time reduction over n1 champion.",
+        "risk_notes": [
+          "Higher register use from 8-element unroll may offset occupancy gains â monitor ptxas output",
+          "__ldg is a hint only; effectiveness depends on whether outputs alias inputs (they don't here since out-of-place)",
+          "Tail handling must be correct for non-multiple-of-8 tensor sizes"
+        ],
+        "memory_methods": [
+          "ilp_unroll",
+          "ldg_read_only_cache"
+        ],
+        "mutation_axes": [
+          "unroll_factor",
+          "elements_per_thread",
+          "cache_path"
+        ],
+        "forbidden_patterns": [
+          "in-place mutation (n2 showed regression)",
+          "float4 reinterpret_cast (n3/n5 showed correctness failures)"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "ILP/unroll may help somewhat, but 8-way per-thread work and __ldg suggestions are risky on modern CUDA and may raise register pressure enough to cancel benefits. Lower confidence than simpler epilogue tuning.",
+          "claude-compatible": "ILP unrolling is a sound idea when arithmetic pipelines are idle (SM throughput 10%), and __ldg routing for the read-only input is a legitimate cache hint. However, 8-element unroll increases register pressure which could worsen the occupancy problem strategy_02 is already targeting. Works best as a follow-on after occupancy is improved, not as a standalone first move. Moderate confidence.",
+          "gemini-compatible": "Unrolling the loop to increase ILP and amortize address calculation overhead is a solid, low-risk optimization for elementwise kernels."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "Reshape the epilogue kernel around NCHW-aware strip-mining to improve contiguous access behavior and hide scoreboard stalls.",
+        "summary": "The selected kernel shows very high warp activity but poor SM throughput with dominant long-scoreboard stalls, which often means warps are busy but repeatedly waiting on memory dependencies. Recasting the launch mapping so each thread processes a short contiguous strip in the innermost dimension can improve coalescing, reduce index overhead, and introduce more instruction-level overlap than a pure flat grid-stride loop.",
+        "target_anchors": [
+          "cuda_cu",
+          "forward_stmt_1"
+        ],
+        "implementation_hints": [
+          "Map work so neighboring threads stay on contiguous output elements within the innermost contiguous span rather than relying only on a flat numel loop.",
+          "Give each thread a small fixed strip of consecutive elements to raise ILP and reduce per-element loop/index cost while preserving boundary guards.",
+          "Specialize only the contiguous fast path; keep the current generic fallback for non-contiguous tensors.",
+          "Tune block size for the epilogue separately from the convolution path; the current occupancy is already high enough that better memory issue behavior matters more than adding more warps."
+        ],
+        "expected_gain": "Moderate but shape-dependent; most useful when output tensors have large contiguous inner spans and the current flat mapping underutilizes cacheline locality.",
+        "risk_notes": [
+          "This is still a bandwidth-bound kernel, so gains are not guaranteed if the existing flat loop is already well-coalesced.",
+          "More specialized indexing can complicate maintenance and tail handling.",
+          "Must preserve exact NCHW element order and boundary safety."
+        ],
+        "memory_methods": [
+          "Exploit contiguous inner-dimension traversal to improve coalescing.",
+          "Use per-thread strip-mining to overlap multiple outstanding memory operations."
+        ],
+        "mutation_axes": [
+          "launch_mapping",
+          "strip_mining",
+          "contiguous_fastpath_specialization"
+        ],
+        "forbidden_patterns": [
+          "Do not change tensor layout externally.",
+          "Do not add shared-memory staging for this pure pointwise op unless profiling proves reuse.",
+          "Do not sacrifice scalar fallback coverage for odd shapes."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 3.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Reasonable medium-risk refinement if the current flat mapping is not ideal for contiguous NCHW spans. Likely only shape-dependent incremental gain, but preserves semantics and is less fragile than backend-graph fusion.",
+          "claude-compatible": "Strip-mining for NCHW contiguous access is reasonable in principle but the existing flat grid-stride loop over a contiguous tensor should already produce coalesced 128-byte transactions. Unless there is evidence of misaligned access or non-contiguous strides, this is unlikely to move the needle on a kernel that is already DRAM-saturated. Added indexing complexity is not justified by the expected gain.",
+          "gemini-compatible": "Strip-mining an elementwise operation is unlikely to outperform a well-tuned flat grid-stride loop and adds unnecessary complexity to index calculations."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "Attack whole-model runtime by enabling a channels-last CUDA fast path for the convolution while keeping the epilogue fused and layout-visible behavior unchanged.",
+        "summary": "Once the three post-conv ops are fused, the remaining model time may shift toward the convolution itself. A CUDA-specific fast path that opportunistically uses channels-last storage for conv-friendly tensors, then immediately applies the fused epilogue, can improve end-to-end runtime even if the epilogue kernel alone is already close to bandwidth saturation.",
+        "target_anchors": [
+          "init_body",
+          "forward_stmt_1",
+          "cuda_cpp",
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Keep external semantics unchanged, but add a guarded fast path that uses channels-last only when input/weights are compatible and the convolution backend benefits.",
+          "Avoid unconditional format conversions; only take the path when tensors are already in a favorable memory format or when benchmarked heuristics justify the transform cost.",
+          "Preserve the current fused epilogue entrypoint so only the conv preparation/call path changes.",
+          "Use the existing PyTorch/CUDA conv machinery for correctness rather than re-implementing convolution in custom CUDA."
+        ],
+        "expected_gain": "Moderate end-to-end if convolution remains a significant share after phase-1 fusion; minimal benefit if tensors are small or conversion overhead dominates.",
+        "risk_notes": [
+          "Potential regression if format conversion costs exceed conv gains.",
+          "Need to preserve visible layout semantics and not break grouped/strided/dilated conv behavior.",
+          "This is more about total model time than the profiled epilogue kernel in isolation."
+        ],
+        "memory_methods": [
+          "Improve convolution backend locality through a more favorable memory format.",
+          "Avoid extra post-conv traversals by keeping the current fused epilogue attached after the conv fast path."
+        ],
+        "mutation_axes": [
+          "memory_format_fastpath",
+          "conv_backend_selection",
+          "forward_path_specialization"
+        ],
+        "forbidden_patterns": [
+          "Do not force channels-last universally.",
+          "Do not alter stored parameters in a way that changes module state semantics.",
+          "Do not bypass correctness checks for stride, padding, dilation, or groups."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 2.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Could help whole-model runtime if convolution dominates, but it is misaligned with the profiled bottleneck and introduces memory-format-path complexity. Risk-adjusted value is limited unless end-to-end profiling proves conv is next bottleneck.",
+          "claude-compatible": "Channels-last optimization is relevant to convolution throughput but the profiled bottleneck is the post-conv epilogue kernel, not the convolution itself. This strategy is misaligned with the current bottleneck. It may have value as a phase-3 pass after the epilogue is fully optimized, but the format conversion overhead risk and the fact that conv is not the identified hotspot make this low priority now.",
+          "gemini-compatible": "Channels-last memory format can significantly speed up the convolution, but it is often better handled via PyTorch's native memory_format conversions rather than hardcoding it into the extension."
+        },
+        "priority": 2
+      },
+      {
+        "strategy_id": "strategy_07",
+        "intent": "persistent_kernel_with_cooperative_groups_memory_coalescing",
+        "summary": "The NCU trace shows smsp__warps_eligible.avg=1,386,348 but launch__occupancy_limit_warps=6, meaning the scheduler has very few eligible warps per SM cycle. The kernel is launched with a standard grid-stride pattern but the grid is likely oversized relative to resident warps. A persistent kernel approach â launch exactly SM_count * target_warps_per_SM blocks and have each block loop over its assigned chunk â reduces kernel launch overhead, improves L2 locality by keeping each SM's working set stable across iterations, and allows the hardware prefetcher to learn the access stride. This is particularly relevant since LTS throughput (20.32%) is much lower than DRAM throughput (91.4%), suggesting L2 is not caching effectively under the current access pattern.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Query SM count at runtime via cudaDeviceGetAttribute(CUDART_DEVICE_ATTR_MULTIPROCESSOR_COUNT) or pass as a compile-time constant (e.g., 108 for A100, 82 for RTX 3090)",
+          "Launch exactly n_sm * 4 blocks (4 persistent warps/SM target) with blockDim=256; each block iterates over total/(n_sm*4) elements plus handles remainder",
+          "Within each block iteration, process elements in contiguous strides to maintain coalesced access â avoid strided access patterns that defeat the L2 prefetcher",
+          "Use __builtin_expect to branch-predict the hot path (contiguous float32 case)",
+          "Keep the mish math identical to the scalar version from strategy 1 â this is purely a launch topology change"
+        ],
+        "expected_gain": "Improved L2 hit rate (LTS throughput from 20% toward 40-50%) and reduced kernel launch overhead for the 21 repeated launches. May reduce kernel time by 10-20% over n1, synergistic with occupancy improvements from strategy 1.",
+        "risk_notes": [
+          "SM count must be queried correctly; hardcoding is fragile across GPUs",
+          "If total elements don't divide evenly, tail handling adds complexity",
+          "Persistent kernels can hurt if the per-SM element count is too small to amortize the looping overhead",
+          "This is lower confidence than strategies 1-2 given the data; treat as exploratory"
+        ],
+        "memory_methods": [
+          "persistent_kernel",
+          "l2_locality"
+        ],
+        "mutation_axes": [
+          "grid_topology",
+          "block_iteration_pattern",
+          "launch_count_reduction"
+        ],
+        "forbidden_patterns": [
+          "cooperative_groups::sync_grid() (requires specific launch API)",
+          "shared memory tiling (not beneficial for elementwise)"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 2.0,
+          "openai-compatible": 1.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Low confidence for this workload: persistent-kernel logic adds complexity without strong evidence it helps a simple bandwidth-bound elementwise epilogue. L2-locality claims are speculative and risk wasted effort.",
+          "claude-compatible": "The L2 locality argument (LTS 20% vs DRAM 91%) is interesting but a pure elementwise kernel with no data reuse will not benefit from L2 residency across block iterations. Persistent kernel topology helps when there is reuse or when launch overhead dominates â neither condition clearly holds here given 21 launches of a bandwidth-bound epilogue. SM count hardcoding is also a portability hazard. Lower confidence than the profiling data warrants.",
+          "gemini-compatible": "Persistent kernels are generally overkill for simple elementwise epilogues and can introduce subtle bugs or performance regressions if the SM count or grid sizing is not perfectly tuned."
+        },
+        "priority": 3
+      }
+    ],
+    "proposal_errors": {
+      "gemini-compatible": "Expecting value: line 26 column 33 (char 1168)"
+    },
+    "review_errors": {},
+    "deliberation_round": 1
+  },
+  "phase_transition": {
+    "source_phase": 1,
+    "target_phase": 2,
+    "split_attempts": 5,
+    "trigger_attempt": 5,
+    "root": {
+      "node_id": "root",
+      "strategy_name": null,
+      "runtime": 0.021,
+      "speedup": 0.9857142857142857,
+      "plan_summary": null,
+      "changed_regions": [],
+      "lineage": [
+        "root"
+      ]
+    },
+    "selected": {
+      "node_id": "n1",
+      "strategy_name": "strategy_02",
+      "runtime": 0.011800000000000001,
+      "speedup": 1.754237288135593,
+      "plan_summary": "Fuse the two scalar subtracts and Mish into one custom CUDA epilogue launched immediately after `self.conv(x)` so the post-conv tensor is traversed once instead of by multiple bandwidth-bound ATen elementwise kernels.",
+      "changed_regions": [
+        "cuda_cpp",
+        "cuda_cu",
+        "forward_stmt_1",
+        "forward_stmt_2",
+        "forward_stmt_3",
+        "forward_stmt_4"
+      ],
+      "lineage": [
+        "root",
+        "n1"
+      ]
+    },
+    "attempts": [
+      {
+        "node_id": "n1",
+        "parent_id": "root",
+        "strategy_name": "strategy_02",
+        "attempt_mode": "explore",
+        "mutation_family": "postconv_pointwise_fusion",
+        "single_change_focus": "Replace the three post-conv Python ops with one extension call backed by a fused CUDA kernel.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.011800000000000001,
+        "speedup": 1.754237288135593,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Fuse the two scalar subtracts and Mish into one custom CUDA epilogue launched immediately after `self.conv(x)` so the post-conv tensor is traversed once instead of by multiple bandwidth-bound ATen elementwise kernels."
+      },
+      {
+        "node_id": "n2",
+        "parent_id": "n1",
+        "strategy_name": "strategy_01",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "inplace_epilogue",
+        "single_change_focus": "Convert the fused CUDA fast path from out-of-place writeback to in-place mutation of the input tensor while keeping the exported API unchanged.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.012,
+        "speedup": 1.7249999999999999,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the successful fused post-conv epilogue by keeping the same extension call shape but switching the CUDA fast path to operate in-place on the convolution output, removing the extra output allocation/copy while preserving the current fused subtract/subtract/Mish structure."
+      },
+      {
+        "node_id": "n3",
+        "parent_id": "n2",
+        "strategy_name": "strategy_05",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "aligned_vec4_epilogue",
+        "single_change_focus": "Make the fused out-of-place CUDA epilogue use `float4` only on 16-byte aligned contiguous FP32 tensors, with a scalar fused kernel fallback for misaligned/tail cases.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "plan_summary": "Refine the winning fused post-conv epilogue by making its vectorized path alignment-aware and preserving the out-of-place fused kernel structure, so the fast path only uses `float4` when the tensor pointers are safely 16-byte aligned and otherwise falls back to a scalar fused kernel."
+      },
+      {
+        "node_id": "n4",
+        "parent_id": "n1",
+        "strategy_name": "strategy_09",
+        "attempt_mode": "best_lineage_push",
+        "mutation_family": "kernel_register_tighten",
+        "single_change_focus": "Tighten the fused CUDA kernel implementation only: factor Mish into an inline helper and apply launch-bounds/register-liveness cleanup without changing API or forward wiring.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0132,
+        "speedup": 1.5681818181818181,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing fused post-conv CUDA epilogue by reducing per-thread register pressure and scalar math overhead inside the working kernel, without changing the Python call path or fused-kernel structure."
+      },
+      {
+        "node_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_05",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "single_change_focus": "small_local_repair",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "plan_summary": "Refine the winning fused post-conv epilogue by making its vectorized path alignment-aware and preserving the out-of-place fused kernel structure, so the fast path only uses `float4` when the tensor pointers are safely 16-byte aligned and otherwise falls back to a scalar fused kernel."
+      }
+    ],
+    "trace_summary": "effective=n1:Replace the three post-conv Python ops with one extension call backed by a fused CUDA kernel.:1.754x | flat=n2:Convert the fused CUDA fast path from out-of-place writeback to in-place mutation of the input tensor while keeping the exported API unchanged.:1.725x; n4:Tighten the fused CUDA kernel implementation only: factor Mish into an inline helper and apply launch-bounds/register-liveness cleanup without changing API or forward wiring.:1.568x | failed=n3:Make the fused out-of-place CUDA epilogue use `float4` only on 16-byte aligned contiguous FP32 tensors, with a scalar fused kernel fallback for misaligned/tail cases.:correctness_error; n5:small_local_repair:correctness_error",
+    "root_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void at::vectorized_elementwise_kernel<4, at::CUDAFunctorOnSelf_add<float>, std::array<char *, 2>>(int, T2, T3)",
+        "row_count": 31,
+        "kernel_launch_count": 31,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 92.72,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 20.91,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 10.29,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 1.4,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 81.77,
+          "launch__registers_per_thread": 32,
+          "launch__occupancy_limit_registers": 16,
+          "launch__occupancy_limit_shared_mem": 32,
+          "launch__occupancy_limit_warps": 12,
+          "gpu__time_duration.avg": 5180928,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.4,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.09,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 4032.25,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 142703.93
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "selected_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "fused_sub_sub_mish_kernel(const float *, float *, float, long, long, long)",
+        "row_count": 21,
+        "kernel_launch_count": 21,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 91.4,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 20.32,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 10.13,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 10.38,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 89.6,
+          "launch__registers_per_thread": 26,
+          "launch__occupancy_limit_registers": 8,
+          "launch__occupancy_limit_shared_mem": 16,
+          "launch__occupancy_limit_warps": 6,
+          "gpu__time_duration.avg": 5237984,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.85,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.02,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 73604.48,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 1386348.79
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "diagnostics_delta": {
+      "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": -1.3199999999999932,
+      "gpu__time_duration.avg": 57056,
+      "l1tex__throughput.avg.pct_of_peak_sustained_active": -0.15999999999999837,
+      "launch__occupancy_limit_registers": -8,
+      "launch__occupancy_limit_shared_mem": -16,
+      "launch__occupancy_limit_warps": -6,
+      "launch__registers_per_thread": -6,
+      "lts__throughput.avg.pct_of_peak_sustained_elapsed": -0.5899999999999999,
+      "sm__throughput.avg.pct_of_peak_sustained_elapsed": 8.98,
+      "sm__warps_active.avg.pct_of_peak_sustained_active": 7.829999999999998,
+      "smsp__sass_branch_targets_threads_divergent.avg": 0,
+      "smsp__sass_branch_targets_threads_uniform.avg": 69572.23,
+      "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.44999999999999996,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": -0.06999999999999999,
+      "smsp__warps_eligible.avg": 1243644.86
+    }
+  },
+  "feedback_state": {
+    "total_attempts": 11,
+    "compile_rate": 1.0,
+    "correct_rate": 0.8181818181818182,
+    "best_speedup": 1.754237288135593,
+    "best_strategy_name": "strategy_02",
+    "phase": "refinement",
+    "current_champion_id": "n1",
+    "current_champion_speedup": 1.754237288135593,
+    "plateau_detected": false,
+    "recent_improvement_deltas": [
+      0.7685230024213073,
+      0.04349348648270035,
+      0.057515976660183155
+    ],
+    "recent_regression_deltas": [
+      -0.18605546995377487,
+      -0.04349348648270035,
+      -0.057515976660183155,
+      0.0,
+      0.0
+    ],
+    "recent_successful_mutation_families": [
+      "stripmined_unroll4_epilogue",
+      "stripmined_unroll4_tighten"
+    ],
+    "recent_failed_mutation_families": [
+      "scalar_launchbounds_epilogue",
+      "stripmined_unroll8_epilogue",
+      "chunk4_tail_split",
+      "postconv_pointwise_fusion"
+    ],
+    "last_mutation_outcome": "regressed_or_flat",
+    "recent_attempts": [
+      {
+        "attempt_id": "n4",
+        "parent_id": "n1",
+        "strategy_name": "strategy_09",
+        "mode": "best_lineage_push",
+        "mutation_family": "kernel_register_tighten",
+        "speedup": 1.5681818181818181,
+        "parent_speedup": 1.754237288135593,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Tighten the fused CUDA kernel implementation only: factor Mish into an inline helper and apply launch-bounds/register-liveness cleanup without changing API or forward wiring."
+      },
+      {
+        "attempt_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_05",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": null,
+        "parent_speedup": null,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_n1",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_02",
+        "mode": "explore",
+        "mutation_family": "scalar_launchbounds_epilogue",
+        "speedup": 1.7107438016528926,
+        "parent_speedup": 1.754237288135593,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the fused CUDA epilogue implementation only: remove float4 vectorization and tail handling, and use one scalar launch-bounded grid-stride kernel over all elements."
+      },
+      {
+        "attempt_id": "phase2_n2",
+        "parent_id": "phase2_n1",
+        "strategy_name": "strategy_04",
+        "mode": "explore",
+        "mutation_family": "stripmined_unroll4_epilogue",
+        "speedup": 1.754237288135593,
+        "parent_speedup": 1.7107438016528926,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the current scalar fused epilogue kernel implementation with a 4-elements-per-thread unrolled contiguous strip-mined kernel while keeping the wrapper and fallback logic unchanged."
+      },
+      {
+        "attempt_id": "phase2_n3",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_04",
+        "mode": "explore",
+        "mutation_family": "stripmined_unroll8_epilogue",
+        "speedup": 1.6967213114754098,
+        "parent_speedup": 1.754237288135593,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Increase the fused epilogue's strip-mined chunk size from 4 to 8 elements per thread while keeping the same wrapper, bias folding, and fallback logic."
+      },
+      {
+        "attempt_id": "phase2_n4",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_04",
+        "mode": "explore",
+        "mutation_family": "chunk4_tail_split",
+        "speedup": 1.754237288135593,
+        "parent_speedup": 1.754237288135593,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the fused CUDA epilogue kernel body with a two-phase 4-wide strip-mined implementation: one kernel loop over full 4-element chunks with no per-lane bounds guards, and one tail cleanup path for the final 0-3 elements."
+      },
+      {
+        "attempt_id": "phase2_n5",
+        "parent_id": "phase2_n3",
+        "strategy_name": "strategy_04",
+        "mode": "explore",
+        "mutation_family": "stripmined_unroll4_tighten",
+        "speedup": 1.754237288135593,
+        "parent_speedup": 1.6967213114754098,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the current 8-wide inner loop with a 4-wide strip-mined contiguous loop that hoists repeated index math and keeps the same scalar fallback."
+      },
+      {
+        "attempt_id": "phase2_root",
+        "parent_id": "n1",
+        "strategy_name": "strategy_02",
+        "mode": "explore",
+        "mutation_family": "postconv_pointwise_fusion",
+        "speedup": 1.754237288135593,
+        "parent_speedup": 1.754237288135593,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the three post-conv Python ops with one extension call backed by a fused CUDA kernel."
+      }
+    ],
+    "champion": {
+      "node_id": "n1",
+      "speedup": 1.754237288135593,
+      "strategy_name": "strategy_02",
+      "mutation_family": "postconv_pointwise_fusion",
+      "lineage": [
+        "root",
+        "n1"
+      ],
+      "recent_positive_mutations": [
+        {
+          "attempt_id": "phase2_n2",
+          "strategy_name": "strategy_04",
+          "mode": "explore",
+          "mutation_family": "stripmined_unroll4_epilogue",
+          "speedup": 1.754237288135593,
+          "parent_speedup": 1.7107438016528926,
+          "single_change_focus": "Replace the current scalar fused epilogue kernel implementation with a 4-elements-per-thread unrolled contiguous strip-mined kernel while keeping the wrapper and fallback logic unchanged."
+        },
+        {
+          "attempt_id": "phase2_n5",
+          "strategy_name": "strategy_04",
+          "mode": "explore",
+          "mutation_family": "stripmined_unroll4_tighten",
+          "speedup": 1.754237288135593,
+          "parent_speedup": 1.6967213114754098,
+          "single_change_focus": "Replace the current 8-wide inner loop with a 4-wide strip-mined contiguous loop that hoists repeated index math and keeps the same scalar fallback."
+        }
+      ],
+      "recent_negative_mutations": [
+        {
+          "attempt_id": "phase2_n1",
+          "strategy_name": "strategy_02",
+          "mode": "explore",
+          "mutation_family": "scalar_launchbounds_epilogue",
+          "speedup": 1.7107438016528926,
+          "parent_speedup": 1.754237288135593,
+          "single_change_focus": "Replace the fused CUDA epilogue implementation only: remove float4 vectorization and tail handling, and use one scalar launch-bounded grid-stride kernel over all elements."
+        },
+        {
+          "attempt_id": "phase2_n3",
+          "strategy_name": "strategy_04",
+          "mode": "explore",
+          "mutation_family": "stripmined_unroll8_epilogue",
+          "speedup": 1.6967213114754098,
+          "parent_speedup": 1.754237288135593,
+          "single_change_focus": "Increase the fused epilogue's strip-mined chunk size from 4 to 8 elements per thread while keeping the same wrapper, bias folding, and fallback logic."
+        },
+        {
+          "attempt_id": "phase2_n4",
+          "strategy_name": "strategy_04",
+          "mode": "explore",
+          "mutation_family": "chunk4_tail_split",
+          "speedup": 1.754237288135593,
+          "parent_speedup": 1.754237288135593,
+          "single_change_focus": "Replace the fused CUDA epilogue kernel body with a two-phase 4-wide strip-mined implementation: one kernel loop over full 4-element chunks with no per-lane bounds guards, and one tail cleanup path for the final 0-3 elements."
+        },
+        {
+          "attempt_id": "phase2_root",
+          "strategy_name": "strategy_02",
+          "mode": "explore",
+          "mutation_family": "postconv_pointwise_fusion",
+          "speedup": 1.754237288135593,
+          "parent_speedup": 1.754237288135593,
+          "single_change_focus": "Replace the three post-conv Python ops with one extension call backed by a fused CUDA kernel."
+        }
+      ],
+      "plateau_detected": false,
+      "lineage_plateau_depth": 0
+    }
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "user_helpers",
+      "region_role": "helper",
+      "start_line": 36,
+      "end_line": 37,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 40,
+      "end_line": 45,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 49,
+      "end_line": 55,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 64,
+      "end_line": 68,
+      "source_excerpt": "self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\nself.subtract_value_1 = subtract_value_1\nself.subtract_value_2 = subtract_value_2",
+      "source_hash": "835acf6b3d05"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 71,
+      "end_line": 75,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\nx = self.conv(x)",
+      "source_hash": "fe567e588858"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 76,
+      "end_line": 78,
+      "source_excerpt": "x = x - self.subtract_value_1",
+      "source_hash": "8b35d769145a"
+    },
+    {
+      "anchor_name": "forward_stmt_3",
+      "region_role": "forward",
+      "start_line": 79,
+      "end_line": 81,
+      "source_excerpt": "x = x - self.subtract_value_2",
+      "source_hash": "af8db8fde0a8"
+    },
+    {
+      "anchor_name": "forward_stmt_4",
+      "region_role": "forward",
+      "start_line": 82,
+      "end_line": 84,
+      "source_excerpt": "x = torch.nn.functional.mish(x)",
+      "source_hash": "ae322adae9d8"
+    },
+    {
+      "anchor_name": "forward_stmt_5",
+      "region_role": "forward",
+      "start_line": 85,
+      "end_line": 87,
+      "source_excerpt": "return x",
+      "source_hash": "03c387736bb5"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p87_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, subtracts two values, applies Mish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, subtract_value_1, subtract_value_2):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.subtract_value_1 = subtract_value_1\n        self.subtract_value_2 = subtract_value_2\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = x - self.subtract_value_1\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x - self.subtract_value_2\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = torch.nn.functional.mish(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.021,
+      "score": 0.021,
+      "logs": [
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=104557",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/04_L2_P87_Retry_P87_20260720_171658/eval_traces/20260720_171659_104530_97ccbfd8_kernelbench_l2_87_87_conv2d_subtract_subtract_mish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0207,
+      "speedup": 0.9857142857142857,
+      "reference_runtimes": {
+        "torch_eager": 0.0207
+      },
+      "speedups": {
+        "torch_eager": 0.9857142857142857
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": null,
+      "single_change_focus": null,
+      "mutation_family": null,
+      "target_metric": null
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p87_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2);\n\nat::Tensor conv2d_subtract_subtract_mish(at::Tensor x, double subtract1, double subtract2) {\n    TORCH_CHECK(x.is_cuda(), \"Input tensor must be on CUDA device\");\n    return conv2d_subtract_subtract_mish_cuda(x, subtract1, subtract2);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"conv2d_subtract_subtract_mish\", &conv2d_subtract_subtract_mish,\n          \"Fused subtract-subtract-mish activation (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void fused_sub_sub_mish_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    float bias,\n    int64_t n_vec,\n    int64_t n_tail,\n    int64_t total\n) {\n    // float4 vectorized path\n    const float4* in4 = reinterpret_cast<const float4*>(input);\n    float4* out4 = reinterpret_cast<float4*>(output);\n\n    for (int64_t i = blockIdx.x * blockDim.x + threadIdx.x; i < n_vec; i += gridDim.x * blockDim.x) {\n        float4 v = in4[i];\n        float x0 = v.x - bias;\n        float x1 = v.y - bias;\n        float x2 = v.z - bias;\n        float x3 = v.w - bias;\n        // Mish: x * tanh(softplus(x)), softplus(x) = log1p(exp(x)) clamped for stability\n        float sp0 = x0 > 20.0f ? x0 : log1pf(expf(x0));\n        float sp1 = x1 > 20.0f ? x1 : log1pf(expf(x1));\n        float sp2 = x2 > 20.0f ? x2 : log1pf(expf(x2));\n        float sp3 = x3 > 20.0f ? x3 : log1pf(expf(x3));\n        v.x = x0 * tanhf(sp0);\n        v.y = x1 * tanhf(sp1);\n        v.z = x2 * tanhf(sp2);\n        v.w = x3 * tanhf(sp3);\n        out4[i] = v;\n    }\n\n    // scalar tail\n    int64_t tail_start = n_vec * 4;\n    for (int64_t i = blockIdx.x * blockDim.x + threadIdx.x; i < n_tail; i += gridDim.x * blockDim.x) {\n        int64_t idx = tail_start + i;\n        float x0 = input[idx] - bias;\n        float sp = x0 > 20.0f ? x0 : log1pf(expf(x0));\n        output[idx] = x0 * tanhf(sp);\n    }\n}\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2) {\n    // Fast path: contiguous float32 CUDA tensor\n    if (x.is_contiguous() && x.scalar_type() == at::kFloat) {\n        auto out = at::empty_like(x);\n        int64_t total = x.numel();\n        float bias = (float)(subtract1 + subtract2);\n        int64_t n_vec = total / 4;\n        int64_t n_tail = total % 4;\n\n        const int threads = 256;\n        int blocks = (int)((n_vec + threads - 1) / threads);\n        // Ensure we cover tail elements too\n        if (n_tail > 0 && blocks == 0) blocks = 1;\n        // Cap blocks\n        if (blocks > 65535) blocks = 65535;\n\n        fused_sub_sub_mish_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            out.data_ptr<float>(),\n            bias,\n            n_vec,\n            n_tail,\n            total\n        );\n        return out;\n    }\n    // Fallback: ATen ops for non-contiguous or non-float32\n    auto xc = x.contiguous();\n    xc = xc - (float)(subtract1 + subtract2);\n    return at::mish(xc);\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, subtracts two values, applies Mish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, subtract_value_1, subtract_value_2):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.subtract_value_1 = subtract_value_1\n        self.subtract_value_2 = subtract_value_2\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.conv(x)\n        x = _stark_get_extension().conv2d_subtract_subtract_mish(x, float(self.subtract_value_1), float(self.subtract_value_2))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        # subtract_value_1 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # subtract_value_2 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # Mish fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2",
+        "n4",
+        "phase2_root"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Fuse the two scalar subtracts and Mish into one custom CUDA epilogue launched immediately after `self.conv(x)` so the post-conv tensor is traversed once instead of by multiple bandwidth-bound ATen elementwise kernels.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ binding that declares `at::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2);`, validates that the input is a CUDA tensor, and exports a pybind entrypoint named `conv2d_subtract_subtract_mish` returning the tensor from the CUDA implementation. Keep the API narrow: tensor plus two scalar doubles in, tensor out.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a CUDA implementation of `conv2d_subtract_subtract_mish_cuda`. Allocate `out = torch::empty_like(x)`. Implement a fused kernel for contiguous `float32` tensors using a grid-stride loop over flattened elements that computes `v = x[i] - (float)(subtract1 + subtract2)`, then Mish with a numerically stable softplus such as `sp = v > 20.0f ? v : log1pf(expf(v)); out[i] = v * tanhf(sp);`. Launch with a conventional block size like 256 threads. Include a scalar tail-safe path; if the tensor is not CUDA, not contiguous, or not float32, fall back to equivalent ATen ops in the wrapper rather than forcing unrelated scaffold changes.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the baseline comment block and conv line with two lines: first compute `x = self.conv(x)`, then immediately call the extension with `x = _stark_get_extension().conv2d_subtract_subtract_mish(x, float(self.subtract_value_1), float(self.subtract_value_2))`. Keep the conv as the producer and the fused extension as the sole post-conv path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the subtraction statement with a no-op comment indicating the subtracts are fused into the custom CUDA epilogue and no additional tensor operation should occur here.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the subtraction statement with a no-op comment indicating the second subtract is fused into the custom CUDA epilogue and no additional tensor operation should occur here.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Replace the Mish statement with a no-op comment indicating Mish is fused into the custom CUDA epilogue and no additional tensor operation should occur here.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.011800000000000001,
+      "score": 0.011800000000000001,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_1:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "applied_region_patch:forward_stmt_4:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=105907",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/04_L2_P87_Retry_P87_20260720_171658/eval_traces/20260720_172004_104530_7955796d_kernelbench_l2_87_87_conv2d_subtract_subtract_mish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0207,
+      "speedup": 1.754237288135593,
+      "reference_runtimes": {
+        "torch_eager": 0.0207
+      },
+      "speedups": {
+        "torch_eager": 1.754237288135593
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current root spends most time in separate memory-bound elementwise kernels, so replacing `sub`, `sub`, and `mish` with one fused CUDA pass over the conv output should materially reduce DRAM traffic and launch overhead, improving end-to-end runtime.",
+      "single_change_focus": "Replace the three post-conv Python ops with one extension call backed by a fused CUDA kernel.",
+      "mutation_family": "postconv_pointwise_fusion",
+      "target_metric": "speedup"
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p87_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2);\n\nat::Tensor conv2d_subtract_subtract_mish(at::Tensor x, double subtract1, double subtract2) {\n    TORCH_CHECK(x.is_cuda(), \"Input tensor must be on CUDA device\");\n    return conv2d_subtract_subtract_mish_cuda(x, subtract1, subtract2);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"conv2d_subtract_subtract_mish\", &conv2d_subtract_subtract_mish,\n          \"Fused subtract-subtract-mish activation (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void fused_sub_sub_mish_kernel_inplace(\n    float* __restrict__ data,\n    float bias,\n    int64_t n_vec,\n    int64_t n_tail\n) {\n    // float4 vectorized path\n    float4* data4 = reinterpret_cast<float4*>(data);\n\n    for (int64_t i = blockIdx.x * blockDim.x + threadIdx.x; i < n_vec; i += gridDim.x * blockDim.x) {\n        float4 v = data4[i];\n        float x0 = v.x - bias;\n        float x1 = v.y - bias;\n        float x2 = v.z - bias;\n        float x3 = v.w - bias;\n        // Mish: x * tanh(softplus(x)), softplus(x) = log1p(exp(x)) clamped for stability\n        float sp0 = x0 > 20.0f ? x0 : log1pf(expf(x0));\n        float sp1 = x1 > 20.0f ? x1 : log1pf(expf(x1));\n        float sp2 = x2 > 20.0f ? x2 : log1pf(expf(x2));\n        float sp3 = x3 > 20.0f ? x3 : log1pf(expf(x3));\n        v.x = x0 * tanhf(sp0);\n        v.y = x1 * tanhf(sp1);\n        v.z = x2 * tanhf(sp2);\n        v.w = x3 * tanhf(sp3);\n        data4[i] = v;\n    }\n\n    // scalar tail\n    int64_t tail_start = n_vec * 4;\n    for (int64_t i = blockIdx.x * blockDim.x + threadIdx.x; i < n_tail; i += gridDim.x * blockDim.x) {\n        int64_t idx = tail_start + i;\n        float x0 = data[idx] - bias;\n        float sp = x0 > 20.0f ? x0 : log1pf(expf(x0));\n        data[idx] = x0 * tanhf(sp);\n    }\n}\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2) {\n    // Fast path: contiguous float32 CUDA tensor (in-place)\n    if (x.is_contiguous() && x.scalar_type() == at::kFloat) {\n        int64_t total = x.numel();\n        float bias = (float)(subtract1 + subtract2);\n        int64_t n_vec = total / 4;\n        int64_t n_tail = total % 4;\n\n        const int threads = 256;\n        int blocks = (int)((n_vec + threads - 1) / threads);\n        // Ensure we cover tail elements too\n        if (n_tail > 0 && blocks == 0) blocks = 1;\n        // Cap blocks\n        if (blocks > 65535) blocks = 65535;\n\n        fused_sub_sub_mish_kernel_inplace<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            bias,\n            n_vec,\n            n_tail\n        );\n        return x;\n    }\n    // Fallback: ATen ops for non-contiguous or non-float32\n    auto xc = x.contiguous();\n    xc = xc - (float)(subtract1 + subtract2);\n    return at::mish(xc);\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, subtracts two values, applies Mish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, subtract_value_1, subtract_value_2):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.subtract_value_1 = subtract_value_1\n        self.subtract_value_2 = subtract_value_2\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.conv(x)\n        x = _stark_get_extension().conv2d_subtract_subtract_mish(x, float(self.subtract_value_1), float(self.subtract_value_2))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        # subtract_value_1 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # subtract_value_2 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # Mish fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Refine the successful fused post-conv epilogue by keeping the same extension call shape but switching the CUDA fast path to operate in-place on the convolution output, removing the extra output allocation/copy while preserving the current fused subtract/subtract/Mish structure.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current fast path so the kernel takes a single `float* data` pointer plus `bias`, `n_vec`, and `n_tail`, loads/stores through that same pointer in both the float4 body and scalar tail, and `conv2d_subtract_subtract_mish_cuda` returns the input tensor `x` after launching the in-place kernel. Remove `at::empty_like(x)` and the separate output pointer from the fast path. Keep the fallback path behavior unchanged for tensors that are not contiguous CUDA float32.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.012,
+      "score": 0.012,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=106655",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/04_L2_P87_Retry_P87_20260720_171658/eval_traces/20260720_172204_104530_86ea9ee2_kernelbench_l2_87_87_conv2d_subtract_subtract_mish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0207,
+      "speedup": 1.7249999999999999,
+      "reference_runtimes": {
+        "torch_eager": 0.0207
+      },
+      "speedups": {
+        "torch_eager": 1.7249999999999999
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Because the champion already removed most memory round-trips, the next local win is to eliminate the extra `empty_like` allocation and separate output pointer by mutating the contiguous FP32 conv output tensor in-place inside the fused kernel and returning that same tensor.",
+      "single_change_focus": "Convert the fused CUDA fast path from out-of-place writeback to in-place mutation of the input tensor while keeping the exported API unchanged.",
+      "mutation_family": "inplace_epilogue",
+      "target_metric": "speedup"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p87_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2);\n\nat::Tensor conv2d_subtract_subtract_mish(at::Tensor x, double subtract1, double subtract2) {\n    TORCH_CHECK(x.is_cuda(), \"Input tensor must be on CUDA device\");\n    return conv2d_subtract_subtract_mish_cuda(x, subtract1, subtract2);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"conv2d_subtract_subtract_mish\", &conv2d_subtract_subtract_mish,\n          \"Fused subtract-subtract-mish activation (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float mish_scalar(float v) {\n    float sp = v > 20.0f ? v : log1pf(expf(v));\n    return v * tanhf(sp);\n}\n\n__global__ void fused_sub_sub_mish_vec4_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    float bias,\n    int64_t n_vec\n) {\n    const float4* in4 = reinterpret_cast<const float4*>(input);\n    float4* out4 = reinterpret_cast<float4*>(output);\n\n    for (int64_t i = blockIdx.x * blockDim.x + threadIdx.x; i < n_vec; i += gridDim.x * blockDim.x) {\n        float4 v = in4[i];\n        float x0 = v.x - bias;\n        float x1 = v.y - bias;\n        float x2 = v.z - bias;\n        float x3 = v.w - bias;\n        v.x = mish_scalar(x0);\n        v.y = mish_scalar(x1);\n        v.z = mish_scalar(x2);\n        v.w = mish_scalar(x3);\n        out4[i] = v;\n    }\n}\n\n__global__ void fused_sub_sub_mish_scalar_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    float bias,\n    int64_t total\n) {\n    for (int64_t i = blockIdx.x * blockDim.x + threadIdx.x; i < total; i += gridDim.x * blockDim.x) {\n        float x = input[i] - bias;\n        output[i] = mish_scalar(x);\n    }\n}\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2) {\n    if (x.is_contiguous() && x.scalar_type() == at::kFloat) {\n        auto out = at::empty_like(x);\n        int64_t total = x.numel();\n        float bias = (float)(subtract1 + subtract2);\n\n        const float* in_ptr = x.data_ptr<float>();\n        float* out_ptr = out.data_ptr<float>();\n\n        bool in_aligned = (reinterpret_cast<uintptr_t>(in_ptr) % 16 == 0);\n        bool out_aligned = (reinterpret_cast<uintptr_t>(out_ptr) % 16 == 0);\n\n        const int threads = 256;\n\n        if (in_aligned && out_aligned) {\n            int64_t n_vec = total / 4;\n            int64_t n_tail = total % 4;\n\n            if (n_vec > 0) {\n                int blocks = (int)((n_vec + threads - 1) / threads);\n                if (blocks > 65535) blocks = 65535;\n                fused_sub_sub_mish_vec4_kernel<<<blocks, threads>>>(\n                    in_ptr, out_ptr, bias, n_vec\n                );\n            }\n\n            if (n_tail > 0) {\n                int64_t tail_start = n_vec * 4;\n                fused_sub_sub_mish_scalar_kernel<<<1, (n_tail < threads ? n_tail : threads)>>>(\n                    in_ptr + tail_start, out_ptr + tail_start, bias, n_tail\n                );\n            }\n        } else {\n            int blocks = (int)((total + threads - 1) / threads);\n            if (blocks > 65535) blocks = 65535;\n            fused_sub_sub_mish_scalar_kernel<<<blocks, threads>>>(\n                in_ptr, out_ptr, bias, total\n            );\n        }\n\n        return out;\n    }\n\n    auto xc = x.contiguous();\n    xc = xc - (float)(subtract1 + subtract2);\n    return at::mish(xc);\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, subtracts two values, applies Mish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, subtract_value_1, subtract_value_2):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.subtract_value_1 = subtract_value_1\n        self.subtract_value_2 = subtract_value_2\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.conv(x)\n        x = _stark_get_extension().conv2d_subtract_subtract_mish(x, float(self.subtract_value_1), float(self.subtract_value_2))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        # subtract_value_1 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # subtract_value_2 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # Mish fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Refine the winning fused post-conv epilogue by making its vectorized path alignment-aware and preserving the out-of-place fused kernel structure, so the fast path only uses `float4` when the tensor pointers are safely 16-byte aligned and otherwise falls back to a scalar fused kernel.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA implementation with an out-of-place fused epilogue that keeps the existing exported C++ symbol `conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2)` unchanged, but internally: (1) define a small `__device__ __forceinline__ float mish_scalar(float v)` helper using the same stable Mish formula already used by the winning fused kernel; (2) define two kernels, one `float4` vector kernel reading `const float4*` and writing `float4*`, and one scalar kernel reading/writing `float*`; (3) in the fast path for `x.is_contiguous() && x.scalar_type() == at::kFloat`, allocate `auto out = at::empty_like(x)`, compute `float bias = (float)(subtract1 + subtract2)`, and check both `x.data_ptr<float>()` and `out.data_ptr<float>()` for 16-byte alignment via `reinterpret_cast<uintptr_t>(ptr) % 16 == 0`; (4) if aligned, launch the vector kernel over `n_vec = total / 4` elements and a scalar tail kernel only for the remaining `total % 4` elements, otherwise launch the scalar kernel over all `total` elements; (5) return `out` from the fast path; (6) keep the existing ATen fallback for non-contiguous or non-float32 inputs as `auto xc = x.contiguous(); xc = xc - (float)(subtract1 + subtract2); return at::mish(xc);`. Do not change the Python-visible API or forward anchors.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "correctness_issue=Output mismatch",
+        "max_difference=['0.001765']",
+        "avg_difference=['0.000001']",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=107476",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/04_L2_P87_Retry_P87_20260720_171658/eval_traces/20260720_172423_104530_e4aef517_kernelbench_l2_87_87_conv2d_subtract_subtract_mish"
+      ],
+      "failure_type": "correctness_error",
+      "node_status": "correctness_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "correctness",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "The champion fused kernel is still bandwidth-sensitive, and unconditional `float4` reinterpret-casts can underperform when input/output pointers are not 16-byte aligned; guarding vectorization by pointer alignment and using a scalar fused fallback should improve effective memory throughput without changing the successful overall structure.",
+      "single_change_focus": "Make the fused out-of-place CUDA epilogue use `float4` only on 16-byte aligned contiguous FP32 tensors, with a scalar fused kernel fallback for misaligned/tail cases.",
+      "mutation_family": "aligned_vec4_epilogue",
+      "target_metric": "speedup"
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p87_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2);\n\nat::Tensor conv2d_subtract_subtract_mish(at::Tensor x, double subtract1, double subtract2) {\n    TORCH_CHECK(x.is_cuda(), \"Input tensor must be on CUDA device\");\n    return conv2d_subtract_subtract_mish_cuda(x, subtract1, subtract2);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"conv2d_subtract_subtract_mish\", &conv2d_subtract_subtract_mish,\n          \"Fused subtract-subtract-mish activation (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float mish_fast(float x) {\n    if (x > 20.f) return x;\n    if (x < -20.f) return x * __expf(x);\n    return x * tanhf(log1pf(__expf(x)));\n}\n\n__global__ __launch_bounds__(256, 4) void fused_sub_sub_mish_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    float bias,\n    int64_t n_vec,\n    int64_t n_tail\n) {\n    const float4* in4 = reinterpret_cast<const float4*>(input);\n    float4* out4 = reinterpret_cast<float4*>(output);\n\n    for (int64_t i = (int64_t)blockIdx.x * blockDim.x + threadIdx.x; i < n_vec; i += (int64_t)gridDim.x * blockDim.x) {\n        float4 v = in4[i];\n        v.x = mish_fast(v.x - bias);\n        v.y = mish_fast(v.y - bias);\n        v.z = mish_fast(v.z - bias);\n        v.w = mish_fast(v.w - bias);\n        out4[i] = v;\n    }\n\n    int64_t tail_start = n_vec * 4;\n    for (int64_t i = (int64_t)blockIdx.x * blockDim.x + threadIdx.x; i < n_tail; i += (int64_t)gridDim.x * blockDim.x) {\n        int64_t idx = tail_start + i;\n        output[idx] = mish_fast(input[idx] - bias);\n    }\n}\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2) {\n    if (x.is_contiguous() && x.scalar_type() == at::kFloat) {\n        auto out = at::empty_like(x);\n        int64_t total = x.numel();\n        float bias = (float)(subtract1 + subtract2);\n        int64_t n_vec = total / 4;\n        int64_t n_tail = total % 4;\n\n        const int threads = 256;\n        int blocks = (int)((n_vec + threads - 1) / threads);\n        if (n_tail > 0 && blocks == 0) blocks = 1;\n        if (blocks > 65535) blocks = 65535;\n\n        fused_sub_sub_mish_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            out.data_ptr<float>(),\n            bias,\n            n_vec,\n            n_tail\n        );\n        return out;\n    }\n    auto xc = x.contiguous();\n    xc = xc - (float)(subtract1 + subtract2);\n    return at::mish(xc);\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, subtracts two values, applies Mish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, subtract_value_1, subtract_value_2):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.subtract_value_1 = subtract_value_1\n        self.subtract_value_2 = subtract_value_2\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.conv(x)\n        x = _stark_get_extension().conv2d_subtract_subtract_mish(x, float(self.subtract_value_1), float(self.subtract_value_2))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        # subtract_value_1 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # subtract_value_2 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # Mish fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_09",
+      "plan_summary": "Refine the existing fused post-conv CUDA epilogue by reducing per-thread register pressure and scalar math overhead inside the working kernel, without changing the Python call path or fused-kernel structure.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current CUDA source with the same exported wrapper/function names and same out-of-place behavior, but rewrite only the kernel internals as follows: add a `__device__ __forceinline__ float mish_fast(float x)` helper that computes Mish using thresholds (`if (x > 20.f) return x; if (x < -20.f) return x * expf(x); float sp = log1pf(__expf(x)); return x * tanhf(sp);`); annotate the kernel with `__launch_bounds__(256, 4)`; remove the unused `total` kernel parameter from both declaration and launch; in the vectorized loop load one `float4`, subtract the combined bias, call `mish_fast` directly for each lane, and store one `float4`; keep the scalar tail loop but call the same helper; keep the existing fast path guard (`is_contiguous && float32`) and the existing ATen fallback; do not change the exported C++ symbol names or the Python-facing entrypoint.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0132,
+      "score": 0.0132,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=108783",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/04_L2_P87_Retry_P87_20260720_171658/eval_traces/20260720_172653_104530_1c3d54d6_kernelbench_l2_87_87_conv2d_subtract_subtract_mish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0207,
+      "speedup": 1.5681818181818181,
+      "reference_runtimes": {
+        "torch_eager": 0.0207
+      },
+      "speedups": {
+        "torch_eager": 1.5681818181818181
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "best_lineage_push",
+      "performance_hypothesis": "If the fused CUDA kernel is restructured with a `__device__ __forceinline__` Mish helper, `__launch_bounds__(256, 4)`, thresholded fast-math softplus, and the unused kernel argument removed, then register pressure and instruction latency drop enough to improve occupancy/latency hiding and outperform the current fused kernel.",
+      "single_change_focus": "Tighten the fused CUDA kernel implementation only: factor Mish into an inline helper and apply launch-bounds/register-liveness cleanup without changing API or forward wiring.",
+      "mutation_family": "kernel_register_tighten",
+      "target_metric": "speedup"
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p87_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2);\n\nat::Tensor conv2d_subtract_subtract_mish(at::Tensor x, double subtract1, double subtract2) {\n    TORCH_CHECK(x.is_cuda(), \"Input tensor must be on CUDA device\");\n    return conv2d_subtract_subtract_mish_cuda(x, subtract1, subtract2);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"conv2d_subtract_subtract_mish\", &conv2d_subtract_subtract_mish,\n          \"Fused subtract-subtract-mish activation (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float mish_scalar(float v) {\n    // Use a more accurate softplus formulation to better match PyTorch numerics.\n    double dv = static_cast<double>(v);\n    double sp = log1p(exp(-fabs(dv))) + fmax(dv, 0.0);\n    return static_cast<float>(dv * tanh(sp));\n}\n\n__global__ void fused_sub_sub_mish_vec4_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    float bias,\n    int64_t n_vec\n) {\n    const float4* in4 = reinterpret_cast<const float4*>(input);\n    float4* out4 = reinterpret_cast<float4*>(output);\n\n    for (int64_t i = blockIdx.x * blockDim.x + threadIdx.x; i < n_vec; i += gridDim.x * blockDim.x) {\n        float4 v = in4[i];\n        float x0 = v.x - bias;\n        float x1 = v.y - bias;\n        float x2 = v.z - bias;\n        float x3 = v.w - bias;\n        v.x = mish_scalar(x0);\n        v.y = mish_scalar(x1);\n        v.z = mish_scalar(x2);\n        v.w = mish_scalar(x3);\n        out4[i] = v;\n    }\n}\n\n__global__ void fused_sub_sub_mish_scalar_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    float bias,\n    int64_t total\n) {\n    for (int64_t i = blockIdx.x * blockDim.x + threadIdx.x; i < total; i += gridDim.x * blockDim.x) {\n        float x = input[i] - bias;\n        output[i] = mish_scalar(x);\n    }\n}\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2) {\n    if (x.is_contiguous() && x.scalar_type() == at::kFloat) {\n        auto out = at::empty_like(x);\n        int64_t total = x.numel();\n        float bias = (float)(subtract1 + subtract2);\n\n        const float* in_ptr = x.data_ptr<float>();\n        float* out_ptr = out.data_ptr<float>();\n\n        bool in_aligned = (reinterpret_cast<uintptr_t>(in_ptr) % 16 == 0);\n        bool out_aligned = (reinterpret_cast<uintptr_t>(out_ptr) % 16 == 0);\n\n        const int threads = 256;\n\n        if (in_aligned && out_aligned) {\n            int64_t n_vec = total / 4;\n            int64_t n_tail = total % 4;\n\n            if (n_vec > 0) {\n                int blocks = (int)((n_vec + threads - 1) / threads);\n                if (blocks > 65535) blocks = 65535;\n                fused_sub_sub_mish_vec4_kernel<<<blocks, threads>>>(\n                    in_ptr, out_ptr, bias, n_vec\n                );\n            }\n\n            if (n_tail > 0) {\n                int64_t tail_start = n_vec * 4;\n                fused_sub_sub_mish_scalar_kernel<<<1, (n_tail < threads ? n_tail : threads)>>>(\n                    in_ptr + tail_start, out_ptr + tail_start, bias, n_tail\n                );\n            }\n        } else {\n            int blocks = (int)((total + threads - 1) / threads);\n            if (blocks > 65535) blocks = 65535;\n            fused_sub_sub_mish_scalar_kernel<<<blocks, threads>>>(\n                in_ptr, out_ptr, bias, total\n            );\n        }\n\n        return out;\n    }\n\n    auto xc = x.contiguous();\n    xc = xc - (float)(subtract1 + subtract2);\n    return at::mish(xc);\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, subtracts two values, applies Mish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, subtract_value_1, subtract_value_2):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.subtract_value_1 = subtract_value_1\n        self.subtract_value_2 = subtract_value_2\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.conv(x)\n        x = _stark_get_extension().conv2d_subtract_subtract_mish(x, float(self.subtract_value_1), float(self.subtract_value_2))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        # subtract_value_1 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # subtract_value_2 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # Mish fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Refine the winning fused post-conv epilogue by making its vectorized path alignment-aware and preserving the out-of-place fused kernel structure, so the fast path only uses `float4` when the tensor pointers are safely 16-byte aligned and otherwise falls back to a scalar fused kernel.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA implementation with an out-of-place fused epilogue that keeps the existing exported C++ symbol `conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2)` unchanged, but internally: (1) define a small `__device__ __forceinline__ float mish_scalar(float v)` helper using the same stable Mish formula already used by the winning fused kernel; (2) define two kernels, one `float4` vector kernel reading `const float4*` and writing `float4*`, and one scalar kernel reading/writing `float*`; (3) in the fast path for `x.is_contiguous() && x.scalar_type() == at::kFloat`, allocate `auto out = at::empty_like(x)`, compute `float bias = (float)(subtract1 + subtract2)`, and check both `x.data_ptr<float>()` and `out.data_ptr<float>()` for 16-byte alignment via `reinterpret_cast<uintptr_t>(ptr) % 16 == 0`; (4) if aligned, launch the vector kernel over `n_vec = total / 4` elements and a scalar tail kernel only for the remaining `total % 4` elements, otherwise launch the scalar kernel over all `total` elements; (5) return `out` from the fast path; (6) keep the existing ATen fallback for non-contiguous or non-float32 inputs as `auto xc = x.contiguous(); xc = xc - (float)(subtract1 + subtract2); return at::mish(xc);`. Do not change the Python-visible API or forward anchors.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "correctness_issue=Output mismatch",
+        "max_difference=['0.000880']",
+        "avg_difference=['0.000000']",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=110652",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/04_L2_P87_Retry_P87_20260720_171658/eval_traces/20260720_172857_104530_73cd3f58_kernelbench_l2_87_87_conv2d_subtract_subtract_mish"
+      ],
+      "failure_type": "correctness_error",
+      "node_status": "correctness_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "correctness",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_root": {
+      "node_id": "phase2_root",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p87_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2);\n\nat::Tensor conv2d_subtract_subtract_mish(at::Tensor x, double subtract1, double subtract2) {\n    TORCH_CHECK(x.is_cuda(), \"Input tensor must be on CUDA device\");\n    return conv2d_subtract_subtract_mish_cuda(x, subtract1, subtract2);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"conv2d_subtract_subtract_mish\", &conv2d_subtract_subtract_mish,\n          \"Fused subtract-subtract-mish activation (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void fused_sub_sub_mish_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    float bias,\n    int64_t n_vec,\n    int64_t n_tail,\n    int64_t total\n) {\n    // float4 vectorized path\n    const float4* in4 = reinterpret_cast<const float4*>(input);\n    float4* out4 = reinterpret_cast<float4*>(output);\n\n    for (int64_t i = blockIdx.x * blockDim.x + threadIdx.x; i < n_vec; i += gridDim.x * blockDim.x) {\n        float4 v = in4[i];\n        float x0 = v.x - bias;\n        float x1 = v.y - bias;\n        float x2 = v.z - bias;\n        float x3 = v.w - bias;\n        // Mish: x * tanh(softplus(x)), softplus(x) = log1p(exp(x)) clamped for stability\n        float sp0 = x0 > 20.0f ? x0 : log1pf(expf(x0));\n        float sp1 = x1 > 20.0f ? x1 : log1pf(expf(x1));\n        float sp2 = x2 > 20.0f ? x2 : log1pf(expf(x2));\n        float sp3 = x3 > 20.0f ? x3 : log1pf(expf(x3));\n        v.x = x0 * tanhf(sp0);\n        v.y = x1 * tanhf(sp1);\n        v.z = x2 * tanhf(sp2);\n        v.w = x3 * tanhf(sp3);\n        out4[i] = v;\n    }\n\n    // scalar tail\n    int64_t tail_start = n_vec * 4;\n    for (int64_t i = blockIdx.x * blockDim.x + threadIdx.x; i < n_tail; i += gridDim.x * blockDim.x) {\n        int64_t idx = tail_start + i;\n        float x0 = input[idx] - bias;\n        float sp = x0 > 20.0f ? x0 : log1pf(expf(x0));\n        output[idx] = x0 * tanhf(sp);\n    }\n}\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2) {\n    // Fast path: contiguous float32 CUDA tensor\n    if (x.is_contiguous() && x.scalar_type() == at::kFloat) {\n        auto out = at::empty_like(x);\n        int64_t total = x.numel();\n        float bias = (float)(subtract1 + subtract2);\n        int64_t n_vec = total / 4;\n        int64_t n_tail = total % 4;\n\n        const int threads = 256;\n        int blocks = (int)((n_vec + threads - 1) / threads);\n        // Ensure we cover tail elements too\n        if (n_tail > 0 && blocks == 0) blocks = 1;\n        // Cap blocks\n        if (blocks > 65535) blocks = 65535;\n\n        fused_sub_sub_mish_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            out.data_ptr<float>(),\n            bias,\n            n_vec,\n            n_tail,\n            total\n        );\n        return out;\n    }\n    // Fallback: ATen ops for non-contiguous or non-float32\n    auto xc = x.contiguous();\n    xc = xc - (float)(subtract1 + subtract2);\n    return at::mish(xc);\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, subtracts two values, applies Mish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, subtract_value_1, subtract_value_2):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.subtract_value_1 = subtract_value_1\n        self.subtract_value_2 = subtract_value_2\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.conv(x)\n        x = _stark_get_extension().conv2d_subtract_subtract_mish(x, float(self.subtract_value_1), float(self.subtract_value_2))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        # subtract_value_1 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # subtract_value_2 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # Mish fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "phase2_root",
+      "child_ids": [
+        "phase2_n1",
+        "phase2_n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Fuse the two scalar subtracts and Mish into one custom CUDA epilogue launched immediately after `self.conv(x)` so the post-conv tensor is traversed once instead of by multiple bandwidth-bound ATen elementwise kernels.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ binding that declares `at::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2);`, validates that the input is a CUDA tensor, and exports a pybind entrypoint named `conv2d_subtract_subtract_mish` returning the tensor from the CUDA implementation. Keep the API narrow: tensor plus two scalar doubles in, tensor out.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a CUDA implementation of `conv2d_subtract_subtract_mish_cuda`. Allocate `out = torch::empty_like(x)`. Implement a fused kernel for contiguous `float32` tensors using a grid-stride loop over flattened elements that computes `v = x[i] - (float)(subtract1 + subtract2)`, then Mish with a numerically stable softplus such as `sp = v > 20.0f ? v : log1pf(expf(v)); out[i] = v * tanhf(sp);`. Launch with a conventional block size like 256 threads. Include a scalar tail-safe path; if the tensor is not CUDA, not contiguous, or not float32, fall back to equivalent ATen ops in the wrapper rather than forcing unrelated scaffold changes.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the baseline comment block and conv line with two lines: first compute `x = self.conv(x)`, then immediately call the extension with `x = _stark_get_extension().conv2d_subtract_subtract_mish(x, float(self.subtract_value_1), float(self.subtract_value_2))`. Keep the conv as the producer and the fused extension as the sole post-conv path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the subtraction statement with a no-op comment indicating the subtracts are fused into the custom CUDA epilogue and no additional tensor operation should occur here.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the subtraction statement with a no-op comment indicating the second subtract is fused into the custom CUDA epilogue and no additional tensor operation should occur here.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Replace the Mish statement with a no-op comment indicating Mish is fused into the custom CUDA epilogue and no additional tensor operation should occur here.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.011800000000000001,
+      "score": 0.011800000000000001,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_1:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "applied_region_patch:forward_stmt_4:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=105907",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/04_L2_P87_Retry_P87_20260720_171658/eval_traces/20260720_172004_104530_7955796d_kernelbench_l2_87_87_conv2d_subtract_subtract_mish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0207,
+      "speedup": 1.754237288135593,
+      "reference_runtimes": {
+        "torch_eager": 0.0207
+      },
+      "speedups": {
+        "torch_eager": 1.754237288135593
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current root spends most time in separate memory-bound elementwise kernels, so replacing `sub`, `sub`, and `mish` with one fused CUDA pass over the conv output should materially reduce DRAM traffic and launch overhead, improving end-to-end runtime.",
+      "single_change_focus": "Replace the three post-conv Python ops with one extension call backed by a fused CUDA kernel.",
+      "mutation_family": "postconv_pointwise_fusion",
+      "target_metric": "speedup"
+    },
+    "phase2_n1": {
+      "node_id": "phase2_n1",
+      "parent_id": "phase2_root",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p87_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2);\n\nat::Tensor conv2d_subtract_subtract_mish(at::Tensor x, double subtract1, double subtract2) {\n    TORCH_CHECK(x.is_cuda(), \"Input tensor must be on CUDA device\");\n    return conv2d_subtract_subtract_mish_cuda(x, subtract1, subtract2);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"conv2d_subtract_subtract_mish\", &conv2d_subtract_subtract_mish,\n          \"Fused subtract-subtract-mish activation (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__launch_bounds__(128, 8)\n__global__ void fused_sub_sub_mish_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    float bias,\n    int64_t total\n) {\n    for (int64_t i = (int64_t)blockIdx.x * blockDim.x + threadIdx.x; i < total; i += (int64_t)blockDim.x * gridDim.x) {\n        float x0 = input[i] - bias;\n        float sp = x0 > 20.0f ? x0 : log1pf(expf(x0));\n        output[i] = x0 * tanhf(sp);\n    }\n}\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2) {\n    if (x.is_contiguous() && x.scalar_type() == at::kFloat) {\n        auto out = at::empty_like(x);\n        int64_t total = x.numel();\n        float bias = (float)(subtract1 + subtract2);\n        const int threads = 128;\n        int blocks = (int)((total + threads - 1) / threads);\n        if (blocks < 1) blocks = 1;\n        if (blocks > 65535) blocks = 65535;\n        fused_sub_sub_mish_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            out.data_ptr<float>(),\n            bias,\n            total\n        );\n        return out;\n    }\n    auto xc = x.contiguous();\n    xc = xc - (float)(subtract1 + subtract2);\n    return at::mish(xc);\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, subtracts two values, applies Mish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, subtract_value_1, subtract_value_2):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.subtract_value_1 = subtract_value_1\n        self.subtract_value_2 = subtract_value_2\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.conv(x)\n        x = _stark_get_extension().conv2d_subtract_subtract_mish(x, float(self.subtract_value_1), float(self.subtract_value_2))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        # subtract_value_1 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # subtract_value_2 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # Mish fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Refine the working fused post-conv epilogue by replacing the current float4-plus-tail kernel with a single scalar flat grid-stride kernel using launch-bounds and a smaller block size to lower register pressure and improve occupancy/latency hiding.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current `fused_sub_sub_mish_kernel` and its launch logic with a single scalar CUDA kernel over `total = x.numel()` elements. Define the kernel with `__launch_bounds__(128, 8)` and signature `(const float* input, float* output, float bias, int64_t total)`. In the kernel, compute `idx = blockIdx.x * blockDim.x + threadIdx.x` and iterate `for (int64_t i = idx; i < total; i += (int64_t)blockDim.x * gridDim.x)`, loading one float, subtracting the fused scalar bias once, computing Mish with the same stable branch (`sp = x0 > 20.0f ? x0 : log1pf(expf(x0))`), and storing to output. Remove all `float4` casts, `n_vec`, `n_tail`, and separate tail loops. In `conv2d_subtract_subtract_mish_cuda`, keep the existing contiguous-FP32 fast-path and fallback structure, still allocate `out = at::empty_like(x)`, compute `bias = (float)(subtract1 + subtract2)`, set `threads = 128`, compute `blocks = min((total + threads - 1) / threads, 65535)` with a minimum of 1 when `total > 0`, and launch the new kernel with `(x.data_ptr<float>(), out.data_ptr<float>(), bias, total)`. Keep the exported function names and Python-visible API unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0121,
+      "score": 0.0121,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=113235",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/04_L2_P87_Retry_P87_20260720_171658/eval_traces/20260720_173403_104530_74c1db77_kernelbench_l2_87_87_conv2d_subtract_subtract_mish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0207,
+      "speedup": 1.7107438016528926,
+      "reference_runtimes": {
+        "torch_eager": 0.0207
+      },
+      "speedups": {
+        "torch_eager": 1.7107438016528926
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current fused kernel is dominated by long-scoreboard stalls and limited to 6 warps/SM; replacing the float4/tail structure with a scalar kernel annotated with __launch_bounds__(128, 8) and launched at 128 threads will reduce register pressure and increase effective occupancy enough to hide memory latency better than the current vectorized implementation.",
+      "single_change_focus": "Replace the fused CUDA epilogue implementation only: remove float4 vectorization and tail handling, and use one scalar launch-bounded grid-stride kernel over all elements.",
+      "mutation_family": "scalar_launchbounds_epilogue",
+      "target_metric": "speedup"
+    },
+    "phase2_n2": {
+      "node_id": "phase2_n2",
+      "parent_id": "phase2_n1",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p87_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2);\n\nat::Tensor conv2d_subtract_subtract_mish(at::Tensor x, double subtract1, double subtract2) {\n    TORCH_CHECK(x.is_cuda(), \"Input tensor must be on CUDA device\");\n    return conv2d_subtract_subtract_mish_cuda(x, subtract1, subtract2);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"conv2d_subtract_subtract_mish\", &conv2d_subtract_subtract_mish,\n          \"Fused subtract-subtract-mish activation (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float mishf(float v) {\n    float sp = v > 20.0f ? v : log1pf(expf(v));\n    return v * tanhf(sp);\n}\n\n__launch_bounds__(256, 4)\n__global__ void fused_sub_sub_mish_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    float bias,\n    int64_t total\n) {\n    int64_t base = ((int64_t)blockIdx.x * blockDim.x + threadIdx.x) * 4;\n    int64_t stride = (int64_t)gridDim.x * blockDim.x * 4;\n\n    for (int64_t b = base; b < total; b += stride) {\n        float v0, v1, v2, v3;\n        // Load up to 4 elements with bounds guards\n        v0 = (b     < total) ? __ldg(input + b    ) : 0.0f;\n        v1 = (b + 1 < total) ? __ldg(input + b + 1) : 0.0f;\n        v2 = (b + 2 < total) ? __ldg(input + b + 2) : 0.0f;\n        v3 = (b + 3 < total) ? __ldg(input + b + 3) : 0.0f;\n\n        v0 = mishf(v0 - bias);\n        v1 = mishf(v1 - bias);\n        v2 = mishf(v2 - bias);\n        v3 = mishf(v3 - bias);\n\n        if (b     < total) output[b    ] = v0;\n        if (b + 1 < total) output[b + 1] = v1;\n        if (b + 2 < total) output[b + 2] = v2;\n        if (b + 3 < total) output[b + 3] = v3;\n    }\n}\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2) {\n    if (x.is_contiguous() && x.scalar_type() == at::kFloat) {\n        auto out = at::empty_like(x);\n        int64_t total = x.numel();\n        float bias = (float)(subtract1 + subtract2);\n        const int threads = 256;\n        int64_t chunks = (total + 3) / 4;\n        int blocks = (int)((chunks + threads - 1) / threads);\n        if (blocks < 1) blocks = 1;\n        if (blocks > 65535) blocks = 65535;\n        fused_sub_sub_mish_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            out.data_ptr<float>(),\n            bias,\n            total\n        );\n        return out;\n    }\n    auto xc = x.contiguous();\n    xc = xc - (float)(subtract1 + subtract2);\n    return at::mish(xc);\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, subtracts two values, applies Mish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, subtract_value_1, subtract_value_2):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.subtract_value_1 = subtract_value_1\n        self.subtract_value_2 = subtract_value_2\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.conv(x)\n        x = _stark_get_extension().conv2d_subtract_subtract_mish(x, float(self.subtract_value_1), float(self.subtract_value_2))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        # subtract_value_1 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # subtract_value_2 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # Mish fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Refine the existing fused post-conv CUDA epilogue only: keep the current extension API and forward wiring unchanged, but replace the scalar one-element grid-stride kernel with a small strip-mined unrolled kernel so each thread computes multiple contiguous elements and exposes more ILP without reintroducing unsafe vector casts.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA source with the same exported wrapper signature `at::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2)` and the same contiguous-FP32 fast path/fallback structure, but change only the kernel internals as follows: add a small `__device__ __forceinline__ float mishf(float v)` helper that computes Mish using the same stable `v > 20.0f ? v : log1pf(expf(v))` logic; define a new out-of-place kernel that takes `(const float* input, float* output, float bias, int64_t total)` and has each thread own a base index `(((int64_t)blockIdx.x * blockDim.x) + threadIdx.x) * 4`, then in a grid-stride loop over chunks of `gridDim.x * blockDim.x * 4` process up to 4 consecutive scalar elements with explicit unrolled guarded stores (`if (idx + k < total)` for k=0..3); use `__ldg(input + idx + k)` for reads on the fast path; launch with `threads=256` and `blocks=min(65535, ceil_div(total, threads * 4))` with a floor of 1 block; keep output allocated with `at::empty_like(x)` and keep the fallback exactly as contiguous copy plus subtract plus `at::mish` for non-contiguous/non-FP32 cases. Do not use float2/float4 casts, do not mutate input in place, and do not change the Python-visible API or function name.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.011800000000000001,
+      "score": 0.011800000000000001,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=114282",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/04_L2_P87_Retry_P87_20260720_171658/eval_traces/20260720_173642_104530_d22be8d3_kernelbench_l2_87_87_conv2d_subtract_subtract_mish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0207,
+      "speedup": 1.754237288135593,
+      "reference_runtimes": {
+        "torch_eager": 0.0207
+      },
+      "speedups": {
+        "torch_eager": 1.754237288135593
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "A strip-mined scalar kernel that computes 4 contiguous elements per thread with explicit unrolling and read-only loads will improve instruction-level parallelism and amortize loop/index overhead, reducing long-scoreboard impact versus the current one-element scalar loop without relying on unsafe alignment-sensitive vectorization.",
+      "single_change_focus": "Replace the current scalar fused epilogue kernel implementation with a 4-elements-per-thread unrolled contiguous strip-mined kernel while keeping the wrapper and fallback logic unchanged.",
+      "mutation_family": "stripmined_unroll4_epilogue",
+      "target_metric": "speedup"
+    },
+    "phase2_n3": {
+      "node_id": "phase2_n3",
+      "parent_id": "phase2_n2",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p87_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2);\n\nat::Tensor conv2d_subtract_subtract_mish(at::Tensor x, double subtract1, double subtract2) {\n    TORCH_CHECK(x.is_cuda(), \"Input tensor must be on CUDA device\");\n    return conv2d_subtract_subtract_mish_cuda(x, subtract1, subtract2);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"conv2d_subtract_subtract_mish\", &conv2d_subtract_subtract_mish,\n          \"Fused subtract-subtract-mish activation (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float mishf(float v) {\n    float sp = v > 20.0f ? v : log1pf(expf(v));\n    return v * tanhf(sp);\n}\n\n__launch_bounds__(256, 4)\n__global__ void fused_sub_sub_mish_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    float bias,\n    int64_t total\n) {\n    int64_t base = ((int64_t)blockIdx.x * blockDim.x + threadIdx.x) * 8;\n    int64_t stride = (int64_t)gridDim.x * blockDim.x * 8;\n\n    for (int64_t b = base; b < total; b += stride) {\n        float v0, v1, v2, v3, v4, v5, v6, v7;\n        v0 = (b     < total) ? __ldg(input + b    ) : 0.0f;\n        v1 = (b + 1 < total) ? __ldg(input + b + 1) : 0.0f;\n        v2 = (b + 2 < total) ? __ldg(input + b + 2) : 0.0f;\n        v3 = (b + 3 < total) ? __ldg(input + b + 3) : 0.0f;\n        v4 = (b + 4 < total) ? __ldg(input + b + 4) : 0.0f;\n        v5 = (b + 5 < total) ? __ldg(input + b + 5) : 0.0f;\n        v6 = (b + 6 < total) ? __ldg(input + b + 6) : 0.0f;\n        v7 = (b + 7 < total) ? __ldg(input + b + 7) : 0.0f;\n\n        v0 = mishf(v0 - bias);\n        v1 = mishf(v1 - bias);\n        v2 = mishf(v2 - bias);\n        v3 = mishf(v3 - bias);\n        v4 = mishf(v4 - bias);\n        v5 = mishf(v5 - bias);\n        v6 = mishf(v6 - bias);\n        v7 = mishf(v7 - bias);\n\n        if (b     < total) output[b    ] = v0;\n        if (b + 1 < total) output[b + 1] = v1;\n        if (b + 2 < total) output[b + 2] = v2;\n        if (b + 3 < total) output[b + 3] = v3;\n        if (b + 4 < total) output[b + 4] = v4;\n        if (b + 5 < total) output[b + 5] = v5;\n        if (b + 6 < total) output[b + 6] = v6;\n        if (b + 7 < total) output[b + 7] = v7;\n    }\n}\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2) {\n    if (x.is_contiguous() && x.scalar_type() == at::kFloat) {\n        auto out = at::empty_like(x);\n        int64_t total = x.numel();\n        float bias = (float)(subtract1 + subtract2);\n        const int threads = 256;\n        int64_t chunks = (total + 7) / 8;\n        int blocks = (int)((chunks + threads - 1) / threads);\n        if (blocks < 1) blocks = 1;\n        if (blocks > 65535) blocks = 65535;\n        fused_sub_sub_mish_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            out.data_ptr<float>(),\n            bias,\n            total\n        );\n        return out;\n    }\n    auto xc = x.contiguous();\n    xc = xc - (float)(subtract1 + subtract2);\n    return at::mish(xc);\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, subtracts two values, applies Mish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, subtract_value_1, subtract_value_2):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.subtract_value_1 = subtract_value_1\n        self.subtract_value_2 = subtract_value_2\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.conv(x)\n        x = _stark_get_extension().conv2d_subtract_subtract_mish(x, float(self.subtract_value_1), float(self.subtract_value_2))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        # subtract_value_1 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # subtract_value_2 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # Mish fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Refine the working fused CUDA epilogue by increasing contiguous work per thread from 4 to 8 elements so each warp amortizes address overhead and exposes more ILP without changing the Python path.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current 4-elements-per-thread hot path with an 8-elements-per-thread strip-mined kernel: compute `base = ((blockIdx.x * blockDim.x + threadIdx.x) * 8)` and `stride = gridDim.x * blockDim.x * 8`, load up to 8 consecutive floats with guarded reads, apply `mishf(v - bias)` to each lane, write them back with guarded stores, and keep the existing contiguous-FP32 fast path plus scalar fallback unchanged for all other cases.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.012199999999999999,
+      "score": 0.012199999999999999,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=115550",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/04_L2_P87_Retry_P87_20260720_171658/eval_traces/20260720_173833_104530_bad2f74f_kernelbench_l2_87_87_conv2d_subtract_subtract_mish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0207,
+      "speedup": 1.6967213114754098,
+      "reference_runtimes": {
+        "torch_eager": 0.0207
+      },
+      "speedups": {
+        "torch_eager": 1.6967213114754098
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Processing 8 contiguous elements per thread with unrolled scalar math will reduce per-element loop/index overhead and improve latency hiding enough to beat the current 4-wide strip-mined kernel.",
+      "single_change_focus": "Increase the fused epilogue's strip-mined chunk size from 4 to 8 elements per thread while keeping the same wrapper, bias folding, and fallback logic.",
+      "mutation_family": "stripmined_unroll8_epilogue",
+      "target_metric": "speedup"
+    },
+    "phase2_n4": {
+      "node_id": "phase2_n4",
+      "parent_id": "phase2_root",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p87_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2);\n\nat::Tensor conv2d_subtract_subtract_mish(at::Tensor x, double subtract1, double subtract2) {\n    TORCH_CHECK(x.is_cuda(), \"Input tensor must be on CUDA device\");\n    return conv2d_subtract_subtract_mish_cuda(x, subtract1, subtract2);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"conv2d_subtract_subtract_mish\", &conv2d_subtract_subtract_mish,\n          \"Fused subtract-subtract-mish activation (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float mishf(float v) {\n    float sp = v > 20.0f ? v : log1pf(expf(v));\n    return v * tanhf(sp);\n}\n\n__launch_bounds__(256, 4)\n__global__ void fused_sub_sub_mish_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    float bias,\n    int64_t total\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    int64_t stride = (int64_t)gridDim.x * blockDim.x;\n\n    float reg[8];\n    #pragma unroll\n    for (int k = 0; k < 8; ++k) {\n        int64_t pos = idx * 8 + k;\n        reg[k] = (pos < total) ? __ldg(input + pos) : 0.0f;\n    }\n\n    #pragma unroll\n    for (int k = 0; k < 8; ++k) {\n        reg[k] = mishf(reg[k] - bias);\n    }\n\n    #pragma unroll\n    for (int k = 0; k < 8; ++k) {\n        int64_t pos = idx * 8 + k;\n        if (pos < total) {\n            output[pos] = reg[k];\n        }\n    }\n\n    for (int64_t base = idx * 8 + stride * 8; base < total; base += stride * 8) {\n        #pragma unroll\n        for (int k = 0; k < 8; ++k) {\n            int64_t pos = base + k;\n            reg[k] = (pos < total) ? __ldg(input + pos) : 0.0f;\n        }\n\n        #pragma unroll\n        for (int k = 0; k < 8; ++k) {\n            reg[k] = mishf(reg[k] - bias);\n        }\n\n        #pragma unroll\n        for (int k = 0; k < 8; ++k) {\n            int64_t pos = base + k;\n            if (pos < total) {\n                output[pos] = reg[k];\n            }\n        }\n    }\n}\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2) {\n    if (x.is_contiguous() && x.scalar_type() == at::kFloat) {\n        auto out = at::empty_like(x);\n        int64_t total = x.numel();\n        float bias = (float)(subtract1 + subtract2);\n\n        const int threads = 256;\n        int blocks = (int)((total + (threads * 8) - 1) / (threads * 8));\n        if (blocks > 65535) blocks = 65535;\n        if (blocks == 0) blocks = 1;\n\n        fused_sub_sub_mish_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            out.data_ptr<float>(),\n            bias,\n            total\n        );\n        return out;\n    }\n    auto xc = x.contiguous();\n    xc = xc - (float)(subtract1 + subtract2);\n    return at::mish(xc);\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, subtracts two values, applies Mish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, subtract_value_1, subtract_value_2):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.subtract_value_1 = subtract_value_1\n        self.subtract_value_2 = subtract_value_2\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.conv(x)\n        x = _stark_get_extension().conv2d_subtract_subtract_mish(x, float(self.subtract_value_1), float(self.subtract_value_2))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        # subtract_value_1 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # subtract_value_2 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # Mish fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Refine the winning fused post-conv epilogue by keeping the 4-elements-per-thread strip-mined structure but removing its per-element bounds checks from the hot loop via a full-chunk fast path plus a tiny tail cleanup path.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current CUDA implementation with a refined out-of-place fused kernel for contiguous float32 tensors that keeps the same exported function signature but uses a branch-free 4-elements-per-thread main path. Concretely: define `__device__ __forceinline__ float mishf(float v)` as the shared helper; implement `__launch_bounds__(256, 4) __global__ void fused_sub_sub_mish_kernel_main(const float* input, float* output, float bias, int64_t n4)` where each thread processes chunk index `i` in a grid-stride loop over `n4 = total / 4`, computes `base = i * 4`, loads `input[base+0..3]`, subtracts `bias`, applies `mishf`, and stores `output[base+0..3]` with no bounds checks inside this kernel; implement a second tiny kernel `fused_sub_sub_mish_kernel_tail(const float* input, float* output, float bias, int64_t start, int64_t total)` that handles indices `[start, total)` with a scalar grid-stride loop; in `conv2d_subtract_subtract_mish_cuda`, keep the existing fast-path guard `x.is_contiguous() && x.scalar_type() == at::kFloat`, allocate `out = at::empty_like(x)`, compute `total`, `bias = float(subtract1 + subtract2)`, `n4 = total / 4`, `tail_start = n4 * 4`, launch the main kernel only if `n4 > 0` with `threads=256` and `blocks=min((n4 + threads - 1) / threads, 65535)`, then launch the tail kernel only if `tail_start < total` with a small launch covering `total - tail_start`; preserve the existing ATen fallback for non-contiguous or non-float32 inputs; do not change `cuda_cpp` or Python anchors.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.011800000000000001,
+      "score": 0.011800000000000001,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=116171",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/04_L2_P87_Retry_P87_20260720_171658/eval_traces/20260720_174027_104530_73a0cb90_kernelbench_l2_87_87_conv2d_subtract_subtract_mish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0207,
+      "speedup": 1.754237288135593,
+      "reference_runtimes": {
+        "torch_eager": 0.0207
+      },
+      "speedups": {
+        "torch_eager": 1.754237288135593
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If the current 4-wide strip-mined kernel is split into a branch-free main loop over `total / 4` full chunks plus a tiny scalar tail path, the hot path will execute fewer predicates and less control flow per element, improving instruction efficiency without increasing register pressure like the failed unroll-8 variant.",
+      "single_change_focus": "Replace the fused CUDA epilogue kernel body with a two-phase 4-wide strip-mined implementation: one kernel loop over full 4-element chunks with no per-lane bounds guards, and one tail cleanup path for the final 0-3 elements.",
+      "mutation_family": "chunk4_tail_split",
+      "target_metric": "speedup"
+    },
+    "phase2_n5": {
+      "node_id": "phase2_n5",
+      "parent_id": "phase2_n3",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p87_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2);\n\nat::Tensor conv2d_subtract_subtract_mish(at::Tensor x, double subtract1, double subtract2) {\n    TORCH_CHECK(x.is_cuda(), \"Input tensor must be on CUDA device\");\n    return conv2d_subtract_subtract_mish_cuda(x, subtract1, subtract2);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"conv2d_subtract_subtract_mish\", &conv2d_subtract_subtract_mish,\n          \"Fused subtract-subtract-mish activation (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float mishf(float v) {\n    float sp = v > 20.0f ? v : log1pf(expf(v));\n    return v * tanhf(sp);\n}\n\n__launch_bounds__(128, 8)\n__global__ void fused_sub_sub_mish_kernel(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    float bias,\n    int64_t total\n) {\n    int64_t base = ((int64_t)blockIdx.x * blockDim.x + threadIdx.x) * 4;\n    int64_t stride = (int64_t)gridDim.x * blockDim.x * 4;\n\n    for (int64_t b = base; b + 3 < total; b += stride) {\n        float v0 = __ldg(input + b    ) - bias;\n        float v1 = __ldg(input + b + 1) - bias;\n        float v2 = __ldg(input + b + 2) - bias;\n        float v3 = __ldg(input + b + 3) - bias;\n        output[b    ] = mishf(v0);\n        output[b + 1] = mishf(v1);\n        output[b + 2] = mishf(v2);\n        output[b + 3] = mishf(v3);\n    }\n\n    // scalar tail for last < 4 elements\n    int64_t tail_base = ((total / 4) * 4);\n    for (int64_t i = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n         i < (total % 4); i += (int64_t)gridDim.x * blockDim.x) {\n        float v = __ldg(input + tail_base + i) - bias;\n        output[tail_base + i] = mishf(v);\n    }\n}\n\nat::Tensor conv2d_subtract_subtract_mish_cuda(at::Tensor x, double subtract1, double subtract2) {\n    if (x.is_contiguous() && x.scalar_type() == at::kFloat) {\n        auto out = at::empty_like(x);\n        int64_t total = x.numel();\n        float bias = (float)(subtract1 + subtract2);\n        const int threads = 128;\n        int64_t chunks = (total + 3) / 4;\n        int blocks = (int)((chunks + threads - 1) / threads);\n        if (blocks < 1) blocks = 1;\n        if (blocks > 65535) blocks = 65535;\n        fused_sub_sub_mish_kernel<<<blocks, threads>>>(\n            x.data_ptr<float>(),\n            out.data_ptr<float>(),\n            bias,\n            total\n        );\n        return out;\n    }\n    auto xc = x.contiguous();\n    xc = xc - (float)(subtract1 + subtract2);\n    return at::mish(xc);\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Model that performs a convolution, subtracts two values, applies Mish activation.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, subtract_value_1, subtract_value_2):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)\n        self.subtract_value_1 = subtract_value_1\n        self.subtract_value_2 = subtract_value_2\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.conv(x)\n        x = _stark_get_extension().conv2d_subtract_subtract_mish(x, float(self.subtract_value_1), float(self.subtract_value_2))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        # subtract_value_1 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        # subtract_value_2 fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        # Mish fused into custom CUDA epilogue above\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Continue the best line of the fused CUDA epilogue by tightening the current strip-mined kernel, keeping the working API and layout handling intact while reducing per-thread instruction/register overhead in the hot contiguous path.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current 8-element-per-iteration inner loop with a 4-element strip-mined loop for the contiguous FP32 fast path, hoisting `bias`, `base`, and `stride` math out of the lane body and keeping a scalar fallback unchanged for non-contiguous or non-FP32 inputs.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.011800000000000001,
+      "score": 0.011800000000000001,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=116778",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_2_gpu4/04_L2_P87_Retry_P87_20260720_171658/eval_traces/20260720_174238_104530_e24a73f1_kernelbench_l2_87_87_conv2d_subtract_subtract_mish"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0207,
+      "speedup": 1.754237288135593,
+      "reference_runtimes": {
+        "torch_eager": 0.0207
+      },
+      "speedups": {
+        "torch_eager": 1.754237288135593
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current unrolled epilogue spends too many instructions on per-element loads and bounds checks; a tighter 4-wide strip-mined contiguous path should reduce register pressure and improve issue efficiency without changing the memory access pattern.",
+      "single_change_focus": "Replace the current 8-wide inner loop with a 4-wide strip-mined contiguous loop that hoists repeated index math and keeps the same scalar fallback.",
+      "mutation_family": "stripmined_unroll4_tighten",
+      "target_metric": "speedup"
+    }
+  }
+}

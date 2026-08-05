@@ -1,0 +1,2257 @@
+{
+  "task_name": "kernelbench_l2_68_68_matmul_min_subtract",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": false,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_claude",
+    "plan_provider": "openai-compatible",
+    "code_provider": "claude-compatible",
+    "debug_provider": "openai-compatible",
+    "search_provider": "claude-compatible",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "diagnostics_enabled": false,
+    "diagnostics_mode": "root_ncu_v1",
+    "diagnostics_timeout_seconds": 300,
+    "diagnostics_warmup_runs": 2,
+    "diagnostics_profile_runs": 3,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1,
+    "deliberation_provider_timeout_seconds": 180,
+    "deliberation_phase_timeout_seconds": 240,
+    "evaluator_isolation": "candidate_subprocess",
+    "evaluator_timeout_seconds": 900,
+    "explore_fraction": 0.4,
+    "challenger_fraction": 0.3,
+    "plateau_delta_threshold": 0.03,
+    "plateau_recovery_mutation_attempts": 2,
+    "plateau_window": 3,
+    "deliberation_upgrade_enabled": true,
+    "deliberation_max_rounds": 3,
+    "deliberation_min_remaining_attempts": 8,
+    "phase_two_enabled": true,
+    "phase_two_split_attempts": 5
+  },
+  "best_node_id": "root",
+  "leaderboard": [
+    "root",
+    "phase2_n4"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "root",
+      "n3"
+    ],
+    [],
+    [
+      "phase2_root"
+    ],
+    [
+      "phase2_n4",
+      "phase2_root"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "root",
+    "n3",
+    "phase2_root",
+    "phase2_n1",
+    "phase2_n2",
+    "phase2_root",
+    "phase2_n3"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "debug_retry_failure",
+    "debug_retry_failure",
+    "exploit_best_score",
+    "explore_leaf",
+    "exploit_best_score",
+    "debug_retry_failure",
+    "debug_retry_failure",
+    "exploit_best_score",
+    "debug_retry_failure"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {
+      "n1": "debug_retry_limit_reached"
+    },
+    {
+      "n1": "debug_retry_limit_reached",
+      "n2": "debug_retry_limit_reached"
+    },
+    {
+      "n1": "debug_retry_limit_reached",
+      "n2": "debug_retry_limit_reached"
+    },
+    {},
+    {},
+    {
+      "phase2_n1": "debug_retry_limit_reached"
+    },
+    {
+      "phase2_n1": "debug_retry_limit_reached",
+      "phase2_n2": "compile_failure_debug_throttled"
+    },
+    {
+      "phase2_n1": "debug_retry_limit_reached",
+      "phase2_n2": "compile_failure_debug_throttled"
+    }
+  ],
+  "pruned_nodes": {},
+  "debug_stats": {
+    "total_attempts": 5,
+    "per_node": {
+      "n1": 1,
+      "n2": 1,
+      "phase2_n1": 1,
+      "phase2_n2": 1,
+      "phase2_n3": 1
+    }
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 5,
+    "debug_attempts": 5,
+    "failure_counts": {
+      "builtins.RuntimeError": 3,
+      "correctness_error": 1,
+      "isolated_evaluator_crash": 1,
+      "builtins.ImportError": 1,
+      "region_apply_failed": 1
+    },
+    "failure_stage_counts": {
+      "runtime": 5,
+      "correctness": 1,
+      "compile": 1
+    },
+    "invalid_proposals": 0,
+    "attempt_mode_counts": {
+      "explore": 5,
+      "debug": 5
+    },
+    "provider_transient_error_count": 0,
+    "provider_transient_budget_exhausted_count": 0,
+    "provider_transient_errors_by_stage": {},
+    "provider_transient_errors_by_origin": {},
+    "provider_transient_errors": [],
+    "phase_two_triggered": true,
+    "phase_two_seed_node_id": "n3",
+    "pruned_count": 0
+  },
+  "benchmark_family": "kernelbench",
+  "level": 2,
+  "problem_id": 68,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level2/68_Matmul_Min_Subtract.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.00151
+  },
+  "speedups": {
+    "torch_eager": 0.94375
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "matmul",
+    "summary": "Matrix multiplication style computation; preserve dimensions and consider tiled implementations.",
+    "source": "KernelBench/KernelBench/level2/68_Matmul_Min_Subtract.py",
+    "exact_facts": null,
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "forward_stmt_3",
+      "forward_stmt_4",
+      "cuda_cu",
+      "cuda_cpp"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "matmul",
+        "source_excerpt": "x = self.linear(x)",
+        "op_names": [
+          "_matmul_min_subtract",
+          "a",
+          "and",
+          "applies",
+          "constant",
+          "in_features",
+          "kernelbench",
+          "level2",
+          "linear",
+          "matrix",
+          "min",
+          "minimum"
+        ],
+        "optimization_intents": [
+          "use_tiled_matrix_multiply",
+          "preserve_matrix_shapes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use tiled GEMM structure",
+          "preserve strides and matrix dimensions"
+        ],
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "matmul",
+        "source_excerpt": "x = torch.min(x, self.constant)",
+        "op_names": [
+          "_matmul_min_subtract",
+          "a",
+          "and",
+          "applies",
+          "constant",
+          "in_features",
+          "kernelbench",
+          "level2",
+          "linear",
+          "matrix",
+          "min",
+          "minimum"
+        ],
+        "optimization_intents": [
+          "use_tiled_matrix_multiply",
+          "preserve_matrix_shapes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use tiled GEMM structure",
+          "preserve strides and matrix dimensions"
+        ],
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_3",
+        "region_role": "forward",
+        "semantic_type": "matmul",
+        "source_excerpt": "x = x - self.constant",
+        "op_names": [
+          "_matmul_min_subtract",
+          "a",
+          "and",
+          "applies",
+          "arithmetic",
+          "constant",
+          "in_features",
+          "kernelbench",
+          "level2",
+          "linear",
+          "matrix",
+          "min"
+        ],
+        "optimization_intents": [
+          "use_tiled_matrix_multiply",
+          "preserve_matrix_shapes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use tiled GEMM structure",
+          "preserve strides and matrix dimensions"
+        ],
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_4",
+        "region_role": "forward",
+        "semantic_type": "matmul",
+        "source_excerpt": "return x",
+        "op_names": [
+          "_matmul_min_subtract",
+          "a",
+          "and",
+          "applies",
+          "constant",
+          "in_features",
+          "kernelbench",
+          "level2",
+          "linear",
+          "matrix",
+          "min",
+          "minimum"
+        ],
+        "optimization_intents": [
+          "use_tiled_matrix_multiply",
+          "preserve_matrix_shapes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use tiled GEMM structure",
+          "preserve strides and matrix dimensions"
+        ],
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "cuda_cpp",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+        "op_names": [
+          "add",
+          "cuda",
+          "custom",
+          "entrypoints",
+          "exports",
+          "extension",
+          "for",
+          "h",
+          "here",
+          "include",
+          "m",
+          "pybind"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      },
+      {
+        "anchor_name": "cuda_cu",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+        "op_names": [
+          "add",
+          "and",
+          "cuda",
+          "cuda_runtime",
+          "exported",
+          "extension",
+          "functions",
+          "h",
+          "here",
+          "include",
+          "kernels",
+          "torch"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "use_tiled_matrix_multiply",
+        "summary": "use tiled matrix multiply",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "use tiled GEMM structure",
+            "preserve strides and matrix dimensions"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use block_m/block_n/block_k tiling"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "preserve_matrix_shapes",
+        "summary": "preserve matrix shapes",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "use tiled GEMM structure",
+            "preserve strides and matrix dimensions"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use block_m/block_n/block_k tiling"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve M/N/K dimensions and transpose semantics",
+      "handle tensor contiguity assumptions"
+    ]
+  },
+  "diagnostics_profile": {
+    "enabled": true,
+    "mode": "root_ncu_v1",
+    "ncu_profile": {
+      "enabled": true,
+      "status": "ok",
+      "profiler": "ncu",
+      "kernel_name": "void cutlass::Kernel2<cutlass_80_simt_sgemm_256x128_8x4_tn_align1>(Params)",
+      "row_count": 16,
+      "kernel_launch_count": 16,
+      "raw_metrics": {
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 85.21,
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": 45.15,
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": 58.62,
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": 67.72,
+        "sm__warps_active.avg.pct_of_peak_sustained_active": 16.66,
+        "launch__registers_per_thread": 202,
+        "launch__occupancy_limit_registers": 1,
+        "launch__occupancy_limit_shared_mem": 1,
+        "launch__occupancy_limit_warps": 6,
+        "gpu__time_duration.avg": 1580480,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.03,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.08,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.01,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.26,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+        "smsp__sass_branch_targets_threads_divergent.avg": 0.0,
+        "smsp__sass_branch_targets_threads_uniform.avg": 2066.03,
+        "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+        "smsp__warps_eligible.avg": 4144246.57
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ],
+      "error": null
+    },
+    "notes": [
+      "Profiled the root candidate program with Nsight Compute."
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_01",
+        "intent": "use_tiled_matrix_multiply",
+        "summary": "Replace the GEMM path with a lower-register tiled CUDA kernel tuned for the fixed 128x16384x16384 shape, then fuse the min/subtract epilogue in the same pass.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4"
+        ],
+        "implementation_hints": [
+          "Prefer a 2D tile mapping with shared-memory staging for A/B and per-thread row/column blocking.",
+          "Aim to reduce register pressure from the current 118 regs/thread profile and improve occupancy.",
+          "Keep the output layout and tensor shapes unchanged; specialize only the internal launch geometry and tile sizes."
+        ],
+        "expected_gain": "High if the custom kernel beats the current low-occupancy GEMM+epilogue split.",
+        "risk_notes": [
+          "Shape-specialized kernels are brittle if contiguity or transpose assumptions change.",
+          "Incorrect tile math can silently break matmul semantics."
+        ],
+        "memory_methods": [
+          "shared-memory double buffering",
+          "register blocking"
+        ],
+        "mutation_axes": [
+          "tile sizes",
+          "threadblock shape",
+          "warp mapping",
+          "epilogue placement"
+        ],
+        "forbidden_patterns": [
+          "extra temporary tensors",
+          "host-side postprocessing",
+          "per-element modulo in the hot path",
+          "shape-changing rewrites"
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 5.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "Strong fit for the fixed-shape matmul benchmark and epilogue fusion can remove an extra memory pass. Good upside, but custom tiled GEMM is still fairly high implementation/correctness risk around transpose semantics and shape assumptions.",
+          "claude-compatible": "Best overall candidate. Fuses the min/subtract epilogue directly into a shape-specialized tiled GEMM, targeting the known 128x16384x16384 fixed shape. Addresses the root cause (low occupancy from high register pressure) rather than patching symptoms. Double-buffered shared memory and register blocking are well-matched to this profile. Main risk is brittle shape specialization, but that is acceptable given the fixed benchmark dimensions.",
+          "gemini-compatible": "Fusing the epilogue into a custom tiled GEMM is the optimal approach to avoid memory roundtrips and maximize performance."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_03",
+        "intent": "fuse_or_select_better_gemm_epilogue",
+        "summary": "Switch to a backend path that exposes epilogue fusion in the matmul engine itself, or select a lower-register GEMM algorithm better matched to this shape.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1"
+        ],
+        "implementation_hints": [
+          "Evaluate cuBLASLt/CUTLASS-style algorithm selection for lower register pressure and better occupancy than the current 202-reg candidate seen in profiling.",
+          "Fuse bias/additional elementwise work into the GEMM epilogue when the backend supports it to avoid a second global-memory pass.",
+          "Keep algorithm selection shape-aware for the fixed benchmark dimensions."
+        ],
+        "expected_gain": "Medium to high if the selected GEMM algorithm is the current bottleneck.",
+        "risk_notes": [
+          "Backend-specific epilogue support for `min` is limited, so this may need a custom epilogue policy.",
+          "Algorithm autotuning can add complexity and compile/runtime variability."
+        ],
+        "memory_methods": [
+          "epilogue fusion",
+          "tunable GEMM workspace"
+        ],
+        "mutation_axes": [
+          "GEMM backend choice",
+          "epilogue capability",
+          "workspace/algorithm policy"
+        ],
+        "forbidden_patterns": [
+          "falling back to generic unfused matmul",
+          "unbounded autotune overhead",
+          "changing tensor dtypes"
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 5.0,
+          "claude-compatible": 4.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Best balance of practicality and upside: backend GEMM algorithm selection or supported epilogue fusion can improve occupancy without fully reimplementing matmul. Risk is moderate, mainly because min-style epilogues are not universally supported, but this is still the most sensible first optimization path.",
+          "claude-compatible": "Good risk-adjusted value if cuBLASLt algorithm selection can reduce register pressure from the observed 202-reg candidate. Epilogue fusion via a custom epilogue policy is well-supported on Ampere for simple elementwise ops. The caveat is that native min support in cuBLASLt epilogue is limited, so a custom epilogue functor will likely be needed. Complexity is moderate and the gain potential is meaningful.",
+          "gemini-compatible": "Using cuBLASLt or CUTLASS can be heavy and might not easily support custom min/subtract epilogues out of the box."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "replace_cublas_with_custom_tiled_gemm",
+        "summary": "Replace cuBLAS GEMM with a custom tiled matrix multiply kernel optimized for this specific shape and epilogue fusion pattern, eliminating the cuBLAS overhead and achieving better register/shared memory utilization.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "implementation_hints": [
+          "Implement a custom GEMM kernel with 128Ã128 tile size matching the root profile's ampere_sgemm_128x128_tn",
+          "Fuse bias + min + subtract directly into the GEMM epilogue to eliminate the separate kernel launch",
+          "Use shared memory for weight and input tiles with double buffering to hide memory latency",
+          "Target 32-48% warp active utilization to match the root baseline while reducing register pressure from 118 to ~80-100",
+          "Use float4 vectorized loads and stores for coalesced memory access",
+          "Inline the epilogue computation per output tile to avoid the second kernel launch entirely"
+        ],
+        "expected_gain": "15-25% speedup by eliminating cuBLAS dispatch overhead, removing the separate epilogue kernel launch, and optimizing register allocation for the fused operation",
+        "risk_notes": [
+          "Custom GEMM must correctly handle MÃK @ KÃN with transpose semantics matching cuBLAS CUBLAS_OP_T/CUBLAS_OP_N",
+          "Epilogue fusion requires careful synchronization before writing final results",
+          "May regress if tile size is mismatched to actual runtime shapes",
+          "Requires careful testing of boundary conditions when M or N is not tile-aligned"
+        ],
+        "memory_methods": [
+          "shared_memory_tiling",
+          "register_blocking"
+        ],
+        "mutation_axes": [
+          "kernel_fusion",
+          "memory_hierarchy",
+          "instruction_throughput"
+        ],
+        "forbidden_patterns": [
+          "changing ModelNew I/O contract",
+          "breaking float32 assumption",
+          "non-contiguous tensor handling"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 4.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "Potentially high upside, but the rationale overstates likely benefit from removing cuBLAS overhead on such a large GEMM. Full custom replacement is expensive and fragile versus tuned libraries, so risk-adjusted value is only moderate.",
+          "claude-compatible": "Substantively similar to strategy_01 but with more explicit implementation detail (128x128 tile, float4 loads, double buffering). The fused bias+min+subtract epilogue in-tile is the right approach. Slightly lower score than strategy_01 because the register pressure target of 80-100 is optimistic for a fused kernel at this tile size, and the transpose semantics risk is real. Still a strong candidate.",
+          "gemini-compatible": "Excellent detailed plan for a custom tiled GEMM with fused epilogue, addressing register pressure and shared memory."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_02",
+        "intent": "reduce_epilogue_overhead",
+        "summary": "Keep the library GEMM but rewrite the post-GEMM min/subtract epilogue as a fully coalesced, vectorized CUDA pass with simpler indexing and fewer integer ops.",
+        "target_anchors": [
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4"
+        ],
+        "implementation_hints": [
+          "Use row-major linear traversal over the output buffer to avoid repeated `% N` arithmetic.",
+          "Vectorize only when alignment is guaranteed; otherwise keep a scalar fallback that preserves coalescing.",
+          "Exploit the current profile's register-bound occupancy to simplify live ranges and reduce instruction pressure."
+        ],
+        "expected_gain": "Medium; best when epilogue cost is dominating the split path.",
+        "risk_notes": [
+          "Vectorized loads/stores require strict alignment and contiguity.",
+          "A too-clever epilogue can regress correctness on edge shapes."
+        ],
+        "memory_methods": [
+          "coalesced global access",
+          "vectorized stores"
+        ],
+        "mutation_axes": [
+          "vector width",
+          "grid-stride loop shape",
+          "index arithmetic",
+          "branch elimination"
+        ],
+        "forbidden_patterns": [
+          "modulo in inner loops",
+          "branchy per-element specialization",
+          "CPU scalar sync inside forward",
+          "temporary output buffers"
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Good risk-adjusted option because it keeps the proven GEMM path and only attacks the likely cheaper epilogue bottleneck. Lower complexity than replacing GEMM, with meaningful gains if the post-pass is nontrivial.",
+          "claude-compatible": "Reasonable incremental improvement but limited upside. Optimizing the epilogue pass with coalesced/vectorized access helps if the epilogue is the bottleneck, but at this shape the GEMM itself dominates. The linear traversal insight to avoid modulo arithmetic is valid and low-risk. Worth trying if strategy_01 fails, but unlikely to move the needle significantly on its own.",
+          "gemini-compatible": "A solid, lower-risk fallback that optimizes the memory-bound epilogue if a custom GEMM underperforms."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_07",
+        "intent": "optimize_epilogue_vectorization_and_occupancy",
+        "summary": "Keep cuBLAS GEMM but optimize the epilogue kernel by improving vectorization patterns, increasing occupancy through reduced register usage, and using warp-level primitives for bias broadcast.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Current epilogue uses float4 vectorization but has misaligned branch logic; unify both aligned and unaligned paths with masked vectorization",
+          "Reduce register spill by using __restrict__ and const qualifiers more aggressively",
+          "Use warp shuffle or shared memory for bias broadcast instead of repeated global loads",
+          "Increase block size from 256 to 512 threads to improve occupancy and reduce grid dimensions",
+          "Pipeline bias loads with __ldg intrinsic to exploit read-only cache",
+          "Fuse the bias add with min/subtract in fewer intermediate registers"
+        ],
+        "expected_gain": "8-12% speedup by reducing epilogue kernel overhead from better memory coalescing and higher occupancy",
+        "risk_notes": [
+          "Increased block size may reduce occupancy if shared memory or register limits are hit",
+          "Warp shuffle requires careful handling of partial warps at boundaries",
+          "Must preserve exact numerical results for min and subtract operations"
+        ],
+        "memory_methods": [
+          "vectorized_loads",
+          "read_only_cache"
+        ],
+        "mutation_axes": [
+          "occupancy",
+          "memory_coalescing",
+          "register_pressure"
+        ],
+        "forbidden_patterns": [
+          "changing cuBLAS call signature",
+          "breaking N%4 vectorization assumption for non-aligned path"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "A sensible epilogue-focused optimization idea with manageable scope, but some specific suggestions are speculative and may hurt occupancy rather than help. Useful if profiling confirms the epilogue matters, though less broadly compelling than strategy_02.",
+          "claude-compatible": "Practical and lower-risk than strategies 01/04, but limited ceiling. Unifying the vectorized epilogue path, using __ldg for bias, and increasing block size to 512 are all sound micro-optimizations. The warp shuffle for bias broadcast is a nice touch. Expected 8-12% gain is plausible if the epilogue is non-trivial. Good fallback option if custom GEMM approaches regress.",
+          "gemini-compatible": "Good alternative to custom GEMM, focusing on a highly optimized standalone epilogue kernel with vectorization."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_05",
+        "intent": "eliminate_host_sync",
+        "summary": "Move the constant scalar handling fully onto the CUDA path so forward no longer materializes it on CPU before the extension call.",
+        "target_anchors": [
+          "init_body",
+          "forward_stmt_1",
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Keep the constant in device-resident form or pass it by value without `detach().cpu()` round-trips.",
+          "Preserve the public `ModelNew` interface and only change internal scalar plumbing.",
+          "Treat the scalar as read-only epilogue state to avoid per-call transfers."
+        ],
+        "expected_gain": "Low to medium; it removes launch-side synchronization overhead rather than compute time.",
+        "risk_notes": [
+          "If the constant is trainable, caching it incorrectly can stale values.",
+          "Device scalar handling must remain compatible with autograd expectations."
+        ],
+        "memory_methods": [
+          "device-resident scalar",
+          "read-only kernel argument"
+        ],
+        "mutation_axes": [
+          "scalar residency",
+          "argument packing",
+          "forward fast-path gating"
+        ],
+        "forbidden_patterns": [
+          "CPU round-trip per inference",
+          "implicit device sync",
+          "re-materializing the scalar tensor each call"
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 2.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Reasonable cleanup if there is an actual CPU scalar round-trip, but likely small end-to-end benefit compared with the GEMM cost at this problem size. Worthwhile only as a secondary fix after kernel-side bottlenecks are addressed.",
+          "claude-compatible": "Addresses host-device scalar transfer overhead, which is real but minor relative to compute time for a 128x16384x16384 matmul. This is a cleanup win at best, not a performance lever. The risk of stale cached values if the constant is ever trainable adds implementation caution. Low priority unless profiling confirms host sync is a measurable bottleneck.",
+          "gemini-compatible": "Minor optimization; host sync is unlikely to be the primary bottleneck compared to global memory traffic."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "persistent_kernel_with_stream_ordered_gemm",
+        "summary": "Convert to a single persistent kernel that performs tiled GEMM with cooperative groups and stream-ordered memory allocation, eliminating all kernel launch overhead.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1"
+        ],
+        "implementation_hints": [
+          "Use cooperative groups to implement a persistent thread block structure that processes multiple tiles without returning to host",
+          "Allocate output tensor with cudaMallocAsync for stream-ordered allocation to reduce allocation overhead",
+          "Implement work stealing or dynamic tile assignment to balance load across SMs",
+          "Fuse GEMM + bias + min + subtract into a single wave of persistent thread blocks",
+          "Use grid-stride loop pattern to handle arbitrary M dimension without relaunch",
+          "Profile with target occupancy of 50% warps active to match memory bandwidth limits"
+        ],
+        "expected_gain": "10-18% speedup by eliminating kernel launch latency and improving SM utilization through persistent scheduling",
+        "risk_notes": [
+          "Persistent kernels are complex and error-prone; requires careful cooperative group synchronization",
+          "May not improve performance if memory bandwidth is already saturated (72% DRAM in root profile suggests headroom)",
+          "Requires CUDA 11.2+ for cudaMallocAsync and cooperative launch",
+          "Debugging persistent kernels is harder than separate kernel launches"
+        ],
+        "memory_methods": [
+          "stream_ordered_allocation",
+          "persistent_threads"
+        ],
+        "mutation_axes": [
+          "kernel_fusion",
+          "launch_overhead",
+          "sm_utilization"
+        ],
+        "forbidden_patterns": [
+          "breaking backward compatibility with older CUDA versions",
+          "removing fallback path"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 2.0,
+          "openai-compatible": 1.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Poor risk-adjusted choice here: persistent kernels and stream-ordered allocation add major complexity and are unlikely to beat optimized library GEMM for this workload. The proposal also mixes unrelated concerns like allocation overhead into a compute-dominated path.",
+          "claude-compatible": "Persistent kernel + cooperative groups adds substantial complexity for a gain estimate of 10-18% that assumes launch overhead is significant. At this shape and batch size, kernel launch latency is negligible compared to compute time. The 72% DRAM utilization noted in the profile also suggests the bottleneck is memory bandwidth, not launch scheduling. High implementation risk, low expected return.",
+          "gemini-compatible": "Persistent kernels and cooperative groups are likely overkill and introduce significant complexity and risk."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "tensor_core_acceleration_with_wmma",
+        "summary": "Replace scalar float32 GEMM with tensor core WMMA operations using float16 accumulation internally, then convert back to float32 for the epilogue, exploiting Ampere tensor cores.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1"
+        ],
+        "implementation_hints": [
+          "Convert input and weight to float16 using __half2 vectorized conversion",
+          "Use wmma::load_matrix_sync and wmma::mma_sync for 16Ã16Ã16 tile GEMM on tensor cores",
+          "Accumulate in float32 to preserve precision for the min/subtract operations",
+          "Keep bias, min, and subtract in float32 to avoid numerical drift",
+          "Use m16n16k16 fragments with float32 accumulation mode",
+          "Pipeline the fp32->fp16 conversion with async copy to hide latency"
+        ],
+        "expected_gain": "20-35% speedup by leveraging tensor core throughput (>100 TFLOPS on Ampere vs ~20 TFLOPS for FP32)",
+        "risk_notes": [
+          "FP16 conversion introduces numerical error that may break correctness checks",
+          "Tensor cores require strict alignment (16-byte) and dimensions divisible by 16",
+          "Mixed precision may violate the float32 contract expected by the benchmark",
+          "Not all Ampere GPUs expose tensor cores to WMMA API",
+          "Epilogue must convert back to float32, adding overhead"
+        ],
+        "memory_methods": [
+          "tensor_cores",
+          "half_precision"
+        ],
+        "mutation_axes": [
+          "compute_throughput",
+          "precision",
+          "instruction_mix"
+        ],
+        "forbidden_patterns": [
+          "changing final output dtype from float32",
+          "breaking numerical correctness"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 2.0,
+          "openai-compatible": 1.0,
+          "gemini-compatible": 1.0
+        },
+        "review_notes": {
+          "openai-compatible": "Very high correctness risk because it changes precision behavior for a benchmark that likely expects float32 semantics. Even with large theoretical throughput gains, mixed-precision conversion and compatibility constraints make this a weak risk-adjusted option.",
+          "claude-compatible": "The theoretical throughput argument (100+ TFLOPS tensor cores vs 20 TFLOPS FP32) is correct in isolation, but the mixed-precision path introduces correctness risk that is hard to manage in a benchmark with strict float32 output expectations. FP16 conversion error on a matmul of this size will almost certainly fail numerical correctness checks. The fp32->fp16->fp32 round-trip overhead also erodes the gain. Not recommended unless the benchmark explicitly permits reduced precision.",
+          "gemini-compatible": "Downcasting to FP16 will almost certainly fail strict FP32 correctness checks in KernelBench."
+        },
+        "priority": 2
+      }
+    ],
+    "proposal_errors": {
+      "gemini-compatible": "Expecting value: line 27 column 37 (char 1212)"
+    },
+    "review_errors": {},
+    "deliberation_round": 1
+  },
+  "phase_transition": {
+    "source_phase": 1,
+    "target_phase": 2,
+    "split_attempts": 5,
+    "trigger_attempt": 5,
+    "root": {
+      "node_id": "root",
+      "strategy_name": null,
+      "runtime": 0.0016,
+      "speedup": 0.94375,
+      "plan_summary": null,
+      "changed_regions": [],
+      "lineage": [
+        "root"
+      ]
+    },
+    "selected": {
+      "node_id": "n3",
+      "strategy_name": "strategy_04",
+      "runtime": 0.00183,
+      "speedup": 0.825136612021858,
+      "plan_summary": "Replace the baseline PyTorch `linear -> min -> subtract` chain with a custom CUDA extension path that uses cuBLAS for GEMM and one fused epilogue kernel for `min(x, c) - c`, while keeping the public `ModelNew` interface unchanged.",
+      "changed_regions": [
+        "cuda_cpp",
+        "cuda_cu",
+        "forward_stmt_1",
+        "forward_stmt_2",
+        "forward_stmt_3",
+        "forward_stmt_4"
+      ],
+      "lineage": [
+        "root",
+        "n1",
+        "n2",
+        "n3"
+      ]
+    },
+    "attempts": [
+      {
+        "node_id": "n1",
+        "parent_id": "root",
+        "strategy_name": "strategy_04",
+        "attempt_mode": "explore",
+        "mutation_family": "cublas_gemm_plus_fused_epilogue",
+        "single_change_focus": "Swap the forward path to a single extension entrypoint backed by cuBLAS GEMM plus one fused epilogue kernel.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4"
+        ],
+        "compile_ok": true,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "runtime",
+        "failure_type": "builtins.RuntimeError",
+        "plan_summary": "Replace the baseline PyTorch `linear -> min -> subtract` chain with a custom CUDA extension path that uses cuBLAS for GEMM and one fused epilogue kernel for `min(x, c) - c`, while keeping the public `ModelNew` interface unchanged."
+      },
+      {
+        "node_id": "n2",
+        "parent_id": "n1",
+        "strategy_name": "strategy_04",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "single_change_focus": "small_local_repair",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4"
+        ],
+        "compile_ok": true,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "plan_summary": "Replace the baseline PyTorch `linear -> min -> subtract` chain with a custom CUDA extension path that uses cuBLAS for GEMM and one fused epilogue kernel for `min(x, c) - c`, while keeping the public `ModelNew` interface unchanged."
+      },
+      {
+        "node_id": "n3",
+        "parent_id": "n2",
+        "strategy_name": "strategy_04",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "single_change_focus": "small_local_repair",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00183,
+        "speedup": 0.825136612021858,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Replace the baseline PyTorch `linear -> min -> subtract` chain with a custom CUDA extension path that uses cuBLAS for GEMM and one fused epilogue kernel for `min(x, c) - c`, while keeping the public `ModelNew` interface unchanged."
+      },
+      {
+        "node_id": "n4",
+        "parent_id": "root",
+        "strategy_name": "strategy_01",
+        "attempt_mode": "explore",
+        "mutation_family": "fused_epilogue_after_linear",
+        "single_change_focus": "Replace the Python-side `linear -> min -> subtract` sequence with a guarded extension call that runs PyTorch linear first and then a single custom CUDA epilogue kernel using a device scalar constant.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "compile_ok": true,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "runtime",
+        "failure_type": "isolated_evaluator_crash",
+        "plan_summary": "Fuse the post-linear `min` and subtract into a custom CUDA epilogue while keeping GEMM on a library-backed path, replacing the three-step forward chain with one extension call on the CUDA fast path."
+      },
+      {
+        "node_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_03",
+        "attempt_mode": "explore",
+        "mutation_family": "device_scalar_arg",
+        "single_change_focus": "Pass the scalar constant as a CUDA tensor into the epilogue kernel instead of materializing it on CPU inside forward.",
+        "changed_regions": [
+          "forward_stmt_1",
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "runtime",
+        "failure_type": "builtins.ImportError",
+        "plan_summary": "Eliminate the per-forward host sync on the scalar constant by passing the device tensor into the fused CUDA epilogue instead of copying it to CPU."
+      }
+    ],
+    "trace_summary": "flat=n3:small_local_repair:0.825x | failed=n1:Swap the forward path to a single extension entrypoint backed by cuBLAS GEMM plus one fused epilogue kernel.:builtins.RuntimeError; n2:small_local_repair:correctness_error; n4:Replace the Python-side `linear -> min -> subtract` sequence with a guarded extension call that runs PyTorch linear first and then a single custom CUDA epilogue kernel using a device scalar constant.:isolated_evaluator_crash; n5:Pass the scalar constant as a CUDA tensor into the epilogue kernel instead of materializing it on CPU inside forward.:builtins.ImportError",
+    "root_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void cutlass::Kernel2<cutlass_80_simt_sgemm_256x128_8x4_tn_align1>(Params)",
+        "row_count": 16,
+        "kernel_launch_count": 16,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 85.21,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 45.15,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 58.62,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 67.72,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 16.66,
+          "launch__registers_per_thread": 202,
+          "launch__occupancy_limit_registers": 1,
+          "launch__occupancy_limit_shared_mem": 1,
+          "launch__occupancy_limit_warps": 6,
+          "gpu__time_duration.avg": 1580480,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.03,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.08,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.01,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.26,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0.0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 2066.03,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 4144246.57
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "selected_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "ampere_sgemm_128x128_tn",
+        "row_count": 11,
+        "kernel_launch_count": 11,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 72.81,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 59.76,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 53.83,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 69.57,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 32.89,
+          "launch__registers_per_thread": 118,
+          "launch__occupancy_limit_registers": 2,
+          "launch__occupancy_limit_shared_mem": 3,
+          "launch__occupancy_limit_warps": 6,
+          "gpu__time_duration.avg": 1884448,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.05,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.29,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 7793.01,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 6579613.21
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "diagnostics_delta": {
+      "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": -12.399999999999991,
+      "gpu__time_duration.avg": 303968,
+      "l1tex__throughput.avg.pct_of_peak_sustained_active": -4.789999999999999,
+      "launch__occupancy_limit_registers": 1,
+      "launch__occupancy_limit_shared_mem": 2,
+      "launch__occupancy_limit_warps": 0,
+      "launch__registers_per_thread": -84,
+      "lts__throughput.avg.pct_of_peak_sustained_elapsed": 14.61,
+      "sm__throughput.avg.pct_of_peak_sustained_elapsed": 1.8499999999999943,
+      "sm__warps_active.avg.pct_of_peak_sustained_active": 16.23,
+      "smsp__sass_branch_targets_threads_divergent.avg": 0.0,
+      "smsp__sass_branch_targets_threads_uniform.avg": 5726.98,
+      "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.020000000000000004,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": -0.01,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.02999999999999997,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": -0.08,
+      "smsp__warps_eligible.avg": 2435366.64
+    }
+  },
+  "feedback_state": {
+    "total_attempts": 11,
+    "compile_rate": 0.9090909090909091,
+    "correct_rate": 0.36363636363636365,
+    "best_speedup": 0.94375,
+    "best_strategy_name": null,
+    "phase": "exploration",
+    "current_champion_id": "root",
+    "current_champion_speedup": 0.94375,
+    "plateau_detected": false,
+    "recent_improvement_deltas": [
+      0.03772053083528493
+    ],
+    "recent_regression_deltas": [
+      0.0
+    ],
+    "recent_successful_mutation_families": [
+      "device_scalar_plumbing"
+    ],
+    "recent_failed_mutation_families": [
+      "debug_local_repair"
+    ],
+    "last_mutation_outcome": "regressed_or_flat",
+    "recent_attempts": [
+      {
+        "attempt_id": "n4",
+        "parent_id": "root",
+        "strategy_name": "strategy_01",
+        "mode": "explore",
+        "mutation_family": "fused_epilogue_after_linear",
+        "speedup": null,
+        "parent_speedup": 0.94375,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "runtime",
+        "failure_type": "isolated_evaluator_crash",
+        "single_change_focus": "Replace the Python-side `linear -> min -> subtract` sequence with a guarded extension call that runs PyTorch linear first and then a single custom CUDA epilogue kernel using a device scalar constant."
+      },
+      {
+        "attempt_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_03",
+        "mode": "explore",
+        "mutation_family": "device_scalar_arg",
+        "speedup": null,
+        "parent_speedup": 0.825136612021858,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "runtime",
+        "failure_type": "builtins.ImportError",
+        "single_change_focus": "Pass the scalar constant as a CUDA tensor into the epilogue kernel instead of materializing it on CPU inside forward."
+      },
+      {
+        "attempt_id": "phase2_n1",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_02",
+        "mode": "explore",
+        "mutation_family": "epilogue_only_after_pytorch_linear",
+        "speedup": null,
+        "parent_speedup": 0.825136612021858,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "runtime",
+        "failure_type": "builtins.RuntimeError",
+        "single_change_focus": "Switch the fast path from custom GEMM+epilogue to `self.linear(x)` followed by one custom CUDA epilogue kernel that writes `min(x, constant) - constant` in place or into a fresh output buffer."
+      },
+      {
+        "attempt_id": "phase2_n2",
+        "parent_id": "phase2_n1",
+        "strategy_name": "strategy_02",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": null,
+        "parent_speedup": null,
+        "compile_ok": false,
+        "correct": false,
+        "failure_stage": "compile",
+        "failure_type": "region_apply_failed",
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_n3",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_02",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": null,
+        "parent_speedup": null,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "runtime",
+        "failure_type": "builtins.RuntimeError",
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_n4",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_05",
+        "mode": "explore",
+        "mutation_family": "device_scalar_plumbing",
+        "speedup": 0.8628571428571429,
+        "parent_speedup": 0.825136612021858,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Change the extension API to accept `self.constant` as a CUDA tensor and load its single float on device for the fused epilogue instead of passing a host `double`."
+      },
+      {
+        "attempt_id": "phase2_n5",
+        "parent_id": "phase2_n3",
+        "strategy_name": "strategy_02",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": 0.8074866310160428,
+        "parent_speedup": null,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "small_local_repair"
+      },
+      {
+        "attempt_id": "phase2_root",
+        "parent_id": "n3",
+        "strategy_name": "strategy_04",
+        "mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "speedup": 0.825136612021858,
+        "parent_speedup": 0.825136612021858,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "small_local_repair"
+      }
+    ],
+    "champion": {
+      "node_id": "root",
+      "speedup": 0.94375,
+      "strategy_name": null,
+      "mutation_family": null,
+      "lineage": [
+        "root"
+      ],
+      "recent_positive_mutations": [
+        {
+          "attempt_id": "phase2_n4",
+          "strategy_name": "strategy_05",
+          "mode": "explore",
+          "mutation_family": "device_scalar_plumbing",
+          "speedup": 0.8628571428571429,
+          "parent_speedup": 0.825136612021858,
+          "single_change_focus": "Change the extension API to accept `self.constant` as a CUDA tensor and load its single float on device for the fused epilogue instead of passing a host `double`."
+        }
+      ],
+      "recent_negative_mutations": [
+        {
+          "attempt_id": "phase2_root",
+          "strategy_name": "strategy_04",
+          "mode": "mutate_champion",
+          "mutation_family": "debug_local_repair",
+          "speedup": 0.825136612021858,
+          "parent_speedup": 0.825136612021858,
+          "single_change_focus": "small_local_repair"
+        }
+      ],
+      "plateau_detected": false,
+      "lineage_plateau_depth": 0
+    }
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "user_helpers",
+      "region_role": "helper",
+      "start_line": 36,
+      "end_line": 37,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 40,
+      "end_line": 45,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 49,
+      "end_line": 55,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 64,
+      "end_line": 67,
+      "source_excerpt": "self.linear = nn.Linear(in_features, out_features)\nself.constant = nn.Parameter(torch.tensor(constant))",
+      "source_hash": "6ef95022cf73"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 70,
+      "end_line": 74,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\nx = self.linear(x)",
+      "source_hash": "ef6f4a83814a"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 75,
+      "end_line": 77,
+      "source_excerpt": "x = torch.min(x, self.constant)",
+      "source_hash": "6a521ad6bcd1"
+    },
+    {
+      "anchor_name": "forward_stmt_3",
+      "region_role": "forward",
+      "start_line": 78,
+      "end_line": 80,
+      "source_excerpt": "x = x - self.constant",
+      "source_hash": "9b3bd4360235"
+    },
+    {
+      "anchor_name": "forward_stmt_4",
+      "region_role": "forward",
+      "start_line": 81,
+      "end_line": 83,
+      "source_excerpt": "return x",
+      "source_hash": "03c387736bb5"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p68_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, applies minimum, and subtracts a constant.\n        \"\"\"\n    def __init__(self, in_features, out_features, constant):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.linear = nn.Linear(in_features, out_features)\n        self.constant = nn.Parameter(torch.tensor(constant))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.linear(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = torch.min(x, self.constant)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1",
+        "n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0016,
+      "score": 0.0016,
+      "logs": [
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=664481",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/23_L2_P68_Auto_P68_20260720_081538/eval_traces/20260720_081540_664454_1fff0e10_kernelbench_l2_68_68_matmul_min_subtract"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00151,
+      "speedup": 0.94375,
+      "reference_runtimes": {
+        "torch_eager": 0.00151
+      },
+      "speedups": {
+        "torch_eager": 0.94375
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": null,
+      "single_change_focus": null,
+      "mutation_family": null,
+      "target_metric": null
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p68_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor linear_min_sub_cuda(\n    torch::Tensor input,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double constant);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"linear_min_sub\", &linear_min_sub_cuda, \"Linear + min + subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n\n// Singleton cuBLAS handle\nstatic cublasHandle_t g_cublas_handle = nullptr;\n\nstatic cublasHandle_t get_cublas_handle() {\n    if (g_cublas_handle == nullptr) {\n        cublasCreate(&g_cublas_handle);\n    }\n    return g_cublas_handle;\n}\n\n// Fused epilogue: out[i] += bias[col], then min(out[i], c) - c\n// Uses float4 for vectorized access when N is divisible by 4\n__global__ void fused_bias_min_sub_kernel(\n    float* __restrict__ out,\n    const float* __restrict__ bias,\n    float constant,\n    int M, int N)\n{\n    int total = M * N;\n    int vec_total = total / 4;\n    float4* out4 = reinterpret_cast<float4*>(out);\n\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n\n    for (int i = idx; i < vec_total; i += stride) {\n        int base = i * 4;\n        float4 v = out4[i];\n        int col0 = base % N;\n        int col1 = (base + 1) % N;\n        int col2 = (base + 2) % N;\n        int col3 = (base + 3) % N;\n        v.x = fminf(v.x + bias[col0], constant) - constant;\n        v.y = fminf(v.y + bias[col1], constant) - constant;\n        v.z = fminf(v.z + bias[col2], constant) - constant;\n        v.w = fminf(v.w + bias[col3], constant) - constant;\n        out4[i] = v;\n    }\n\n    // Handle remainder\n    for (int i = idx + vec_total * 4; i < total; i += stride) {\n        int col = i % N;\n        out[i] = fminf(out[i] + bias[col], constant) - constant;\n    }\n}\n\n// Optimized version when N is divisible by 4 and cols are aligned within float4\n__global__ void fused_bias_min_sub_aligned_kernel(\n    float* __restrict__ out,\n    const float* __restrict__ bias,\n    float constant,\n    int M, int N)\n{\n    // Each thread handles 4 consecutive columns in a row\n    // N must be divisible by 4\n    int total_vec = M * (N / 4);\n    float4* out4 = reinterpret_cast<float4*>(out);\n    const float4* bias4 = reinterpret_cast<const float4*>(bias);\n\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n\n    for (int i = idx; i < total_vec; i += stride) {\n        int col_vec = i % (N / 4);\n        float4 v = out4[i];\n        float4 b = bias4[col_vec];\n        v.x = fminf(v.x + b.x, constant) - constant;\n        v.y = fminf(v.y + b.y, constant) - constant;\n        v.z = fminf(v.z + b.z, constant) - constant;\n        v.w = fminf(v.w + b.w, constant) - constant;\n        out4[i] = v;\n    }\n}\n\ntorch::Tensor linear_min_sub_cuda(\n    torch::Tensor input,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double constant)\n{\n    TORCH_CHECK(input.is_cuda(), \"input must be CUDA tensor\");\n    TORCH_CHECK(weight.is_cuda(), \"weight must be CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be CUDA tensor\");\n    TORCH_CHECK(input.dtype() == torch::kFloat32, \"input must be float32\");\n    TORCH_CHECK(weight.dtype() == torch::kFloat32, \"weight must be float32\");\n    TORCH_CHECK(bias.dtype() == torch::kFloat32, \"bias must be float32\");\n    TORCH_CHECK(input.is_contiguous(), \"input must be contiguous\");\n    TORCH_CHECK(weight.is_contiguous(), \"weight must be contiguous\");\n    TORCH_CHECK(bias.is_contiguous(), \"bias must be contiguous\");\n\n    int M = input.size(0);\n    int K = input.size(1);\n    int N = weight.size(0); // out_features; weight is [out_features, in_features]\n\n    auto output = torch::empty({M, N}, input.options());\n\n    cublasHandle_t handle = get_cublas_handle();\n    // Bind to current CUDA stream\n    cublasSetStream(handle, at::cuda::getCurrentCUDAStream());\n\n    // cuBLAS is column-major. We compute: output = input * weight^T\n    // In column-major: output^T = weight * input^T\n    // So: C = alpha * A * B^T + beta * C\n    // With col-major interpretation:\n    //   C(N x M) = weight(N x K) * input^T(K x M)\n    // cublasGemmEx args (col-major):\n    //   transa=N -> A is not transposed: A is weight [N x K] stored as col-major\n    //   transb=T -> B is transposed: B is input [M x K], transposed to [K x M]\n    //   m=N, n=M, k=K\n    //   lda=N (leading dim of A = N, col-major [N x K])\n    //   ldb=K (leading dim of B = K, col-major [M x K], but we're reading row-major input as col-major [K x M])\n    //   ldc=N\n    float alpha = 1.0f, beta = 0.0f;\n    cublasGemmEx(\n        handle,\n        CUBLAS_OP_T,  // weight: row-major [N x K] treated as col-major [K x N], transposed -> [N x K] in col-major op\n        CUBLAS_OP_N,  // input: row-major [M x K] treated as col-major [K x M]\n        N, M, K,\n        &alpha,\n        weight.data_ptr<float>(), CUDA_R_32F, K,  // lda=K since weight is row-major [N x K]\n        input.data_ptr<float>(),  CUDA_R_32F, K,  // ldb=K since input is row-major [M x K]\n        &beta,\n        output.data_ptr<float>(), CUDA_R_32F, N,  // ldc=N\n        CUBLAS_COMPUTE_32F_FAST_TF32,\n        CUBLAS_GEMM_DEFAULT_TENSOR_OP\n    );\n\n    // Fused epilogue: bias add + min + subtract\n    float c = (float)constant;\n    int total = M * N;\n    int block = 256;\n\n    if (N % 4 == 0) {\n        int vec_total = M * (N / 4);\n        int grid = (vec_total + block - 1) / block;\n        grid = min(grid, 65535);\n        fused_bias_min_sub_aligned_kernel<<<grid, block, 0, at::cuda::getCurrentCUDAStream()>>>(\n            output.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            c, M, N\n        );\n    } else {\n        int grid = (total / 4 + block - 1) / block;\n        grid = min(grid, 65535);\n        fused_bias_min_sub_kernel<<<grid, block, 0, at::cuda::getCurrentCUDAStream()>>>(\n            output.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            c, M, N\n        );\n    }\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, applies minimum, and subtracts a constant.\n        \"\"\"\n    def __init__(self, in_features, out_features, constant):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.linear = nn.Linear(in_features, out_features)\n        self.constant = nn.Parameter(torch.tensor(constant))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        _use_fast = (\n            x.is_cuda and\n            x.dtype == torch.float32 and\n            x.is_contiguous() and\n            self.linear.weight.is_cuda and\n            self.linear.weight.dtype == torch.float32 and\n            self.linear.weight.is_contiguous() and\n            self.linear.bias is not None and\n            self.linear.bias.is_cuda and\n            self.linear.bias.is_contiguous()\n        )\n        if _use_fast:\n            x = _stark_get_extension().linear_min_sub(\n                x,\n                self.linear.weight,\n                self.linear.bias,\n                float(self.constant.detach().cpu())\n            )\n        else:\n            x = self.linear(x)\n            x = torch.min(x, self.constant)\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not _use_fast:\n            x = torch.min(x, self.constant)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _use_fast:\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Replace the baseline PyTorch `linear -> min -> subtract` chain with a custom CUDA extension path that uses cuBLAS for GEMM and one fused epilogue kernel for `min(x, c) - c`, while keeping the public `ModelNew` interface unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ declaration for a CUDA function `torch::Tensor linear_min_sub_cuda(torch::Tensor input, torch::Tensor weight, torch::Tensor bias, double constant);` and a `PYBIND11_MODULE` export that binds it as `linear_min_sub`. Include `<torch/extension.h>` only; keep this file as a thin declaration/binding layer.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a full CUDA implementation that: validates CUDA/device/dtype/contiguous 2D input and contiguous 2D weight plus 1D bias; allocates an output tensor of shape `{input.size(0), weight.size(0)}`; uses a static or singleton cuBLAS handle bound to the current stream; runs SGEMM for `output = input @ weight^T`; launches a second CUDA kernel over all output elements that adds `bias[col]`, computes `fminf(value, constant) - constant`, and writes back in place; exports the wrapper as `linear_min_sub_cuda`. Use float32 only and a conservative contiguous fast path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the baseline `self.linear(x)` line with a guarded dispatch: if `x.is_cuda`, `x.dtype == torch.float32`, `x.is_contiguous()`, `self.linear.weight.is_cuda`, `self.linear.weight.dtype == torch.float32`, `self.linear.weight.is_contiguous()`, `self.linear.bias is not None`, and `self.linear.bias.is_contiguous()`, call `_stark_get_extension().linear_min_sub(x, self.linear.weight, self.linear.bias, float(self.constant.detach().cpu()))` and assign the result back to `x`; otherwise fall back to `x = self.linear(x)`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace this statement with a no-op placeholder such as `x = x` because the CUDA fast path already applies the `min` epilogue and the fallback path will continue through the original Python statements only if `forward_stmt_1` chose the fallback branch.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace this statement with a no-op placeholder such as `x = x` because the CUDA fast path already applies the subtraction epilogue and the fallback path should keep behavior equivalent through the guarded dispatch structure established in `forward_stmt_1`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Keep returning `x`, but replace the anchor body with a plain `return x` so the custom fast path and the fallback both converge here unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_1:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "applied_region_patch:forward_stmt_4:replace",
+        "runtime_error_name=builtins.RuntimeError",
+        "runtime_error=Error building extension 'stark_cuda_l2_p68_0bc11580f17f': [1/3] /usr/local/cuda-12.8/bin/nvcc --generate-dependencies-with-compile --dependency-output cuda.cuda.o.d -DTORCH_EXTENSION_NAME=stark_cu...",
+        "runtime_error_traceback=ninja: build stopped: subcommand failed.",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=665107",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/23_L2_P68_Auto_P68_20260720_081538/eval_traces/20260720_082001_664454_71282c25_kernelbench_l2_68_68_matmul_min_subtract",
+        "isolated_worker_stderr_tail=e/python3.10 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr -gencode=arch=compute_89,code=compute_89 -gencode=arch=compute_89,code=sm_89 --compiler-options '-fPIC' -O3 --use_fast_math -std=c++17 -c /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_0bc11580f17f/cuda.cu -o cuda.cuda.o \n/data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_0bc11580f17f/cuda.cu(108): error: namespace \"at::cuda\" has no member \"getCurrentCUDAStream\"\n                    (handle, at::cuda::getCurrentCUDAStream());\n                                       ^\n\n/data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_0bc11580f17f/cuda.cu(146): error: namespace \"at::cuda\" has no member \"getCurrentCUDAStream\"\n          fused_bias_min_sub_aligned_kernel<<<grid, block, 0, at::cuda::getCurrentCUDAStream()>>>(\n                                                                        ^\n\n/data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_0bc11580f17f/cuda.cu(154): error: namespace \"at::cuda\" has no member \"getCurrentCUDAStream\"\n          fused_bias_min_sub_kernel<<<grid, block, 0, at::cuda::getCurrentCUDAStream()>>>(\n                                                                ^\n\n3 errors detected in the compilation of \"/data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_0bc11580f17f/cuda.cu\".\n[2/3] c++ -MMD -MF main.o.d -DTORCH_EXTENSION_NAME=stark_cuda_l2_p68_0bc11580f17f -DTORCH_API_INCLUDE_EXTENSION_H -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include/torch/csrc/api/include -isystem /usr/local/cuda-12.8/include -isystem /data/dyj/miniconda3/envs/stark/include/python3.10 -fPIC -std=c++17 -O3 -c /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_0bc11580f17f/main.cpp -o main.o \nninja: build stopped: subcommand failed."
+      ],
+      "failure_type": "builtins.RuntimeError",
+      "node_status": "runtime_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "runtime",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current path is dominated by a low-occupancy SIMT GEMM; routing GEMM through cuBLAS and reducing the post-GEMM epilogue to one lightweight kernel will improve end-to-end runtime more reliably than only fusing the pointwise ops.",
+      "single_change_focus": "Swap the forward path to a single extension entrypoint backed by cuBLAS GEMM plus one fused epilogue kernel.",
+      "mutation_family": "cublas_gemm_plus_fused_epilogue",
+      "target_metric": "speedup"
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p68_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor linear_min_sub_cuda(\n    torch::Tensor input,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double constant);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"linear_min_sub\", &linear_min_sub_cuda, \"Linear + min + subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <ATen/cuda/CUDAContext.h>\n\n// Singleton cuBLAS handle\nstatic cublasHandle_t g_cublas_handle = nullptr;\n\nstatic cublasHandle_t get_cublas_handle() {\n    if (g_cublas_handle == nullptr) {\n        cublasCreate(&g_cublas_handle);\n    }\n    return g_cublas_handle;\n}\n\n// Fused epilogue: out[i] += bias[col], then min(out[i], c) - c\n// Uses float4 for vectorized access when N is divisible by 4\n__global__ void fused_bias_min_sub_kernel(\n    float* __restrict__ out,\n    const float* __restrict__ bias,\n    float constant,\n    int M, int N)\n{\n    int total = M * N;\n    int vec_total = total / 4;\n    float4* out4 = reinterpret_cast<float4*>(out);\n\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n\n    for (int i = idx; i < vec_total; i += stride) {\n        int base = i * 4;\n        float4 v = out4[i];\n        int col0 = base % N;\n        int col1 = (base + 1) % N;\n        int col2 = (base + 2) % N;\n        int col3 = (base + 3) % N;\n        v.x = fminf(v.x + bias[col0], constant) - constant;\n        v.y = fminf(v.y + bias[col1], constant) - constant;\n        v.z = fminf(v.z + bias[col2], constant) - constant;\n        v.w = fminf(v.w + bias[col3], constant) - constant;\n        out4[i] = v;\n    }\n\n    // Handle remainder\n    for (int i = idx + vec_total * 4; i < total; i += stride) {\n        int col = i % N;\n        out[i] = fminf(out[i] + bias[col], constant) - constant;\n    }\n}\n\n// Optimized version when N is divisible by 4 and cols are aligned within float4\n__global__ void fused_bias_min_sub_aligned_kernel(\n    float* __restrict__ out,\n    const float* __restrict__ bias,\n    float constant,\n    int M, int N)\n{\n    // Each thread handles 4 consecutive columns in a row\n    // N must be divisible by 4\n    int total_vec = M * (N / 4);\n    float4* out4 = reinterpret_cast<float4*>(out);\n    const float4* bias4 = reinterpret_cast<const float4*>(bias);\n\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n\n    for (int i = idx; i < total_vec; i += stride) {\n        int col_vec = i % (N / 4);\n        float4 v = out4[i];\n        float4 b = bias4[col_vec];\n        v.x = fminf(v.x + b.x, constant) - constant;\n        v.y = fminf(v.y + b.y, constant) - constant;\n        v.z = fminf(v.z + b.z, constant) - constant;\n        v.w = fminf(v.w + b.w, constant) - constant;\n        out4[i] = v;\n    }\n}\n\ntorch::Tensor linear_min_sub_cuda(\n    torch::Tensor input,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double constant)\n{\n    TORCH_CHECK(input.is_cuda(), \"input must be CUDA tensor\");\n    TORCH_CHECK(weight.is_cuda(), \"weight must be CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be CUDA tensor\");\n    TORCH_CHECK(input.dtype() == torch::kFloat32, \"input must be float32\");\n    TORCH_CHECK(weight.dtype() == torch::kFloat32, \"weight must be float32\");\n    TORCH_CHECK(bias.dtype() == torch::kFloat32, \"bias must be float32\");\n    TORCH_CHECK(input.is_contiguous(), \"input must be contiguous\");\n    TORCH_CHECK(weight.is_contiguous(), \"weight must be contiguous\");\n    TORCH_CHECK(bias.is_contiguous(), \"bias must be contiguous\");\n\n    int M = input.size(0);\n    int K = input.size(1);\n    int N = weight.size(0); // out_features; weight is [out_features, in_features]\n\n    auto output = torch::empty({M, N}, input.options());\n\n    cublasHandle_t handle = get_cublas_handle();\n    cudaStream_t stream = at::cuda::getDefaultCUDAStream();\n    cublasSetStream(handle, stream);\n\n    float alpha = 1.0f, beta = 0.0f;\n    cublasGemmEx(\n        handle,\n        CUBLAS_OP_T,\n        CUBLAS_OP_N,\n        N, M, K,\n        &alpha,\n        weight.data_ptr<float>(), CUDA_R_32F, K,\n        input.data_ptr<float>(),  CUDA_R_32F, K,\n        &beta,\n        output.data_ptr<float>(), CUDA_R_32F, N,\n        CUBLAS_COMPUTE_32F_FAST_TF32,\n        CUBLAS_GEMM_DEFAULT_TENSOR_OP\n    );\n\n    float c = (float)constant;\n    int total = M * N;\n    int block = 256;\n\n    if (N % 4 == 0) {\n        int vec_total = M * (N / 4);\n        int grid = (vec_total + block - 1) / block;\n        grid = min(grid, 65535);\n        fused_bias_min_sub_aligned_kernel<<<grid, block, 0, stream>>>(\n            output.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            c, M, N\n        );\n    } else {\n        int grid = (total / 4 + block - 1) / block;\n        grid = min(grid, 65535);\n        fused_bias_min_sub_kernel<<<grid, block, 0, stream>>>(\n            output.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            c, M, N\n        );\n    }\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, applies minimum, and subtracts a constant.\n        \"\"\"\n    def __init__(self, in_features, out_features, constant):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.linear = nn.Linear(in_features, out_features)\n        self.constant = nn.Parameter(torch.tensor(constant))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        _use_fast = (\n            x.is_cuda and\n            x.dtype == torch.float32 and\n            x.is_contiguous() and\n            self.linear.weight.is_cuda and\n            self.linear.weight.dtype == torch.float32 and\n            self.linear.weight.is_contiguous() and\n            self.linear.bias is not None and\n            self.linear.bias.is_cuda and\n            self.linear.bias.is_contiguous()\n        )\n        if _use_fast:\n            x = _stark_get_extension().linear_min_sub(\n                x,\n                self.linear.weight,\n                self.linear.bias,\n                float(self.constant.detach().cpu())\n            )\n        else:\n            x = self.linear(x)\n            x = torch.min(x, self.constant)\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not _use_fast:\n            x = torch.min(x, self.constant)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _use_fast:\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Replace the baseline PyTorch `linear -> min -> subtract` chain with a custom CUDA extension path that uses cuBLAS for GEMM and one fused epilogue kernel for `min(x, c) - c`, while keeping the public `ModelNew` interface unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ declaration for a CUDA function `torch::Tensor linear_min_sub_cuda(torch::Tensor input, torch::Tensor weight, torch::Tensor bias, double constant);` and a `PYBIND11_MODULE` export that binds it as `linear_min_sub`. Include `<torch/extension.h>` only; keep this file as a thin declaration/binding layer.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a full CUDA implementation that: validates CUDA/device/dtype/contiguous 2D input and contiguous 2D weight plus 1D bias; allocates an output tensor of shape `{input.size(0), weight.size(0)}`; uses a static or singleton cuBLAS handle bound to the current stream; runs SGEMM for `output = input @ weight^T`; launches a second CUDA kernel over all output elements that adds `bias[col]`, computes `fminf(value, constant) - constant`, and writes back in place; exports the wrapper as `linear_min_sub_cuda`. Use float32 only and a conservative contiguous fast path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the baseline `self.linear(x)` line with a guarded dispatch: if `x.is_cuda`, `x.dtype == torch.float32`, `x.is_contiguous()`, `self.linear.weight.is_cuda`, `self.linear.weight.dtype == torch.float32`, `self.linear.weight.is_contiguous()`, `self.linear.bias is not None`, and `self.linear.bias.is_contiguous()`, call `_stark_get_extension().linear_min_sub(x, self.linear.weight, self.linear.bias, float(self.constant.detach().cpu()))` and assign the result back to `x`; otherwise fall back to `x = self.linear(x)`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace this statement with a no-op placeholder such as `x = x` because the CUDA fast path already applies the `min` epilogue and the fallback path will continue through the original Python statements only if `forward_stmt_1` chose the fallback branch.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace this statement with a no-op placeholder such as `x = x` because the CUDA fast path already applies the subtraction epilogue and the fallback path should keep behavior equivalent through the guarded dispatch structure established in `forward_stmt_1`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Keep returning `x`, but replace the anchor body with a plain `return x` so the custom fast path and the fallback both converge here unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "correctness_issue=Output mismatch",
+        "max_difference=['0.000443', '0.000484', '0.000428']",
+        "avg_difference=['0.000071', '0.000071', '0.000071']",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=665479",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/23_L2_P68_Auto_P68_20260720_081538/eval_traces/20260720_082151_664454_b0f81e79_kernelbench_l2_68_68_matmul_min_subtract"
+      ],
+      "failure_type": "correctness_error",
+      "node_status": "correctness_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "correctness",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p68_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor linear_min_sub_cuda(\n    torch::Tensor input,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double constant);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"linear_min_sub\", &linear_min_sub_cuda, \"Linear + min + subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <ATen/cuda/CUDAContext.h>\n\nstatic cublasHandle_t g_cublas_handle = nullptr;\n\nstatic cublasHandle_t get_cublas_handle() {\n    if (g_cublas_handle == nullptr) {\n        cublasCreate(&g_cublas_handle);\n    }\n    return g_cublas_handle;\n}\n\n__global__ void fused_bias_min_sub_kernel(\n    float* __restrict__ out,\n    const float* __restrict__ bias,\n    float constant,\n    int M, int N)\n{\n    int total = M * N;\n    int vec_total = total / 4;\n    float4* out4 = reinterpret_cast<float4*>(out);\n\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n\n    for (int i = idx; i < vec_total; i += stride) {\n        int base = i * 4;\n        float4 v = out4[i];\n        int col0 = base % N;\n        int col1 = (base + 1) % N;\n        int col2 = (base + 2) % N;\n        int col3 = (base + 3) % N;\n        v.x = fminf(v.x + bias[col0], constant) - constant;\n        v.y = fminf(v.y + bias[col1], constant) - constant;\n        v.z = fminf(v.z + bias[col2], constant) - constant;\n        v.w = fminf(v.w + bias[col3], constant) - constant;\n        out4[i] = v;\n    }\n\n    for (int i = idx + vec_total * 4; i < total; i += stride) {\n        int col = i % N;\n        out[i] = fminf(out[i] + bias[col], constant) - constant;\n    }\n}\n\n__global__ void fused_bias_min_sub_aligned_kernel(\n    float* __restrict__ out,\n    const float* __restrict__ bias,\n    float constant,\n    int M, int N)\n{\n    int total_vec = M * (N / 4);\n    float4* out4 = reinterpret_cast<float4*>(out);\n    const float4* bias4 = reinterpret_cast<const float4*>(bias);\n\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n\n    for (int i = idx; i < total_vec; i += stride) {\n        int col_vec = i % (N / 4);\n        float4 v = out4[i];\n        float4 b = bias4[col_vec];\n        v.x = fminf(v.x + b.x, constant) - constant;\n        v.y = fminf(v.y + b.y, constant) - constant;\n        v.z = fminf(v.z + b.z, constant) - constant;\n        v.w = fminf(v.w + b.w, constant) - constant;\n        out4[i] = v;\n    }\n}\n\ntorch::Tensor linear_min_sub_cuda(\n    torch::Tensor input,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double constant)\n{\n    TORCH_CHECK(input.is_cuda(), \"input must be CUDA tensor\");\n    TORCH_CHECK(weight.is_cuda(), \"weight must be CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be CUDA tensor\");\n    TORCH_CHECK(input.dtype() == torch::kFloat32, \"input must be float32\");\n    TORCH_CHECK(weight.dtype() == torch::kFloat32, \"weight must be float32\");\n    TORCH_CHECK(bias.dtype() == torch::kFloat32, \"bias must be float32\");\n    TORCH_CHECK(input.is_contiguous(), \"input must be contiguous\");\n    TORCH_CHECK(weight.is_contiguous(), \"weight must be contiguous\");\n    TORCH_CHECK(bias.is_contiguous(), \"bias must be contiguous\");\n\n    int M = input.size(0);\n    int K = input.size(1);\n    int N = weight.size(0);\n\n    auto output = torch::empty({M, N}, input.options());\n\n    cublasHandle_t handle = get_cublas_handle();\n    cudaStream_t stream = at::cuda::getDefaultCUDAStream();\n    cublasSetStream(handle, stream);\n\n    float alpha = 1.0f, beta = 0.0f;\n    cublasGemmEx(\n        handle,\n        CUBLAS_OP_T,\n        CUBLAS_OP_N,\n        N, M, K,\n        &alpha,\n        weight.data_ptr<float>(), CUDA_R_32F, K,\n        input.data_ptr<float>(), CUDA_R_32F, K,\n        &beta,\n        output.data_ptr<float>(), CUDA_R_32F, N,\n        CUBLAS_COMPUTE_32F,\n        CUBLAS_GEMM_DEFAULT\n    );\n\n    float c = (float)constant;\n    int total = M * N;\n    int block = 256;\n\n    if (N % 4 == 0) {\n        int vec_total = M * (N / 4);\n        int grid = (vec_total + block - 1) / block;\n        grid = min(grid, 65535);\n        fused_bias_min_sub_aligned_kernel<<<grid, block, 0, stream>>>(\n            output.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            c, M, N\n        );\n    } else {\n        int grid = (total / 4 + block - 1) / block;\n        grid = min(grid, 65535);\n        fused_bias_min_sub_kernel<<<grid, block, 0, stream>>>(\n            output.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            c, M, N\n        );\n    }\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, applies minimum, and subtracts a constant.\n        \"\"\"\n    def __init__(self, in_features, out_features, constant):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.linear = nn.Linear(in_features, out_features)\n        self.constant = nn.Parameter(torch.tensor(constant))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        _use_fast = (\n            x.is_cuda and\n            x.dtype == torch.float32 and\n            x.is_contiguous() and\n            self.linear.weight.is_cuda and\n            self.linear.weight.dtype == torch.float32 and\n            self.linear.weight.is_contiguous() and\n            self.linear.bias is not None and\n            self.linear.bias.is_cuda and\n            self.linear.bias.is_contiguous()\n        )\n        if _use_fast:\n            x = _stark_get_extension().linear_min_sub(\n                x,\n                self.linear.weight,\n                self.linear.bias,\n                float(self.constant.detach().cpu())\n            )\n        else:\n            x = self.linear(x)\n            x = torch.min(x, self.constant)\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not _use_fast:\n            x = torch.min(x, self.constant)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _use_fast:\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "n5",
+        "phase2_root"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Replace the baseline PyTorch `linear -> min -> subtract` chain with a custom CUDA extension path that uses cuBLAS for GEMM and one fused epilogue kernel for `min(x, c) - c`, while keeping the public `ModelNew` interface unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ declaration for a CUDA function `torch::Tensor linear_min_sub_cuda(torch::Tensor input, torch::Tensor weight, torch::Tensor bias, double constant);` and a `PYBIND11_MODULE` export that binds it as `linear_min_sub`. Include `<torch/extension.h>` only; keep this file as a thin declaration/binding layer.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a full CUDA implementation that: validates CUDA/device/dtype/contiguous 2D input and contiguous 2D weight plus 1D bias; allocates an output tensor of shape `{input.size(0), weight.size(0)}`; uses a static or singleton cuBLAS handle bound to the current stream; runs SGEMM for `output = input @ weight^T`; launches a second CUDA kernel over all output elements that adds `bias[col]`, computes `fminf(value, constant) - constant`, and writes back in place; exports the wrapper as `linear_min_sub_cuda`. Use float32 only and a conservative contiguous fast path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the baseline `self.linear(x)` line with a guarded dispatch: if `x.is_cuda`, `x.dtype == torch.float32`, `x.is_contiguous()`, `self.linear.weight.is_cuda`, `self.linear.weight.dtype == torch.float32`, `self.linear.weight.is_contiguous()`, `self.linear.bias is not None`, and `self.linear.bias.is_contiguous()`, call `_stark_get_extension().linear_min_sub(x, self.linear.weight, self.linear.bias, float(self.constant.detach().cpu()))` and assign the result back to `x`; otherwise fall back to `x = self.linear(x)`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace this statement with a no-op placeholder such as `x = x` because the CUDA fast path already applies the `min` epilogue and the fallback path will continue through the original Python statements only if `forward_stmt_1` chose the fallback branch.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace this statement with a no-op placeholder such as `x = x` because the CUDA fast path already applies the subtraction epilogue and the fallback path should keep behavior equivalent through the guarded dispatch structure established in `forward_stmt_1`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Keep returning `x`, but replace the anchor body with a plain `return x` so the custom fast path and the fallback both converge here unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00183,
+      "score": 0.00183,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=665733",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/23_L2_P68_Auto_P68_20260720_081538/eval_traces/20260720_082459_664454_7e46c58d_kernelbench_l2_68_68_matmul_min_subtract"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00151,
+      "speedup": 0.825136612021858,
+      "reference_runtimes": {
+        "torch_eager": 0.00151
+      },
+      "speedups": {
+        "torch_eager": 0.825136612021858
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p68_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor min_sub_cuda(torch::Tensor x, torch::Tensor constant);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"min_sub\", &min_sub_cuda, \"Fused min-subtract epilogue (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void min_sub_kernel(const float* __restrict__ x, float* __restrict__ out, float constant, int64_t numel) {\n    int64_t idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int64_t stride = blockDim.x * gridDim.x;\n    for (int64_t i = idx; i < numel; i += stride) {\n        out[i] = fminf(x[i], constant) - constant;\n    }\n}\n\ntorch::Tensor min_sub_cuda(torch::Tensor x, torch::Tensor constant) {\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(constant.is_cuda(), \"constant must be a CUDA tensor\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(constant.scalar_type() == torch::kFloat32, \"constant must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n    TORCH_CHECK(constant.numel() == 1, \"constant must be a single-element tensor\");\n\n    auto out = torch::empty_like(x);\n    int64_t numel = x.numel();\n    float c_val = constant.data_ptr<float>()[0];\n\n    const int threads = 256;\n    const int blocks = (numel + threads - 1) / threads;\n\n    min_sub_kernel<<<blocks, threads>>>(\n        x.data_ptr<float>(),\n        out.data_ptr<float>(),\n        c_val,\n        numel\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, applies minimum, and subtracts a constant.\n        \"\"\"\n    def __init__(self, in_features, out_features, constant):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.linear = nn.Linear(in_features, out_features)\n        self.constant = nn.Parameter(torch.tensor(constant))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        _use_fast = (\n            x.is_cuda and\n            x.dtype == torch.float32 and\n            x.is_contiguous() and\n            self.linear.weight.is_cuda and\n            self.linear.weight.dtype == torch.float32 and\n            self.linear.weight.is_contiguous() and\n            (self.linear.bias is None or (self.linear.bias.is_cuda and self.linear.bias.is_contiguous())) and\n            self.constant.is_cuda and\n            self.constant.numel() == 1\n        )\n        if _use_fast:\n            x = self.linear(x)\n            x = _stark_get_extension().min_sub(x, self.constant)\n        else:\n            x = self.linear(x)\n            x = torch.min(x, self.constant)\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not _use_fast:\n            x = torch.min(x, self.constant)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _use_fast:\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Fuse the post-linear `min` and subtract into a custom CUDA epilogue while keeping GEMM on a library-backed path, replacing the three-step forward chain with one extension call on the CUDA fast path.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with declarations for one exported function `torch::Tensor min_sub_cuda(torch::Tensor x, torch::Tensor constant);` and bind it in `PYBIND11_MODULE` as `m.def(\"min_sub\", &min_sub_cuda, \"Fused min-subtract epilogue (CUDA)\");`. Do not add extra exported entrypoints.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a CUDA implementation of `min_sub_cuda` that accepts a contiguous float32 CUDA tensor `x` and a 0-dim/1-element CUDA tensor `constant`, allocates an output tensor matching `x`, and launches one elementwise kernel over all elements. In the kernel, load the scalar constant once from device memory, compute `out[i] = fminf(x[i], c) - c`, and write to output. Add strict checks for CUDA, float32, contiguity, and single-element constant tensor. Handle the tail safely; vectorize only if straightforward without extra shape assumptions.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the baseline line with a guarded fast path: if `x`, `self.linear.weight`, `self.linear.bias`, and `self.constant` are CUDA float32 tensors, and `x`, weight, and bias are contiguous, first run `x = self.linear(x)` and then call `x = _stark_get_extension().min_sub(x, self.constant)`; otherwise run the full original fallback sequence locally in this anchor (`x = self.linear(x)`, then `x = torch.min(x, self.constant)`, then `x = x - self.constant`). Define `_use_fast` in this anchor for reuse by later anchors.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace this anchor with `if not _use_fast: x = torch.min(x, self.constant)` only if the fallback sequence was not already fully inlined in `forward_stmt_1`; otherwise replace it with a no-op comment or `pass`-equivalent Python statement that leaves `x` unchanged.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace this anchor with `if not _use_fast: x = x - self.constant` only if the fallback sequence was not already fully inlined in `forward_stmt_1`; otherwise replace it with a no-op comment or `pass`-equivalent Python statement that leaves `x` unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_1:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=665905",
+        "isolated_worker_exit_code=-11",
+        "isolated_worker_signal=SIGSEGV",
+        "isolated_worker_stdout_tail=",
+        "isolated_worker_stderr_tail=",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/23_L2_P68_Auto_P68_20260720_081538/eval_traces/20260720_082756_664454_ac42d2ba_kernelbench_l2_68_68_matmul_min_subtract"
+      ],
+      "failure_type": "isolated_evaluator_crash",
+      "node_status": "runtime_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "runtime",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If the CUDA path computes `self.linear(x)` once and immediately applies bias-aware fused `min(value, constant) - constant` in one custom kernel without CPU scalar extraction, end-to-end runtime should improve because the current root is memory-pressure heavy and spends extra traffic on separate `min` and subtract passes.",
+      "single_change_focus": "Replace the Python-side `linear -> min -> subtract` sequence with a guarded extension call that runs PyTorch linear first and then a single custom CUDA epilogue kernel using a device scalar constant.",
+      "mutation_family": "fused_epilogue_after_linear",
+      "target_metric": "speedup"
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p68_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor linear_min_sub_cuda(\n    torch::Tensor input,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double constant);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"linear_min_sub\", &linear_min_sub_cuda, \"Linear + min + subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <ATen/cuda/CUDAContext.h>\n\nstatic cublasHandle_t g_cublas_handle = nullptr;\n\nstatic cublasHandle_t get_cublas_handle() {\n    if (g_cublas_handle == nullptr) {\n        cublasCreate(&g_cublas_handle);\n    }\n    return g_cublas_handle;\n}\n\n__global__ void fused_bias_min_sub_kernel(\n    float* __restrict__ out,\n    const float* __restrict__ bias,\n    const float* __restrict__ constant_ptr,\n    int M, int N)\n{\n    float constant = constant_ptr[0];\n    int total = M * N;\n    int vec_total = total / 4;\n    float4* out4 = reinterpret_cast<float4*>(out);\n\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n\n    for (int i = idx; i < vec_total; i += stride) {\n        int base = i * 4;\n        float4 v = out4[i];\n        int col0 = base % N;\n        int col1 = (base + 1) % N;\n        int col2 = (base + 2) % N;\n        int col3 = (base + 3) % N;\n        v.x = fminf(v.x + bias[col0], constant) - constant;\n        v.y = fminf(v.y + bias[col1], constant) - constant;\n        v.z = fminf(v.z + bias[col2], constant) - constant;\n        v.w = fminf(v.w + bias[col3], constant) - constant;\n        out4[i] = v;\n    }\n\n    for (int i = idx + vec_total * 4; i < total; i += stride) {\n        int col = i % N;\n        out[i] = fminf(out[i] + bias[col], constant) - constant;\n    }\n}\n\n__global__ void fused_bias_min_sub_aligned_kernel(\n    float* __restrict__ out,\n    const float* __restrict__ bias,\n    const float* __restrict__ constant_ptr,\n    int M, int N)\n{\n    float constant = constant_ptr[0];\n    int total_vec = M * (N / 4);\n    float4* out4 = reinterpret_cast<float4*>(out);\n    const float4* bias4 = reinterpret_cast<const float4*>(bias);\n\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n\n    for (int i = idx; i < total_vec; i += stride) {\n        int col_vec = i % (N / 4);\n        float4 v = out4[i];\n        float4 b = bias4[col_vec];\n        v.x = fminf(v.x + b.x, constant) - constant;\n        v.y = fminf(v.y + b.y, constant) - constant;\n        v.z = fminf(v.z + b.z, constant) - constant;\n        v.w = fminf(v.w + b.w, constant) - constant;\n        out4[i] = v;\n    }\n}\n\ntorch::Tensor linear_min_sub_cuda(\n    torch::Tensor input,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    torch::Tensor constant_tensor)\n{\n    TORCH_CHECK(input.is_cuda(), \"input must be CUDA tensor\");\n    TORCH_CHECK(weight.is_cuda(), \"weight must be CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be CUDA tensor\");\n    TORCH_CHECK(constant_tensor.is_cuda(), \"constant must be CUDA tensor\");\n    TORCH_CHECK(input.dtype() == torch::kFloat32, \"input must be float32\");\n    TORCH_CHECK(weight.dtype() == torch::kFloat32, \"weight must be float32\");\n    TORCH_CHECK(bias.dtype() == torch::kFloat32, \"bias must be float32\");\n    TORCH_CHECK(constant_tensor.dtype() == torch::kFloat32, \"constant must be float32\");\n    TORCH_CHECK(input.is_contiguous(), \"input must be contiguous\");\n    TORCH_CHECK(weight.is_contiguous(), \"weight must be contiguous\");\n    TORCH_CHECK(bias.is_contiguous(), \"bias must be contiguous\");\n    TORCH_CHECK(constant_tensor.numel() == 1, \"constant must be scalar tensor\");\n\n    int M = input.size(0);\n    int K = input.size(1);\n    int N = weight.size(0);\n\n    auto output = torch::empty({M, N}, input.options());\n\n    cublasHandle_t handle = get_cublas_handle();\n    cudaStream_t stream = at::cuda::getDefaultCUDAStream();\n    cublasSetStream(handle, stream);\n\n    float alpha = 1.0f, beta = 0.0f;\n    cublasGemmEx(\n        handle,\n        CUBLAS_OP_T,\n        CUBLAS_OP_N,\n        N, M, K,\n        &alpha,\n        weight.data_ptr<float>(), CUDA_R_32F, K,\n        input.data_ptr<float>(), CUDA_R_32F, K,\n        &beta,\n        output.data_ptr<float>(), CUDA_R_32F, N,\n        CUBLAS_COMPUTE_32F,\n        CUBLAS_GEMM_DEFAULT\n    );\n\n    const float* constant_ptr = constant_tensor.data_ptr<float>();\n    int total = M * N;\n    int block = 256;\n\n    if (N % 4 == 0) {\n        int vec_total = M * (N / 4);\n        int grid = (vec_total + block - 1) / block;\n        grid = min(grid, 65535);\n        fused_bias_min_sub_aligned_kernel<<<grid, block, 0, stream>>>(\n            output.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            constant_ptr,\n            M, N\n        );\n    } else {\n        int grid = (total / 4 + block - 1) / block;\n        grid = min(grid, 65535);\n        fused_bias_min_sub_kernel<<<grid, block, 0, stream>>>(\n            output.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            constant_ptr,\n            M, N\n        );\n    }\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, applies minimum, and subtracts a constant.\n        \"\"\"\n    def __init__(self, in_features, out_features, constant):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.linear = nn.Linear(in_features, out_features)\n        self.constant = nn.Parameter(torch.tensor(constant))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        _use_fast = (\n            x.is_cuda and\n            x.dtype == torch.float32 and\n            x.is_contiguous() and\n            self.linear.weight.is_cuda and\n            self.linear.weight.dtype == torch.float32 and\n            self.linear.weight.is_contiguous() and\n            self.linear.bias is not None and\n            self.linear.bias.is_cuda and\n            self.linear.bias.is_contiguous()\n        )\n        if _use_fast:\n            x = _stark_get_extension().linear_min_sub(\n                x,\n                self.linear.weight,\n                self.linear.bias,\n                self.constant\n            )\n        else:\n            x = self.linear(x)\n            x = torch.min(x, self.constant)\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not _use_fast:\n            x = torch.min(x, self.constant)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _use_fast:\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Eliminate the per-forward host sync on the scalar constant by passing the device tensor into the fused CUDA epilogue instead of copying it to CPU.",
+      "anchor_edits": [
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the host-side `float(self.constant.detach().cpu())` conversion with a direct device-tensor argument to `_stark_get_extension().linear_min_sub(...)`, and keep the CUDA fast-path guard unchanged.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Change the fused kernel and exported wrapper to accept the constant as a device tensor or `const float*` scalar argument, load the scalar on device inside the kernel, and remove any host-side scalar extraction from the CUDA path.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:forward_stmt_1:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "runtime_error_name=builtins.ImportError",
+        "runtime_error=/data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_8a5f353573fa/stark_cuda_l2_p68_8a5f353573fa.so: undefined symbol: _Z19linear_min_sub_cudaN2at6TensorES0_S0_d",
+        "runtime_error_traceback=ImportError: /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_8a5f353573fa/stark_cuda_l2_p68_8a5f353573fa.so: undefined symbol: _Z19linear_min_sub_cudaN2at6TensorES0_S0_d",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=666260",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/23_L2_P68_Auto_P68_20260720_081538/eval_traces/20260720_083142_664454_8568b554_kernelbench_l2_68_68_matmul_min_subtract",
+        "isolated_worker_stderr_tail=Traceback (most recent call last):\n  File \"/data/dyj/cuda_kernel_eval/refs/KernelBench/src/kernelbench/eval.py\", line 782, in run_and_check_correctness\n    output_new = model_new(*inputs)\n  File \"/data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/nn/modules/module.py\", line 1776, in _wrapped_call_impl\n    return self._call_impl(*args, **kwargs)\n  File \"/data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/nn/modules/module.py\", line 1787, in _call_impl\n    return forward_call(*args, **kwargs)\n  File \"<string>\", line 231, in forward\n  File \"<string>\", line 24, in _stark_get_extension\n  File \"/data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/utils/cpp_extension.py\", line 2123, in load_inline\n    return _jit_compile(\n  File \"/data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/utils/cpp_extension.py\", line 2233, in _jit_compile\n    return _import_module_from_library(name, build_directory, is_python_module)\n  File \"/data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/utils/cpp_extension.py\", line 2731, in _import_module_from_library\n    module = importlib.util.module_from_spec(spec)\n  File \"<frozen importlib._bootstrap>\", line 571, in module_from_spec\n  File \"<frozen importlib._bootstrap_external>\", line 1176, in create_module\n  File \"<frozen importlib._bootstrap>\", line 241, in _call_with_frames_removed\nImportError: /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_8a5f353573fa/stark_cuda_l2_p68_8a5f353573fa.so: undefined symbol: _Z19linear_min_sub_cudaN2at6TensorES0_S0_d"
+      ],
+      "failure_type": "builtins.ImportError",
+      "node_status": "runtime_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "runtime",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The forward path is paying avoidable synchronization overhead at `float(self.constant.detach().cpu())`; removing that CPU round-trip should reduce launch-side latency and improve end-to-end speed.",
+      "single_change_focus": "Pass the scalar constant as a CUDA tensor into the epilogue kernel instead of materializing it on CPU inside forward.",
+      "mutation_family": "device_scalar_arg",
+      "target_metric": "speedup"
+    },
+    "phase2_root": {
+      "node_id": "phase2_root",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p68_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor linear_min_sub_cuda(\n    torch::Tensor input,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double constant);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"linear_min_sub\", &linear_min_sub_cuda, \"Linear + min + subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <ATen/cuda/CUDAContext.h>\n\nstatic cublasHandle_t g_cublas_handle = nullptr;\n\nstatic cublasHandle_t get_cublas_handle() {\n    if (g_cublas_handle == nullptr) {\n        cublasCreate(&g_cublas_handle);\n    }\n    return g_cublas_handle;\n}\n\n__global__ void fused_bias_min_sub_kernel(\n    float* __restrict__ out,\n    const float* __restrict__ bias,\n    float constant,\n    int M, int N)\n{\n    int total = M * N;\n    int vec_total = total / 4;\n    float4* out4 = reinterpret_cast<float4*>(out);\n\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n\n    for (int i = idx; i < vec_total; i += stride) {\n        int base = i * 4;\n        float4 v = out4[i];\n        int col0 = base % N;\n        int col1 = (base + 1) % N;\n        int col2 = (base + 2) % N;\n        int col3 = (base + 3) % N;\n        v.x = fminf(v.x + bias[col0], constant) - constant;\n        v.y = fminf(v.y + bias[col1], constant) - constant;\n        v.z = fminf(v.z + bias[col2], constant) - constant;\n        v.w = fminf(v.w + bias[col3], constant) - constant;\n        out4[i] = v;\n    }\n\n    for (int i = idx + vec_total * 4; i < total; i += stride) {\n        int col = i % N;\n        out[i] = fminf(out[i] + bias[col], constant) - constant;\n    }\n}\n\n__global__ void fused_bias_min_sub_aligned_kernel(\n    float* __restrict__ out,\n    const float* __restrict__ bias,\n    float constant,\n    int M, int N)\n{\n    int total_vec = M * (N / 4);\n    float4* out4 = reinterpret_cast<float4*>(out);\n    const float4* bias4 = reinterpret_cast<const float4*>(bias);\n\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n\n    for (int i = idx; i < total_vec; i += stride) {\n        int col_vec = i % (N / 4);\n        float4 v = out4[i];\n        float4 b = bias4[col_vec];\n        v.x = fminf(v.x + b.x, constant) - constant;\n        v.y = fminf(v.y + b.y, constant) - constant;\n        v.z = fminf(v.z + b.z, constant) - constant;\n        v.w = fminf(v.w + b.w, constant) - constant;\n        out4[i] = v;\n    }\n}\n\ntorch::Tensor linear_min_sub_cuda(\n    torch::Tensor input,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    double constant)\n{\n    TORCH_CHECK(input.is_cuda(), \"input must be CUDA tensor\");\n    TORCH_CHECK(weight.is_cuda(), \"weight must be CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be CUDA tensor\");\n    TORCH_CHECK(input.dtype() == torch::kFloat32, \"input must be float32\");\n    TORCH_CHECK(weight.dtype() == torch::kFloat32, \"weight must be float32\");\n    TORCH_CHECK(bias.dtype() == torch::kFloat32, \"bias must be float32\");\n    TORCH_CHECK(input.is_contiguous(), \"input must be contiguous\");\n    TORCH_CHECK(weight.is_contiguous(), \"weight must be contiguous\");\n    TORCH_CHECK(bias.is_contiguous(), \"bias must be contiguous\");\n\n    int M = input.size(0);\n    int K = input.size(1);\n    int N = weight.size(0);\n\n    auto output = torch::empty({M, N}, input.options());\n\n    cublasHandle_t handle = get_cublas_handle();\n    cudaStream_t stream = at::cuda::getDefaultCUDAStream();\n    cublasSetStream(handle, stream);\n\n    float alpha = 1.0f, beta = 0.0f;\n    cublasGemmEx(\n        handle,\n        CUBLAS_OP_T,\n        CUBLAS_OP_N,\n        N, M, K,\n        &alpha,\n        weight.data_ptr<float>(), CUDA_R_32F, K,\n        input.data_ptr<float>(), CUDA_R_32F, K,\n        &beta,\n        output.data_ptr<float>(), CUDA_R_32F, N,\n        CUBLAS_COMPUTE_32F,\n        CUBLAS_GEMM_DEFAULT\n    );\n\n    float c = (float)constant;\n    int total = M * N;\n    int block = 256;\n\n    if (N % 4 == 0) {\n        int vec_total = M * (N / 4);\n        int grid = (vec_total + block - 1) / block;\n        grid = min(grid, 65535);\n        fused_bias_min_sub_aligned_kernel<<<grid, block, 0, stream>>>(\n            output.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            c, M, N\n        );\n    } else {\n        int grid = (total / 4 + block - 1) / block;\n        grid = min(grid, 65535);\n        fused_bias_min_sub_kernel<<<grid, block, 0, stream>>>(\n            output.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            c, M, N\n        );\n    }\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, applies minimum, and subtracts a constant.\n        \"\"\"\n    def __init__(self, in_features, out_features, constant):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.linear = nn.Linear(in_features, out_features)\n        self.constant = nn.Parameter(torch.tensor(constant))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        _use_fast = (\n            x.is_cuda and\n            x.dtype == torch.float32 and\n            x.is_contiguous() and\n            self.linear.weight.is_cuda and\n            self.linear.weight.dtype == torch.float32 and\n            self.linear.weight.is_contiguous() and\n            self.linear.bias is not None and\n            self.linear.bias.is_cuda and\n            self.linear.bias.is_contiguous()\n        )\n        if _use_fast:\n            x = _stark_get_extension().linear_min_sub(\n                x,\n                self.linear.weight,\n                self.linear.bias,\n                float(self.constant.detach().cpu())\n            )\n        else:\n            x = self.linear(x)\n            x = torch.min(x, self.constant)\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not _use_fast:\n            x = torch.min(x, self.constant)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _use_fast:\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "phase2_root",
+      "child_ids": [
+        "phase2_n1",
+        "phase2_n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Replace the baseline PyTorch `linear -> min -> subtract` chain with a custom CUDA extension path that uses cuBLAS for GEMM and one fused epilogue kernel for `min(x, c) - c`, while keeping the public `ModelNew` interface unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ declaration for a CUDA function `torch::Tensor linear_min_sub_cuda(torch::Tensor input, torch::Tensor weight, torch::Tensor bias, double constant);` and a `PYBIND11_MODULE` export that binds it as `linear_min_sub`. Include `<torch/extension.h>` only; keep this file as a thin declaration/binding layer.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a full CUDA implementation that: validates CUDA/device/dtype/contiguous 2D input and contiguous 2D weight plus 1D bias; allocates an output tensor of shape `{input.size(0), weight.size(0)}`; uses a static or singleton cuBLAS handle bound to the current stream; runs SGEMM for `output = input @ weight^T`; launches a second CUDA kernel over all output elements that adds `bias[col]`, computes `fminf(value, constant) - constant`, and writes back in place; exports the wrapper as `linear_min_sub_cuda`. Use float32 only and a conservative contiguous fast path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the baseline `self.linear(x)` line with a guarded dispatch: if `x.is_cuda`, `x.dtype == torch.float32`, `x.is_contiguous()`, `self.linear.weight.is_cuda`, `self.linear.weight.dtype == torch.float32`, `self.linear.weight.is_contiguous()`, `self.linear.bias is not None`, and `self.linear.bias.is_contiguous()`, call `_stark_get_extension().linear_min_sub(x, self.linear.weight, self.linear.bias, float(self.constant.detach().cpu()))` and assign the result back to `x`; otherwise fall back to `x = self.linear(x)`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace this statement with a no-op placeholder such as `x = x` because the CUDA fast path already applies the `min` epilogue and the fallback path will continue through the original Python statements only if `forward_stmt_1` chose the fallback branch.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace this statement with a no-op placeholder such as `x = x` because the CUDA fast path already applies the subtraction epilogue and the fallback path should keep behavior equivalent through the guarded dispatch structure established in `forward_stmt_1`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Keep returning `x`, but replace the anchor body with a plain `return x` so the custom fast path and the fallback both converge here unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00183,
+      "score": 0.00183,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=665733",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/23_L2_P68_Auto_P68_20260720_081538/eval_traces/20260720_082459_664454_7e46c58d_kernelbench_l2_68_68_matmul_min_subtract"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00151,
+      "speedup": 0.825136612021858,
+      "reference_runtimes": {
+        "torch_eager": 0.00151
+      },
+      "speedups": {
+        "torch_eager": 0.825136612021858
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_n1": {
+      "node_id": "phase2_n1",
+      "parent_id": "phase2_root",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p68_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor min_sub_cuda(torch::Tensor x, double constant);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"min_sub\", &min_sub_cuda, \"Fused min + subtract epilogue (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void min_sub_kernel_vec(\n    float* __restrict__ out,\n    const float* __restrict__ in,\n    float c,\n    int total_vec)\n{\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n    const float4* in4  = reinterpret_cast<const float4*>(in);\n    float4*       out4 = reinterpret_cast<float4*>(out);\n    for (int i = idx; i < total_vec; i += stride) {\n        float4 v = in4[i];\n        v.x = fminf(v.x, c) - c;\n        v.y = fminf(v.y, c) - c;\n        v.z = fminf(v.z, c) - c;\n        v.w = fminf(v.w, c) - c;\n        out4[i] = v;\n    }\n}\n\n__global__ void min_sub_kernel_scalar(\n    float* __restrict__ out,\n    const float* __restrict__ in,\n    float c,\n    int total)\n{\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n    for (int i = idx; i < total; i += stride) {\n        out[i] = fminf(in[i], c) - c;\n    }\n}\n\ntorch::Tensor min_sub_cuda(torch::Tensor x, double constant)\n{\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n\n    auto out = torch::empty_like(x);\n    float c = static_cast<float>(constant);\n    int total = static_cast<int>(x.numel());\n    int block = 256;\n\n    cudaStream_t stream = c10::cuda::getCurrentCUDAStream();\n\n    if (total % 4 == 0) {\n        int total_vec = total / 4;\n        int grid = min((total_vec + block - 1) / block, 65535);\n        min_sub_kernel_vec<<<grid, block, 0, stream>>>(\n            out.data_ptr<float>(),\n            x.data_ptr<float>(),\n            c, total_vec);\n    } else {\n        int grid = min((total + block - 1) / block, 65535);\n        min_sub_kernel_scalar<<<grid, block, 0, stream>>>(\n            out.data_ptr<float>(),\n            x.data_ptr<float>(),\n            c, total);\n    }\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, applies minimum, and subtracts a constant.\n        \"\"\"\n    def __init__(self, in_features, out_features, constant):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.linear = nn.Linear(in_features, out_features)\n        self.constant = nn.Parameter(torch.tensor(constant))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.linear(x)\n        _c = float(self.constant.detach().cpu())\n        _use_fast = x.is_cuda and x.dtype == torch.float32 and x.is_contiguous()\n        if _use_fast:\n            x = _stark_get_extension().min_sub(x, _c)\n        else:\n            x = torch.min(x, self.constant)\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not _use_fast:\n            x = torch.min(x, self.constant)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _use_fast:\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Keep the library-backed `nn.Linear` GEMM path and replace only the post-GEMM `min`/subtract sequence with a simple coalesced CUDA epilogue kernel to avoid the slower custom GEMM path seen in phase-1.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the current extension declaration/export with a single CUDA entrypoint for the epilogue only, e.g. declare `torch::Tensor min_sub_cuda(torch::Tensor x, double constant);` and export it as `min_sub` via pybind. Remove the `linear_min_sub_cuda` declaration/export so the extension no longer owns GEMM.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current cuBLAS-based implementation with a minimal CUDA file that defines one exported function `min_sub_cuda(torch::Tensor x, double constant)`. Validate CUDA float32 contiguous 2D input, allocate an output tensor of the same shape, and launch one coalesced grid-stride kernel over the flattened buffer. In the kernel, for each element `v = x[idx]`, write `out[idx] = fminf(v, c) - c`. Do not reference bias, weight, cuBLAS, or alternate aligned/vectorized branches in this mutation; keep the kernel simple and correctness-first.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the current fast-path logic so it computes `x = self.linear(x)` first in all cases. Then, when `x` is CUDA float32 contiguous, call `_stark_get_extension().min_sub(x, float(self.constant.detach().cpu()))`; otherwise fall back to `x = torch.min(x, self.constant); x = x - self.constant`. Ensure the fast path no longer passes `self.linear.weight` or `self.linear.bias` into the extension.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_1:replace",
+        "runtime_error_name=builtins.RuntimeError",
+        "runtime_error=Error building extension 'stark_cuda_l2_p68_6386779fa1b0': [1/3] /usr/local/cuda-12.8/bin/nvcc --generate-dependencies-with-compile --dependency-output cuda.cuda.o.d -DTORCH_EXTENSION_NAME=stark_cu...",
+        "runtime_error_traceback=ninja: build stopped: subcommand failed.",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=666998",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/23_L2_P68_Auto_P68_20260720_081538/eval_traces/20260720_083921_664454_3d0c52d1_kernelbench_l2_68_68_matmul_min_subtract",
+        "isolated_worker_stderr_tail=r-options '-fPIC' -O3 --use_fast_math -std=c++17 -c /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_6386779fa1b0/cuda.cu -o cuda.cuda.o \nFAILED: [code=2] cuda.cuda.o \n/usr/local/cuda-12.8/bin/nvcc --generate-dependencies-with-compile --dependency-output cuda.cuda.o.d -DTORCH_EXTENSION_NAME=stark_cuda_l2_p68_6386779fa1b0 -DTORCH_API_INCLUDE_EXTENSION_H -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include/torch/csrc/api/include -isystem /usr/local/cuda-12.8/include -isystem /data/dyj/miniconda3/envs/stark/include/python3.10 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr -gencode=arch=compute_89,code=compute_89 -gencode=arch=compute_89,code=sm_89 --compiler-options '-fPIC' -O3 --use_fast_math -std=c++17 -c /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_6386779fa1b0/cuda.cu -o cuda.cuda.o \n/data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_6386779fa1b0/cuda.cu(53): error: namespace \"c10::cuda\" has no member \"getCurrentCUDAStream\"\n      cudaStream_t stream = c10::cuda::getCurrentCUDAStream();\n                                       ^\n\n1 error detected in the compilation of \"/data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_6386779fa1b0/cuda.cu\".\n[2/3] c++ -MMD -MF main.o.d -DTORCH_EXTENSION_NAME=stark_cuda_l2_p68_6386779fa1b0 -DTORCH_API_INCLUDE_EXTENSION_H -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include/torch/csrc/api/include -isystem /usr/local/cuda-12.8/include -isystem /data/dyj/miniconda3/envs/stark/include/python3.10 -fPIC -std=c++17 -O3 -c /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_6386779fa1b0/main.cpp -o main.o \nninja: build stopped: subcommand failed."
+      ],
+      "failure_type": "builtins.RuntimeError",
+      "node_status": "runtime_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "runtime",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The regression is dominated by replacing PyTorch's faster GEMM with a slower custom/cuBLAS path; if we keep `self.linear(x)` unchanged and fuse only the epilogue into one linear CUDA pass, runtime should improve relative to the current champion and may approach or beat baseline by reducing extra elementwise overhead without sacrificing GEMM quality.",
+      "single_change_focus": "Switch the fast path from custom GEMM+epilogue to `self.linear(x)` followed by one custom CUDA epilogue kernel that writes `min(x, constant) - constant` in place or into a fresh output buffer.",
+      "mutation_family": "epilogue_only_after_pytorch_linear",
+      "target_metric": "speedup"
+    },
+    "phase2_n2": {
+      "node_id": "phase2_n2",
+      "parent_id": "phase2_n1",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p68_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor min_sub_cuda(torch::Tensor x, double constant);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"min_sub\", &min_sub_cuda, \"Fused min + subtract epilogue (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void min_sub_kernel_vec(\n    float* __restrict__ out,\n    const float* __restrict__ in,\n    float c,\n    int total_vec)\n{\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n    const float4* in4  = reinterpret_cast<const float4*>(in);\n    float4*       out4 = reinterpret_cast<float4*>(out);\n    for (int i = idx; i < total_vec; i += stride) {\n        float4 v = in4[i];\n        v.x = fminf(v.x, c) - c;\n        v.y = fminf(v.y, c) - c;\n        v.z = fminf(v.z, c) - c;\n        v.w = fminf(v.w, c) - c;\n        out4[i] = v;\n    }\n}\n\n__global__ void min_sub_kernel_scalar(\n    float* __restrict__ out,\n    const float* __restrict__ in,\n    float c,\n    int total)\n{\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n    for (int i = idx; i < total; i += stride) {\n        out[i] = fminf(in[i], c) - c;\n    }\n}\n\ntorch::Tensor min_sub_cuda(torch::Tensor x, double constant)\n{\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n\n    auto out = torch::empty_like(x);\n    float c = static_cast<float>(constant);\n    int total = static_cast<int>(x.numel());\n    int block = 256;\n\n    cudaStream_t stream = c10::cuda::getCurrentCUDAStream();\n\n    if (total % 4 == 0) {\n        int total_vec = total / 4;\n        int grid = min((total_vec + block - 1) / block, 65535);\n        min_sub_kernel_vec<<<grid, block, 0, stream>>>(\n            out.data_ptr<float>(),\n            x.data_ptr<float>(),\n            c, total_vec);\n    } else {\n        int grid = min((total + block - 1) / block, 65535);\n        min_sub_kernel_scalar<<<grid, block, 0, stream>>>(\n            out.data_ptr<float>(),\n            x.data_ptr<float>(),\n            c, total);\n    }\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, applies minimum, and subtracts a constant.\n        \"\"\"\n    def __init__(self, in_features, out_features, constant):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.linear = nn.Linear(in_features, out_features)\n        self.constant = nn.Parameter(torch.tensor(constant))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.linear(x)\n        _c = float(self.constant.detach().cpu())\n        _use_fast = x.is_cuda and x.dtype == torch.float32 and x.is_contiguous()\n        if _use_fast:\n            x = _stark_get_extension().min_sub(x, _c)\n        else:\n            x = torch.min(x, self.constant)\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not _use_fast:\n            x = torch.min(x, self.constant)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _use_fast:\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "phase2_n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Keep the library-backed `nn.Linear` GEMM path and replace only the post-GEMM `min`/subtract sequence with a simple coalesced CUDA epilogue kernel to avoid the slower custom GEMM path seen in phase-1.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the current extension declaration/export with a single CUDA entrypoint for the epilogue only, e.g. declare `torch::Tensor min_sub_cuda(torch::Tensor x, double constant);` and export it as `min_sub` via pybind. Remove the `linear_min_sub_cuda` declaration/export so the extension no longer owns GEMM.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current cuBLAS-based implementation with a minimal CUDA file that defines one exported function `min_sub_cuda(torch::Tensor x, double constant)`. Validate CUDA float32 contiguous 2D input, allocate an output tensor of the same shape, and launch one coalesced grid-stride kernel over the flattened buffer. In the kernel, for each element `v = x[idx]`, write `out[idx] = fminf(v, c) - c`. Do not reference bias, weight, cuBLAS, or alternate aligned/vectorized branches in this mutation; keep the kernel simple and correctness-first.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the current fast-path logic so it computes `x = self.linear(x)` first in all cases. Then, when `x` is CUDA float32 contiguous, call `_stark_get_extension().min_sub(x, float(self.constant.detach().cpu()))`; otherwise fall back to `x = torch.min(x, self.constant); x = x - self.constant`. Ensure the fast path no longer passes `self.linear.weight` or `self.linear.bias` into the extension.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "failed to apply region patch: region 'forward_stmt_2' is not active in current refinement policy"
+      ],
+      "failure_type": "region_apply_failed",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null,
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_n3": {
+      "node_id": "phase2_n3",
+      "parent_id": "phase2_n2",
+      "depth": 7,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p68_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor min_sub_cuda(torch::Tensor x, double constant);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"min_sub\", &min_sub_cuda, \"Fused min + subtract epilogue (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void min_sub_kernel_vec(\n    float* __restrict__ out,\n    const float* __restrict__ in,\n    float c,\n    int total_vec)\n{\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n    const float4* in4  = reinterpret_cast<const float4*>(in);\n    float4*       out4 = reinterpret_cast<float4*>(out);\n    for (int i = idx; i < total_vec; i += stride) {\n        float4 v = in4[i];\n        v.x = fminf(v.x, c) - c;\n        v.y = fminf(v.y, c) - c;\n        v.z = fminf(v.z, c) - c;\n        v.w = fminf(v.w, c) - c;\n        out4[i] = v;\n    }\n}\n\n__global__ void min_sub_kernel_scalar(\n    float* __restrict__ out,\n    const float* __restrict__ in,\n    float c,\n    int total)\n{\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n    for (int i = idx; i < total; i += stride) {\n        out[i] = fminf(in[i], c) - c;\n    }\n}\n\ntorch::Tensor min_sub_cuda(torch::Tensor x, double constant)\n{\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n\n    auto out = torch::empty_like(x);\n    float c = static_cast<float>(constant);\n    int total = static_cast<int>(x.numel());\n    int block = 256;\n\n    cudaStream_t stream = c10::cuda::getCurrentCUDAStream();\n\n    if (total % 4 == 0) {\n        int total_vec = total / 4;\n        int grid = min((total_vec + block - 1) / block, 65535);\n        min_sub_kernel_vec<<<grid, block, 0, stream>>>(\n            out.data_ptr<float>(),\n            x.data_ptr<float>(),\n            c, total_vec);\n    } else {\n        int grid = min((total + block - 1) / block, 65535);\n        min_sub_kernel_scalar<<<grid, block, 0, stream>>>(\n            out.data_ptr<float>(),\n            x.data_ptr<float>(),\n            c, total);\n    }\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, applies minimum, and subtracts a constant.\n        \"\"\"\n    def __init__(self, in_features, out_features, constant):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.linear = nn.Linear(in_features, out_features)\n        self.constant = nn.Parameter(torch.tensor(constant))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.linear(x)\n        _c = float(self.constant.detach().cpu())\n        _use_fast = x.is_cuda and x.dtype == torch.float32 and x.is_contiguous()\n        if _use_fast:\n            x = _stark_get_extension().min_sub(x, _c)\n        else:\n            x = torch.min(x, self.constant)\n            x = x - self.constant\n        return x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not _use_fast:\n            x = torch.min(x, self.constant)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _use_fast:\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "phase2_n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Keep the library-backed `nn.Linear` GEMM path and replace only the post-GEMM `min`/subtract sequence with a simple coalesced CUDA epilogue kernel to avoid the slower custom GEMM path seen in phase-1.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the current extension declaration/export with a single CUDA entrypoint for the epilogue only, e.g. declare `torch::Tensor min_sub_cuda(torch::Tensor x, double constant);` and export it as `min_sub` via pybind. Remove the `linear_min_sub_cuda` declaration/export so the extension no longer owns GEMM.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current cuBLAS-based implementation with a minimal CUDA file that defines one exported function `min_sub_cuda(torch::Tensor x, double constant)`. Validate CUDA float32 contiguous 2D input, allocate an output tensor of the same shape, and launch one coalesced grid-stride kernel over the flattened buffer. In the kernel, for each element `v = x[idx]`, write `out[idx] = fminf(v, c) - c`. Do not reference bias, weight, cuBLAS, or alternate aligned/vectorized branches in this mutation; keep the kernel simple and correctness-first.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the current fast-path logic so it computes `x = self.linear(x)` first in all cases. Then, when `x` is CUDA float32 contiguous, call `_stark_get_extension().min_sub(x, float(self.constant.detach().cpu()))`; otherwise fall back to `x = torch.min(x, self.constant); x = x - self.constant`. Ensure the fast path no longer passes `self.linear.weight` or `self.linear.bias` into the extension.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "normalized_python_region_indent:forward_stmt_1",
+        "applied_region_patch:forward_stmt_1:replace",
+        "runtime_error_name=builtins.RuntimeError",
+        "runtime_error=Error building extension 'stark_cuda_l2_p68_6386779fa1b0': [1/2] /usr/local/cuda-12.8/bin/nvcc --generate-dependencies-with-compile --dependency-output cuda.cuda.o.d -DTORCH_EXTENSION_NAME=stark_cu...",
+        "runtime_error_traceback=ninja: build stopped: subcommand failed.",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=667552",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/23_L2_P68_Auto_P68_20260720_081538/eval_traces/20260720_084148_664454_3a79205a_kernelbench_l2_68_68_matmul_min_subtract",
+        "isolated_worker_stderr_tail=isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include/torch/csrc/api/include -isystem /usr/local/cuda-12.8/include -isystem /data/dyj/miniconda3/envs/stark/include/python3.10 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr -gencode=arch=compute_89,code=compute_89 -gencode=arch=compute_89,code=sm_89 --compiler-options '-fPIC' -O3 --use_fast_math -std=c++17 -c /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_6386779fa1b0/cuda.cu -o cuda.cuda.o \nFAILED: [code=2] cuda.cuda.o \n/usr/local/cuda-12.8/bin/nvcc --generate-dependencies-with-compile --dependency-output cuda.cuda.o.d -DTORCH_EXTENSION_NAME=stark_cuda_l2_p68_6386779fa1b0 -DTORCH_API_INCLUDE_EXTENSION_H -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include/torch/csrc/api/include -isystem /usr/local/cuda-12.8/include -isystem /data/dyj/miniconda3/envs/stark/include/python3.10 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr -gencode=arch=compute_89,code=compute_89 -gencode=arch=compute_89,code=sm_89 --compiler-options '-fPIC' -O3 --use_fast_math -std=c++17 -c /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_6386779fa1b0/cuda.cu -o cuda.cuda.o \n/data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_6386779fa1b0/cuda.cu(53): error: namespace \"c10::cuda\" has no member \"getCurrentCUDAStream\"\n      cudaStream_t stream = c10::cuda::getCurrentCUDAStream();\n                                       ^\n\n1 error detected in the compilation of \"/data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l2_p68_6386779fa1b0/cuda.cu\".\nninja: build stopped: subcommand failed."
+      ],
+      "failure_type": "builtins.RuntimeError",
+      "node_status": "runtime_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "runtime",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "phase2_n4": {
+      "node_id": "phase2_n4",
+      "parent_id": "phase2_root",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p68_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor linear_min_sub_cuda(\n    torch::Tensor input,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    torch::Tensor constant_tensor);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"linear_min_sub\", &linear_min_sub_cuda, \"Linear + min + subtract (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <ATen/cuda/CUDAContext.h>\n\nstatic cublasHandle_t g_cublas_handle = nullptr;\n\nstatic cublasHandle_t get_cublas_handle() {\n    if (g_cublas_handle == nullptr) {\n        cublasCreate(&g_cublas_handle);\n    }\n    return g_cublas_handle;\n}\n\n__global__ void fused_bias_min_sub_kernel(\n    float* __restrict__ out,\n    const float* __restrict__ bias,\n    const float* __restrict__ constant_ptr,\n    int M, int N)\n{\n    float constant = constant_ptr[0];\n    int total = M * N;\n    int vec_total = total / 4;\n    float4* out4 = reinterpret_cast<float4*>(out);\n\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n\n    for (int i = idx; i < vec_total; i += stride) {\n        int base = i * 4;\n        float4 v = out4[i];\n        int col0 = base % N;\n        int col1 = (base + 1) % N;\n        int col2 = (base + 2) % N;\n        int col3 = (base + 3) % N;\n        v.x = fminf(v.x + bias[col0], constant) - constant;\n        v.y = fminf(v.y + bias[col1], constant) - constant;\n        v.z = fminf(v.z + bias[col2], constant) - constant;\n        v.w = fminf(v.w + bias[col3], constant) - constant;\n        out4[i] = v;\n    }\n\n    for (int i = idx + vec_total * 4; i < total; i += stride) {\n        int col = i % N;\n        out[i] = fminf(out[i] + bias[col], constant) - constant;\n    }\n}\n\n__global__ void fused_bias_min_sub_aligned_kernel(\n    float* __restrict__ out,\n    const float* __restrict__ bias,\n    const float* __restrict__ constant_ptr,\n    int M, int N)\n{\n    float constant = constant_ptr[0];\n    int total_vec = M * (N / 4);\n    float4* out4 = reinterpret_cast<float4*>(out);\n    const float4* bias4 = reinterpret_cast<const float4*>(bias);\n\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n\n    for (int i = idx; i < total_vec; i += stride) {\n        int col_vec = i % (N / 4);\n        float4 v = out4[i];\n        float4 b = bias4[col_vec];\n        v.x = fminf(v.x + b.x, constant) - constant;\n        v.y = fminf(v.y + b.y, constant) - constant;\n        v.z = fminf(v.z + b.z, constant) - constant;\n        v.w = fminf(v.w + b.w, constant) - constant;\n        out4[i] = v;\n    }\n}\n\ntorch::Tensor linear_min_sub_cuda(\n    torch::Tensor input,\n    torch::Tensor weight,\n    torch::Tensor bias,\n    torch::Tensor constant_tensor)\n{\n    TORCH_CHECK(input.is_cuda(), \"input must be CUDA tensor\");\n    TORCH_CHECK(weight.is_cuda(), \"weight must be CUDA tensor\");\n    TORCH_CHECK(bias.is_cuda(), \"bias must be CUDA tensor\");\n    TORCH_CHECK(constant_tensor.is_cuda(), \"constant must be CUDA tensor\");\n    TORCH_CHECK(input.dtype() == torch::kFloat32, \"input must be float32\");\n    TORCH_CHECK(weight.dtype() == torch::kFloat32, \"weight must be float32\");\n    TORCH_CHECK(bias.dtype() == torch::kFloat32, \"bias must be float32\");\n    TORCH_CHECK(constant_tensor.dtype() == torch::kFloat32, \"constant must be float32\");\n    TORCH_CHECK(input.is_contiguous(), \"input must be contiguous\");\n    TORCH_CHECK(weight.is_contiguous(), \"weight must be contiguous\");\n    TORCH_CHECK(bias.is_contiguous(), \"bias must be contiguous\");\n    TORCH_CHECK(constant_tensor.is_contiguous(), \"constant must be contiguous\");\n    TORCH_CHECK(constant_tensor.numel() == 1, \"constant must be scalar\");\n\n    int M = input.size(0);\n    int K = input.size(1);\n    int N = weight.size(0);\n\n    auto output = torch::empty({M, N}, input.options());\n\n    cublasHandle_t handle = get_cublas_handle();\n    cudaStream_t stream = at::cuda::getDefaultCUDAStream();\n    cublasSetStream(handle, stream);\n\n    float alpha = 1.0f, beta = 0.0f;\n    cublasGemmEx(\n        handle,\n        CUBLAS_OP_T,\n        CUBLAS_OP_N,\n        N, M, K,\n        &alpha,\n        weight.data_ptr<float>(), CUDA_R_32F, K,\n        input.data_ptr<float>(), CUDA_R_32F, K,\n        &beta,\n        output.data_ptr<float>(), CUDA_R_32F, N,\n        CUBLAS_COMPUTE_32F,\n        CUBLAS_GEMM_DEFAULT\n    );\n\n    const float* constant_ptr = constant_tensor.data_ptr<float>();\n    int total = M * N;\n    int block = 256;\n\n    if (N % 4 == 0) {\n        int vec_total = M * (N / 4);\n        int grid = (vec_total + block - 1) / block;\n        grid = min(grid, 65535);\n        fused_bias_min_sub_aligned_kernel<<<grid, block, 0, stream>>>(\n            output.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            constant_ptr,\n            M, N\n        );\n    } else {\n        int grid = (total / 4 + block - 1) / block;\n        grid = min(grid, 65535);\n        fused_bias_min_sub_kernel<<<grid, block, 0, stream>>>(\n            output.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            constant_ptr,\n            M, N\n        );\n    }\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, applies minimum, and subtracts a constant.\n        \"\"\"\n    def __init__(self, in_features, out_features, constant):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.linear = nn.Linear(in_features, out_features)\n        self.constant = nn.Parameter(torch.tensor(constant))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        _use_fast = (\n            x.is_cuda and\n            x.dtype == torch.float32 and\n            x.is_contiguous() and\n            self.linear.weight.is_cuda and\n            self.linear.weight.dtype == torch.float32 and\n            self.linear.weight.is_contiguous() and\n            self.linear.bias is not None and\n            self.linear.bias.is_cuda and\n            self.linear.bias.is_contiguous() and\n            self.constant.is_cuda and\n            self.constant.dtype == torch.float32 and\n            self.constant.is_contiguous() and\n            self.constant.numel() == 1\n        )\n        if _use_fast:\n            x = _stark_get_extension().linear_min_sub(\n                x,\n                self.linear.weight,\n                self.linear.bias,\n                self.constant\n            )\n        else:\n            x = self.linear(x)\n            x = torch.min(x, self.constant)\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not _use_fast:\n            x = torch.min(x, self.constant)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _use_fast:\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Preserve the working cuBLAS GEMM plus fused epilogue structure, but remove the per-call CPU sync by passing the learned constant as a CUDA tensor argument into the extension and reading it on device inside the epilogue launch.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the exported declaration and pybind binding so `linear_min_sub_cuda` takes four tensors: `input`, `weight`, `bias`, and `constant_tensor` instead of a trailing `double constant`. Keep the exported Python name `linear_min_sub` unchanged.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA wrapper signature to accept `torch::Tensor constant_tensor`. Add CUDA/float32/numel==1 validation for it. In `linear_min_sub_cuda`, obtain `const float* constant_ptr = constant_tensor.data_ptr<float>()` and launch the existing fused epilogue kernels with that pointer instead of a host float value. Update both epilogue kernels to take `const float* constant_ptr`, load `float constant = constant_ptr[0];` once per thread before the loop, and use that value in the existing `fminf(...)-constant` math. Do not change the cuBLAS GEMM path or output allocation.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the fast-path extension call so it passes `self.constant` directly as the fourth argument, and strengthen `_use_fast` to require `self.constant.is_cuda`, `self.constant.dtype == torch.float32`, `self.constant.is_contiguous()`, and `self.constant.numel() == 1`. Remove the `float(self.constant.detach().cpu())` conversion entirely. Keep the existing fallback branch unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00175,
+      "score": 0.00175,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_1:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=667679",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/23_L2_P68_Auto_P68_20260720_081538/eval_traces/20260720_084336_664454_c4ad68b7_kernelbench_l2_68_68_matmul_min_subtract"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00151,
+      "speedup": 0.8628571428571429,
+      "reference_runtimes": {
+        "torch_eager": 0.00151
+      },
+      "speedups": {
+        "torch_eager": 0.8628571428571429
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Replacing `float(self.constant.detach().cpu())` with a device-resident scalar tensor argument removes an implicit host sync and Python-side transfer on every forward, reducing launch overhead enough to improve end-to-end runtime for the small-M workload.",
+      "single_change_focus": "Change the extension API to accept `self.constant` as a CUDA tensor and load its single float on device for the fused epilogue instead of passing a host `double`.",
+      "mutation_family": "device_scalar_plumbing",
+      "target_metric": "speedup"
+    },
+    "phase2_n5": {
+      "node_id": "phase2_n5",
+      "parent_id": "phase2_n3",
+      "depth": 8,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p68_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor min_sub_cuda(torch::Tensor x, double constant);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"min_sub\", &min_sub_cuda, \"Fused min + subtract epilogue (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <c10/cuda/CUDAStream.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__global__ void min_sub_kernel_vec(\n    float* __restrict__ out,\n    const float* __restrict__ in,\n    float c,\n    int total_vec)\n{\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n    const float4* in4  = reinterpret_cast<const float4*>(in);\n    float4* out4 = reinterpret_cast<float4*>(out);\n    for (int i = idx; i < total_vec; i += stride) {\n        float4 v = in4[i];\n        v.x = fminf(v.x, c) - c;\n        v.y = fminf(v.y, c) - c;\n        v.z = fminf(v.z, c) - c;\n        v.w = fminf(v.w, c) - c;\n        out4[i] = v;\n    }\n}\n\n__global__ void min_sub_kernel_scalar(\n    float* __restrict__ out,\n    const float* __restrict__ in,\n    float c,\n    int total)\n{\n    int idx = blockIdx.x * blockDim.x + threadIdx.x;\n    int stride = blockDim.x * gridDim.x;\n    for (int i = idx; i < total; i += stride) {\n        out[i] = fminf(in[i], c) - c;\n    }\n}\n\ntorch::Tensor min_sub_cuda(torch::Tensor x, double constant)\n{\n    TORCH_CHECK(x.is_cuda(), \"x must be a CUDA tensor\");\n    TORCH_CHECK(x.dtype() == torch::kFloat32, \"x must be float32\");\n    TORCH_CHECK(x.is_contiguous(), \"x must be contiguous\");\n\n    auto out = torch::empty_like(x);\n    float c = static_cast<float>(constant);\n    int total = static_cast<int>(x.numel());\n    int block = 256;\n\n    cudaStream_t stream = c10::cuda::getCurrentCUDAStream();\n\n    if (total % 4 == 0) {\n        int total_vec = total / 4;\n        int grid = min((total_vec + block - 1) / block, 65535);\n        min_sub_kernel_vec<<<grid, block, 0, stream>>>(\n            out.data_ptr<float>(),\n            x.data_ptr<float>(),\n            c, total_vec);\n    } else {\n        int grid = min((total + block - 1) / block, 65535);\n        min_sub_kernel_scalar<<<grid, block, 0, stream>>>(\n            out.data_ptr<float>(),\n            x.data_ptr<float>(),\n            c, total);\n    }\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a matrix multiplication, applies minimum, and subtracts a constant.\n        \"\"\"\n    def __init__(self, in_features, out_features, constant):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.linear = nn.Linear(in_features, out_features)\n        self.constant = nn.Parameter(torch.tensor(constant))\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = self.linear(x)\n        _c = float(self.constant.detach().cpu())\n        _use_fast = x.is_cuda and x.dtype == torch.float32 and x.is_contiguous()\n        if _use_fast:\n            x = _stark_get_extension().min_sub(x, _c)\n        else:\n            x = torch.min(x, self.constant)\n            x = x - self.constant\n        return x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not _use_fast:\n            x = torch.min(x, self.constant)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        if not _use_fast:\n            x = x - self.constant\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Keep the library-backed `nn.Linear` GEMM path and replace only the post-GEMM `min`/subtract sequence with a simple coalesced CUDA epilogue kernel to avoid the slower custom GEMM path seen in phase-1.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the current extension declaration/export with a single CUDA entrypoint for the epilogue only, e.g. declare `torch::Tensor min_sub_cuda(torch::Tensor x, double constant);` and export it as `min_sub` via pybind. Remove the `linear_min_sub_cuda` declaration/export so the extension no longer owns GEMM.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current cuBLAS-based implementation with a minimal CUDA file that defines one exported function `min_sub_cuda(torch::Tensor x, double constant)`. Validate CUDA float32 contiguous 2D input, allocate an output tensor of the same shape, and launch one coalesced grid-stride kernel over the flattened buffer. In the kernel, for each element `v = x[idx]`, write `out[idx] = fminf(v, c) - c`. Do not reference bias, weight, cuBLAS, or alternate aligned/vectorized branches in this mutation; keep the kernel simple and correctness-first.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the current fast-path logic so it computes `x = self.linear(x)` first in all cases. Then, when `x` is CUDA float32 contiguous, call `_stark_get_extension().min_sub(x, float(self.constant.detach().cpu()))`; otherwise fall back to `x = torch.min(x, self.constant); x = x - self.constant`. Ensure the fast path no longer passes `self.linear.weight` or `self.linear.bias` into the extension.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0018700000000000001,
+      "score": 0.0018700000000000001,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=667921",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_b_gpu4/23_L2_P68_Auto_P68_20260720_081538/eval_traces/20260720_084617_664454_5342b96e_kernelbench_l2_68_68_matmul_min_subtract"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00151,
+      "speedup": 0.8074866310160428,
+      "reference_runtimes": {
+        "torch_eager": 0.00151
+      },
+      "speedups": {
+        "torch_eager": 0.8074866310160428
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    }
+  }
+}

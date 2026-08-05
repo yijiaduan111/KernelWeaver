@@ -1,0 +1,67 @@
+[KernelWeaver] repo: /data/dyj/KernelWeaver
+[KernelWeaver] command: /data/dyj/miniconda3/envs/stark/bin/python -u stark_cli.py run-kernelbench --experiment main --level 1 --problem-id 1 --backend cuda --output-dir /data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/01_L1_P1_SquareMatmul_P1 --env-file /data/dyj/STARK/.env.server --route-config codeagent_claude --deliberation-config main --max-attempts 10 --verbose
+[KernelWeaver] started_at: 2026-07-07 00:15:51
+[KernelWeaver] CUDA_VISIBLE_DEVICES=0
+[KernelWeaver] CUDALLM_DEVICE=0
+[KernelWeaver] KERNELWEAVER_CONDA_ENV=stark
+[KernelWeaver] KERNELWEAVER_ENV_FILE=/data/dyj/STARK/.env.server
+[KernelWeaver] CUDA_HOME=/usr/local/cuda-12.8
+[KernelWeaver] NVCC_PATH=/usr/local/cuda-12.8/bin/nvcc
+[workflow] root_evaluation_start task=kernelbench_l1_1_1_square_matrix_multiplication
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_1_1_square_matrix_multiplication trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/01_L1_P1_SquareMatmul_P1/eval_traces/20260707_001552_1106189_5040dba7_kernelbench_l1_1_1_square_matrix_multiplication
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_1_1_square_matrix_multiplication
+[workflow] root_evaluation_done status=correct runtime=2410.0 us
+[diagnostics] enabled=True mode=root_ncu_v1 kernel=void Kernel2<cutlass_80_simt_sgemm_256x128_8x4_nn_align1>(Params) raw_metrics=22
+[deliberation] start mode=multi_model_v0 providers=openai-compatible,claude-compatible,gemini-compatible
+[deliberation] phase=propose provider=openai-compatible status=start
+[deliberation] phase=propose provider=claude-compatible status=start
+[deliberation] phase=propose provider=gemini-compatible status=start
+[deliberation] phase=propose provider=gemini-compatible status=ok elapsed=34.541s status=ok strategies=4
+[deliberation] phase=propose provider=openai-compatible status=ok elapsed=37.668s status=ok strategies=4
+[deliberation] phase=propose provider=claude-compatible status=ok elapsed=49.939s status=ok strategies=4
+[deliberation] phase=review provider=openai-compatible status=start
+[deliberation] phase=review provider=claude-compatible status=start
+[deliberation] phase=review provider=gemini-compatible status=start
+[deliberation] phase=review provider=openai-compatible status=ok elapsed=14.129s status=ok scores=10
+[deliberation] phase=review provider=gemini-compatible status=ok elapsed=18.899s status=ok scores=10
+[deliberation] phase=review provider=claude-compatible status=ok elapsed=26.383s status=ok scores=10
+[deliberation] done elapsed=76.358s strategies=10
+task=kernelbench_l1_1_1_square_matrix_multiplication workflow=stark phase1 root status=correct root runtime=2410.0 us
+[phase1 attempt 1] workflow=stark selected=root status=correct reason=exploit_best_score mode=explore
+  -> child=n1 stage=phase1 origin=plan_code status=compile_fail score=n/a strategy=strategy_02
+[phase1 attempt 2] workflow=stark selected=n1 status=compile_fail reason=debug_retry_failure mode=debug
+  -> child=n2 stage=phase1 origin=debug status=compile_fail score=n/a strategy=strategy_02
+[phase1 attempt 3] workflow=stark selected=n2 status=compile_fail reason=debug_retry_failure mode=debug
+  -> child=n3 stage=phase1 origin=debug status=compile_fail score=n/a strategy=strategy_02
+[phase1 attempt 4] workflow=stark selected=root status=correct reason=exploit_best_score mode=explore
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_1_1_square_matrix_multiplication trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/01_L1_P1_SquareMatmul_P1/eval_traces/20260707_002123_1106189_a2e065fa_kernelbench_l1_1_1_square_matrix_multiplication
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_1_1_square_matrix_multiplication
+  -> child=n4 stage=phase1 origin=plan_code status=correct score=2410.0 us strategy=strategy_03
+[phase1 attempt 5] workflow=stark selected=n3 status=compile_fail reason=debug_retry_failure mode=debug
+  -> child=n5 stage=phase1 origin=debug status=compile_fail score=n/a strategy=strategy_02
+task=kernelbench_l1_1_1_square_matrix_multiplication workflow=stark phase2 root status=correct root runtime=2410.0 us
+[phase2 attempt 1] workflow=stark selected=root status=correct reason=exploit_best_score mode=explore
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_1_1_square_matrix_multiplication trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/01_L1_P1_SquareMatmul_P1/eval_traces/20260707_002939_1106189_e6b03133_kernelbench_l1_1_1_square_matrix_multiplication
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_1_1_square_matrix_multiplication
+  -> child=n1 stage=phase2 origin=plan_code status=correct score=1710.0 us strategy=strategy_02
+[phase2 attempt 2] workflow=stark selected=n1 status=correct reason=explore_leaf mode=mutate_champion
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_1_1_square_matrix_multiplication trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/01_L1_P1_SquareMatmul_P1/eval_traces/20260707_003256_1106189_888448ad_kernelbench_l1_1_1_square_matrix_multiplication
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_1_1_square_matrix_multiplication
+  -> child=n2 stage=phase2 origin=plan_code status=correct score=1710.0 us strategy=strategy_08
+[phase2 attempt 3] workflow=stark selected=n2 status=correct reason=explore_leaf mode=mutate_champion
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_1_1_square_matrix_multiplication trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/01_L1_P1_SquareMatmul_P1/eval_traces/20260707_003611_1106189_8a648e51_kernelbench_l1_1_1_square_matrix_multiplication
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_1_1_square_matrix_multiplication
+  -> child=n3 stage=phase2 origin=plan_code status=correct score=1710.0 us strategy=strategy_08
+[phase2 attempt 4] workflow=stark selected=n1 status=correct reason=exploit_best_score mode=mutate_champion
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_1_1_square_matrix_multiplication trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/01_L1_P1_SquareMatmul_P1/eval_traces/20260707_003930_1106189_7d762633_kernelbench_l1_1_1_square_matrix_multiplication
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_1_1_square_matrix_multiplication
+  -> child=n4 stage=phase2 origin=plan_code status=correct score=1710.0 us strategy=strategy_08
+[phase2 attempt 5] workflow=stark selected=n3 status=correct reason=explore_leaf mode=mutate_champion
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_1_1_square_matrix_multiplication trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/01_L1_P1_SquareMatmul_P1/eval_traces/20260707_004247_1106189_306f2dac_kernelbench_l1_1_1_square_matrix_multiplication
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_1_1_square_matrix_multiplication
+  -> child=n5 stage=phase2 origin=plan_code status=correct score=1710.0 us strategy=strategy_08
+saved=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/01_L1_P1_SquareMatmul_P1/run.json
+workflow=stark task=kernelbench_l1_1_1_square_matrix_multiplication best_node=phase2_n1 status=correct
+run_profile=main search=main evaluator=main measurement=main
+deliberation=main strategies=10 enabled=True
+best_runtime=1710.0 us reference_runtime=2410.0 us speedup=1.409x

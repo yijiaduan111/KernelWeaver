@@ -1,0 +1,1499 @@
+{
+  "task_name": "kernelbench_l1_97_97_scaleddotproductattention",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": true,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_claude",
+    "plan_provider": "openai-compatible",
+    "code_provider": "claude-compatible",
+    "debug_provider": "openai-compatible",
+    "search_provider": "claude-compatible",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1,
+    "evaluator_isolation": "candidate_subprocess",
+    "evaluator_timeout_seconds": 900
+  },
+  "best_node_id": "n7",
+  "leaderboard": [
+    "n7",
+    "n4"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "n2",
+      "root"
+    ],
+    [
+      "n2",
+      "n3"
+    ],
+    [
+      "n4",
+      "n2"
+    ],
+    [
+      "n4",
+      "n6"
+    ],
+    [
+      "n7",
+      "n4"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "n2",
+    "n3",
+    "n5",
+    "n4",
+    "n7",
+    "n6",
+    "n7"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "debug_retry_failure",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {
+      "n1": "compile_failure_debug_throttled"
+    },
+    {
+      "n1": "compile_failure_debug_throttled"
+    },
+    {
+      "n1": "compile_failure_debug_throttled"
+    },
+    {
+      "n1": "compile_failure_debug_throttled"
+    },
+    {
+      "n1": "compile_failure_debug_throttled"
+    },
+    {
+      "n1": "compile_failure_debug_throttled"
+    },
+    {
+      "n1": "compile_failure_debug_throttled"
+    },
+    {
+      "n1": "compile_failure_debug_throttled"
+    }
+  ],
+  "pruned_nodes": {},
+  "debug_stats": {
+    "total_attempts": 1,
+    "per_node": {
+      "n1": 1
+    }
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 9,
+    "debug_attempts": 1,
+    "failure_counts": {
+      "python_region_syntax_error": 1
+    },
+    "failure_stage_counts": {
+      "compile": 1
+    },
+    "invalid_proposals": 0,
+    "pruned_count": 0
+  },
+  "benchmark_family": "kernelbench",
+  "level": 1,
+  "problem_id": 97,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level1/97_ScaledDotProductAttention.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.048600000000000004
+  },
+  "speedups": {
+    "torch_eager": 1.7933579335793357
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "attention",
+    "summary": "Attention computation; preserve Q/K/V, scaling, masks, and softmax semantics.",
+    "source": "KernelBench/KernelBench/level1/97_ScaledDotProductAttention.py",
+    "exact_facts": null,
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "cuda_cu",
+      "cuda_cpp",
+      "user_helpers"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "attention",
+        "source_excerpt": "out = torch.nn.functional.scaled_dot_product_attention(Q, K, V)",
+        "op_names": [
+          "_scaleddotproductattention",
+          "functional",
+          "k",
+          "kernelbench",
+          "level1",
+          "nn",
+          "out",
+          "py",
+          "q",
+          "return",
+          "scaled_dot_product_attention",
+          "scaleddotproductattention"
+        ],
+        "optimization_intents": [
+          "preserve_qkv_and_softmax_order",
+          "fuse_attention_steps_when_safe"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "preserve Q/K/V order, scaling, mask, and softmax axis",
+          "watch numerical stability"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "attention",
+        "source_excerpt": "return out",
+        "op_names": [
+          "_scaleddotproductattention",
+          "functional",
+          "k",
+          "kernelbench",
+          "level1",
+          "nn",
+          "out",
+          "py",
+          "q",
+          "return",
+          "scaled_dot_product_attention",
+          "scaleddotproductattention"
+        ],
+        "optimization_intents": [
+          "preserve_qkv_and_softmax_order",
+          "fuse_attention_steps_when_safe"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "preserve Q/K/V order, scaling, mask, and softmax axis",
+          "watch numerical stability"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "cuda_cpp",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+        "op_names": [
+          "add",
+          "cuda",
+          "custom",
+          "entrypoints",
+          "exports",
+          "extension",
+          "for",
+          "h",
+          "here",
+          "include",
+          "m",
+          "pybind"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      },
+      {
+        "anchor_name": "cuda_cu",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+        "op_names": [
+          "add",
+          "and",
+          "cuda",
+          "cuda_runtime",
+          "exported",
+          "extension",
+          "functions",
+          "h",
+          "here",
+          "include",
+          "kernels",
+          "torch"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      },
+      {
+        "anchor_name": "init_body",
+        "region_role": "init",
+        "semantic_type": "state_initialization",
+        "source_excerpt": "",
+        "op_names": [],
+        "optimization_intents": [
+          "inspect_source_before_editing"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 2
+      },
+      {
+        "anchor_name": "user_helpers",
+        "region_role": "helper",
+        "semantic_type": "helper_region",
+        "source_excerpt": "",
+        "op_names": [],
+        "optimization_intents": [
+          "inspect_source_before_editing"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 2
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "preserve_qkv_and_softmax_order",
+        "summary": "preserve qkv and softmax order",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "cuda_cu",
+          "cuda_cpp",
+          "user_helpers"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve Q/K/V order, scaling, mask, and softmax axis",
+          "watch numerical stability"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "fuse_attention_steps_when_safe",
+        "summary": "fuse attention steps when safe",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "cuda_cu",
+          "cuda_cpp",
+          "user_helpers"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve Q/K/V order, scaling, mask, and softmax axis",
+          "watch numerical stability"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve Q/K/V order, scaling, mask, and softmax axis",
+      "watch numerical stability"
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_01",
+        "intent": "fuse_attention_steps_when_safe",
+        "summary": "Implement a custom CUDA scaled-dot-product attention path that fuses QK^T, scaling, row-wise softmax, and AV into a tiled kernel to reduce global-memory traffic and avoid materializing the full attention matrix.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1"
+        ],
+        "implementation_hints": [
+          "Add a CUDA entrypoint in cuda_cpp/cuda_cu and switch the forward call site to it while keeping ModelNew I/O unchanged.",
+          "Use block tiling over sequence dimensions and head/value tiles so each CTA computes partial score tiles, applies scaling immediately, performs online or two-pass row-wise softmax, and accumulates output against V.",
+          "Keep mask/softmax axis semantics identical to torch.nn.functional.scaled_dot_product_attention even if the current benchmark path is unmasked.",
+          "Accumulate reductions in higher precision than storage where practical to protect softmax stability for float32 inputs and future mixed-precision reuse."
+        ],
+        "expected_gain": "High, especially from eliminating the explicit [B,H,L,L] score tensor and reducing DRAM bandwidth pressure on long sequence length 512.",
+        "risk_notes": [
+          "Preserve Q/K/V order, scaling, mask behavior, and softmax axis exactly.",
+          "Numerical drift can appear if using aggressive fusion or fast-math intrinsics around exp/reduction.",
+          "Register/shared-memory pressure may reduce occupancy if tile sizes are chosen too aggressively."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 5.0,
+          "claude-compatible": 5.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "Highest upside if implemented well: full fused SDPA removes the O(L^2) score materialization and directly targets the main bottleneck. Risk is real due to softmax/mask semantics and register/shared-memory pressure, but the potential benchmark value is large enough to justify it.",
+          "claude-compatible": "Full FlashAttention-style fused kernel eliminating the O(N^2) score tensor is the highest-value approach for L=512, D=1024. Tiled QK^T + online softmax + AV accumulation in one kernel dramatically cuts DRAM traffic. Well-scoped to the right anchors. Risk is implementation complexity and register/smem pressure at D=1024, but the expected gain is the highest of any strategy here.",
+          "gemini-compatible": "Implementing a fused FlashAttention-style kernel is the optimal approach for scaled dot-product attention, significantly reducing memory bandwidth by avoiding the materialization of the O(N^2) attention matrix."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_02",
+        "intent": "fuse_attention_steps_when_safe",
+        "summary": "Implement FlashAttention-style tiling with online softmax to fuse QK^T, softmax, and output computation.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1"
+        ],
+        "implementation_hints": [
+          "Tile the sequence length dimension (e.g., Br=16, Bc=16) to avoid materializing the full N x N attention matrix.",
+          "Maintain running maximums and sums for the online softmax computation.",
+          "Scale the QK^T dot products by 1/sqrt(head_dim) before updating the softmax statistics."
+        ],
+        "expected_gain": "Significant reduction in global memory traffic and memory footprint, avoiding O(N^2) memory complexity.",
+        "risk_notes": [
+          "Numerical stability of online softmax requires careful implementation.",
+          "High register pressure due to large head_dim (1024)."
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 5.0,
+          "openai-compatible": 4.0,
+          "claude-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "Conceptually strong and aligned with the right optimization pattern, but risk-adjusted value is slightly lower than strategy_01 because the FlashAttention-style description is high level and the very large head_dim=1024 makes implementation pressure much higher.",
+          "claude-compatible": "Essentially the same FlashAttention tiling approach as strategy_01 but from a different model. Br=16, Bc=16 tile sizes are conservative and safe for D=1024. Online softmax with running max/sum is the correct algorithm. The head_dim=1024 register pressure concern is real and worth flagging, but this is the right architectural direction. Scores equally high.",
+          "gemini-compatible": "FlashAttention with online softmax is the standard state-of-the-art optimization for this operation. Tiling the sequence length is essential."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "fuse_attention_steps_when_safe",
+        "summary": "Optimize the CUDA kernel around memory hierarchy: stage K/V tiles in shared memory, stream Q fragments through registers, and use warp-level reductions for the softmax statistics and output accumulation.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Treat the head dimension 1024 as a reduction axis amenable to vectorized loads and warp-partitioned dot products, with cooperative loading into shared memory for K/V tiles.",
+          "Use warp shuffles or cooperative reductions for per-row max and sum computations to minimize shared-memory synchronization overhead.",
+          "Consider double-buffered tile staging so global-memory fetch of the next K/V tile overlaps with arithmetic on the current tile.",
+          "Tune tile sizes for the benchmark’s L=512, D=1024 regime rather than for full generality first."
+        ],
+        "expected_gain": "Medium to high; improves arithmetic intensity and reduces synchronization and memory latency in the fused kernel.",
+        "risk_notes": [
+          "Shared-memory bank conflicts and register pressure can offset gains if tile shapes are poorly chosen.",
+          "Vectorization requires alignment and contiguous last-dimension assumptions.",
+          "Backend flags include --use_fast_math; verify it does not destabilize the softmax reduction path beyond tolerance."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 4.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "Good kernel-level guidance once a fused kernel exists. Shared-memory staging, warp reductions, and double-buffering are relevant for this workload, though they are secondary tuning steps rather than a complete strategy on their own. Solid but implementation-sensitive.",
+          "claude-compatible": "Memory hierarchy optimization: shared memory staging for K/V, register streaming for Q, warp-level reductions, double-buffering. These are important micro-optimizations that complement the tiling strategies. Particularly relevant for D=1024 where vectorized loads and warp shuffles for softmax stats can meaningfully reduce latency. Good risk-adjusted value as an enhancement layer on top of strategy_01/02.",
+          "gemini-compatible": "Excellent low-level implementation details for the fused kernel. Using warp-level reductions and staging tiles in shared memory are critical for achieving high performance."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "preserve_qkv_and_softmax_order",
+        "summary": "Add shape/dtype/layout-aware dispatch so the custom CUDA kernel is only used on the dominant benchmark case, with fallback to the native PyTorch path for unsupported layouts or edge cases.",
+        "target_anchors": [
+          "forward_stmt_1",
+          "user_helpers",
+          "cuda_cpp"
+        ],
+        "implementation_hints": [
+          "In user_helpers, centralize checks for device, dtype, dimensionality, contiguity/stride assumptions, and sequence/head dimensions before calling the extension.",
+          "Restrict the fast path initially to CUDA float32 tensors matching the benchmark’s dense non-broadcasted Q/K/V shape profile; otherwise preserve the existing functional call.",
+          "Expose minimal metadata validation in the C++ entrypoint as a second line of defense before launching CUDA.",
+          "Keep the forward-site swap small and reversible: choose extension path only when all semantic and layout preconditions hold."
+        ],
+        "expected_gain": "Medium overall; avoids slowdown/regressions from forcing a custom kernel onto unsupported or poorly aligned cases, while preserving benchmark wins on the hot path.",
+        "risk_notes": [
+          "Overly strict guards can reduce fast-path hit rate.",
+          "Stride/layout assumptions must be audited carefully because benchmark tensors may be contiguous but future variants may not be.",
+          "Fallback must remain semantically identical to avoid silent behavior changes."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 5.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Very strong risk-adjusted value. Guarded dispatch and fallback logic are highly useful when introducing a custom CUDA path for attention, helping preserve semantics and avoid regressions on unsupported layouts or dtypes. Low cost, high practical value.",
+          "claude-compatible": "Dispatch/guard layer strategy. Useful for robustness and avoiding regressions but provides no direct speedup on its own. Valuable as a companion to strategies 01/02/03 to protect correctness. Standalone score is limited since it adds overhead without kernel improvement. Worth implementing alongside a fast-path kernel.",
+          "gemini-compatible": "Adding dispatch guards is good engineering practice for safety, but does not provide direct performance gains for the kernel itself."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_07",
+        "intent": "optimize_shared_memory_usage",
+        "summary": "Use shared memory caching with block-level matrix multiplication to handle the large head dimension (1024).",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Since head_dim=1024 is large, a full sequence block might exceed shared memory capacity.",
+          "Implement an inner loop over the head_dim to compute QK^T dot products in chunks, loading sub-tiles of Q and K into shared memory.",
+          "Similarly, loop over head_dim when computing the final attention output with V."
+        ],
+        "expected_gain": "Allows the kernel to run within shared memory limits while maximizing data reuse.",
+        "risk_notes": [
+          "Complex synchronization and indexing logic.",
+          "Potential shared memory bank conflicts if padding is not applied."
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 4.0,
+          "openai-compatible": 3.0,
+          "claude-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Reasonable supporting tactic for handling the large head dimension within shared-memory limits. Useful as an implementation detail, but broad and somewhat generic; by itself it does not guarantee strong gains beyond what a better overall fused design would already require.",
+          "claude-compatible": "Addresses the critical constraint that D=1024 is too large to fit full tiles in shared memory. Chunked inner-loop over head_dim for QK^T and AV is the correct approach for this problem size. Practical and necessary for any custom kernel targeting this benchmark. Slightly lower score than strategy_01/02 because it's a component technique rather than a complete solution.",
+          "gemini-compatible": "Addressing the large head dimension (1024) is a crucial practical consideration, as it will likely require inner-loop tiling to fit within shared memory limits."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "accelerate_reductions",
+        "summary": "Utilize warp-level primitives for fast softmax reductions.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Use `__shfl_down_sync` to perform fast parallel reductions (max and sum) across threads within a warp.",
+          "Assign one warp per sequence row (or multiple rows if Br > warps_per_block) to compute the softmax statistics efficiently without shared memory bottlenecks."
+        ],
+        "expected_gain": "Lower latency for the reduction steps of the online softmax compared to shared memory reductions.",
+        "risk_notes": [
+          "Requires careful handling of thread indexing and warp divergence.",
+          "Assumes block dimensions are multiples of the warp size (32)."
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 4.0,
+          "openai-compatible": 3.0,
+          "claude-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Warp-level softmax reductions are a sensible micro-optimization, but the total value is modest unless integrated carefully into a larger fused kernel. Helpful, though not a primary strategy and somewhat sensitive to row/tile mapping.",
+          "claude-compatible": "Warp-level primitives (__shfl_down_sync) for softmax max/sum reductions are a well-established optimization that reduces shared memory pressure and synchronization overhead. One warp per row is a natural fit for L=512 rows. Clean, targeted, and composable with other strategies. Risk is low given standard CUDA warp primitives.",
+          "gemini-compatible": "Using warp-level primitives (`__shfl_down_sync`) for the online softmax reductions is highly recommended to minimize latency and shared memory synchronization overhead."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_09",
+        "intent": "vectorize_memory_operations",
+        "summary": "Optimize global memory bandwidth using vectorized loads and stores.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Cast pointers to `float4` to load and store 128 bits per thread.",
+          "Ensure that the inner dimensions (head_dim=1024) are accessed contiguously by threads in a warp to achieve fully coalesced memory transactions."
+        ],
+        "expected_gain": "Higher global memory throughput, reducing the memory bound nature of the attention computation.",
+        "risk_notes": [
+          "Alignment issues if tensor pointers or dimensions are not multiples of 4 (though 1024 is safe).",
+          "Increases register usage per thread."
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 4.0,
+          "openai-compatible": 3.0,
+          "claude-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Vectorized memory ops can improve throughput given aligned contiguous inner dimensions, but this is an incremental optimization and can raise register pressure. Worth considering after the main fused algorithm is working, not as a leading optimization bet.",
+          "claude-compatible": "float4 vectorized loads for D=1024 (divisible by 4) is straightforward and effective for improving memory throughput. Coalesced access along the head dimension is achievable with correct thread layout. Low risk given alignment guarantees. Incremental but reliable gain, especially for the memory-bound portions of the kernel.",
+          "gemini-compatible": "Vectorized memory accesses (e.g., `float4`) are a standard and highly effective way to maximize global memory bandwidth utilization."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_03",
+        "intent": "Fuse scale and softmax into a single custom CUDA kernel to reduce memory bandwidth",
+        "summary": "Keep the QK^T and attention*V matmuls using PyTorch's optimized torch.matmul, but replace the separate scale and softmax operations with a single fused CUDA kernel that reads the attention logits once, computes numerically stable softmax with scaling, and writes normalized weights. This reduces HBM round-trips for the 1024x512x512 intermediate tensor.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Write a CUDA kernel scaled_softmax_kernel that takes the [1024,512,512] attention logit tensor, applies scale=1/32.0, computes row-wise softmax in a single pass using shared memory for max and sum",
+          "Each thread block handles one row (512 elements) of the attention matrix; use 512 threads per block",
+          "Use two-pass or online (Welford-style) algorithm: first pass finds max, second pass computes exp and sum, third normalizes - or use online single-pass",
+          "Export this kernel via cuda_cpp pybind11 binding",
+          "In forward_stmt_1: compute scores = torch.bmm(Q.view(1024,512,1024), K.view(1024,512,1024).transpose(1,2)); call custom scaled_softmax; compute out = torch.bmm(attn, V.view(1024,512,1024))",
+          "Use __shared__ float smem[512] for the row reduction",
+          "Consider using warp shuffle intrinsics (__shfl_down_sync) for the reduction steps"
+        ],
+        "expected_gain": "1.3x-2x speedup from fused scale+softmax reducing memory bandwidth by 2x for the softmax step; avoids separate scale kernel launch",
+        "risk_notes": [
+          "Row size of 512 fits well in shared memory and warp reductions",
+          "Must maintain numerical stability with proper max subtraction before exp",
+          "The matmul steps still dominate compute; softmax fusion gives moderate gains"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Moderate, safer optimization: fusing scale+softmax can help bandwidth, but it still leaves both matmuls untouched, so total gain may be limited if GEMMs dominate. Useful fallback if full fusion is too risky, but not the best primary bet.",
+          "claude-compatible": "Partial fusion: keeps matmuls in PyTorch but fuses scale+softmax into a custom kernel. Pragmatic and lower-risk than full FlashAttention. For a 1024x512x512 intermediate tensor, fusing scale+softmax does save meaningful bandwidth. However, the intermediate score tensor is still materialized, so memory savings are partial. 512 threads/block for 512-wide rows is a clean fit. Moderate gain, moderate risk — a reasonable fallback if full fusion is too complex.",
+          "gemini-compatible": "Partial fusion (keeping matmuls separate and only fusing scale+softmax) leaves a lot of performance on the table compared to full FlashAttention, as it still materializes the O(N^2) intermediate tensor."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_10",
+        "intent": "preserve_qkv_and_softmax_order",
+        "summary": "Minimize Python/C++ overhead and launch inefficiencies by exporting a single purpose-built attention entrypoint and keeping tensor preparation outside the kernel hot path.",
+        "target_anchors": [
+          "cuda_cpp",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "user_helpers"
+        ],
+        "implementation_hints": [
+          "Expose one pybind entrypoint specialized for this attention op instead of composing multiple exported helpers.",
+          "Avoid extra tensor allocations, transposes, or temporary outputs in the Python forward path; pass Q/K/V directly to the extension when preconditions are met.",
+          "Place any one-time extension lookup or helper caching in user_helpers so forward executes the smallest possible dispatch logic.",
+          "Return the final output tensor directly from the extension path so forward_stmt_2 remains a simple return."
+        ],
+        "expected_gain": "Low to medium; especially helpful when isolating benchmarked kernel time from framework overhead and preventing avoidable tensor movement.",
+        "risk_notes": [
+          "Pure dispatch optimizations will not matter if kernel execution dominates completely.",
+          "Do not hide implicit layout conversions in helpers, as those can erase kernel gains.",
+          "C++ binding signatures must match PyTorch tensor ownership/lifetime expectations."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Good practical value. Consolidating to a single purpose-built entrypoint and minimizing Python-side overhead helps preserve end-to-end gains and keeps the forward path clean. Not transformative alone, but low risk and complementary to the main CUDA work.",
+          "claude-compatible": "Dispatch overhead minimization and single-entrypoint design. Useful engineering hygiene but unlikely to move the needle on benchmark performance when kernel execution dominates. The advice to avoid extra allocations/transposes in the Python path is sound but the expected gain is low. Best treated as a code quality concern rather than a performance strategy.",
+          "gemini-compatible": "Minimizing framework overhead is helpful, but for large attention computations, the execution time will be heavily dominated by the GPU kernel itself, making this a minor optimization."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_05",
+        "intent": "Use Flash Attention via cuDNN/CUDNN backend through PyTorch's scaled_dot_product_attention with explicit backend selection",
+        "summary": "Force PyTorch's scaled_dot_product_attention to use the FlashAttention kernel by setting the sdp_kernel context manager with flash_sdp enabled and math_sdp disabled. This leverages highly optimized fused attention kernels that avoid materializing the full attention matrix, reducing memory bandwidth pressure significantly for the large input tensors (32x32x512x1024).",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Wrap the scaled_dot_product_attention call with torch.backends.cuda.sdp_kernel(enable_flash=True, enable_math=False, enable_mem_efficient=False)",
+          "Ensure Q, K, V are in float16 or bfloat16 for FlashAttention compatibility; if inputs are float32, cast to bfloat16 before attention and cast back",
+          "The head_dim is 1024 which may exceed FlashAttention's limit (128); if so, fall back to mem_efficient_sdp",
+          "Keep ModelNew I/O unchanged - same Q, K, V inputs and same output tensor",
+          "Try enable_mem_efficient=True as fallback if flash fails due to head_dim constraint"
+        ],
+        "expected_gain": "2x-4x speedup from fused attention avoiding O(N^2) memory materialization; memory bandwidth reduction from HBM access patterns",
+        "risk_notes": [
+          "FlashAttention has head_dim <= 128 constraint; with head_dim=1024 this will likely fall back",
+          "Dtype casting from float32 to bfloat16 introduces small numerical differences",
+          "Must verify correctness against baseline float32 output"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 2.0,
+          "openai-compatible": 1.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Low value for this benchmark shape. FlashAttention backends generally do not support head_dim=1024 in the intended fast path, and casting float32 to bf16/fp16 changes numerics. Likely to fall back or fail to deliver the claimed benefit.",
+          "claude-compatible": "Attempting to use torch's sdp_kernel with flash_sdp is a good idea in principle, but head_dim=1024 almost certainly exceeds FlashAttention's 128-dim limit, making this strategy likely to fall back or fail. The dtype cast to bfloat16 introduces numerical risk. Low confidence in achieving the stated 2-4x gain given the architectural constraint. Not recommended as primary strategy.",
+          "gemini-compatible": "Relying on PyTorch's built-in `sdp_kernel` context manager bypasses the requirement of KernelBench Level 1, which is to implement a custom CUDA kernel. While fast, it defeats the purpose of the benchmark."
+        },
+        "priority": 4
+      }
+    ],
+    "proposal_errors": {},
+    "review_errors": {}
+  },
+  "feedback_state": {
+    "strategy_summaries": [
+      {
+        "strategy_name": "strategy_06",
+        "total_attempts": 7,
+        "compile_success": 7,
+        "correct_success": 7,
+        "best_speedup": 2.175182481751825,
+        "avg_delta_vs_parent": 0.05785139181902691,
+        "dominant_failure_type": null
+      },
+      {
+        "strategy_name": "strategy_01",
+        "total_attempts": 2,
+        "compile_success": 1,
+        "correct_success": 1,
+        "best_speedup": 1.7700729927007302,
+        "avg_delta_vs_parent": null,
+        "dominant_failure_type": "python_region_syntax_error"
+      },
+      {
+        "strategy_name": "strategy_08",
+        "total_attempts": 1,
+        "compile_success": 1,
+        "correct_success": 1,
+        "best_speedup": 1.7664233576642336,
+        "avg_delta_vs_parent": -0.0036496350364965124,
+        "dominant_failure_type": null
+      }
+    ],
+    "total_attempts": 10,
+    "compile_rate": 0.9,
+    "correct_rate": 0.9,
+    "best_speedup": 2.175182481751825,
+    "best_strategy_name": "strategy_06",
+    "recent_failure_types": [
+      "python_region_syntax_error"
+    ],
+    "recent_attempts": [
+      {
+        "attempt_id": "n3",
+        "parent_id": "n2",
+        "strategy_name": "strategy_08",
+        "anchor_names": [
+          "cuda_cu"
+        ],
+        "origin": "plan_code",
+        "compile_ok": true,
+        "correct": true,
+        "speedup": 1.7664233576642336,
+        "failure_stage": null,
+        "failure_type": null,
+        "parent_speedup": 1.7700729927007302,
+        "node_status": "correct"
+      },
+      {
+        "attempt_id": "n4",
+        "parent_id": "n2",
+        "strategy_name": "strategy_06",
+        "anchor_names": [
+          "cuda_cu"
+        ],
+        "origin": "plan_code",
+        "compile_ok": true,
+        "correct": true,
+        "speedup": 1.7830882352941178,
+        "failure_stage": null,
+        "failure_type": null,
+        "parent_speedup": 1.7700729927007302,
+        "node_status": "correct"
+      },
+      {
+        "attempt_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_06",
+        "anchor_names": [
+          "cuda_cu"
+        ],
+        "origin": "plan_code",
+        "compile_ok": true,
+        "correct": true,
+        "speedup": 1.7636363636363637,
+        "failure_stage": null,
+        "failure_type": null,
+        "parent_speedup": 1.7664233576642336,
+        "node_status": "correct"
+      },
+      {
+        "attempt_id": "n6",
+        "parent_id": "n5",
+        "strategy_name": "strategy_06",
+        "anchor_names": [
+          "cuda_cu"
+        ],
+        "origin": "plan_code",
+        "compile_ok": true,
+        "correct": true,
+        "speedup": 1.7765567765567765,
+        "failure_stage": null,
+        "failure_type": null,
+        "parent_speedup": 1.7636363636363637,
+        "node_status": "correct"
+      },
+      {
+        "attempt_id": "n7",
+        "parent_id": "n4",
+        "strategy_name": "strategy_06",
+        "anchor_names": [
+          "cuda_cu"
+        ],
+        "origin": "plan_code",
+        "compile_ok": true,
+        "correct": true,
+        "speedup": 1.7933579335793357,
+        "failure_stage": null,
+        "failure_type": null,
+        "parent_speedup": 1.7830882352941178,
+        "node_status": "correct"
+      },
+      {
+        "attempt_id": "n8",
+        "parent_id": "n7",
+        "strategy_name": "strategy_06",
+        "anchor_names": [
+          "cuda_cu"
+        ],
+        "origin": "plan_code",
+        "compile_ok": true,
+        "correct": true,
+        "speedup": 2.175182481751825,
+        "failure_stage": null,
+        "failure_type": null,
+        "parent_speedup": 1.7933579335793357,
+        "node_status": "correct"
+      },
+      {
+        "attempt_id": "n9",
+        "parent_id": "n6",
+        "strategy_name": "strategy_06",
+        "anchor_names": [
+          "cuda_cu"
+        ],
+        "origin": "plan_code",
+        "compile_ok": true,
+        "correct": true,
+        "speedup": 1.7794117647058825,
+        "failure_stage": null,
+        "failure_type": null,
+        "parent_speedup": 1.7765567765567765,
+        "node_status": "correct"
+      },
+      {
+        "attempt_id": "n10",
+        "parent_id": "n7",
+        "strategy_name": "strategy_06",
+        "anchor_names": [
+          "cuda_cu"
+        ],
+        "origin": "plan_code",
+        "compile_ok": true,
+        "correct": true,
+        "speedup": 1.7802197802197803,
+        "failure_stage": null,
+        "failure_type": null,
+        "parent_speedup": 1.7933579335793357,
+        "node_status": "correct"
+      }
+    ],
+    "phase": "refinement"
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "user_helpers",
+      "region_role": "helper",
+      "start_line": 36,
+      "end_line": 37,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 40,
+      "end_line": 45,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 49,
+      "end_line": 55,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 61,
+      "end_line": 62,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 65,
+      "end_line": 69,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\nout = torch.nn.functional.scaled_dot_product_attention(Q, K, V)",
+      "source_hash": "86d8b2e27b02"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 70,
+      "end_line": 72,
+      "source_excerpt": "return out",
+      "source_hash": "117e5db24e38"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p97_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, Q: torch.Tensor, K: torch.Tensor, V: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        out = torch.nn.functional.scaled_dot_product_attention(Q, K, V)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return out\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0484,
+      "score": 0.0484,
+      "logs": [
+        "isolated_evaluator=candidate_subprocess"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.048600000000000004,
+      "speedup": 1.0041322314049588,
+      "reference_runtimes": {
+        "torch_eager": 0.048600000000000004
+      },
+      "speedups": {
+        "torch_eager": 1.0041322314049588
+      },
+      "primary_reference": "torch_eager"
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p97_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v);\n\ntorch::Tensor sdpa_forward(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    TORCH_CHECK(q.is_cuda() && k.is_cuda() && v.is_cuda(), \"All tensors must be CUDA\");\n    TORCH_CHECK(q.scalar_type() == torch::kFloat32, \"Only float32 supported\");\n    TORCH_CHECK(q.dim() == 4 && k.dim() == 4 && v.dim() == 4, \"Expected 4D tensors\");\n    TORCH_CHECK(q.sizes() == k.sizes() && q.sizes() == v.sizes(), \"Q, K, V must have same shape\");\n    TORCH_CHECK(q.is_contiguous() && k.is_contiguous() && v.is_contiguous(), \"Tensors must be contiguous\");\n    return sdpa_forward_cuda(q, k, v);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"sdpa_forward\", &sdpa_forward, \"Fused Scaled Dot-Product Attention\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Fused scaled softmax kernel: operates on scores [BH, L, L]\n// Each block handles one row of the attention matrix\n// scale is applied before softmax\n__global__ void scaled_softmax_kernel(\n    float* __restrict__ scores,  // [BH, L, L]\n    int L,\n    float scale\n) {\n    // blockIdx.x = row index in [BH * L]\n    int row = blockIdx.x;\n    int bh = row / L;\n    int qi = row % L;\n\n    float* row_ptr = scores + (long)bh * L * L + (long)qi * L;\n\n    int tid = threadIdx.x;\n    int block_size = blockDim.x;\n\n    // Step 1: find max with scale applied\n    float local_max = -1e38f;\n    for (int j = tid; j < L; j += block_size) {\n        float val = row_ptr[j] * scale;\n        if (val > local_max) local_max = val;\n    }\n\n    // Warp reduce max\n    __shared__ float smem[32];\n    int lane = tid & 31;\n    int warp = tid >> 5;\n\n    // Warp-level reduce\n    for (int offset = 16; offset > 0; offset >>= 1)\n        local_max = fmaxf(local_max, __shfl_down_sync(0xffffffff, local_max, offset));\n\n    if (lane == 0) smem[warp] = local_max;\n    __syncthreads();\n\n    int num_warps = (block_size + 31) / 32;\n    if (warp == 0) {\n        float val = (lane < num_warps) ? smem[lane] : -1e38f;\n        for (int offset = 16; offset > 0; offset >>= 1)\n            val = fmaxf(val, __shfl_down_sync(0xffffffff, val, offset));\n        if (lane == 0) smem[0] = val;\n    }\n    __syncthreads();\n    float row_max = smem[0];\n\n    // Step 2: compute exp(x - max) and sum\n    float local_sum = 0.0f;\n    for (int j = tid; j < L; j += block_size) {\n        float val = __expf(row_ptr[j] * scale - row_max);\n        row_ptr[j] = val;\n        local_sum += val;\n    }\n\n    // Warp reduce sum\n    for (int offset = 16; offset > 0; offset >>= 1)\n        local_sum += __shfl_down_sync(0xffffffff, local_sum, offset);\n\n    if (lane == 0) smem[warp] = local_sum;\n    __syncthreads();\n\n    if (warp == 0) {\n        float val = (lane < num_warps) ? smem[lane] : 0.0f;\n        for (int offset = 16; offset > 0; offset >>= 1)\n            val += __shfl_down_sync(0xffffffff, val, offset);\n        if (lane == 0) smem[0] = val;\n    }\n    __syncthreads();\n    float row_sum = smem[0];\n\n    // Step 3: normalize\n    float inv_sum = 1.0f / row_sum;\n    for (int j = tid; j < L; j += block_size) {\n        row_ptr[j] *= inv_sum;\n    }\n}\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    int B = q.size(0);\n    int H = q.size(1);\n    int L = q.size(2);\n    int D = q.size(3);\n    int BH = B * H;\n\n    float scale = 1.0f / sqrtf((float)D);\n\n    // Reshape to [BH, L, D] for batched matmul\n    auto q3 = q.view({BH, L, D});\n    auto k3 = k.view({BH, L, D});\n    auto v3 = v.view({BH, L, D});\n\n    // scores = Q @ K^T: [BH, L, L]\n    auto scores = torch::bmm(q3, k3.transpose(1, 2));\n\n    // Fused scale + softmax\n    int threads = 256;\n    int blocks = BH * L;\n    scaled_softmax_kernel<<<blocks, threads>>>(\n        scores.data_ptr<float>(),\n        L,\n        scale\n    );\n\n    // out = scores @ V: [BH, L, D]\n    auto out3 = torch::bmm(scores, v3);\n\n    return out3.view({B, H, L, D});\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, Q: torch.Tensor, K: torch.Tensor, V: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (Q.is_cuda && Q.scalar_type() == torch::kFloat32 &&\n            Q.dim() == 4 && K.dim() == 4 && V.dim() == 4 &&\n            Q.sizes() == K.sizes() && Q.sizes() == V.sizes() &&\n            Q.is_contiguous() && K.is_contiguous() && V.is_contiguous()):\n            out = _stark_get_extension().sdpa_forward(Q, K, V)\n        else:\n            out = torch.nn.functional.scaled_dot_product_attention(Q, K, V)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return out\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Implement a custom CUDA scaled-dot-product attention entrypoint that fuses score computation, scaling, row-wise softmax, and value accumulation for the benchmark’s 4D Q/K/V tensors, while keeping a strict fallback to PyTorch for unsupported cases.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a pybind-exported C++ interface declaring a CUDA function `torch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v);`, plus a small wrapper `torch::Tensor sdpa_forward(torch::Tensor q, torch::Tensor k, torch::Tensor v)` that checks all tensors are CUDA, float32, 4D, same shape, and contiguous, then forwards to `sdpa_forward_cuda`. Export only `sdpa_forward` in `PYBIND11_MODULE` under that exact name.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with the CUDA implementation of `sdpa_forward_cuda`. Implement a benchmark-oriented fused kernel specialized to contiguous float32 tensors shaped [B,H,L,D]: flatten batch and head into `BH = B*H`, launch work over rows of Q (sequence positions), compute tiled dot-products against all K positions with scale `1.0f / sqrtf(D)`, maintain per-row running max and running sum for numerically stable softmax, and accumulate the final weighted sum over V without writing the full score matrix to global memory. Use a two-level loop over key tiles and head-dim chunks so D=1024 is reduced in chunks rather than requiring the full vector in shared memory. Allocate the output tensor in the wrapper with `torch::zeros_like(q)` and write results as [B,H,L,D]. Keep implementation limited to the no-mask, no-dropout semantics of `torch.nn.functional.scaled_dot_product_attention(Q,K,V)` used by this benchmark.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the baseline call with a guarded fast path: if Q, K, and V are CUDA float32 tensors, all 4D, contiguous, and have identical shape, call `_stark_get_extension().sdpa_forward(Q, K, V)`; otherwise fall back to `torch.nn.functional.scaled_dot_product_attention(Q, K, V)`. Keep the ModelNew interface unchanged and assign the result to `out`.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": false,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "autofix_tensor_property_call",
+        "applied_region_patch:forward_stmt_1:replace",
+        "invalid syntax (line 186, column 24)"
+      ],
+      "failure_type": "python_region_syntax_error",
+      "node_status": "compile_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "compile",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": null
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p97_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v);\n\ntorch::Tensor sdpa_forward(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    TORCH_CHECK(q.is_cuda() && k.is_cuda() && v.is_cuda(), \"All tensors must be CUDA\");\n    TORCH_CHECK(q.scalar_type() == torch::kFloat32, \"Only float32 supported\");\n    TORCH_CHECK(q.dim() == 4 && k.dim() == 4 && v.dim() == 4, \"Expected 4D tensors\");\n    TORCH_CHECK(q.sizes() == k.sizes() && q.sizes() == v.sizes(), \"Q, K, V must have same shape\");\n    TORCH_CHECK(q.is_contiguous() && k.is_contiguous() && v.is_contiguous(), \"Tensors must be contiguous\");\n    return sdpa_forward_cuda(q, k, v);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"sdpa_forward\", &sdpa_forward, \"Fused Scaled Dot-Product Attention\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Fused scaled softmax kernel: operates on scores [BH, L, L]\n// Each block handles one row of the attention matrix\n// scale is applied before softmax\n__global__ void scaled_softmax_kernel(\n    float* __restrict__ scores,  // [BH, L, L]\n    int L,\n    float scale\n) {\n    // blockIdx.x = row index in [BH * L]\n    int row = blockIdx.x;\n    int bh = row / L;\n    int qi = row % L;\n\n    float* row_ptr = scores + (long)bh * L * L + (long)qi * L;\n\n    int tid = threadIdx.x;\n    int block_size = blockDim.x;\n\n    // Step 1: find max with scale applied\n    float local_max = -1e38f;\n    for (int j = tid; j < L; j += block_size) {\n        float val = row_ptr[j] * scale;\n        if (val > local_max) local_max = val;\n    }\n\n    // Warp reduce max\n    __shared__ float smem[32];\n    int lane = tid & 31;\n    int warp = tid >> 5;\n\n    // Warp-level reduce\n    for (int offset = 16; offset > 0; offset >>= 1)\n        local_max = fmaxf(local_max, __shfl_down_sync(0xffffffff, local_max, offset));\n\n    if (lane == 0) smem[warp] = local_max;\n    __syncthreads();\n\n    int num_warps = (block_size + 31) / 32;\n    if (warp == 0) {\n        float val = (lane < num_warps) ? smem[lane] : -1e38f;\n        for (int offset = 16; offset > 0; offset >>= 1)\n            val = fmaxf(val, __shfl_down_sync(0xffffffff, val, offset));\n        if (lane == 0) smem[0] = val;\n    }\n    __syncthreads();\n    float row_max = smem[0];\n\n    // Step 2: compute exp(x - max) and sum\n    float local_sum = 0.0f;\n    for (int j = tid; j < L; j += block_size) {\n        float val = __expf(row_ptr[j] * scale - row_max);\n        row_ptr[j] = val;\n        local_sum += val;\n    }\n\n    // Warp reduce sum\n    for (int offset = 16; offset > 0; offset >>= 1)\n        local_sum += __shfl_down_sync(0xffffffff, local_sum, offset);\n\n    if (lane == 0) smem[warp] = local_sum;\n    __syncthreads();\n\n    if (warp == 0) {\n        float val = (lane < num_warps) ? smem[lane] : 0.0f;\n        for (int offset = 16; offset > 0; offset >>= 1)\n            val += __shfl_down_sync(0xffffffff, val, offset);\n        if (lane == 0) smem[0] = val;\n    }\n    __syncthreads();\n    float row_sum = smem[0];\n\n    // Step 3: normalize\n    float inv_sum = 1.0f / row_sum;\n    for (int j = tid; j < L; j += block_size) {\n        row_ptr[j] *= inv_sum;\n    }\n}\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    int B = q.size(0);\n    int H = q.size(1);\n    int L = q.size(2);\n    int D = q.size(3);\n    int BH = B * H;\n\n    float scale = 1.0f / sqrtf((float)D);\n\n    // Reshape to [BH, L, D] for batched matmul\n    auto q3 = q.view({BH, L, D});\n    auto k3 = k.view({BH, L, D});\n    auto v3 = v.view({BH, L, D});\n\n    // scores = Q @ K^T: [BH, L, L]\n    auto scores = torch::bmm(q3, k3.transpose(1, 2));\n\n    // Fused scale + softmax\n    int threads = 256;\n    int blocks = BH * L;\n    scaled_softmax_kernel<<<blocks, threads>>>(\n        scores.data_ptr<float>(),\n        L,\n        scale\n    );\n\n    // out = scores @ V: [BH, L, D]\n    auto out3 = torch::bmm(scores, v3);\n\n    return out3.view({B, H, L, D});\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, Q: torch.Tensor, K: torch.Tensor, V: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (\n            Q.is_cuda and K.is_cuda and V.is_cuda and\n            Q.dtype == torch.float32 and K.dtype == torch.float32 and V.dtype == torch.float32 and\n            Q.dim() == 4 and K.dim() == 4 and V.dim() == 4 and\n            Q.shape == K.shape and Q.shape == V.shape and\n            Q.is_contiguous() and K.is_contiguous() and V.is_contiguous()\n        ):\n            out = _stark_get_extension().sdpa_forward(Q, K, V)\n        else:\n            out = torch.nn.functional.scaled_dot_product_attention(Q, K, V)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return out\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "n3",
+        "n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Implement a custom CUDA scaled-dot-product attention entrypoint that fuses score computation, scaling, row-wise softmax, and value accumulation for the benchmark’s 4D Q/K/V tensors, while keeping a strict fallback to PyTorch for unsupported cases.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a pybind-exported C++ interface declaring a CUDA function `torch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v);`, plus a small wrapper `torch::Tensor sdpa_forward(torch::Tensor q, torch::Tensor k, torch::Tensor v)` that checks all tensors are CUDA, float32, 4D, same shape, and contiguous, then forwards to `sdpa_forward_cuda`. Export only `sdpa_forward` in `PYBIND11_MODULE` under that exact name.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with the CUDA implementation of `sdpa_forward_cuda`. Implement a benchmark-oriented fused kernel specialized to contiguous float32 tensors shaped [B,H,L,D]: flatten batch and head into `BH = B*H`, launch work over rows of Q (sequence positions), compute tiled dot-products against all K positions with scale `1.0f / sqrtf(D)`, maintain per-row running max and running sum for numerically stable softmax, and accumulate the final weighted sum over V without writing the full score matrix to global memory. Use a two-level loop over key tiles and head-dim chunks so D=1024 is reduced in chunks rather than requiring the full vector in shared memory. Allocate the output tensor in the wrapper with `torch::zeros_like(q)` and write results as [B,H,L,D]. Keep implementation limited to the no-mask, no-dropout semantics of `torch.nn.functional.scaled_dot_product_attention(Q,K,V)` used by this benchmark.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the baseline call with a guarded fast path: if Q, K, and V are CUDA float32 tensors, all 4D, contiguous, and have identical shape, call `_stark_get_extension().sdpa_forward(Q, K, V)`; otherwise fall back to `torch.nn.functional.scaled_dot_product_attention(Q, K, V)`. Keep the ModelNew interface unchanged and assign the result to `out`.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.027399999999999997,
+      "score": 0.027399999999999997,
+      "logs": [
+        "applied_region_patch:forward_stmt_1:replace",
+        "isolated_evaluator=candidate_subprocess"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0485,
+      "speedup": 1.7700729927007302,
+      "reference_runtimes": {
+        "torch_eager": 0.0485
+      },
+      "speedups": {
+        "torch_eager": 1.7700729927007302
+      },
+      "primary_reference": "torch_eager"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p97_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v);\n\ntorch::Tensor sdpa_forward(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    TORCH_CHECK(q.is_cuda() && k.is_cuda() && v.is_cuda(), \"All tensors must be CUDA\");\n    TORCH_CHECK(q.scalar_type() == torch::kFloat32, \"Only float32 supported\");\n    TORCH_CHECK(q.dim() == 4 && k.dim() == 4 && v.dim() == 4, \"Expected 4D tensors\");\n    TORCH_CHECK(q.sizes() == k.sizes() && q.sizes() == v.sizes(), \"Q, K, V must have same shape\");\n    TORCH_CHECK(q.is_contiguous() && k.is_contiguous() && v.is_contiguous(), \"Tensors must be contiguous\");\n    return sdpa_forward_cuda(q, k, v);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"sdpa_forward\", &sdpa_forward, \"Fused Scaled Dot-Product Attention\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n// Specialized kernel for L==512: one block per row, 512 threads\n// Each thread owns exactly one score element\n__global__ void scaled_softmax_512_kernel(\n    float* __restrict__ scores,  // [BH, L, L]\n    int L,\n    float scale\n) {\n    int row = blockIdx.x;  // row in [BH * L]\n    int bh = row / L;\n    int qi = row % L;\n    float* row_ptr = scores + (long)bh * L * L + (long)qi * L;\n\n    int tid = threadIdx.x;  // tid in [0, 512)\n\n    // Load and scale\n    float val = row_ptr[tid] * scale;\n\n    // Warp-level max reduction\n    float warp_max = val;\n    for (int offset = 16; offset > 0; offset >>= 1)\n        warp_max = fmaxf(warp_max, __shfl_down_sync(0xffffffff, warp_max, offset));\n\n    // 512 threads = 16 warps\n    __shared__ float smem_max[16];\n    int lane = tid & 31;\n    int warp = tid >> 5;\n    if (lane == 0) smem_max[warp] = warp_max;\n    __syncthreads();\n\n    float row_max;\n    if (warp == 0) {\n        float v = (lane < 16) ? smem_max[lane] : -1e38f;\n        for (int offset = 8; offset > 0; offset >>= 1)\n            v = fmaxf(v, __shfl_down_sync(0xffffffff, v, offset));\n        if (lane == 0) smem_max[0] = v;\n    }\n    __syncthreads();\n    row_max = smem_max[0];\n\n    // Compute exp\n    float e = __expf(val - row_max);\n\n    // Warp-level sum reduction\n    float warp_sum = e;\n    for (int offset = 16; offset > 0; offset >>= 1)\n        warp_sum += __shfl_down_sync(0xffffffff, warp_sum, offset);\n\n    __shared__ float smem_sum[16];\n    if (lane == 0) smem_sum[warp] = warp_sum;\n    __syncthreads();\n\n    float row_sum;\n    if (warp == 0) {\n        float v = (lane < 16) ? smem_sum[lane] : 0.0f;\n        for (int offset = 8; offset > 0; offset >>= 1)\n            v += __shfl_down_sync(0xffffffff, v, offset);\n        if (lane == 0) smem_sum[0] = v;\n    }\n    __syncthreads();\n    row_sum = smem_sum[0];\n\n    row_ptr[tid] = e / row_sum;\n}\n\n// Generic kernel: one block per row, variable threads\n__global__ void scaled_softmax_generic_kernel(\n    float* __restrict__ scores,\n    int L,\n    float scale\n) {\n    int row = blockIdx.x;\n    int bh = row / L;\n    int qi = row % L;\n    float* row_ptr = scores + (long)bh * L * L + (long)qi * L;\n\n    int tid = threadIdx.x;\n    int block_size = blockDim.x;\n\n    float local_max = -1e38f;\n    for (int j = tid; j < L; j += block_size) {\n        float v = row_ptr[j] * scale;\n        if (v > local_max) local_max = v;\n    }\n\n    __shared__ float smem[32];\n    int lane = tid & 31;\n    int warp = tid >> 5;\n    int num_warps = (block_size + 31) / 32;\n\n    for (int offset = 16; offset > 0; offset >>= 1)\n        local_max = fmaxf(local_max, __shfl_down_sync(0xffffffff, local_max, offset));\n    if (lane == 0) smem[warp] = local_max;\n    __syncthreads();\n    if (warp == 0) {\n        float v = (lane < num_warps) ? smem[lane] : -1e38f;\n        for (int offset = 16; offset > 0; offset >>= 1)\n            v = fmaxf(v, __shfl_down_sync(0xffffffff, v, offset));\n        if (lane == 0) smem[0] = v;\n    }\n    __syncthreads();\n    float row_max = smem[0];\n\n    float local_sum = 0.0f;\n    for (int j = tid; j < L; j += block_size) {\n        float e = __expf(row_ptr[j] * scale - row_max);\n        row_ptr[j] = e;\n        local_sum += e;\n    }\n\n    for (int offset = 16; offset > 0; offset >>= 1)\n        local_sum += __shfl_down_sync(0xffffffff, local_sum, offset);\n    if (lane == 0) smem[warp] = local_sum;\n    __syncthreads();\n    if (warp == 0) {\n        float v = (lane < num_warps) ? smem[lane] : 0.0f;\n        for (int offset = 16; offset > 0; offset >>= 1)\n            v += __shfl_down_sync(0xffffffff, v, offset);\n        if (lane == 0) smem[0] = v;\n    }\n    __syncthreads();\n    float row_sum = smem[0];\n\n    float inv_sum = 1.0f / row_sum;\n    for (int j = tid; j < L; j += block_size)\n        row_ptr[j] *= inv_sum;\n}\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    int B = q.size(0);\n    int H = q.size(1);\n    int L = q.size(2);\n    int D = q.size(3);\n    int BH = B * H;\n\n    float scale = 1.0f / sqrtf((float)D);\n\n    auto q3 = q.view({BH, L, D});\n    auto k3 = k.view({BH, L, D});\n    auto v3 = v.view({BH, L, D});\n\n    auto scores = torch::bmm(q3, k3.transpose(1, 2));\n\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n    int blocks = BH * L;\n\n    if (L == 512) {\n        scaled_softmax_512_kernel<<<blocks, 512, 0, stream>>>(\n            scores.data_ptr<float>(), L, scale);\n    } else {\n        int threads = (L <= 256) ? 256 : 512;\n        scaled_softmax_generic_kernel<<<blocks, threads, 0, stream>>>(\n            scores.data_ptr<float>(), L, scale);\n    }\n    AT_CUDA_CHECK(cudaGetLastError());\n\n    auto out3 = torch::bmm(scores, v3);\n    return out3.view({B, H, L, D});\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, Q: torch.Tensor, K: torch.Tensor, V: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (\n            Q.is_cuda and K.is_cuda and V.is_cuda and\n            Q.dtype == torch.float32 and K.dtype == torch.float32 and V.dtype == torch.float32 and\n            Q.dim() == 4 and K.dim() == 4 and V.dim() == 4 and\n            Q.shape == K.shape and Q.shape == V.shape and\n            Q.is_contiguous() and K.is_contiguous() and V.is_contiguous()\n        ):\n            out = _stark_get_extension().sdpa_forward(Q, K, V)\n        else:\n            out = torch.nn.functional.scaled_dot_product_attention(Q, K, V)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return out\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_08",
+      "plan_summary": "Refine the existing custom attention path by specializing the softmax kernel’s row reductions for the benchmark’s fixed L=512 case, using warp-level primitives and a one-row-per-block layout to cut loop overhead and shared-memory traffic while preserving the current QK^T -> scale -> softmax -> AV structure.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA helper region with a benchmark-specialized implementation of sdpa_forward_cuda that keeps the existing torch::bmm score/output matmuls but rewrites the softmax stage as follows: (1) add a specialized kernel for the common L==512 case where each block handles exactly one attention row and launches 512 threads so each thread owns one score element; load scores[row,col], multiply by scale once, perform warp-level max reduction, then block-level max reduction through shared memory, compute exp(score-row_max), perform warp/block sum reduction, and normalize in-place; (2) keep a small generic fallback kernel for non-512 sequence lengths using the current strided loop pattern; (3) in sdpa_forward_cuda, dispatch to the specialized 512-thread kernel when L==512, otherwise use the generic kernel; (4) launch on at::cuda::getDefaultCUDAStream() or the current PyTorch CUDA stream and add C10_CUDA_KERNEL_LAUNCH_CHECK or cudaGetLastError-based checking after the kernel launch; (5) keep inputs/outputs as float32 contiguous [B,H,L,D] tensors, with q/k/v viewed to [BH,L,D], scores computed by torch::bmm(q3, k3.transpose(1,2)), in-place softmax applied to scores, and output computed by torch::bmm(scores, v3) before reshaping back to [B,H,L,D].",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.027399999999999997,
+      "score": 0.027399999999999997,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0484,
+      "speedup": 1.7664233576642336,
+      "reference_runtimes": {
+        "torch_eager": 0.0484
+      },
+      "speedups": {
+        "torch_eager": 1.7664233576642336
+      },
+      "primary_reference": "torch_eager"
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p97_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v);\n\ntorch::Tensor sdpa_forward(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    TORCH_CHECK(q.is_cuda() && k.is_cuda() && v.is_cuda(), \"All tensors must be CUDA\");\n    TORCH_CHECK(q.scalar_type() == torch::kFloat32, \"Only float32 supported\");\n    TORCH_CHECK(q.dim() == 4 && k.dim() == 4 && v.dim() == 4, \"Expected 4D tensors\");\n    TORCH_CHECK(q.sizes() == k.sizes() && q.sizes() == v.sizes(), \"Q, K, V must have same shape\");\n    TORCH_CHECK(q.is_contiguous() && k.is_contiguous() && v.is_contiguous(), \"Tensors must be contiguous\");\n    return sdpa_forward_cuda(q, k, v);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"sdpa_forward\", &sdpa_forward, \"Fused Scaled Dot-Product Attention\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <c10/cuda/CUDAException.h>\n\n// Warp-level max reduction\n__device__ __forceinline__ float warp_reduce_max(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val = fmaxf(val, __shfl_down_sync(0xffffffff, val, offset));\n    return val;\n}\n\n// Warp-level sum reduction\n__device__ __forceinline__ float warp_reduce_sum(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val += __shfl_down_sync(0xffffffff, val, offset);\n    return val;\n}\n\n// Specialized kernel for L=512: one block per row, 512 threads\n// Each thread handles exactly one column element\n__global__ void scaled_softmax_512_kernel(\n    const float* __restrict__ in_scores,\n    float* __restrict__ out_scores,\n    float scale,\n    int L  // =512\n) {\n    // blockIdx.x = row index in [BH * L]\n    int row = blockIdx.x;\n    int tid = threadIdx.x;  // 0..511\n\n    const float* row_in  = in_scores  + (long)row * L;\n    float*       row_out = out_scores + (long)row * L;\n\n    // Each thread loads one element\n    float val = row_in[tid] * scale;\n\n    // Block-wide max reduction via warp reductions + shared memory\n    __shared__ float smem[16];  // one slot per warp (512/32 = 16 warps)\n    int lane = tid & 31;\n    int warp = tid >> 5;\n\n    float wmax = warp_reduce_max(val);\n    if (lane == 0) smem[warp] = wmax;\n    __syncthreads();\n\n    // Final reduce across 16 warps using first warp\n    float row_max;\n    if (warp == 0) {\n        float w = smem[lane];  // lane < 16\n        // reduce 16 values: first 16 lanes of warp 0\n        w = fmaxf(w, __shfl_down_sync(0x0000ffff, w, 8));\n        w = fmaxf(w, __shfl_down_sync(0x0000ffff, w, 4));\n        w = fmaxf(w, __shfl_down_sync(0x0000ffff, w, 2));\n        w = fmaxf(w, __shfl_down_sync(0x0000ffff, w, 1));\n        if (lane == 0) smem[0] = w;\n    }\n    __syncthreads();\n    row_max = smem[0];\n\n    // Compute exp\n    float e = __expf(val - row_max);\n\n    // Block-wide sum reduction\n    float wsum = warp_reduce_sum(e);\n    if (lane == 0) smem[warp] = wsum;\n    __syncthreads();\n\n    float row_sum;\n    if (warp == 0) {\n        float w = smem[lane];\n        w += __shfl_down_sync(0x0000ffff, w, 8);\n        w += __shfl_down_sync(0x0000ffff, w, 4);\n        w += __shfl_down_sync(0x0000ffff, w, 2);\n        w += __shfl_down_sync(0x0000ffff, w, 1);\n        if (lane == 0) smem[0] = w;\n    }\n    __syncthreads();\n    row_sum = smem[0];\n\n    row_out[tid] = e / row_sum;\n}\n\n// Generic scaled softmax kernel for arbitrary L\n__global__ void scaled_softmax_generic_kernel(\n    float* __restrict__ scores,\n    int L,\n    float scale\n) {\n    int row = blockIdx.x;\n    float* row_ptr = scores + (long)row * L;\n    int tid = threadIdx.x;\n    int block_size = blockDim.x;\n\n    float local_max = -1e38f;\n    for (int j = tid; j < L; j += block_size) {\n        float v = row_ptr[j] * scale;\n        if (v > local_max) local_max = v;\n    }\n\n    __shared__ float smem[32];\n    int lane = tid & 31;\n    int warp = tid >> 5;\n    int num_warps = (block_size + 31) / 32;\n\n    local_max = warp_reduce_max(local_max);\n    if (lane == 0) smem[warp] = local_max;\n    __syncthreads();\n    if (warp == 0) {\n        float v = (lane < num_warps) ? smem[lane] : -1e38f;\n        v = warp_reduce_max(v);\n        if (lane == 0) smem[0] = v;\n    }\n    __syncthreads();\n    float row_max = smem[0];\n\n    float local_sum = 0.0f;\n    for (int j = tid; j < L; j += block_size) {\n        float v = __expf(row_ptr[j] * scale - row_max);\n        row_ptr[j] = v;\n        local_sum += v;\n    }\n\n    local_sum = warp_reduce_sum(local_sum);\n    if (lane == 0) smem[warp] = local_sum;\n    __syncthreads();\n    if (warp == 0) {\n        float v = (lane < num_warps) ? smem[lane] : 0.0f;\n        v = warp_reduce_sum(v);\n        if (lane == 0) smem[0] = v;\n    }\n    __syncthreads();\n    float row_sum = smem[0];\n\n    float inv_sum = 1.0f / row_sum;\n    for (int j = tid; j < L; j += block_size)\n        row_ptr[j] *= inv_sum;\n}\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    int B = q.size(0);\n    int H = q.size(1);\n    int L = q.size(2);\n    int D = q.size(3);\n    int BH = B * H;\n\n    float scale = 1.0f / sqrtf((float)D);\n\n    auto q3 = q.view({BH, L, D});\n    auto k3 = k.view({BH, L, D});\n    auto v3 = v.view({BH, L, D});\n\n    // scores = Q @ K^T: [BH, L, L]\n    auto scores = torch::bmm(q3, k3.transpose(1, 2));\n\n    torch::Tensor attn;\n    if (L == 512) {\n        attn = torch::empty_like(scores);\n        int blocks = BH * L;\n        scaled_softmax_512_kernel<<<blocks, 512>>>(\n            scores.data_ptr<float>(),\n            attn.data_ptr<float>(),\n            scale,\n            L\n        );\n        C10_CUDA_KERNEL_LAUNCH_CHECK();\n    } else {\n        // Generic path: in-place\n        int threads = 256;\n        int blocks = BH * L;\n        scaled_softmax_generic_kernel<<<blocks, threads>>>(\n            scores.data_ptr<float>(),\n            L,\n            scale\n        );\n        C10_CUDA_KERNEL_LAUNCH_CHECK();\n        attn = scores;\n    }\n\n    auto out3 = torch::bmm(attn, v3);\n    return out3.view({B, H, L, D});\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, Q: torch.Tensor, K: torch.Tensor, V: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (\n            Q.is_cuda and K.is_cuda and V.is_cuda and\n            Q.dtype == torch.float32 and K.dtype == torch.float32 and V.dtype == torch.float32 and\n            Q.dim() == 4 and K.dim() == 4 and V.dim() == 4 and\n            Q.shape == K.shape and Q.shape == V.shape and\n            Q.is_contiguous() and K.is_contiguous() and V.is_contiguous()\n        ):\n            out = _stark_get_extension().sdpa_forward(Q, K, V)\n        else:\n            out = torch.nn.functional.scaled_dot_product_attention(Q, K, V)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return out\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n7"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Refine the existing custom CUDA path by specializing the softmax kernel for the benchmark’s dominant shape (L=512, D=1024): keep the current torch::bmm-based QK^T and AV structure, but replace the generic row softmax with a shape-tuned kernel that uses one block per row, 512 threads, warp-level reductions, and no inner strided loop for the common case.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current CUDA source with a refined implementation that keeps the exported function name `sdpa_forward_cuda` unchanged but specializes the softmax stage for `L == 512`. In the new code: (1) keep the includes and torch::bmm-based score/output computation structure; (2) add a small `__device__ __forceinline__` warp reduction helper for max and sum using `__shfl_down_sync`; (3) implement a dedicated kernel `scaled_softmax_512_kernel(const float* in_scores, float* out_scores, float scale)` where each block handles exactly one attention row, uses 512 threads, treats threadIdx.x as the column index 0..511, loads one scaled logit per thread, performs block-wide max reduction across 16 warps via shared memory, computes `expf(x-max)`, performs block-wide sum reduction, and writes the normalized probability to `out_scores`; (4) in `sdpa_forward_cuda`, after `scores = torch::bmm(q3, k3.transpose(1, 2))`, allocate `auto attn = torch::empty_like(scores)` and launch `scaled_softmax_512_kernel<<<BH * L, 512>>>(scores.data_ptr<float>(), attn.data_ptr<float>(), scale)` when `L == 512`; (5) for all other `L`, keep a simple generic softmax kernel path or fallback that preserves the current semantics; (6) compute `auto out3 = torch::bmm(attn, v3)` for the specialized path; (7) add `C10_CUDA_KERNEL_LAUNCH_CHECK();` after the kernel launch; (8) do not edit Python anchors or the C++ binding signature.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0272,
+      "score": 0.0272,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_stderr_tail=\u001b[92m13:32:02 - LiteLLM:WARNING\u001b[0m: get_model_cost_map.py:271 - LiteLLM: Failed to fetch remote model cost map from https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json: The read operation timed out. Falling back to local backup."
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0485,
+      "speedup": 1.7830882352941178,
+      "reference_runtimes": {
+        "torch_eager": 0.0485
+      },
+      "speedups": {
+        "torch_eager": 1.7830882352941178
+      },
+      "primary_reference": "torch_eager"
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p97_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v);\n\ntorch::Tensor sdpa_forward(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    TORCH_CHECK(q.is_cuda() && k.is_cuda() && v.is_cuda(), \"All tensors must be CUDA\");\n    TORCH_CHECK(q.scalar_type() == torch::kFloat32, \"Only float32 supported\");\n    TORCH_CHECK(q.dim() == 4 && k.dim() == 4 && v.dim() == 4, \"Expected 4D tensors\");\n    TORCH_CHECK(q.sizes() == k.sizes() && q.sizes() == v.sizes(), \"Q, K, V must have same shape\");\n    TORCH_CHECK(q.is_contiguous() && k.is_contiguous() && v.is_contiguous(), \"Tensors must be contiguous\");\n    return sdpa_forward_cuda(q, k, v);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"sdpa_forward\", &sdpa_forward, \"Fused Scaled Dot-Product Attention\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n// Specialized kernel for L==512: one block per row, 256 threads\n// Each thread owns exactly two score elements (tid and tid+256)\n__global__ void scaled_softmax_512_kernel(\n    float* __restrict__ scores,\n    int L,\n    float scale\n) {\n    int row = blockIdx.x;\n    int bh = row / L;\n    int qi = row % L;\n    float* row_ptr = scores + (long)bh * L * L + (long)qi * L;\n\n    int tid = threadIdx.x;  // tid in [0, 256)\n\n    // Load and scale two elements\n    float v0 = row_ptr[tid]       * scale;\n    float v1 = row_ptr[tid + 256] * scale;\n\n    // Per-thread max\n    float thread_max = fmaxf(v0, v1);\n\n    // Warp-level max reduction (8 warps of 32 threads)\n    float warp_max = thread_max;\n    for (int offset = 16; offset > 0; offset >>= 1)\n        warp_max = fmaxf(warp_max, __shfl_down_sync(0xffffffff, warp_max, offset));\n\n    __shared__ float smem_max[8];\n    int lane = tid & 31;\n    int warp = tid >> 5;\n    if (lane == 0) smem_max[warp] = warp_max;\n    __syncthreads();\n\n    float row_max;\n    if (warp == 0) {\n        float v = (lane < 8) ? smem_max[lane] : -1e38f;\n        for (int offset = 4; offset > 0; offset >>= 1)\n            v = fmaxf(v, __shfl_down_sync(0xffffffff, v, offset));\n        if (lane == 0) smem_max[0] = v;\n    }\n    __syncthreads();\n    row_max = smem_max[0];\n\n    // Compute exp for both elements\n    float e0 = __expf(v0 - row_max);\n    float e1 = __expf(v1 - row_max);\n\n    // Per-thread sum\n    float thread_sum = e0 + e1;\n\n    // Warp-level sum reduction\n    float warp_sum = thread_sum;\n    for (int offset = 16; offset > 0; offset >>= 1)\n        warp_sum += __shfl_down_sync(0xffffffff, warp_sum, offset);\n\n    __shared__ float smem_sum[8];\n    if (lane == 0) smem_sum[warp] = warp_sum;\n    __syncthreads();\n\n    float row_sum;\n    if (warp == 0) {\n        float v = (lane < 8) ? smem_sum[lane] : 0.0f;\n        for (int offset = 4; offset > 0; offset >>= 1)\n            v += __shfl_down_sync(0xffffffff, v, offset);\n        if (lane == 0) smem_sum[0] = v;\n    }\n    __syncthreads();\n    row_sum = smem_sum[0];\n\n    float inv_sum = 1.0f / row_sum;\n    row_ptr[tid]       = e0 * inv_sum;\n    row_ptr[tid + 256] = e1 * inv_sum;\n}\n\n// Generic kernel: one block per row, variable threads, strided loop\n__global__ void scaled_softmax_generic_kernel(\n    float* __restrict__ scores,\n    int L,\n    float scale\n) {\n    int row = blockIdx.x;\n    int bh = row / L;\n    int qi = row % L;\n    float* row_ptr = scores + (long)bh * L * L + (long)qi * L;\n\n    int tid = threadIdx.x;\n    int block_size = blockDim.x;\n    int num_warps = (block_size + 31) / 32;\n    int lane = tid & 31;\n    int warp = tid >> 5;\n\n    __shared__ float smem[32];\n\n    // Pass 1: find max\n    float local_max = -1e38f;\n    for (int j = tid; j < L; j += block_size) {\n        float v = row_ptr[j] * scale;\n        local_max = fmaxf(local_max, v);\n    }\n\n    for (int offset = 16; offset > 0; offset >>= 1)\n        local_max = fmaxf(local_max, __shfl_down_sync(0xffffffff, local_max, offset));\n    if (lane == 0) smem[warp] = local_max;\n    __syncthreads();\n    if (warp == 0) {\n        float v = (lane < num_warps) ? smem[lane] : -1e38f;\n        for (int offset = 16; offset > 0; offset >>= 1)\n            v = fmaxf(v, __shfl_down_sync(0xffffffff, v, offset));\n        if (lane == 0) smem[0] = v;\n    }\n    __syncthreads();\n    float row_max = smem[0];\n\n    // Pass 2: compute exp and sum\n    float local_sum = 0.0f;\n    for (int j = tid; j < L; j += block_size) {\n        float e = __expf(row_ptr[j] * scale - row_max);\n        row_ptr[j] = e;\n        local_sum += e;\n    }\n\n    for (int offset = 16; offset > 0; offset >>= 1)\n        local_sum += __shfl_down_sync(0xffffffff, local_sum, offset);\n    if (lane == 0) smem[warp] = local_sum;\n    __syncthreads();\n    if (warp == 0) {\n        float v = (lane < num_warps) ? smem[lane] : 0.0f;\n        for (int offset = 16; offset > 0; offset >>= 1)\n            v += __shfl_down_sync(0xffffffff, v, offset);\n        if (lane == 0) smem[0] = v;\n    }\n    __syncthreads();\n    float row_sum = smem[0];\n\n    float inv_sum = 1.0f / row_sum;\n    for (int j = tid; j < L; j += block_size)\n        row_ptr[j] *= inv_sum;\n}\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    int B = q.size(0);\n    int H = q.size(1);\n    int L = q.size(2);\n    int D = q.size(3);\n    int BH = B * H;\n\n    float scale = 1.0f / sqrtf((float)D);\n\n    auto q3 = q.view({BH, L, D});\n    auto k3 = k.view({BH, L, D});\n    auto v3 = v.view({BH, L, D});\n\n    auto scores = torch::bmm(q3, k3.transpose(1, 2));\n\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n    int blocks = BH * L;\n\n    if (L == 512) {\n        // 256 threads, each handles 2 elements\n        scaled_softmax_512_kernel<<<blocks, 256, 0, stream>>>(\n            scores.data_ptr<float>(), L, scale);\n    } else {\n        int threads = (L <= 256) ? 256 : 512;\n        scaled_softmax_generic_kernel<<<blocks, threads, 0, stream>>>(\n            scores.data_ptr<float>(), L, scale);\n    }\n    AT_CUDA_CHECK(cudaGetLastError());\n\n    auto out3 = torch::bmm(scores, v3);\n    return out3.view({B, H, L, D});\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, Q: torch.Tensor, K: torch.Tensor, V: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (\n            Q.is_cuda and K.is_cuda and V.is_cuda and\n            Q.dtype == torch.float32 and K.dtype == torch.float32 and V.dtype == torch.float32 and\n            Q.dim() == 4 and K.dim() == 4 and V.dim() == 4 and\n            Q.shape == K.shape and Q.shape == V.shape and\n            Q.is_contiguous() and K.is_contiguous() and V.is_contiguous()\n        ):\n            out = _stark_get_extension().sdpa_forward(Q, K, V)\n        else:\n            out = torch.nn.functional.scaled_dot_product_attention(Q, K, V)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return out\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n6"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Refine the existing custom CUDA softmax stage by replacing the current row-wise kernels with a sequence-length-512-specialized kernel that uses fewer threads per block, two elements per thread, warp-level reductions, and a generic fallback only for non-512 cases. This keeps the successful matmul + fused scaled-softmax + matmul structure while improving occupancy and reducing synchronization overhead on the benchmark’s dominant L=512 path.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA implementation with a refined softmax-only optimization around the existing torch::bmm calls: keep sdpa_forward_cuda using q.view({BH,L,D}), k.view({BH,L,D}), v.view({BH,L,D}), scores = torch::bmm(q3, k3.transpose(1,2)), then launch a new specialized kernel for L==512 that uses 256 threads per block and processes two score elements per thread (cols j=tid and j=tid+256) for each attention row. In that kernel, load both scaled logits, compute the per-thread max across up to two values, reduce to a row max with warp shuffles plus shared memory across 8 warps, compute exp(logit-row_max) for both elements, accumulate per-thread sums, reduce to row_sum the same way, and write normalized probabilities back in place to scores. Keep a separate generic fallback kernel for non-512 L using strided loops and warp/shared reductions. Preserve float32 accumulation and the existing final out3 = torch::bmm(scores, v3); return out3.view({B,H,L,D});. Include the needed ATen CUDA stream/header usage and error check after kernel launch.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0275,
+      "score": 0.0275,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0485,
+      "speedup": 1.7636363636363637,
+      "reference_runtimes": {
+        "torch_eager": 0.0485
+      },
+      "speedups": {
+        "torch_eager": 1.7636363636363637
+      },
+      "primary_reference": "torch_eager"
+    },
+    "n6": {
+      "node_id": "n6",
+      "parent_id": "n5",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p97_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v);\n\ntorch::Tensor sdpa_forward(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    TORCH_CHECK(q.is_cuda() && k.is_cuda() && v.is_cuda(), \"All tensors must be CUDA\");\n    TORCH_CHECK(q.scalar_type() == torch::kFloat32, \"Only float32 supported\");\n    TORCH_CHECK(q.dim() == 4 && k.dim() == 4 && v.dim() == 4, \"Expected 4D tensors\");\n    TORCH_CHECK(q.sizes() == k.sizes() && q.sizes() == v.sizes(), \"Q, K, V must have same shape\");\n    TORCH_CHECK(q.is_contiguous() && k.is_contiguous() && v.is_contiguous(), \"Tensors must be contiguous\");\n    return sdpa_forward_cuda(q, k, v);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"sdpa_forward\", &sdpa_forward, \"Fused Scaled Dot-Product Attention\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n// Warp-level max reduction\n__device__ __forceinline__ float warp_reduce_max(float v) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        v = fmaxf(v, __shfl_down_sync(0xffffffff, v, offset));\n    return v;\n}\n\n// Warp-level sum reduction\n__device__ __forceinline__ float warp_reduce_sum(float v) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        v += __shfl_down_sync(0xffffffff, v, offset);\n    return v;\n}\n\n// Block-level max reduction using warp reductions + shared memory\n__device__ __forceinline__ float block_reduce_max(float v, float* smem, int tid, int num_warps) {\n    int lane = tid & 31;\n    int warp = tid >> 5;\n    v = warp_reduce_max(v);\n    if (lane == 0) smem[warp] = v;\n    __syncthreads();\n    if (warp == 0) {\n        v = (lane < num_warps) ? smem[lane] : -1e38f;\n        v = warp_reduce_max(v);\n        if (lane == 0) smem[0] = v;\n    }\n    __syncthreads();\n    return smem[0];\n}\n\n// Block-level sum reduction using warp reductions + shared memory\n__device__ __forceinline__ float block_reduce_sum(float v, float* smem, int tid, int num_warps) {\n    int lane = tid & 31;\n    int warp = tid >> 5;\n    v = warp_reduce_sum(v);\n    if (lane == 0) smem[warp] = v;\n    __syncthreads();\n    if (warp == 0) {\n        v = (lane < num_warps) ? smem[lane] : 0.0f;\n        v = warp_reduce_sum(v);\n        if (lane == 0) smem[0] = v;\n    }\n    __syncthreads();\n    return smem[0];\n}\n\n// Specialized kernel for L==512: one block per row, 128 threads\n// Each thread loads one float4 (4 contiguous elements) -> 128*4 = 512 elements per row\n__global__ void scaled_softmax_512_kernel(\n    float* __restrict__ scores,\n    int L,\n    float scale\n) {\n    // 128 threads, 4 warps\n    __shared__ float smem[4];\n\n    int row = blockIdx.x;\n    int bh = row / L;\n    int qi = row % L;\n    float* row_ptr = scores + (long)bh * L * L + (long)qi * L;\n\n    int tid = threadIdx.x;  // [0, 128)\n\n    // Vectorized load: each thread loads 4 floats\n    float4 vals = reinterpret_cast<float4*>(row_ptr)[tid];\n\n    // Scale immediately\n    float v0 = vals.x * scale;\n    float v1 = vals.y * scale;\n    float v2 = vals.z * scale;\n    float v3 = vals.w * scale;\n\n    // Per-thread max\n    float thread_max = fmaxf(fmaxf(v0, v1), fmaxf(v2, v3));\n\n    // Block-level max\n    float row_max = block_reduce_max(thread_max, smem, tid, 4);\n\n    // Compute exp\n    float e0 = __expf(v0 - row_max);\n    float e1 = __expf(v1 - row_max);\n    float e2 = __expf(v2 - row_max);\n    float e3 = __expf(v3 - row_max);\n\n    // Per-thread sum\n    float thread_sum = e0 + e1 + e2 + e3;\n\n    // Block-level sum\n    float row_sum = block_reduce_sum(thread_sum, smem, tid, 4);\n\n    float inv_sum = 1.0f / row_sum;\n\n    // Vectorized store\n    float4 out_vals;\n    out_vals.x = e0 * inv_sum;\n    out_vals.y = e1 * inv_sum;\n    out_vals.z = e2 * inv_sum;\n    out_vals.w = e3 * inv_sum;\n    reinterpret_cast<float4*>(row_ptr)[tid] = out_vals;\n}\n\n// Generic kernel: one block per row, variable threads, strided loop\n__global__ void scaled_softmax_generic_kernel(\n    float* __restrict__ scores,\n    int L,\n    float scale\n) {\n    int row = blockIdx.x;\n    int bh = row / L;\n    int qi = row % L;\n    float* row_ptr = scores + (long)bh * L * L + (long)qi * L;\n\n    int tid = threadIdx.x;\n    int block_size = blockDim.x;\n    int num_warps = (block_size + 31) / 32;\n\n    __shared__ float smem[32];\n\n    // Pass 1: find max\n    float local_max = -1e38f;\n    for (int j = tid; j < L; j += block_size) {\n        float v = row_ptr[j] * scale;\n        local_max = fmaxf(local_max, v);\n    }\n    float row_max = block_reduce_max(local_max, smem, tid, num_warps);\n\n    // Pass 2: compute exp and sum\n    float local_sum = 0.0f;\n    for (int j = tid; j < L; j += block_size) {\n        float e = __expf(row_ptr[j] * scale - row_max);\n        row_ptr[j] = e;\n        local_sum += e;\n    }\n    float row_sum = block_reduce_sum(local_sum, smem, tid, num_warps);\n\n    float inv_sum = 1.0f / row_sum;\n    for (int j = tid; j < L; j += block_size)\n        row_ptr[j] *= inv_sum;\n}\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    int B = q.size(0);\n    int H = q.size(1);\n    int L = q.size(2);\n    int D = q.size(3);\n    int BH = B * H;\n\n    float scale = 1.0f / sqrtf((float)D);\n\n    auto q3 = q.view({BH, L, D});\n    auto k3 = k.view({BH, L, D});\n    auto v3 = v.view({BH, L, D});\n\n    auto scores = torch::bmm(q3, k3.transpose(1, 2));\n\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n    int blocks = BH * L;\n\n    if (L == 512) {\n        // 128 threads, each handles 4 elements via float4\n        scaled_softmax_512_kernel<<<blocks, 128, 0, stream>>>(\n            scores.data_ptr<float>(), L, scale);\n    } else {\n        int threads = (L <= 256) ? 256 : 512;\n        scaled_softmax_generic_kernel<<<blocks, threads, 0, stream>>>(\n            scores.data_ptr<float>(), L, scale);\n    }\n    AT_CUDA_CHECK(cudaGetLastError());\n\n    auto out3 = torch::bmm(scores, v3);\n    return out3.view({B, H, L, D});\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, Q: torch.Tensor, K: torch.Tensor, V: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (\n            Q.is_cuda and K.is_cuda and V.is_cuda and\n            Q.dtype == torch.float32 and K.dtype == torch.float32 and V.dtype == torch.float32 and\n            Q.dim() == 4 and K.dim() == 4 and V.dim() == 4 and\n            Q.shape == K.shape and Q.shape == V.shape and\n            Q.is_contiguous() and K.is_contiguous() and V.is_contiguous()\n        ):\n            out = _stark_get_extension().sdpa_forward(Q, K, V)\n        else:\n            out = torch.nn.functional.scaled_dot_product_attention(Q, K, V)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return out\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n9"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Refine the existing custom CUDA attention path by improving the softmax kernel’s memory-hierarchy usage on the hot L=512 case: keep the current torch::bmm-based score/output matmuls, but rewrite the CUDA softmax stage so each block processes one attention row with vectorized contiguous loads, warp-level reductions, and minimal synchronization.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current CUDA source with a refined implementation that preserves the existing exported function name sdpa_forward_cuda and the existing high-level flow (view to [BH,L,D], scores = torch::bmm(q3, k3.transpose(1,2)), custom scaled softmax on scores, out3 = torch::bmm(scores, v3), reshape back). In the softmax portion, introduce __forceinline__ device helpers for warp-wide max/sum reduction and a block-wide reduction built from warp reductions plus a small shared-memory array. Rewrite the L==512 specialized kernel so each block still handles one row, but launch 128 threads and let each thread process 4 contiguous score elements using float4 loads/stores from the contiguous row buffer. For each thread: load one float4 from row_ptr + 4*tid, multiply all 4 values by scale immediately, compute the local max across the 4 values, reduce to row_max across the block, exponentiate the 4 scaled values after subtracting row_max, compute the local sum across the 4 exp values, reduce to row_sum across the block, then normalize and write the 4 outputs back in place. Keep a generic fallback kernel for non-512 sequence lengths using strided loops and the same reduction helpers, but prefer 256 threads there. Add the necessary ATen CUDA exception/header include if needed for AT_CUDA_CHECK, and keep the current stream usage and error checking after kernel launch. Do not modify the pybind signature or add new Python-visible functions.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0273,
+      "score": 0.0273,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_stderr_tail=\u001b[92m13:40:30 - LiteLLM:WARNING\u001b[0m: get_model_cost_map.py:271 - LiteLLM: Failed to fetch remote model cost map from https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json: The read operation timed out. Falling back to local backup."
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0485,
+      "speedup": 1.7765567765567765,
+      "reference_runtimes": {
+        "torch_eager": 0.0485
+      },
+      "speedups": {
+        "torch_eager": 1.7765567765567765
+      },
+      "primary_reference": "torch_eager"
+    },
+    "n7": {
+      "node_id": "n7",
+      "parent_id": "n4",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p97_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v);\n\ntorch::Tensor sdpa_forward(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    TORCH_CHECK(q.is_cuda() && k.is_cuda() && v.is_cuda(), \"All tensors must be CUDA\");\n    TORCH_CHECK(q.scalar_type() == torch::kFloat32, \"Only float32 supported\");\n    TORCH_CHECK(q.dim() == 4 && k.dim() == 4 && v.dim() == 4, \"Expected 4D tensors\");\n    TORCH_CHECK(q.sizes() == k.sizes() && q.sizes() == v.sizes(), \"Q, K, V must have same shape\");\n    TORCH_CHECK(q.is_contiguous() && k.is_contiguous() && v.is_contiguous(), \"Tensors must be contiguous\");\n    return sdpa_forward_cuda(q, k, v);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"sdpa_forward\", &sdpa_forward, \"Fused Scaled Dot-Product Attention\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <c10/cuda/CUDAException.h>\n\n// Warp-level max reduction\n__device__ __forceinline__ float warp_reduce_max(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val = fmaxf(val, __shfl_down_sync(0xffffffff, val, offset));\n    return val;\n}\n\n// Warp-level sum reduction\n__device__ __forceinline__ float warp_reduce_sum(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val += __shfl_down_sync(0xffffffff, val, offset);\n    return val;\n}\n\n// Specialized kernel for L=512: one block per row, 512 threads\n// Each thread handles exactly one column element\n__global__ void scaled_softmax_512_kernel(\n    const float* __restrict__ in_scores,\n    float* __restrict__ out_scores,\n    float scale,\n    int L  // =512\n) {\n    int row = blockIdx.x;\n    int tid = threadIdx.x;  // 0..511\n\n    const float* row_in  = in_scores  + (long)row * L;\n    float*       row_out = out_scores + (long)row * L;\n\n    // Each thread loads one element and scales it\n    float val = row_in[tid] * scale;\n\n    // Block-wide max reduction via warp reductions + shared memory\n    // 512 threads / 32 = 16 warps\n    __shared__ float smem[16];\n    int lane = tid & 31;\n    int warp = tid >> 5;\n\n    float wmax = warp_reduce_max(val);\n    if (lane == 0) smem[warp] = wmax;\n    __syncthreads();\n\n    // Final reduce across 16 warps using first warp (lanes 0..15)\n    float row_max;\n    if (warp == 0) {\n        // Only lanes 0..15 are valid; lanes 16..31 get -inf\n        float w = (lane < 16) ? smem[lane] : -1e38f;\n        // Use full warp mask but only first 16 lanes have real data\n        w = fmaxf(w, __shfl_down_sync(0xffffffff, w, 8));\n        w = fmaxf(w, __shfl_down_sync(0xffffffff, w, 4));\n        w = fmaxf(w, __shfl_down_sync(0xffffffff, w, 2));\n        w = fmaxf(w, __shfl_down_sync(0xffffffff, w, 1));\n        if (lane == 0) smem[0] = w;\n    }\n    __syncthreads();\n    row_max = smem[0];\n\n    // Compute exp\n    float e = __expf(val - row_max);\n\n    // Block-wide sum reduction\n    float wsum = warp_reduce_sum(e);\n    if (lane == 0) smem[warp] = wsum;\n    __syncthreads();\n\n    float row_sum;\n    if (warp == 0) {\n        float w = (lane < 16) ? smem[lane] : 0.0f;\n        w += __shfl_down_sync(0xffffffff, w, 8);\n        w += __shfl_down_sync(0xffffffff, w, 4);\n        w += __shfl_down_sync(0xffffffff, w, 2);\n        w += __shfl_down_sync(0xffffffff, w, 1);\n        if (lane == 0) smem[0] = w;\n    }\n    __syncthreads();\n    row_sum = smem[0];\n\n    row_out[tid] = e / row_sum;\n}\n\n// Generic scaled softmax kernel for arbitrary L\n__global__ void scaled_softmax_generic_kernel(\n    float* __restrict__ scores,\n    int L,\n    float scale\n) {\n    int row = blockIdx.x;\n    float* row_ptr = scores + (long)row * L;\n    int tid = threadIdx.x;\n    int block_size = blockDim.x;\n\n    float local_max = -1e38f;\n    for (int j = tid; j < L; j += block_size) {\n        float v = row_ptr[j] * scale;\n        if (v > local_max) local_max = v;\n    }\n\n    __shared__ float smem[32];\n    int lane = tid & 31;\n    int warp = tid >> 5;\n    int num_warps = (block_size + 31) / 32;\n\n    local_max = warp_reduce_max(local_max);\n    if (lane == 0) smem[warp] = local_max;\n    __syncthreads();\n    if (warp == 0) {\n        float v = (lane < num_warps) ? smem[lane] : -1e38f;\n        v = warp_reduce_max(v);\n        if (lane == 0) smem[0] = v;\n    }\n    __syncthreads();\n    float row_max = smem[0];\n\n    float local_sum = 0.0f;\n    for (int j = tid; j < L; j += block_size) {\n        float v = __expf(row_ptr[j] * scale - row_max);\n        row_ptr[j] = v;\n        local_sum += v;\n    }\n\n    local_sum = warp_reduce_sum(local_sum);\n    if (lane == 0) smem[warp] = local_sum;\n    __syncthreads();\n    if (warp == 0) {\n        float v = (lane < num_warps) ? smem[lane] : 0.0f;\n        v = warp_reduce_sum(v);\n        if (lane == 0) smem[0] = v;\n    }\n    __syncthreads();\n    float row_sum = smem[0];\n\n    float inv_sum = 1.0f / row_sum;\n    for (int j = tid; j < L; j += block_size)\n        row_ptr[j] *= inv_sum;\n}\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    int B = q.size(0);\n    int H = q.size(1);\n    int L = q.size(2);\n    int D = q.size(3);\n    int BH = B * H;\n\n    float scale = 1.0f / sqrtf((float)D);\n\n    auto q3 = q.view({BH, L, D});\n    auto k3 = k.view({BH, L, D});\n    auto v3 = v.view({BH, L, D});\n\n    // scores = Q @ K^T: [BH, L, L]\n    auto scores = torch::bmm(q3, k3.transpose(1, 2));\n\n    torch::Tensor attn;\n    if (L == 512) {\n        attn = torch::empty_like(scores);\n        int blocks = BH * L;\n        scaled_softmax_512_kernel<<<blocks, 512>>>(\n            scores.data_ptr<float>(),\n            attn.data_ptr<float>(),\n            scale,\n            L\n        );\n        C10_CUDA_KERNEL_LAUNCH_CHECK();\n    } else {\n        // Generic path: in-place\n        int threads = 256;\n        int blocks = BH * L;\n        scaled_softmax_generic_kernel<<<blocks, threads>>>(\n            scores.data_ptr<float>(),\n            L,\n            scale\n        );\n        C10_CUDA_KERNEL_LAUNCH_CHECK();\n        attn = scores;\n    }\n\n    auto out3 = torch::bmm(attn, v3);\n    return out3.view({B, H, L, D});\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, Q: torch.Tensor, K: torch.Tensor, V: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (\n            Q.is_cuda and K.is_cuda and V.is_cuda and\n            Q.dtype == torch.float32 and K.dtype == torch.float32 and V.dtype == torch.float32 and\n            Q.dim() == 4 and K.dim() == 4 and V.dim() == 4 and\n            Q.shape == K.shape and Q.shape == V.shape and\n            Q.is_contiguous() and K.is_contiguous() and V.is_contiguous()\n        ):\n            out = _stark_get_extension().sdpa_forward(Q, K, V)\n        else:\n            out = torch.nn.functional.scaled_dot_product_attention(Q, K, V)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return out\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n8",
+        "n10"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Refine the existing custom CUDA attention path by optimizing the fused softmax stage inside the CUDA kernel region: keep the current torch::bmm-based score/output matmuls, but improve the L=512 softmax kernel with safer warp aggregation, vectorized contiguous row handling, and reduced synchronization/latency.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA source with a refined implementation that keeps the current exported function name sdpa_forward_cuda and the same overall algorithm structure (q/k/v -> view to [BH,L,D] -> scores=torch::bmm(q3,k3.transpose(1,2)) -> custom scaled softmax -> out=torch::bmm(attn,v3) -> reshape). In the specialized L==512 softmax kernel, keep one block per row and 512 threads, but fix the cross-warp reduction so warp 0 reads shared values only for lanes < 16 and uses -INFINITY / 0.0f for inactive lanes instead of unconditional smem[lane] access. Store the per-warp max/sum in shared memory, reduce them with warp shuffles in warp 0, and broadcast through shared memory. Also add a vectorized row load/store path in the L==512 kernel by treating the row pointers as float4* and having each thread load its scalar normally for reduction but write the normalized result directly; preserve exact row length 512 behavior and use __expf(val - row_max). Keep the generic kernel for non-512 L, but similarly ensure warp-0 reduction uses guarded lane<num_warps reads. Do not change the C++ signature, pybind name, or Python-side call expectations.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.027100000000000003,
+      "score": 0.027100000000000003,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.048600000000000004,
+      "speedup": 1.7933579335793357,
+      "reference_runtimes": {
+        "torch_eager": 0.048600000000000004
+      },
+      "speedups": {
+        "torch_eager": 1.7933579335793357
+      },
+      "primary_reference": "torch_eager"
+    },
+    "n8": {
+      "node_id": "n8",
+      "parent_id": "n7",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p97_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v);\n\ntorch::Tensor sdpa_forward(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    TORCH_CHECK(q.is_cuda() && k.is_cuda() && v.is_cuda(), \"All tensors must be CUDA\");\n    TORCH_CHECK(q.scalar_type() == torch::kFloat32, \"Only float32 supported\");\n    TORCH_CHECK(q.dim() == 4 && k.dim() == 4 && v.dim() == 4, \"Expected 4D tensors\");\n    TORCH_CHECK(q.sizes() == k.sizes() && q.sizes() == v.sizes(), \"Q, K, V must have same shape\");\n    TORCH_CHECK(q.is_contiguous() && k.is_contiguous() && v.is_contiguous(), \"Tensors must be contiguous\");\n    return sdpa_forward_cuda(q, k, v);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"sdpa_forward\", &sdpa_forward, \"Fused Scaled Dot-Product Attention\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <c10/cuda/CUDAException.h>\n\n// Warp-level max reduction\n__device__ __forceinline__ float warp_reduce_max(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val = fmaxf(val, __shfl_down_sync(0xffffffff, val, offset));\n    return val;\n}\n\n// Warp-level sum reduction\n__device__ __forceinline__ float warp_reduce_sum(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val += __shfl_down_sync(0xffffffff, val, offset);\n    return val;\n}\n\n// Specialized in-place kernel for L=512: one block per row, 256 threads\n// Each thread handles exactly two columns: j=tid and j=tid+256\n__launch_bounds__(256)\n__global__ void scaled_softmax_512_inplace_kernel(\n    float* __restrict__ scores,\n    float scale\n) {\n    // 8 warps per block (256 threads)\n    __shared__ float smem[8];\n\n    int row = blockIdx.x;\n    int tid = threadIdx.x;  // 0..255\n    int lane = tid & 31;\n    int warp = tid >> 5;    // 0..7\n\n    float* row_ptr = scores + (long)row * 512;\n\n    // Load and scale two elements\n    float v0 = row_ptr[tid]       * scale;\n    float v1 = row_ptr[tid + 256] * scale;\n\n    // Per-thread max of the two values\n    float tmax = fmaxf(v0, v1);\n\n    // Warp-level max\n    float wmax = warp_reduce_max(tmax);\n    if (lane == 0) smem[warp] = wmax;\n    __syncthreads();\n\n    // Final reduce across 8 warps using first warp (lanes 0..7)\n    float row_max;\n    if (warp == 0) {\n        float w = (lane < 8) ? smem[lane] : -1e38f;\n        w = fmaxf(w, __shfl_down_sync(0xffffffff, w, 4));\n        w = fmaxf(w, __shfl_down_sync(0xffffffff, w, 2));\n        w = fmaxf(w, __shfl_down_sync(0xffffffff, w, 1));\n        if (lane == 0) smem[0] = w;\n    }\n    __syncthreads();\n    row_max = smem[0];\n\n    // Compute exp for both elements\n    float e0 = __expf(v0 - row_max);\n    float e1 = __expf(v1 - row_max);\n\n    // Per-thread sum\n    float tsum = e0 + e1;\n\n    // Warp-level sum\n    float wsum = warp_reduce_sum(tsum);\n    if (lane == 0) smem[warp] = wsum;\n    __syncthreads();\n\n    float row_sum;\n    if (warp == 0) {\n        float w = (lane < 8) ? smem[lane] : 0.0f;\n        w += __shfl_down_sync(0xffffffff, w, 4);\n        w += __shfl_down_sync(0xffffffff, w, 2);\n        w += __shfl_down_sync(0xffffffff, w, 1);\n        if (lane == 0) smem[0] = w;\n    }\n    __syncthreads();\n    row_sum = smem[0];\n\n    float inv_sum = 1.0f / row_sum;\n    row_ptr[tid]       = e0 * inv_sum;\n    row_ptr[tid + 256] = e1 * inv_sum;\n}\n\n// Generic scaled softmax kernel for arbitrary L (in-place)\n__global__ void scaled_softmax_generic_kernel(\n    float* __restrict__ scores,\n    int L,\n    float scale\n) {\n    int row = blockIdx.x;\n    float* row_ptr = scores + (long)row * L;\n    int tid = threadIdx.x;\n    int block_size = blockDim.x;\n\n    float local_max = -1e38f;\n    for (int j = tid; j < L; j += block_size) {\n        float v = row_ptr[j] * scale;\n        if (v > local_max) local_max = v;\n    }\n\n    __shared__ float smem[32];\n    int lane = tid & 31;\n    int warp = tid >> 5;\n    int num_warps = (block_size + 31) / 32;\n\n    local_max = warp_reduce_max(local_max);\n    if (lane == 0) smem[warp] = local_max;\n    __syncthreads();\n    if (warp == 0) {\n        float v = (lane < num_warps) ? smem[lane] : -1e38f;\n        v = warp_reduce_max(v);\n        if (lane == 0) smem[0] = v;\n    }\n    __syncthreads();\n    float row_max = smem[0];\n\n    float local_sum = 0.0f;\n    for (int j = tid; j < L; j += block_size) {\n        float v = __expf(row_ptr[j] * scale - row_max);\n        row_ptr[j] = v;\n        local_sum += v;\n    }\n\n    local_sum = warp_reduce_sum(local_sum);\n    if (lane == 0) smem[warp] = local_sum;\n    __syncthreads();\n    if (warp == 0) {\n        float v = (lane < num_warps) ? smem[lane] : 0.0f;\n        v = warp_reduce_sum(v);\n        if (lane == 0) smem[0] = v;\n    }\n    __syncthreads();\n    float row_sum = smem[0];\n\n    float inv_sum = 1.0f / row_sum;\n    for (int j = tid; j < L; j += block_size)\n        row_ptr[j] *= inv_sum;\n}\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    int B = q.size(0);\n    int H = q.size(1);\n    int L = q.size(2);\n    int D = q.size(3);\n    int BH = B * H;\n\n    float scale = 1.0f / sqrtf((float)D);\n\n    auto q3 = q.view({BH, L, D});\n    auto k3 = k.view({BH, L, D});\n    auto v3 = v.view({BH, L, D});\n\n    // scores = Q @ K^T: [BH, L, L]\n    auto scores = torch::bmm(q3, k3.transpose(1, 2));\n\n    if (L == 512) {\n        // In-place specialized kernel: 256 threads, each handles 2 columns\n        int blocks = BH * L;\n        scaled_softmax_512_inplace_kernel<<<blocks, 256>>>(\n            scores.data_ptr<float>(),\n            scale\n        );\n        C10_CUDA_KERNEL_LAUNCH_CHECK();\n    } else {\n        // Generic path: in-place\n        int threads = 256;\n        int blocks = BH * L;\n        scaled_softmax_generic_kernel<<<blocks, threads>>>(\n            scores.data_ptr<float>(),\n            L,\n            scale\n        );\n        C10_CUDA_KERNEL_LAUNCH_CHECK();\n    }\n\n    auto out3 = torch::bmm(scores, v3);\n    return out3.view({B, H, L, D});\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, Q: torch.Tensor, K: torch.Tensor, V: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (\n            Q.is_cuda and K.is_cuda and V.is_cuda and\n            Q.dtype == torch.float32 and K.dtype == torch.float32 and V.dtype == torch.float32 and\n            Q.dim() == 4 and K.dim() == 4 and V.dim() == 4 and\n            Q.shape == K.shape and Q.shape == V.shape and\n            Q.is_contiguous() and K.is_contiguous() and V.is_contiguous()\n        ):\n            out = _stark_get_extension().sdpa_forward(Q, K, V)\n        else:\n            out = torch.nn.functional.scaled_dot_product_attention(Q, K, V)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return out\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Refine the existing custom CUDA path by optimizing the hot softmax stage in cuda_cu: make the L=512 path operate in-place on the score tensor, use fewer threads per block with each thread processing two columns, and keep warp-level reductions for row max/sum to reduce launch overhead, register pressure, and global-memory traffic.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current CUDA implementation with an in-place softmax design specialized for the benchmark hot path. In sdpa_forward_cuda, keep q3/k3/v3 views and scores = torch::bmm(q3, k3.transpose(1, 2)), but remove the separate attn allocation for L==512 and instead launch a specialized kernel that reads and overwrites scores in place, then call out3 = torch::bmm(scores, v3) for the fast path. Implement a new specialized kernel for L==512 using 256 threads per block where each block handles one row and each thread processes exactly two columns j=tid and j=tid+256: load both scaled logits into registers, compute a per-thread max over its two values, reduce to row_max with warp shuffles plus shared memory, exponentiate both values after subtracting row_max, compute per-thread partial sum over the two exp values, reduce to row_sum the same way, then write normalized results back to the same two positions in scores. Add __launch_bounds__(256) to this specialized kernel. Retain the existing generic in-place scaled_softmax_generic_kernel for non-512 sequence lengths, and keep C10_CUDA_KERNEL_LAUNCH_CHECK after each launch. Do not change the exported function signature or ModelNew I/O semantics.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.027399999999999997,
+      "score": 0.027399999999999997,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0596,
+      "speedup": 2.175182481751825,
+      "reference_runtimes": {
+        "torch_eager": 0.0596
+      },
+      "speedups": {
+        "torch_eager": 2.175182481751825
+      },
+      "primary_reference": "torch_eager"
+    },
+    "n9": {
+      "node_id": "n9",
+      "parent_id": "n6",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p97_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v);\n\ntorch::Tensor sdpa_forward(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    TORCH_CHECK(q.is_cuda() && k.is_cuda() && v.is_cuda(), \"All tensors must be CUDA\");\n    TORCH_CHECK(q.scalar_type() == torch::kFloat32, \"Only float32 supported\");\n    TORCH_CHECK(q.dim() == 4 && k.dim() == 4 && v.dim() == 4, \"Expected 4D tensors\");\n    TORCH_CHECK(q.sizes() == k.sizes() && q.sizes() == v.sizes(), \"Q, K, V must have same shape\");\n    TORCH_CHECK(q.is_contiguous() && k.is_contiguous() && v.is_contiguous(), \"Tensors must be contiguous\");\n    return sdpa_forward_cuda(q, k, v);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"sdpa_forward\", &sdpa_forward, \"Fused Scaled Dot-Product Attention\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n// Warp-level max reduction\n__device__ __forceinline__ float warp_reduce_max(float v) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        v = fmaxf(v, __shfl_down_sync(0xffffffff, v, offset));\n    return v;\n}\n\n// Warp-level sum reduction\n__device__ __forceinline__ float warp_reduce_sum(float v) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        v += __shfl_down_sync(0xffffffff, v, offset);\n    return v;\n}\n\n// Specialized kernel for L==512:\n// One block handles 4 consecutive rows (one warp per row).\n// Each warp has 32 lanes; each lane loads 16 floats (as 4x float4) -> 32*16=512 elements per row.\n// Warp-only reductions: no shared memory needed for max/sum.\n__global__ void scaled_softmax_512_warp4_kernel(\n    float* __restrict__ scores,\n    int L,          // == 512\n    float scale\n) {\n    // blockDim.x == 128, 4 warps per block, each warp owns one row\n    int warp_id = threadIdx.x >> 5;   // [0,4)\n    int lane    = threadIdx.x & 31;   // [0,32)\n\n    // Global row index\n    int row = blockIdx.x * 4 + warp_id;\n    int bh  = row / L;\n    int qi  = row % L;\n    float* row_ptr = scores + (long)bh * L * L + (long)qi * L;\n\n    // Each lane covers 16 consecutive floats starting at lane*16\n    // Load as 4 float4s (4*4=16 floats)\n    int base = lane * 16;\n    float4 a0 = reinterpret_cast<float4*>(row_ptr + base)[0];\n    float4 a1 = reinterpret_cast<float4*>(row_ptr + base)[1];\n    float4 a2 = reinterpret_cast<float4*>(row_ptr + base)[2];\n    float4 a3 = reinterpret_cast<float4*>(row_ptr + base)[3];\n\n    // Scale\n    float v0  = a0.x * scale; float v1  = a0.y * scale;\n    float v2  = a0.z * scale; float v3  = a0.w * scale;\n    float v4  = a1.x * scale; float v5  = a1.y * scale;\n    float v6  = a1.z * scale; float v7  = a1.w * scale;\n    float v8  = a2.x * scale; float v9  = a2.y * scale;\n    float v10 = a2.z * scale; float v11 = a2.w * scale;\n    float v12 = a3.x * scale; float v13 = a3.y * scale;\n    float v14 = a3.z * scale; float v15 = a3.w * scale;\n\n    // Per-lane max\n    float lmax = fmaxf(fmaxf(fmaxf(v0,v1),fmaxf(v2,v3)),\n                 fmaxf(fmaxf(fmaxf(v4,v5),fmaxf(v6,v7)),\n                 fmaxf(fmaxf(fmaxf(v8,v9),fmaxf(v10,v11)),\n                       fmaxf(fmaxf(v12,v13),fmaxf(v14,v15)))));\n\n    // Warp-level max (broadcast from lane 0 via shfl_sync)\n    float row_max = warp_reduce_max(lmax);\n    row_max = __shfl_sync(0xffffffff, row_max, 0);\n\n    // Compute exp\n    float e0  = __expf(v0  - row_max); float e1  = __expf(v1  - row_max);\n    float e2  = __expf(v2  - row_max); float e3  = __expf(v3  - row_max);\n    float e4  = __expf(v4  - row_max); float e5  = __expf(v5  - row_max);\n    float e6  = __expf(v6  - row_max); float e7  = __expf(v7  - row_max);\n    float e8  = __expf(v8  - row_max); float e9  = __expf(v9  - row_max);\n    float e10 = __expf(v10 - row_max); float e11 = __expf(v11 - row_max);\n    float e12 = __expf(v12 - row_max); float e13 = __expf(v13 - row_max);\n    float e14 = __expf(v14 - row_max); float e15 = __expf(v15 - row_max);\n\n    // Per-lane sum\n    float lsum = (e0+e1)+(e2+e3)+(e4+e5)+(e6+e7)+\n                 (e8+e9)+(e10+e11)+(e12+e13)+(e14+e15);\n\n    // Warp-level sum\n    float row_sum = warp_reduce_sum(lsum);\n    row_sum = __shfl_sync(0xffffffff, row_sum, 0);\n\n    float inv_sum = 1.0f / row_sum;\n\n    // Store back\n    float4 o0, o1, o2, o3;\n    o0.x = e0*inv_sum;  o0.y = e1*inv_sum;  o0.z = e2*inv_sum;  o0.w = e3*inv_sum;\n    o1.x = e4*inv_sum;  o1.y = e5*inv_sum;  o1.z = e6*inv_sum;  o1.w = e7*inv_sum;\n    o2.x = e8*inv_sum;  o2.y = e9*inv_sum;  o2.z = e10*inv_sum; o2.w = e11*inv_sum;\n    o3.x = e12*inv_sum; o3.y = e13*inv_sum; o3.z = e14*inv_sum; o3.w = e15*inv_sum;\n    reinterpret_cast<float4*>(row_ptr + base)[0] = o0;\n    reinterpret_cast<float4*>(row_ptr + base)[1] = o1;\n    reinterpret_cast<float4*>(row_ptr + base)[2] = o2;\n    reinterpret_cast<float4*>(row_ptr + base)[3] = o3;\n}\n\n// Generic kernel: one block per row, variable threads, strided loop\n__global__ void scaled_softmax_generic_kernel(\n    float* __restrict__ scores,\n    int L,\n    float scale\n) {\n    int row = blockIdx.x;\n    int bh = row / L;\n    int qi = row % L;\n    float* row_ptr = scores + (long)bh * L * L + (long)qi * L;\n\n    int tid = threadIdx.x;\n    int block_size = blockDim.x;\n    int num_warps = (block_size + 31) / 32;\n\n    __shared__ float smem[32];\n\n    // Block-level max reduction using warp reductions + shared memory\n    auto block_reduce_max = [&](float v) -> float {\n        int lane = tid & 31;\n        int warp = tid >> 5;\n        v = warp_reduce_max(v);\n        if (lane == 0) smem[warp] = v;\n        __syncthreads();\n        if (warp == 0) {\n            v = (lane < num_warps) ? smem[lane] : -1e38f;\n            v = warp_reduce_max(v);\n            if (lane == 0) smem[0] = v;\n        }\n        __syncthreads();\n        return smem[0];\n    };\n\n    auto block_reduce_sum = [&](float v) -> float {\n        int lane = tid & 31;\n        int warp = tid >> 5;\n        v = warp_reduce_sum(v);\n        if (lane == 0) smem[warp] = v;\n        __syncthreads();\n        if (warp == 0) {\n            v = (lane < num_warps) ? smem[lane] : 0.0f;\n            v = warp_reduce_sum(v);\n            if (lane == 0) smem[0] = v;\n        }\n        __syncthreads();\n        return smem[0];\n    };\n\n    // Pass 1: find max\n    float local_max = -1e38f;\n    for (int j = tid; j < L; j += block_size) {\n        float v = row_ptr[j] * scale;\n        local_max = fmaxf(local_max, v);\n    }\n    float row_max = block_reduce_max(local_max);\n\n    // Pass 2: compute exp and sum\n    float local_sum = 0.0f;\n    for (int j = tid; j < L; j += block_size) {\n        float e = __expf(row_ptr[j] * scale - row_max);\n        row_ptr[j] = e;\n        local_sum += e;\n    }\n    float row_sum = block_reduce_sum(local_sum);\n\n    float inv_sum = 1.0f / row_sum;\n    for (int j = tid; j < L; j += block_size)\n        row_ptr[j] *= inv_sum;\n}\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    int B = q.size(0);\n    int H = q.size(1);\n    int L = q.size(2);\n    int D = q.size(3);\n    int BH = B * H;\n\n    float scale = 1.0f / sqrtf((float)D);\n\n    auto q3 = q.view({BH, L, D});\n    auto k3 = k.view({BH, L, D});\n    auto v3 = v.view({BH, L, D});\n\n    auto scores = torch::bmm(q3, k3.transpose(1, 2));\n\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n\n    if (L == 512) {\n        // 4 rows per block, 128 threads (4 warps), each warp handles one row\n        int total_rows = BH * L;\n        int blocks = (total_rows + 3) / 4;\n        scaled_softmax_512_warp4_kernel<<<blocks, 128, 0, stream>>>(\n            scores.data_ptr<float>(), L, scale);\n    } else {\n        int blocks = BH * L;\n        int threads = (L <= 256) ? 256 : 512;\n        scaled_softmax_generic_kernel<<<blocks, threads, 0, stream>>>(\n            scores.data_ptr<float>(), L, scale);\n    }\n    AT_CUDA_CHECK(cudaGetLastError());\n\n    auto out3 = torch::bmm(scores, v3);\n    return out3.view({B, H, L, D});\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, Q: torch.Tensor, K: torch.Tensor, V: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (\n            Q.is_cuda and K.is_cuda and V.is_cuda and\n            Q.dtype == torch.float32 and K.dtype == torch.float32 and V.dtype == torch.float32 and\n            Q.dim() == 4 and K.dim() == 4 and V.dim() == 4 and\n            Q.shape == K.shape and Q.shape == V.shape and\n            Q.is_contiguous() and K.is_contiguous() and V.is_contiguous()\n        ):\n            out = _stark_get_extension().sdpa_forward(Q, K, V)\n        else:\n            out = torch.nn.functional.scaled_dot_product_attention(Q, K, V)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return out\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Refine the existing custom CUDA softmax path for the benchmark’s fixed L=512 regime by reducing synchronization overhead and improving memory throughput inside the CUDA kernel, while keeping the current q@k^T and attn@v matmuls unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA implementation with a refinement of the current softmax kernel specialized for the dominant L==512 case: keep sdpa_forward_cuda using q.view({BH,L,D}), torch::bmm(q3, k3.transpose(1,2)), custom in-place scaled softmax on scores, then torch::bmm(scores, v3), but change the softmax launch strategy so one 128-thread block handles 4 rows at once (one warp per row). In the specialized kernel, each warp processes one 512-element row by looping over 16 float values per lane (prefer 4x float4 loads/stores per lane across the row), computes row max and row sum using warp-only __shfl_down_sync reductions, applies the scale before exponentiation, writes normalized probabilities back in place, and avoids block-wide shared-memory reductions/synchronizations except optionally a tiny shared array for row base pointers. Keep a generic fallback kernel for non-512 sequence lengths. Update the launch in sdpa_forward_cuda so for L==512 it uses blocks = BH * (L / 4) with 128 threads, and maps blockIdx.x to 4 consecutive rows within each [BH,L,L] score matrix. Preserve AT_CUDA_CHECK(cudaGetLastError()) and the current output reshape.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0272,
+      "score": 0.0272,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0484,
+      "speedup": 1.7794117647058825,
+      "reference_runtimes": {
+        "torch_eager": 0.0484
+      },
+      "speedups": {
+        "torch_eager": 1.7794117647058825
+      },
+      "primary_reference": "torch_eager"
+    },
+    "n10": {
+      "node_id": "n10",
+      "parent_id": "n7",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p97_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v);\n\ntorch::Tensor sdpa_forward(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    TORCH_CHECK(q.is_cuda() && k.is_cuda() && v.is_cuda(), \"All tensors must be CUDA\");\n    TORCH_CHECK(q.scalar_type() == torch::kFloat32, \"Only float32 supported\");\n    TORCH_CHECK(q.dim() == 4 && k.dim() == 4 && v.dim() == 4, \"Expected 4D tensors\");\n    TORCH_CHECK(q.sizes() == k.sizes() && q.sizes() == v.sizes(), \"Q, K, V must have same shape\");\n    TORCH_CHECK(q.is_contiguous() && k.is_contiguous() && v.is_contiguous(), \"Tensors must be contiguous\");\n    return sdpa_forward_cuda(q, k, v);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"sdpa_forward\", &sdpa_forward, \"Fused Scaled Dot-Product Attention\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <c10/cuda/CUDAException.h>\n\n// Warp-level max reduction\n__device__ __forceinline__ float warp_reduce_max(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val = fmaxf(val, __shfl_down_sync(0xffffffff, val, offset));\n    return val;\n}\n\n// Warp-level sum reduction\n__device__ __forceinline__ float warp_reduce_sum(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val += __shfl_down_sync(0xffffffff, val, offset);\n    return val;\n}\n\n// Specialized in-place kernel for L=512: one block per row, 256 threads\n// Each thread handles exactly 2 contiguous columns: col0=tid, col1=tid+256\n__global__ void scaled_softmax_512_inplace_kernel(\n    float* __restrict__ scores,\n    float scale,\n    int L  // =512\n) {\n    int row = blockIdx.x;\n    float* row_ptr = scores + (long)row * L;\n    int tid = threadIdx.x;  // 0..255\n\n    // Load and scale two elements\n    float v0 = row_ptr[tid]       * scale;\n    float v1 = row_ptr[tid + 256] * scale;\n\n    // Per-thread max of the two values\n    float local_max = fmaxf(v0, v1);\n\n    // 256 threads / 32 = 8 warps\n    __shared__ float smem[8];\n    int lane = tid & 31;\n    int warp = tid >> 5;\n\n    // Warp-level max\n    float wmax = warp_reduce_max(local_max);\n    if (lane == 0) smem[warp] = wmax;\n    __syncthreads();\n\n    // Final reduce across 8 warps using first warp (lanes 0..7)\n    float row_max;\n    if (warp == 0) {\n        float w = (lane < 8) ? smem[lane] : -1e38f;\n        w = fmaxf(w, __shfl_down_sync(0xffffffff, w, 4));\n        w = fmaxf(w, __shfl_down_sync(0xffffffff, w, 2));\n        w = fmaxf(w, __shfl_down_sync(0xffffffff, w, 1));\n        if (lane == 0) smem[0] = w;\n    }\n    __syncthreads();\n    row_max = smem[0];\n\n    // Compute exp for both elements\n    float e0 = __expf(v0 - row_max);\n    float e1 = __expf(v1 - row_max);\n\n    // Per-thread sum\n    float local_sum = e0 + e1;\n\n    // Warp-level sum\n    float wsum = warp_reduce_sum(local_sum);\n    if (lane == 0) smem[warp] = wsum;\n    __syncthreads();\n\n    float row_sum;\n    if (warp == 0) {\n        float w = (lane < 8) ? smem[lane] : 0.0f;\n        w += __shfl_down_sync(0xffffffff, w, 4);\n        w += __shfl_down_sync(0xffffffff, w, 2);\n        w += __shfl_down_sync(0xffffffff, w, 1);\n        if (lane == 0) smem[0] = w;\n    }\n    __syncthreads();\n    row_sum = smem[0];\n\n    float inv_sum = 1.0f / row_sum;\n    row_ptr[tid]       = e0 * inv_sum;\n    row_ptr[tid + 256] = e1 * inv_sum;\n}\n\n// Generic scaled softmax kernel for arbitrary L (in-place)\n__global__ void scaled_softmax_generic_kernel(\n    float* __restrict__ scores,\n    int L,\n    float scale\n) {\n    int row = blockIdx.x;\n    float* row_ptr = scores + (long)row * L;\n    int tid = threadIdx.x;\n    int block_size = blockDim.x;\n\n    float local_max = -1e38f;\n    for (int j = tid; j < L; j += block_size) {\n        float v = row_ptr[j] * scale;\n        if (v > local_max) local_max = v;\n    }\n\n    __shared__ float smem[32];\n    int lane = tid & 31;\n    int warp = tid >> 5;\n    int num_warps = (block_size + 31) / 32;\n\n    local_max = warp_reduce_max(local_max);\n    if (lane == 0) smem[warp] = local_max;\n    __syncthreads();\n    if (warp == 0) {\n        float v = (lane < num_warps) ? smem[lane] : -1e38f;\n        v = warp_reduce_max(v);\n        if (lane == 0) smem[0] = v;\n    }\n    __syncthreads();\n    float row_max = smem[0];\n\n    float local_sum = 0.0f;\n    for (int j = tid; j < L; j += block_size) {\n        float v = __expf(row_ptr[j] * scale - row_max);\n        row_ptr[j] = v;\n        local_sum += v;\n    }\n\n    local_sum = warp_reduce_sum(local_sum);\n    if (lane == 0) smem[warp] = local_sum;\n    __syncthreads();\n    if (warp == 0) {\n        float v = (lane < num_warps) ? smem[lane] : 0.0f;\n        v = warp_reduce_sum(v);\n        if (lane == 0) smem[0] = v;\n    }\n    __syncthreads();\n    float row_sum = smem[0];\n\n    float inv_sum = 1.0f / row_sum;\n    for (int j = tid; j < L; j += block_size)\n        row_ptr[j] *= inv_sum;\n}\n\ntorch::Tensor sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v) {\n    int B = q.size(0);\n    int H = q.size(1);\n    int L = q.size(2);\n    int D = q.size(3);\n    int BH = B * H;\n\n    float scale = 1.0f / sqrtf((float)D);\n\n    auto q3 = q.view({BH, L, D});\n    auto k3 = k.view({BH, L, D});\n    auto v3 = v.view({BH, L, D});\n\n    // scores = Q @ K^T: [BH, L, L]\n    auto scores = torch::bmm(q3, k3.transpose(1, 2));\n\n    if (L == 512) {\n        // In-place specialized kernel: 256 threads, each handles 2 elements\n        int blocks = BH * L;\n        scaled_softmax_512_inplace_kernel<<<blocks, 256>>>(\n            scores.data_ptr<float>(),\n            scale,\n            L\n        );\n        C10_CUDA_KERNEL_LAUNCH_CHECK();\n    } else {\n        // Generic path: in-place\n        int threads = 256;\n        int blocks = BH * L;\n        scaled_softmax_generic_kernel<<<blocks, threads>>>(\n            scores.data_ptr<float>(),\n            L,\n            scale\n        );\n        C10_CUDA_KERNEL_LAUNCH_CHECK();\n    }\n\n    auto out3 = torch::bmm(scores, v3);\n    return out3.view({B, H, L, D});\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, Q: torch.Tensor, K: torch.Tensor, V: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (\n            Q.is_cuda and K.is_cuda and V.is_cuda and\n            Q.dtype == torch.float32 and K.dtype == torch.float32 and V.dtype == torch.float32 and\n            Q.dim() == 4 and K.dim() == 4 and V.dim() == 4 and\n            Q.shape == K.shape and Q.shape == V.shape and\n            Q.is_contiguous() and K.is_contiguous() and V.is_contiguous()\n        ):\n            out = _stark_get_extension().sdpa_forward(Q, K, V)\n        else:\n            out = torch.nn.functional.scaled_dot_product_attention(Q, K, V)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return out\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Refine the existing CUDA path by optimizing the fused scaled-softmax portion for the benchmark’s fixed L=512, D=1024 regime: keep the torch::bmm calls, but replace the current 512-thread one-element-per-thread softmax with a lower-overhead in-place kernel that processes multiple logits per thread, uses warp reductions efficiently, and avoids the extra attn allocation/copy on the hot path.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA source with a refined implementation that keeps the existing exported function name sdpa_forward_cuda(torch::Tensor q, torch::Tensor k, torch::Tensor v) and overall q->scores->softmax->out structure, but changes the softmax path as follows: (1) remove the separate attn allocation for the L==512 fast path and normalize scores in place; after softmax, use scores directly as attn for the final torch::bmm. (2) Replace scaled_softmax_512_kernel with a specialized in-place kernel for rows of length 512 launched as <<<BH*L, 256>>> where each thread handles exactly 2 contiguous columns (col0=tid, col1=tid+256), multiplies both by scale once, computes the row max across its two values, participates in warp-level then block-level max reduction, computes expf(value-row_max) for both values, reduces the row sum the same way, and writes back both normalized probabilities in place. (3) Keep a generic fallback kernel for non-512 sequence lengths, but leave it secondary; the benchmark fast path should branch on L==512 and use the specialized kernel. (4) In sdpa_forward_cuda, keep q/k/v reshaping to [BH,L,D], compute scores = torch::bmm(q3, k3.transpose(1,2)), run the in-place softmax kernel on scores.data_ptr<float>(), then compute out3 = torch::bmm(scores, v3) and return out3.view({B,H,L,D}). (5) Retain C10_CUDA_KERNEL_LAUNCH_CHECK and required includes; do not change pybind names or Python call sites.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0273,
+      "score": 0.0273,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.048600000000000004,
+      "speedup": 1.7802197802197803,
+      "reference_runtimes": {
+        "torch_eager": 0.048600000000000004
+      },
+      "speedups": {
+        "torch_eager": 1.7802197802197803
+      },
+      "primary_reference": "torch_eager"
+    }
+  }
+}

@@ -1,0 +1,2065 @@
+{
+  "task_name": "kernelbench_l1_17_17_matmul_with_transposed_b",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": false,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_claude",
+    "plan_provider": "openai-compatible",
+    "code_provider": "claude-compatible",
+    "debug_provider": "openai-compatible",
+    "search_provider": "claude-compatible",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "diagnostics_enabled": false,
+    "diagnostics_mode": "root_ncu_v1",
+    "diagnostics_timeout_seconds": 300,
+    "diagnostics_warmup_runs": 2,
+    "diagnostics_profile_runs": 3,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1,
+    "deliberation_provider_timeout_seconds": 180,
+    "deliberation_phase_timeout_seconds": 240,
+    "evaluator_isolation": "candidate_subprocess",
+    "evaluator_timeout_seconds": 900,
+    "explore_fraction": 0.4,
+    "challenger_fraction": 0.3,
+    "plateau_delta_threshold": 0.03,
+    "plateau_recovery_mutation_attempts": 2,
+    "plateau_window": 3,
+    "deliberation_upgrade_enabled": true,
+    "deliberation_max_rounds": 3,
+    "deliberation_min_remaining_attempts": 8,
+    "phase_two_enabled": true,
+    "phase_two_split_attempts": 5
+  },
+  "best_node_id": "n1",
+  "leaderboard": [
+    "n1",
+    "phase2_root"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "n1",
+      "root"
+    ],
+    [
+      "n1",
+      "n3"
+    ],
+    [],
+    [
+      "phase2_root"
+    ],
+    [
+      "phase2_root",
+      "phase2_n1"
+    ],
+    [
+      "phase2_root",
+      "phase2_n2"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "n1",
+    "n3",
+    "phase2_root",
+    "phase2_n1",
+    "phase2_n2",
+    "phase2_root",
+    "phase2_n3"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "explore_leaf",
+    "debug_retry_failure",
+    "exploit_best_score",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {},
+    {
+      "n2": "debug_retry_limit_reached"
+    },
+    {
+      "n2": "debug_retry_limit_reached"
+    },
+    {},
+    {},
+    {},
+    {},
+    {}
+  ],
+  "pruned_nodes": {},
+  "debug_stats": {
+    "total_attempts": 1,
+    "per_node": {
+      "n2": 1
+    }
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 9,
+    "debug_attempts": 1,
+    "failure_counts": {
+      "correctness_error": 2
+    },
+    "failure_stage_counts": {
+      "correctness": 2
+    },
+    "invalid_proposals": 0,
+    "attempt_mode_counts": {
+      "explore": 4,
+      "mutate_champion": 4,
+      "debug": 1,
+      "best_lineage_push": 1
+    },
+    "provider_transient_error_count": 0,
+    "provider_transient_budget_exhausted_count": 0,
+    "provider_transient_errors_by_stage": {},
+    "provider_transient_errors_by_origin": {},
+    "provider_transient_errors": [],
+    "phase_two_triggered": true,
+    "phase_two_seed_node_id": "n1",
+    "pruned_count": 0
+  },
+  "benchmark_family": "kernelbench",
+  "level": 1,
+  "problem_id": 17,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level1/17_Matmul_with_transposed_B.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.00313
+  },
+  "speedups": {
+    "torch_eager": 1.0096774193548388
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "matmul",
+    "summary": "Matrix multiplication style computation; preserve dimensions and consider tiled implementations.",
+    "source": "KernelBench/KernelBench/level1/17_Matmul_with_transposed_B.py",
+    "exact_facts": null,
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "cuda_cu",
+      "cuda_cpp",
+      "user_helpers"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "matmul",
+        "source_excerpt": "\"\"\"\n        Performs matrix multiplication.\n\n        Args:\n            A: Input tensor of shape (M, K).\n            B: Input tensor of shape (K, N).\n\n        Returns:\n            Output tensor of shape (M, N).\n        \"\"\"",
+        "op_names": [
+          "_matmul_with_transposed_b",
+          "a",
+          "args",
+          "b",
+          "c",
+          "input",
+          "k",
+          "kernelbench",
+          "level1",
+          "m",
+          "matmul",
+          "matrix"
+        ],
+        "optimization_intents": [
+          "use_tiled_matrix_multiply",
+          "preserve_matrix_shapes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use tiled GEMM structure",
+          "preserve strides and matrix dimensions"
+        ],
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "matmul",
+        "source_excerpt": "return torch.matmul(A, B.T)",
+        "op_names": [
+          "_matmul_with_transposed_b",
+          "a",
+          "args",
+          "b",
+          "c",
+          "input",
+          "k",
+          "kernelbench",
+          "level1",
+          "m",
+          "matmul",
+          "matrix"
+        ],
+        "optimization_intents": [
+          "use_tiled_matrix_multiply",
+          "preserve_matrix_shapes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use tiled GEMM structure",
+          "preserve strides and matrix dimensions"
+        ],
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "cuda_cpp",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+        "op_names": [
+          "add",
+          "cuda",
+          "custom",
+          "entrypoints",
+          "exports",
+          "extension",
+          "for",
+          "h",
+          "here",
+          "include",
+          "m",
+          "pybind"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      },
+      {
+        "anchor_name": "cuda_cu",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+        "op_names": [
+          "add",
+          "and",
+          "cuda",
+          "cuda_runtime",
+          "exported",
+          "extension",
+          "functions",
+          "h",
+          "here",
+          "include",
+          "kernels",
+          "torch"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      },
+      {
+        "anchor_name": "init_body",
+        "region_role": "init",
+        "semantic_type": "state_initialization",
+        "source_excerpt": "",
+        "op_names": [],
+        "optimization_intents": [
+          "inspect_source_before_editing"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 2
+      },
+      {
+        "anchor_name": "user_helpers",
+        "region_role": "helper",
+        "semantic_type": "helper_region",
+        "source_excerpt": "",
+        "op_names": [],
+        "optimization_intents": [
+          "inspect_source_before_editing"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 2
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "use_tiled_matrix_multiply",
+        "summary": "use tiled matrix multiply",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "cuda_cu",
+          "cuda_cpp",
+          "user_helpers"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "use tiled GEMM structure",
+            "preserve strides and matrix dimensions"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use block_m/block_n/block_k tiling"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "preserve_matrix_shapes",
+        "summary": "preserve matrix shapes",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "cuda_cu",
+          "cuda_cpp",
+          "user_helpers"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "use tiled GEMM structure",
+            "preserve strides and matrix dimensions"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use block_m/block_n/block_k tiling"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve M/N/K dimensions and transpose semantics",
+      "handle tensor contiguity assumptions"
+    ]
+  },
+  "diagnostics_profile": {
+    "enabled": true,
+    "mode": "root_ncu_v1",
+    "ncu_profile": {
+      "enabled": true,
+      "status": "ok",
+      "profiler": "ncu",
+      "kernel_name": "ampere_sgemm_128x64_tn",
+      "row_count": 6,
+      "kernel_launch_count": 6,
+      "raw_metrics": {
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 12.89,
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": 87.86,
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": 58.63,
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": 70.16,
+        "sm__warps_active.avg.pct_of_peak_sustained_active": 31.18,
+        "launch__registers_per_thread": 122,
+        "launch__occupancy_limit_registers": 4,
+        "launch__occupancy_limit_shared_mem": 4,
+        "launch__occupancy_limit_warps": 12,
+        "gpu__time_duration.avg": 3248288,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.2,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.01,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.2,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+        "smsp__sass_branch_targets_threads_divergent.avg": 0,
+        "smsp__sass_branch_targets_threads_uniform.avg": 8592,
+        "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+        "smsp__warps_eligible.avg": 10277526.63
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ],
+      "error": null
+    },
+    "notes": [
+      "Profiled the root candidate program with Nsight Compute."
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_01",
+        "intent": "shape_specialized_cublaslt_autotune",
+        "summary": "Keep the direct TN library path, but retarget `cuda_cu` to a shape-specialized `cublasLtMatmul` flow that uses larger workspace, explicit row-major/TN descriptors, and heuristic selection cached for the observed `(M,N,K)=(2048,4096,8192)` regime; the current kernel is already a GEMM fast path, so gains likely come from better algo selection rather than changing the Python side.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "user_helpers",
+          "init_body"
+        ],
+        "implementation_hints": [
+          "Cache `cublasLt` descriptors, preference objects, and the best heuristic result keyed by dtype and `(M,N,K)` so selection cost is amortized.",
+          "Raise workspace from the prior 'small temporary workspace' attempt to a materially larger budget; the earlier flat result suggests the search space was too constrained, not that `cublasLt` is categorically worse.",
+          "Express the operation directly as TN/row-major layouts instead of relying on implicit reinterpretation tricks, so heuristic selection can target the intended layout.",
+          "Preserve the existing exported entrypoint and forward call so only backend dispatch changes."
+        ],
+        "expected_gain": "Low-to-moderate; likely a few percent at best if a better TN tensor-op algorithm is selected for this fixed large shape.",
+        "risk_notes": [
+          "Prior `cublasLt` attempt was flat, so this is only worthwhile if the new version materially improves workspace and heuristic policy.",
+          "Need strict shape/layout correctness for `A:[M,K]`, `B:[N,K]`, and result `[M,N]` with logical transpose semantics unchanged.",
+          "Autotune/cache logic must not add noticeable cold-start overhead to the benchmarked path."
+        ],
+        "memory_methods": [
+          "Use reusable workspace allocation sized once per process or per extension load.",
+          "Cache layout/operation descriptors to avoid repeated setup traffic."
+        ],
+        "mutation_axes": [
+          "workspace_budget",
+          "heuristic_search_depth",
+          "descriptor_layout_encoding",
+          "algo_cache_keying"
+        ],
+        "forbidden_patterns": [
+          "Do not materialize `B.T` in device memory.",
+          "Do not change ModelNew I/O or output dtype.",
+          "Do not add per-call exhaustive benchmarking in the hot path."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Strong risk-adjusted option. It preserves the proven library TN path, targets the right anchors, and focuses on cublasLt algorithm/workspace tuning for a fixed large shape where modest gains are plausible. Main downside is prior cublasLt underperformance, so upside is likely incremental rather than dramatic.",
+          "claude-compatible": "Reasonable incremental improvement over a prior flat cublasLt attempt. Caching descriptors and raising workspace budget are sound ideas, but the prior flat result suggests diminishing returns. Low-to-moderate expected gain with moderate implementation complexity. Worth trying if simpler TF32 paths fail.",
+          "gemini-compatible": "Using cublasLt with autotuning and a larger workspace is a strong approach for finding the optimal GEMM kernel for specific shapes."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_05",
+        "intent": "Use cublasLtMatmul with explicit workspace and algorithm search for TN GEMM",
+        "summary": "Replace cublasSgemm with a cublasLt path that creates a MatmulDesc with CUBLAS_OP_T/CUBLAS_OP_N, allocates a small workspace (4-16 MB), calls cublasLtMatmulAlgoGetHeuristic to pick the best algorithm, and dispatches cublasLtMatmul. This gives the cuBLAS Lt scheduler access to Tensor Core algorithms.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Create cublasLtHandle_t from the existing cublasHandle_t via cublasLtCreate or reinterpret_cast",
+          "Create cublasLtMatmulDesc_t with CUBLAS_COMPUTE_32F_FAST_TF32 and CUDA_R_32F",
+          "Set CUBLASLT_MATMUL_DESC_TRANSA=CUBLAS_OP_T, CUBLASLT_MATMUL_DESC_TRANSB=CUBLAS_OP_N",
+          "Create layout descriptors for A[K,N] (col-major), B[K,M] (col-major), C[N,M] (col-major)",
+          "Call cublasLtMatmulAlgoGetHeuristic with requestedAlgoCount=1",
+          "Allocate workspace with at::cuda::getCurrentCUDAStream() context, use torch::empty for workspace",
+          "Add fallback to cublasSgemm if heuristic returns 0 algorithms",
+          "Use CUBLAS_COMPUTE_32F as safe fallback compute type if TF32 fails correctness"
+        ],
+        "expected_gain": "2-3x speedup from Tensor Core utilization; better algorithm selection than plain cublasSgemm",
+        "risk_notes": [
+          "cublasLt API is verbose and error-prone; layout descriptor dimensions must match exactly",
+          "Phase-1 attempt n4 tried cublasLt and got only 1.006x â ensure workspace is large enough and compute type is TF32",
+          "Must correctly map row-major shapes to col-major cublasLt layout descriptors"
+        ],
+        "memory_methods": [
+          "Small temporary workspace allocation via torch::empty({workspace_bytes}, torch::kUInt8).cuda()"
+        ],
+        "mutation_axes": [
+          "cuda_cu"
+        ],
+        "forbidden_patterns": [
+          "removing the cublasSgemm fallback",
+          "changing the exported function signature",
+          "modifying cuda_cpp or forward_stmt_2"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Reasonable but less compelling than the more shape-specialized cublasLt version. Using cublasLt with explicit TF32 compute/workspace is directionally sound, but the descriptor mapping is error-prone and prior cublasLt results were flat; worthwhile only if implementation quality materially improves algorithm selection.",
+          "claude-compatible": "cublasLt with CUBLAS_COMPUTE_32F_FAST_TF32 is a legitimate path, but a prior attempt at phase-1 yielded only 1.006x. The notes suggest workspace and compute type were the issues. Revisiting with correct TF32 compute type and adequate workspace is reasonable but carries moderate implementation risk given the verbose API and prior near-miss.",
+          "gemini-compatible": "Similar to strategy 01, explicitly using cublasLt with a workspace and heuristic search is the most robust way to improve library-based GEMM performance."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_02",
+        "intent": "Enable TF32 math mode on cuBLAS handle to unlock Tensor Core path",
+        "summary": "Set CUBLAS_MATH_DISALLOW_REDUCED_PRECISION_REDUCTION and CUBLAS_TF32_TENSOR_OP_MATH on the current cuBLAS handle before calling cublasSgemm, then restore the original math mode. This should switch from ampere_sgemm_128x64_tn to a Tensor Core kernel, dramatically improving SM throughput and occupancy.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Call cublasGetMathMode to save current mode before the GEMM",
+          "Call cublasSetMathMode(handle, CUBLAS_TF32_TENSOR_OP_MATH) before cublasSgemm",
+          "Keep the existing cublasSgemm call with CUBLAS_OP_T / CUBLAS_OP_N unchanged",
+          "Call cublasSetMathMode(handle, saved_mode) after the GEMM to restore",
+          "Do NOT use cublasGemmEx â keep cublasSgemm to avoid transpose/correctness issues",
+          "TF32 is numerically close to FP32 for typical inputs and should pass correctness checks"
+        ],
+        "expected_gain": "2-4x speedup by switching from SGEMM to Tensor Core HGEMM/TF32 path; occupancy should increase significantly",
+        "risk_notes": [
+          "TF32 reduces mantissa bits from 23 to 10; may fail strict float32 correctness checks",
+          "Restore math mode to avoid polluting global cuBLAS state",
+          "Phase-1 attempt n2 failed correctness with cublasGemmEx â this approach uses cublasSgemm which is safer"
+        ],
+        "memory_methods": [
+          "No memory layout changes; same TN dispatch"
+        ],
+        "mutation_axes": [
+          "cuda_cu"
+        ],
+        "forbidden_patterns": [
+          "cublasGemmEx",
+          "CUBLAS_GEMM_DEFAULT_TENSOR_OP as algorithm in GemmEx",
+          "changing transpose flags",
+          "changing lda/ldb/ldc values"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 4.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Potentially high upside, but poor risk-adjusted value. Forcing TF32 math mode around cublasSgemm can violate framework/math-policy expectations and may fail correctness under strict FP32 checks; the claimed 2-4x gain is optimistic, and handle-wide math mode changes are easy to misapply.",
+          "claude-compatible": "High value, low risk. Setting CUBLAS_TF32_TENSOR_OP_MATH on the existing cublasSgemm call is a minimal change that can unlock Tensor Core paths on Ampere. Saving and restoring math mode is correct practice. TF32 numeric tolerance is usually acceptable. Prior GemmEx failure was a different API path, so this is not disqualified by that history.",
+          "gemini-compatible": "Enabling TF32 can provide massive speedups, but carries a high risk of failing strict correctness checks in benchmark environments."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_03",
+        "intent": "occupancy_focused_custom_tn_kernel",
+        "summary": "Replace the library GEMM only if pursuing a more invasive path: build a custom TN matmul kernel specialized for the provided FP32 shape range with lower register pressure and asynchronous shared-memory staging, targeting the current bottlenecks of 122 registers/thread and only ~31% active warps.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Design the kernel around TN access directly so `B` is read in its stored `[N,K]` layout without explicit transpose materialization.",
+          "Favor tile shapes and staging depth that trade a little per-thread work for lower register count, because the current root profile is occupancy-limited by registers and shared memory.",
+          "Use double-buffered shared-memory tiles and vectorized global loads along K where alignment permits.",
+          "Keep the Python forward wiring unchanged except for dispatching to the new CUDA entrypoint."
+        ],
+        "expected_gain": "Moderate if successful, but highly uncertain because cuBLAS is already landing on an optimized Ampere TN SGEMM kernel.",
+        "risk_notes": [
+          "High implementation risk; custom GEMM often underperforms cuBLAS unless aggressively shape-specialized.",
+          "Must handle edge conditions and preserve exact transpose semantics.",
+          "Can regress if tile choices increase shared-memory pressure without materially lowering register usage."
+        ],
+        "memory_methods": [
+          "Shared-memory tiling for both `A` and `B` panels.",
+          "Asynchronous copy or software pipelining to hide long scoreboard stalls."
+        ],
+        "mutation_axes": [
+          "threadblock_tile",
+          "warp_tile",
+          "k_stage_depth",
+          "register_blocking",
+          "vector_width"
+        ],
+        "forbidden_patterns": [
+          "Do not introduce atomics for accumulation.",
+          "Do not compute via an explicit intermediate transposed copy of `B`.",
+          "Do not assume non-multiple tail-free dimensions without masking/fallback."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 2.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Technically coherent but high risk. A custom TN GEMM specialized for this shape could address occupancy/register issues, yet beating cuBLAS on a large dense GEMM is unlikely without substantial tuning effort. Good fallback research path, not a top practical choice.",
+          "claude-compatible": "Custom TN GEMM kernels rarely beat cuBLAS for large shapes like 2048x4096x8192. High implementation risk, uncertain occupancy gains, and significant correctness surface area. Only worth pursuing after all library-based paths are exhausted.",
+          "gemini-compatible": "A custom TN kernel tailored for occupancy could theoretically outperform cuBLAS if register pressure is the main bottleneck, but implementation risk is high."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "persistent_backend_state_and_fastpath_dispatch",
+        "summary": "Trim host-side overhead around the already-good GEMM kernel by making the extension maintain persistent cuBLAS/cuBLASLt state, validating shapes cheaply, and optionally specializing the call path for the observed fixed dimensions; this is lower risk than replacing the kernel and complements the small phase-1 gain from bypassing PyTorch matmul.",
+        "target_anchors": [
+          "user_helpers",
+          "init_body",
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Create persistent backend state once per extension load instead of reconstructing descriptors or preferences per call.",
+          "Add a shape-specialized fastpath for the benchmark dimensions with a generic fallback for other sizes.",
+          "Keep checks focused on the actual contract needed by the kernel path to minimize repeated host work.",
+          "Avoid changing the Python-visible signature or semantics."
+        ],
+        "expected_gain": "Small; mostly worthwhile if benchmark timing includes launch/setup overhead in addition to the kernel.",
+        "risk_notes": [
+          "Nsight evidence points mainly to kernel behavior, so host-side savings may be hard to measure.",
+          "Persistent state must be stream-safe and device-aware.",
+          "Over-specialization can reduce generality without moving the main bottleneck."
+        ],
+        "memory_methods": [
+          "Persist handles/descriptors/workspace across calls.",
+          "Reuse output-compatible dispatch metadata keyed by device and shape."
+        ],
+        "mutation_axes": [
+          "descriptor_caching",
+          "shape_fastpathing",
+          "validation_path_length",
+          "workspace_reuse"
+        ],
+        "forbidden_patterns": [
+          "Do not allocate/free large temporary buffers on every call.",
+          "Do not hardcode only one shape without a safe fallback.",
+          "Do not introduce global state that ignores current CUDA device/stream."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 3.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Low-risk cleanup with limited upside. Persistent state, descriptor caching, and shape fastpaths are sensible and safe, especially if benchmark timing includes host overhead, but the profile suggests kernel execution dominates. Good complement, unlikely to move the needle alone.",
+          "claude-compatible": "Host-side overhead reduction is unlikely to move the needle for large GEMM kernels where kernel execution dominates. Persistent state is good hygiene but not a performance strategy here. Low risk but also low expected gain.",
+          "gemini-compatible": "Caching backend state reduces host overhead, but for large GEMMs, the kernel execution time dominates, making this a low-impact optimization."
+        },
+        "priority": 2
+      },
+      {
+        "strategy_id": "strategy_07",
+        "intent": "semantic_guarded_tf32_tensorop_path",
+        "summary": "Add a guarded Tensor Core path that uses TF32-capable GEMM only when it matches framework math-policy expectations, since Ampere tensor-op kernels may outperform strict FP32 but the prior unconditional `GemmEx`/TF32 mutation failed correctness.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_2",
+          "user_helpers"
+        ],
+        "implementation_hints": [
+          "Gate the fast path on dtype, hardware capability, and the active PyTorch/cuBLAS TF32 policy rather than forcing math mode locally.",
+          "Keep the existing strict-FP32 TN path as the default fallback for correctness-sensitive runs.",
+          "Restrict any Tensor Core variant to the already aligned large-K case where it is most likely to help.",
+          "Treat this as a dispatch refinement, not a model/API change."
+        ],
+        "expected_gain": "Potentially moderate on Ampere if TF32 is allowed by policy; otherwise none because the fallback should remain active.",
+        "risk_notes": [
+          "Previous TF32-style mutation produced a correctness error, so policy handling and numeric expectations are the main hazards.",
+          "If benchmark correctness uses tight tolerances, this path may be unusable even when hardware supports it.",
+          "Can add branching complexity for little benefit if the current cuBLAS path already selects tensor-op kernels under allowed settings."
+        ],
+        "memory_methods": [
+          "No extra tensor copies; reuse existing direct TN operands.",
+          "Prefer library-managed Tensor Core kernels rather than custom mixed-precision accumulation logic."
+        ],
+        "mutation_axes": [
+          "math_mode_gating",
+          "compute_type_selection",
+          "dispatch_conditions",
+          "fallback_policy"
+        ],
+        "forbidden_patterns": [
+          "Do not forcibly enable TF32 for all calls.",
+          "Do not silently relax output correctness.",
+          "Do not remove the existing exact-semantic fallback."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 3.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Balanced compromise if TF32 is allowed by policy. Guarding a tensor-op fast path behind existing framework settings is much safer than forcing TF32, and retaining exact fallback protects correctness. Value depends heavily on whether benchmark tolerances and runtime policy permit TF32 at all.",
+          "claude-compatible": "Guarded TF32 dispatch is conceptually sound but adds branching complexity for uncertain gain. If strategy_02 (direct math mode setting) works, this is redundant. If correctness tolerances are tight, the fast path is unusable anyway. The fallback-heavy design limits upside.",
+          "gemini-compatible": "Guarding TF32 based on global policies is safer for correctness but adds complexity and might just fall back to the baseline in strict environments."
+        },
+        "priority": 2
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "Use torch.backends.cuda.matmul.allow_tf32 and dispatch via ATen's mm directly from CUDA extension",
+        "summary": "Instead of calling cublasSgemm directly, call at::mm(a, b.t()) from within the CUDA extension, which goes through ATen's optimized dispatch that respects the global TF32 setting. Alternatively, set allow_tf32=True in the forward pass before calling the extension. This is the simplest change and may unlock Tensor Cores without any cuBLAS API changes.",
+        "target_anchors": [
+          "forward_stmt_1",
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "In forward_stmt_1, add: torch.backends.cuda.matmul.allow_tf32 = True before calling the extension",
+          "Or in cuda_cu, replace the cublasSgemm call with: return at::mm(a, b.t()); which uses ATen's optimized path",
+          "ATen mm dispatch on Ampere with allow_tf32=True will select Tensor Core kernels automatically",
+          "This approach is minimal-change and low-risk",
+          "Alternatively set CUBLAS_MATH_DISALLOW_REDUCED_PRECISION_REDUCTION flag only"
+        ],
+        "expected_gain": "1.5-3x if TF32 Tensor Cores are activated; minimal if already enabled globally",
+        "risk_notes": [
+          "Setting allow_tf32 globally may affect other operations in the model",
+          "at::mm(a, b.t()) may materialize the transpose â use at::mm with explicit contiguous b if needed",
+          "If the benchmark already has allow_tf32=True this will have no effect"
+        ],
+        "memory_methods": [
+          "No additional memory allocation"
+        ],
+        "mutation_axes": [
+          "forward_stmt_1",
+          "cuda_cu"
+        ],
+        "forbidden_patterns": [
+          "changing the exported function signature",
+          "modifying cuda_cpp pybind exports",
+          "materializing b.t() as a contiguous tensor unnecessarily"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 1.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Low usefulness and elevated semantic risk. Changing global TF32 policy in forward affects unrelated ops, and calling at::mm(a, b.t()) from the extension may reintroduce transpose/materialization behavior the custom path is avoiding. Too indirect for this benchmark target.",
+          "claude-compatible": "Using at::mm or setting allow_tf32 globally is simple and low-risk, but may have no effect if TF32 is already enabled or if at::mm materializes the transpose. The global state side-effect is a mild concern. Useful as a quick diagnostic but not a reliable optimization strategy on its own.",
+          "gemini-compatible": "Falling back to ATen's dispatch defeats the purpose of a custom CUDA extension, even if it might accidentally enable better performance via global flags."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "Custom tiled CUDA GEMM kernel with 128x128 tiles and shared memory to bypass cuBLAS register pressure",
+        "summary": "Implement a hand-written tiled SGEMM kernel with 128x128 output tiles, 8-wide vectorized loads (float4), and double-buffered shared memory to hide latency. This avoids the register pressure of ampere_sgemm_128x64_tn (122 registers/thread limiting to 4 warps/SM) by using a more occupancy-friendly register budget.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "user_helpers"
+        ],
+        "implementation_hints": [
+          "Use BLOCK_M=128, BLOCK_N=128, BLOCK_K=16 tile sizes with 16x16 thread blocks (256 threads)",
+          "Each thread computes a 8x8 output sub-tile using register accumulation",
+          "Load A tile (M,K) and B tile (N,K) into shared memory using float4 vectorized loads",
+          "B is accessed as B[n,k] (row-major) which is a natural row access â no transpose needed in smem",
+          "Use __syncthreads() between pipeline stages",
+          "Target <64 registers per thread to allow 8+ warps per SM",
+          "Compute: for each (bm, bn) block, accumulate over K in BLOCK_K steps",
+          "Launch grid: (ceil(N/128), ceil(M/128)), block: (16,16)"
+        ],
+        "expected_gain": "Potentially 1.5-2.5x if occupancy increases from 4 to 8+ warps/SM; risky if not tuned well",
+        "risk_notes": [
+          "Custom kernels rarely beat cuBLAS for large square matrices",
+          "Register count is hard to control without pragma unroll tuning",
+          "Boundary handling for non-multiple-of-tile dimensions adds complexity",
+          "May be slower than cuBLAS TF32 path if achieved"
+        ],
+        "memory_methods": [
+          "Shared memory double buffering",
+          "float4 vectorized global loads"
+        ],
+        "mutation_axes": [
+          "cuda_cu",
+          "cuda_cpp",
+          "user_helpers"
+        ],
+        "forbidden_patterns": [
+          "using more than 64 registers per thread",
+          "removing the cuBLAS fallback entirely without testing",
+          "changing forward_stmt_2 API"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 2.0,
+          "openai-compatible": 1.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Very high implementation risk for low expected practical value. The kernel sketch is generic, unlikely to surpass cuBLAS on this large GEMM, and its register/occupancy assumptions are speculative. Keeping a cuBLAS fallback helps, but this is still a poor risk-adjusted bet.",
+          "claude-compatible": "Custom 128x128 tiled SGEMM is high effort and high risk for a shape where cuBLAS already deploys an optimized Ampere kernel. Occupancy argument is plausible but register count is hard to control, and boundary handling adds correctness risk. Should only be attempted after all cuBLAS/cublasLt paths are exhausted.",
+          "gemini-compatible": "A custom tiled kernel with specific dimensions (128x128) is a standard optimization exercise, though beating cuBLAS remains challenging."
+        },
+        "priority": 2
+      }
+    ],
+    "proposal_errors": {
+      "gemini-compatible": "Expecting ',' delimiter: line 35 column 6 (char 1409)"
+    },
+    "review_errors": {},
+    "deliberation_round": 1
+  },
+  "phase_transition": {
+    "source_phase": 1,
+    "target_phase": 2,
+    "split_attempts": 5,
+    "trigger_attempt": 5,
+    "root": {
+      "node_id": "root",
+      "strategy_name": null,
+      "runtime": 0.00312,
+      "speedup": 1.0064102564102564,
+      "plan_summary": null,
+      "changed_regions": [],
+      "lineage": [
+        "root"
+      ]
+    },
+    "selected": {
+      "node_id": "n1",
+      "strategy_name": "strategy_01",
+      "runtime": 0.0031,
+      "speedup": 1.0096774193548388,
+      "plan_summary": "Replace the Python `torch.matmul(A, B.T)` path with a custom CUDA extension entrypoint that dispatches a TN GEMM directly on `A:[M,K]` and `B:[N,K]` using library transpose flags, avoiding any explicit transpose/materialization of `B`.",
+      "changed_regions": [
+        "cuda_cpp",
+        "cuda_cu",
+        "forward_stmt_2"
+      ],
+      "lineage": [
+        "root",
+        "n1"
+      ]
+    },
+    "attempts": [
+      {
+        "node_id": "n1",
+        "parent_id": "root",
+        "strategy_name": "strategy_01",
+        "attempt_mode": "explore",
+        "mutation_family": "library_tn_dispatch",
+        "single_change_focus": "Implement one exported CUDA GEMM fast path and replace the fallback return with a direct call to it.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0031,
+        "speedup": 1.0096774193548388,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Replace the Python `torch.matmul(A, B.T)` path with a custom CUDA extension entrypoint that dispatches a TN GEMM directly on `A:[M,K]` and `B:[N,K]` using library transpose flags, avoiding any explicit transpose/materialization of `B`."
+      },
+      {
+        "node_id": "n2",
+        "parent_id": "n1",
+        "strategy_name": "strategy_08",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "tf32_gemmex_swap",
+        "single_change_focus": "Replace the current `cublasSgemm` call in the CUDA wrapper with a `cublasGemmEx` Tensor Core path that explicitly enables TF32 math on the active cuBLAS handle for this operation, then restores the prior math mode.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "plan_summary": "Refine the existing direct-library TN GEMM path by keeping the same exported entrypoint and forward call, but switch the CUDA-side GEMM to an explicit Tensor Core-friendly cuBLAS path for FP32 inputs on Ampere-class hardware."
+      },
+      {
+        "node_id": "n3",
+        "parent_id": "n2",
+        "strategy_name": "strategy_08",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "debug_local_repair",
+        "single_change_focus": "small_local_repair",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00311,
+        "speedup": 0.9967845659163987,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing direct-library TN GEMM path by keeping the same exported entrypoint and forward call, but switch the CUDA-side GEMM to an explicit Tensor Core-friendly cuBLAS path for FP32 inputs on Ampere-class hardware."
+      },
+      {
+        "node_id": "n4",
+        "parent_id": "n1",
+        "strategy_name": "strategy_05",
+        "attempt_mode": "best_lineage_push",
+        "mutation_family": "cublaslt_tn_workspace",
+        "single_change_focus": "Replace the body of `matmul_with_transposed_b_cuda` with a `cublasLtMatmul` TN fast path plus fallback to the existing `cublasSgemm` implementation.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00312,
+        "speedup": 1.0064102564102564,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing direct library TN dispatch by swapping the plain `cublasSgemm` call for a `cublasLtMatmul` TN fast path with a small temporary workspace and immediate fallback to the current SGEMM path if heuristic selection fails."
+      },
+      {
+        "node_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_01",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "gemmex_tn_refine",
+        "single_change_focus": "Swap the current `cublasSgemm` call in `matmul_with_transposed_b_cuda` for an equivalent `cublasGemmEx` TN dispatch with explicit CUDA_R_32F operands/output and Tensor Op default algorithm.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00311,
+        "speedup": 1.0,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing direct library TN dispatch by changing only the CUDA GEMM call site to an explicit `cublasGemmEx` Tensor Op path while keeping the exported API, output allocation, and forward wiring unchanged."
+      }
+    ],
+    "trace_summary": "effective=n1:Implement one exported CUDA GEMM fast path and replace the fallback return with a direct call to it.:1.010x; n5:Swap the current `cublasSgemm` call in `matmul_with_transposed_b_cuda` for an equivalent `cublasGemmEx` TN dispatch with explicit CUDA_R_32F operands/output and Tensor Op default algorithm.:1.000x | flat=n3:small_local_repair:0.997x; n4:Replace the body of `matmul_with_transposed_b_cuda` with a `cublasLtMatmul` TN fast path plus fallback to the existing `cublasSgemm` implementation.:1.006x | failed=n2:Replace the current `cublasSgemm` call in the CUDA wrapper with a `cublasGemmEx` Tensor Core path that explicitly enables TF32 math on the active cuBLAS handle for this operation, then restores the prior math mode.:correctness_error",
+    "root_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "ampere_sgemm_128x64_tn",
+        "row_count": 6,
+        "kernel_launch_count": 6,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 12.89,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 87.86,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 58.63,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 70.16,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 31.18,
+          "launch__registers_per_thread": 122,
+          "launch__occupancy_limit_registers": 4,
+          "launch__occupancy_limit_shared_mem": 4,
+          "launch__occupancy_limit_warps": 12,
+          "gpu__time_duration.avg": 3248288,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.2,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.01,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.2,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 8592,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 10277526.63
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "selected_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "ampere_sgemm_128x64_tn",
+        "row_count": 6,
+        "kernel_launch_count": 6,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 13.62,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 88.24,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 58.52,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 70.0,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 31.04,
+          "launch__registers_per_thread": 122,
+          "launch__occupancy_limit_registers": 4,
+          "launch__occupancy_limit_shared_mem": 4,
+          "launch__occupancy_limit_warps": 12,
+          "gpu__time_duration.avg": 3243104,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.22,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.01,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.19,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 8592,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 10011268.65
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "diagnostics_delta": {
+      "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 0.7299999999999986,
+      "gpu__time_duration.avg": -5184,
+      "l1tex__throughput.avg.pct_of_peak_sustained_active": -0.10999999999999943,
+      "launch__occupancy_limit_registers": 0,
+      "launch__occupancy_limit_shared_mem": 0,
+      "launch__occupancy_limit_warps": 0,
+      "launch__registers_per_thread": 0,
+      "lts__throughput.avg.pct_of_peak_sustained_elapsed": 0.37999999999999545,
+      "sm__throughput.avg.pct_of_peak_sustained_elapsed": -0.1599999999999966,
+      "sm__warps_active.avg.pct_of_peak_sustained_active": -0.14000000000000057,
+      "smsp__sass_branch_targets_threads_divergent.avg": 0,
+      "smsp__sass_branch_targets_threads_uniform.avg": 0,
+      "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.01999999999999999,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": -0.010000000000000009,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+      "smsp__warps_eligible.avg": -266257.98000000045
+    }
+  },
+  "feedback_state": {
+    "total_attempts": 11,
+    "compile_rate": 1.0,
+    "correct_rate": 0.8181818181818182,
+    "best_speedup": 1.0193548387096776,
+    "best_strategy_name": "strategy_01",
+    "phase": "refinement",
+    "current_champion_id": "phase2_n2",
+    "current_champion_speedup": 1.0193548387096776,
+    "plateau_detected": false,
+    "recent_improvement_deltas": [
+      0.0032671629445824024,
+      0.003215434083601254,
+      0.8056562085726913,
+      0.018769221640971834
+    ],
+    "recent_regression_deltas": [
+      -0.0032671629445824024,
+      -0.7959787892178525,
+      -0.04443320861563371,
+      0.0
+    ],
+    "recent_successful_mutation_families": [
+      "cublaslt_workspace_cache",
+      "lt_workspace_reuse"
+    ],
+    "recent_failed_mutation_families": [
+      "custom_tiled_tn_kernel",
+      "cublaslt_deeper_heuristic",
+      "library_tn_dispatch"
+    ],
+    "last_mutation_outcome": "regressed_or_flat",
+    "recent_attempts": [
+      {
+        "attempt_id": "n4",
+        "parent_id": "n1",
+        "strategy_name": "strategy_05",
+        "mode": "best_lineage_push",
+        "mutation_family": "cublaslt_tn_workspace",
+        "speedup": 1.0064102564102564,
+        "parent_speedup": 1.0096774193548388,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the body of `matmul_with_transposed_b_cuda` with a `cublasLtMatmul` TN fast path plus fallback to the existing `cublasSgemm` implementation."
+      },
+      {
+        "attempt_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_01",
+        "mode": "mutate_champion",
+        "mutation_family": "gemmex_tn_refine",
+        "speedup": 1.0,
+        "parent_speedup": 0.9967845659163987,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Swap the current `cublasSgemm` call in `matmul_with_transposed_b_cuda` for an equivalent `cublasGemmEx` TN dispatch with explicit CUDA_R_32F operands/output and Tensor Op default algorithm."
+      },
+      {
+        "attempt_id": "phase2_n1",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_03",
+        "mode": "explore",
+        "mutation_family": "custom_tiled_tn_kernel",
+        "speedup": 0.21369863013698628,
+        "parent_speedup": 1.0096774193548388,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the current CUDA backend body with one shared-memory tiled custom TN kernel dispatch, keeping the same exported extension entrypoint and forward call site."
+      },
+      {
+        "attempt_id": "phase2_n2",
+        "parent_id": "phase2_n1",
+        "strategy_name": "strategy_01",
+        "mode": "explore",
+        "mutation_family": "cublaslt_workspace_cache",
+        "speedup": 1.0193548387096776,
+        "parent_speedup": 0.21369863013698628,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace only the `cuda_cu` backend body with a cached shape-specialized `cublasLtMatmul` TN implementation plus fallback to the existing exact path if no suitable heuristic is found."
+      },
+      {
+        "attempt_id": "phase2_n3",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_01",
+        "mode": "mutate_champion",
+        "mutation_family": "cublaslt_deeper_heuristic",
+        "speedup": 0.9749216300940439,
+        "parent_speedup": 1.0193548387096776,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Broaden only the `cublasLt` heuristic-selection block in `cuda_cu` to use a much larger workspace budget and multiple requested algorithms, while keeping the cached descriptors, dispatch shape, and fallback path intact."
+      },
+      {
+        "attempt_id": "phase2_n4",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_02",
+        "mode": "explore",
+        "mutation_family": "tf32_mathmode_guard",
+        "speedup": null,
+        "parent_speedup": 1.0096774193548388,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "correctness",
+        "failure_type": "correctness_error",
+        "single_change_focus": "Add a scoped TF32 math-mode toggle around the existing `cublasSgemm` call in `cuda_cu`, then restore the original mode immediately after the GEMM."
+      },
+      {
+        "attempt_id": "phase2_n5",
+        "parent_id": "phase2_n3",
+        "strategy_name": "strategy_01",
+        "mode": "mutate_champion",
+        "mutation_family": "lt_workspace_reuse",
+        "speedup": 0.9936908517350157,
+        "parent_speedup": 0.9749216300940439,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace only the per-call workspace allocation in the cached `cublasLt` fast path with persistent reusable workspace stored in the existing cache object and grown only when the selected heuristic requires more bytes."
+      },
+      {
+        "attempt_id": "phase2_root",
+        "parent_id": "n1",
+        "strategy_name": "strategy_01",
+        "mode": "explore",
+        "mutation_family": "library_tn_dispatch",
+        "speedup": 1.0096774193548388,
+        "parent_speedup": 1.0096774193548388,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Implement one exported CUDA GEMM fast path and replace the fallback return with a direct call to it."
+      }
+    ],
+    "champion": {
+      "node_id": "phase2_n2",
+      "speedup": 1.0193548387096776,
+      "strategy_name": "strategy_01",
+      "mutation_family": "cublaslt_workspace_cache",
+      "lineage": [
+        "root",
+        "n1",
+        "phase2_root",
+        "phase2_n1",
+        "phase2_n2"
+      ],
+      "recent_positive_mutations": [
+        {
+          "attempt_id": "phase2_n2",
+          "strategy_name": "strategy_01",
+          "mode": "explore",
+          "mutation_family": "cublaslt_workspace_cache",
+          "speedup": 1.0193548387096776,
+          "parent_speedup": 0.21369863013698628,
+          "single_change_focus": "Replace only the `cuda_cu` backend body with a cached shape-specialized `cublasLtMatmul` TN implementation plus fallback to the existing exact path if no suitable heuristic is found."
+        },
+        {
+          "attempt_id": "phase2_n5",
+          "strategy_name": "strategy_01",
+          "mode": "mutate_champion",
+          "mutation_family": "lt_workspace_reuse",
+          "speedup": 0.9936908517350157,
+          "parent_speedup": 0.9749216300940439,
+          "single_change_focus": "Replace only the per-call workspace allocation in the cached `cublasLt` fast path with persistent reusable workspace stored in the existing cache object and grown only when the selected heuristic requires more bytes."
+        }
+      ],
+      "recent_negative_mutations": [
+        {
+          "attempt_id": "phase2_n1",
+          "strategy_name": "strategy_03",
+          "mode": "explore",
+          "mutation_family": "custom_tiled_tn_kernel",
+          "speedup": 0.21369863013698628,
+          "parent_speedup": 1.0096774193548388,
+          "single_change_focus": "Replace the current CUDA backend body with one shared-memory tiled custom TN kernel dispatch, keeping the same exported extension entrypoint and forward call site."
+        },
+        {
+          "attempt_id": "phase2_n3",
+          "strategy_name": "strategy_01",
+          "mode": "mutate_champion",
+          "mutation_family": "cublaslt_deeper_heuristic",
+          "speedup": 0.9749216300940439,
+          "parent_speedup": 1.0193548387096776,
+          "single_change_focus": "Broaden only the `cublasLt` heuristic-selection block in `cuda_cu` to use a much larger workspace budget and multiple requested algorithms, while keeping the cached descriptors, dispatch shape, and fallback path intact."
+        },
+        {
+          "attempt_id": "phase2_root",
+          "strategy_name": "strategy_01",
+          "mode": "explore",
+          "mutation_family": "library_tn_dispatch",
+          "speedup": 1.0096774193548388,
+          "parent_speedup": 1.0096774193548388,
+          "single_change_focus": "Implement one exported CUDA GEMM fast path and replace the fallback return with a direct call to it."
+        }
+      ],
+      "plateau_detected": false,
+      "lineage_plateau_depth": 0
+    }
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "user_helpers",
+      "region_role": "helper",
+      "start_line": 36,
+      "end_line": 37,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 40,
+      "end_line": 45,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 49,
+      "end_line": 55,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 64,
+      "end_line": 65,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 68,
+      "end_line": 81,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n\"\"\"\n        Performs matrix multiplication.\n\n        Args:\n            A: Input tensor of shape (M, K).\n            B: Input tensor of shape (K, N).\n\n        Returns:\n            Output tensor of shape (M, N).\n        \"\"\"",
+      "source_hash": "ad276318aba6"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 82,
+      "end_line": 84,
+      "source_excerpt": "return torch.matmul(A, B.T)",
+      "source_hash": "3c53aa012b75"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p17_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a single matrix multiplication (C = A * B)\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Performs matrix multiplication.\n\n                Args:\n                    A: Input tensor of shape (M, K).\n                    B: Input tensor of shape (K, N).\n\n                Returns:\n                    Output tensor of shape (M, N).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return torch.matmul(A, B.T)\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00312,
+      "score": 0.00312,
+      "logs": [
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3238616",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_b_gpu4/08_L1_P17_Auto_P17_20260716_045623/eval_traces/20260716_045625_3238589_6365cd94_kernelbench_l1_17_17_matmul_with_transposed_b"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00314,
+      "speedup": 1.0064102564102564,
+      "reference_runtimes": {
+        "torch_eager": 0.00314
+      },
+      "speedups": {
+        "torch_eager": 1.0064102564102564
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": null,
+      "single_change_focus": null,
+      "mutation_family": null,
+      "target_metric": null
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p17_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b);\n\ntorch::Tensor matmul_with_transposed_b(torch::Tensor a, torch::Tensor b) {\n    return matmul_with_transposed_b_cuda(a, b);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matmul_with_transposed_b\", &matmul_with_transposed_b, \"Matmul with logical transposed B (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <ATen/cuda/CUDAContext.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b) {\n    TORCH_CHECK(a.is_cuda(), \"a must be a CUDA tensor\");\n    TORCH_CHECK(b.is_cuda(), \"b must be a CUDA tensor\");\n    TORCH_CHECK(a.dtype() == torch::kFloat32, \"a must be float32\");\n    TORCH_CHECK(b.dtype() == torch::kFloat32, \"b must be float32\");\n    TORCH_CHECK(a.dim() == 2, \"a must be 2D\");\n    TORCH_CHECK(b.dim() == 2, \"b must be 2D\");\n    TORCH_CHECK(a.is_contiguous(), \"a must be contiguous\");\n    TORCH_CHECK(b.is_contiguous(), \"b must be contiguous\");\n\n    // a: [M, K], b: [N, K], out: [M, N]\n    // We compute out = a @ b.T\n    // In cuBLAS column-major: C = A^T * B^T where A,B,C are column-major\n    // Equivalently: out^T = b @ a^T\n    // cuBLAS: C(N,M) = op(B)(N,K) * op(A)(K,M)\n    // With op(B)=N (B is [N,K] stored row-major = [K,N] col-major) and op(A)=T\n    // We call: C = B * A^T  => C is [N,M] col-major = [M,N] row-major = out\n\n    int64_t M = a.size(0);\n    int64_t K = a.size(1);\n    int64_t N = b.size(0);\n    TORCH_CHECK(b.size(1) == K, \"b.size(1) must equal a.size(1)\");\n\n    auto out = torch::empty({M, N}, a.options());\n\n    cublasHandle_t handle = at::cuda::getCurrentCUDABlasHandle();\n\n    float alpha = 1.0f;\n    float beta = 0.0f;\n\n    // cuBLAS is column-major.\n    // We want: out[M,N] = a[M,K] @ b[N,K]^T\n    // Treat row-major [M,N] as col-major [N,M].\n    // Compute col-major C[N,M] = B[N,K] * A[M,K]^T\n    // cublasSgemm(handle, transa, transb, m, n, k, alpha, A, lda, B, ldb, beta, C, ldc)\n    // where m=N, n=M, k=K\n    // A_cublas = b (row-major [N,K] = col-major [K,N]), transa=N => op(A)=A, lda=K\n    // B_cublas = a (row-major [M,K] = col-major [K,M]), transb=T => op(B)=B^T=[M,K]^T=[K,M]->wait\n    // Let me redo:\n    // C_col[N,M] = B_col[N,K] * A_col[K,M]\n    // b row-major [N,K] stored as col-major [K,N]: to get col-major [N,K] we need CUBLAS_OP_T on b\n    // a row-major [M,K] stored as col-major [K,M]: to get col-major [K,M] we need CUBLAS_OP_N on a\n    // cublasSgemm: C(m,n) = op(A)(m,k) * op(B)(k,n)\n    // We want C_col(N,M): m=N, n=M, k=K\n    // op(A_cublas)(N,K): A_cublas=b_ptr, CUBLAS_OP_T, lda=N (b is col-major [K,N], lda=K... )\n    // This is getting confusing. Use the standard trick:\n    // out = a @ b^T  <=>  out^T = b @ a^T\n    // In cuBLAS col-major: compute out^T which is [N,M] col-major\n    // = b (as [N,K] row-major = [K,N] col-major, need CUBLAS_OP_T to get [N,K])\n    //   @ a^T (a is [M,K] row-major = [K,M] col-major, CUBLAS_OP_N gives [K,M], we need [K,M] -> that's a^T in row-major sense)\n    // cublasSgemm(handle, CUBLAS_OP_T, CUBLAS_OP_N, N, M, K, &alpha,\n    //             b_ptr, K,   // A in col-major is [K,N], op=T gives [N,K], lda=K\n    //             a_ptr, K,   // B in col-major is [K,M], op=N gives [K,M], ldb=K\n    //             &beta, out_ptr, N)  // C is [N,M] col-major, ldc=N\n    // Result: out_ptr stores [N,M] col-major = [M,N] row-major = desired output\n\n    cublasSgemm(\n        handle,\n        CUBLAS_OP_T,  // op on b: treat b's col-major [K,N] as [N,K]\n        CUBLAS_OP_N,  // op on a: treat a's col-major [K,M] as [K,M]\n        (int)N, (int)M, (int)K,\n        &alpha,\n        b.data_ptr<float>(), (int)K,\n        a.data_ptr<float>(), (int)K,\n        &beta,\n        out.data_ptr<float>(), (int)N\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a single matrix multiplication (C = A * B)\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Performs matrix multiplication.\n\n                Args:\n                    A: Input tensor of shape (M, K).\n                    B: Input tensor of shape (K, N).\n\n                Returns:\n                    Output tensor of shape (M, N).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return _stark_get_extension().matmul_with_transposed_b(A, B);\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2",
+        "n4",
+        "phase2_root"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Replace the Python `torch.matmul(A, B.T)` path with a custom CUDA extension entrypoint that dispatches a TN GEMM directly on `A:[M,K]` and `B:[N,K]` using library transpose flags, avoiding any explicit transpose/materialization of `B`.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the placeholder with a minimal C++ binding that declares an exported function `torch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b);`, defines a thin wrapper `torch::Tensor matmul_with_transposed_b(torch::Tensor a, torch::Tensor b)` returning the CUDA implementation, and registers it in `PYBIND11_MODULE` as `m.def(\"matmul_with_transposed_b\", &matmul_with_transposed_b, \"Matmul with logical transposed B (CUDA)\");`. Keep this file limited to declarations/bindings; do not add unrelated logic.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the placeholder with a CUDA implementation that includes the necessary ATen/CUDA and cuBLAS headers, validates that `a` and `b` are CUDA, float32, 2D, and contiguous, interprets shapes as `a:[M,K]` and `b:[N,K]`, allocates `out = torch::empty({M, N}, a.options())`, creates or acquires a cuBLAS handle on the current CUDA stream, and launches a GEMM using library transpose flags so the original `b` storage is consumed as the transposed operand without materializing `B.T`. Use row-major aware leading dimensions/transpose settings consistent with computing `out = a @ b.t()`. Return `out` and raise a clear error on unsupported inputs.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace `return torch.matmul(A, B.T)` with `return _stark_get_extension().matmul_with_transposed_b(A, B)` so forward dispatches directly to the custom CUDA entrypoint while leaving the signature and surrounding scaffold unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0031,
+      "score": 0.0031,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3239048",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_b_gpu4/08_L1_P17_Auto_P17_20260716_045623/eval_traces/20260716_045902_3238589_99f4bb95_kernelbench_l1_17_17_matmul_with_transposed_b"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00313,
+      "speedup": 1.0096774193548388,
+      "reference_runtimes": {
+        "torch_eager": 0.00313
+      },
+      "speedups": {
+        "torch_eager": 1.0096774193548388
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Routing the benchmark directly through a CUDA extension entrypoint that allocates the output and invokes cuBLAS/cuBLASLt with `op(A)=N` and `op(B)=T` on the original `B` storage will shave framework overhead and avoid any hidden transpose/view handling, yielding a small speedup while keeping the same underlying high-performance GEMM family.",
+      "single_change_focus": "Implement one exported CUDA GEMM fast path and replace the fallback return with a direct call to it.",
+      "mutation_family": "library_tn_dispatch",
+      "target_metric": "speedup"
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p17_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b);\n\ntorch::Tensor matmul_with_transposed_b(torch::Tensor a, torch::Tensor b) {\n    return matmul_with_transposed_b_cuda(a, b);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matmul_with_transposed_b\", &matmul_with_transposed_b, \"Matmul with logical transposed B (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <ATen/cuda/CUDAContext.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b) {\n    TORCH_CHECK(a.is_cuda(), \"a must be a CUDA tensor\");\n    TORCH_CHECK(b.is_cuda(), \"b must be a CUDA tensor\");\n    TORCH_CHECK(a.dtype() == torch::kFloat32, \"a must be float32\");\n    TORCH_CHECK(b.dtype() == torch::kFloat32, \"b must be float32\");\n    TORCH_CHECK(a.dim() == 2, \"a must be 2D\");\n    TORCH_CHECK(b.dim() == 2, \"b must be 2D\");\n    TORCH_CHECK(a.is_contiguous(), \"a must be contiguous\");\n    TORCH_CHECK(b.is_contiguous(), \"b must be contiguous\");\n\n    // a: [M, K], b: [N, K], out: [M, N]\n    // out = a @ b^T\n    // Using the standard col-major trick:\n    // out^T = b @ a^T\n    // cuBLAS col-major: C[N,M] = op(b)[N,K] * op(a)[K,M]\n    // op(b)=T (b row-major [N,K] = col-major [K,N], op=T gives [N,K], lda=K)\n    // op(a)=N (a row-major [M,K] = col-major [K,M], op=N gives [K,M], ldb=K)\n    // C is [N,M] col-major = [M,N] row-major = desired output, ldc=N\n\n    int64_t M = a.size(0);\n    int64_t K = a.size(1);\n    int64_t N = b.size(0);\n    TORCH_CHECK(b.size(1) == K, \"b.size(1) must equal a.size(1)\");\n\n    auto out = torch::empty({M, N}, a.options());\n\n    cublasHandle_t handle = at::cuda::getCurrentCUDABlasHandle();\n\n    // Save current math mode and enable TF32 Tensor Op math\n    cublasMath_t prev_math_mode;\n    cublasStatus_t status;\n    status = cublasGetMathMode(handle, &prev_math_mode);\n    TORCH_CHECK(status == CUBLAS_STATUS_SUCCESS, \"cublasGetMathMode failed\");\n    status = cublasSetMathMode(handle, CUBLAS_TF32_TENSOR_OP_MATH);\n    TORCH_CHECK(status == CUBLAS_STATUS_SUCCESS, \"cublasSetMathMode failed\");\n\n    float alpha = 1.0f;\n    float beta = 0.0f;\n\n    status = cublasGemmEx(\n        handle,\n        CUBLAS_OP_T,  // op on b\n        CUBLAS_OP_N,  // op on a\n        (int)N, (int)M, (int)K,\n        &alpha,\n        b.data_ptr<float>(), CUDA_R_32F, (int)K,\n        a.data_ptr<float>(), CUDA_R_32F, (int)K,\n        &beta,\n        out.data_ptr<float>(), CUDA_R_32F, (int)N,\n        CUBLAS_COMPUTE_32F_FAST_TF32,\n        CUBLAS_GEMM_DEFAULT_TENSOR_OP\n    );\n    TORCH_CHECK(status == CUBLAS_STATUS_SUCCESS, \"cublasGemmEx failed with status \", (int)status);\n\n    // Restore previous math mode\n    cublasSetMathMode(handle, prev_math_mode);\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a single matrix multiplication (C = A * B)\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Performs matrix multiplication.\n\n                Args:\n                    A: Input tensor of shape (M, K).\n                    B: Input tensor of shape (K, N).\n\n                Returns:\n                    Output tensor of shape (M, N).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return _stark_get_extension().matmul_with_transposed_b(A, B);\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_08",
+      "plan_summary": "Refine the existing direct-library TN GEMM path by keeping the same exported entrypoint and forward call, but switch the CUDA-side GEMM to an explicit Tensor Core-friendly cuBLAS path for FP32 inputs on Ampere-class hardware.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current GEMM invocation logic inside `matmul_with_transposed_b_cuda` so it still validates CUDA/float32/2D/contiguous inputs and computes the same `out = A @ B.T`, but uses `cublasGemmEx` instead of `cublasSgemm`. Keep the current output allocation and TN mapping (`out^T = b @ a^T`) unchanged. Before the GEMM, query and save the current cuBLAS math mode, set the handle to `CUBLAS_TF32_TENSOR_OP_MATH`, call `cublasGemmEx` with `CUDA_R_32F` input/output types and `CUBLAS_GEMM_DEFAULT_TENSOR_OP`, using the same transpose flags and leading dimensions as the current working mapping (`op(b)=T`, `op(a)=N`, dimensions `N, M, K`, `lda=K`, `ldb=K`, `ldc=N`), then restore the previous math mode. Add `TORCH_CHECK` on the returned cuBLAS statuses so failures surface clearly instead of silently returning a bad tensor.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "correctness_issue=Output mismatch",
+        "max_difference=['0.251953', '0.259521', '0.254150']",
+        "avg_difference=['0.206949', '0.207107', '0.207053']",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3239353",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_b_gpu4/08_L1_P17_Auto_P17_20260716_045623/eval_traces/20260716_050154_3238589_2d720c65_kernelbench_l1_17_17_matmul_with_transposed_b"
+      ],
+      "failure_type": "correctness_error",
+      "node_status": "correctness_fail",
+      "selection_reason": "debug_retry_failure",
+      "prune_reason": null,
+      "debug_attempts": 1,
+      "latest_failure_stage": "correctness",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "The current extension likely uses `cublasSgemm`, which can miss the fastest Ampere Tensor Core path for FP32 workloads. Replacing it with an explicit `cublasGemmEx` call configured for TF32 Tensor Op math should improve throughput for this large 2048x4096x8192 GEMM without changing the surrounding structure.",
+      "single_change_focus": "Replace the current `cublasSgemm` call in the CUDA wrapper with a `cublasGemmEx` Tensor Core path that explicitly enables TF32 math on the active cuBLAS handle for this operation, then restores the prior math mode.",
+      "mutation_family": "tf32_gemmex_swap",
+      "target_metric": "speedup"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p17_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b);\n\ntorch::Tensor matmul_with_transposed_b(torch::Tensor a, torch::Tensor b) {\n    return matmul_with_transposed_b_cuda(a, b);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matmul_with_transposed_b\", &matmul_with_transposed_b, \"Matmul with logical transposed B (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <ATen/cuda/CUDAContext.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b) {\n    TORCH_CHECK(a.is_cuda(), \"a must be a CUDA tensor\");\n    TORCH_CHECK(b.is_cuda(), \"b must be a CUDA tensor\");\n    TORCH_CHECK(a.dtype() == torch::kFloat32, \"a must be float32\");\n    TORCH_CHECK(b.dtype() == torch::kFloat32, \"b must be float32\");\n    TORCH_CHECK(a.dim() == 2, \"a must be 2D\");\n    TORCH_CHECK(b.dim() == 2, \"b must be 2D\");\n    TORCH_CHECK(a.is_contiguous(), \"a must be contiguous\");\n    TORCH_CHECK(b.is_contiguous(), \"b must be contiguous\");\n\n    int64_t M = a.size(0);\n    int64_t K = a.size(1);\n    int64_t N = b.size(0);\n    TORCH_CHECK(b.size(1) == K, \"b.size(1) must equal a.size(1)\");\n\n    auto out = torch::empty({M, N}, a.options());\n    cublasHandle_t handle = at::cuda::getCurrentCUDABlasHandle();\n\n    const float alpha = 1.0f;\n    const float beta = 0.0f;\n\n    cublasStatus_t status = cublasSgemm(\n        handle,\n        CUBLAS_OP_T,\n        CUBLAS_OP_N,\n        static_cast<int>(N),\n        static_cast<int>(M),\n        static_cast<int>(K),\n        &alpha,\n        b.data_ptr<float>(),\n        static_cast<int>(K),\n        a.data_ptr<float>(),\n        static_cast<int>(K),\n        &beta,\n        out.data_ptr<float>(),\n        static_cast<int>(N)\n    );\n    TORCH_CHECK(status == CUBLAS_STATUS_SUCCESS, \"cublasSgemm failed with status \", static_cast<int>(status));\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a single matrix multiplication (C = A * B)\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Performs matrix multiplication.\n\n                Args:\n                    A: Input tensor of shape (M, K).\n                    B: Input tensor of shape (K, N).\n\n                Returns:\n                    Output tensor of shape (M, N).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return _stark_get_extension().matmul_with_transposed_b(A, B);\n        # <<<END_IMPROVE>>>\n",
+      "origin": "debug",
+      "child_ids": [
+        "n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_08",
+      "plan_summary": "Refine the existing direct-library TN GEMM path by keeping the same exported entrypoint and forward call, but switch the CUDA-side GEMM to an explicit Tensor Core-friendly cuBLAS path for FP32 inputs on Ampere-class hardware.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current GEMM invocation logic inside `matmul_with_transposed_b_cuda` so it still validates CUDA/float32/2D/contiguous inputs and computes the same `out = A @ B.T`, but uses `cublasGemmEx` instead of `cublasSgemm`. Keep the current output allocation and TN mapping (`out^T = b @ a^T`) unchanged. Before the GEMM, query and save the current cuBLAS math mode, set the handle to `CUBLAS_TF32_TENSOR_OP_MATH`, call `cublasGemmEx` with `CUDA_R_32F` input/output types and `CUBLAS_GEMM_DEFAULT_TENSOR_OP`, using the same transpose flags and leading dimensions as the current working mapping (`op(b)=T`, `op(a)=N`, dimensions `N, M, K`, `lda=K`, `ldb=K`, `ldc=N`), then restore the previous math mode. Add `TORCH_CHECK` on the returned cuBLAS statuses so failures surface clearly instead of silently returning a bad tensor.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00311,
+      "score": 0.00311,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3239561",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_b_gpu4/08_L1_P17_Auto_P17_20260716_045623/eval_traces/20260716_050426_3238589_caafa6f9_kernelbench_l1_17_17_matmul_with_transposed_b"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0031,
+      "speedup": 0.9967845659163987,
+      "reference_runtimes": {
+        "torch_eager": 0.0031
+      },
+      "speedups": {
+        "torch_eager": 0.9967845659163987
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Fix the local failure without changing the successful structure.",
+      "single_change_focus": "small_local_repair",
+      "mutation_family": "debug_local_repair",
+      "target_metric": "speedup"
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p17_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b);\n\ntorch::Tensor matmul_with_transposed_b(torch::Tensor a, torch::Tensor b) {\n    return matmul_with_transposed_b_cuda(a, b);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matmul_with_transposed_b\", &matmul_with_transposed_b, \"Matmul with logical transposed B (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <cublasLt.h>\n#include <ATen/cuda/CUDAContext.h>\n\nstatic cublasLtHandle_t s_lt_handle = nullptr;\nstatic bool s_lt_initialized = false;\n\nstatic void ensure_lt_handle() {\n    if (!s_lt_initialized) {\n        cublasLtCreate(&s_lt_handle);\n        s_lt_initialized = true;\n    }\n}\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b) {\n    TORCH_CHECK(a.is_cuda(), \"a must be a CUDA tensor\");\n    TORCH_CHECK(b.is_cuda(), \"b must be a CUDA tensor\");\n    TORCH_CHECK(a.dtype() == torch::kFloat32, \"a must be float32\");\n    TORCH_CHECK(b.dtype() == torch::kFloat32, \"b must be float32\");\n    TORCH_CHECK(a.dim() == 2, \"a must be 2D\");\n    TORCH_CHECK(b.dim() == 2, \"b must be 2D\");\n    TORCH_CHECK(a.is_contiguous(), \"a must be contiguous\");\n    TORCH_CHECK(b.is_contiguous(), \"b must be contiguous\");\n\n    int64_t M = a.size(0);\n    int64_t K = a.size(1);\n    int64_t N = b.size(0);\n    TORCH_CHECK(b.size(1) == K, \"b.size(1) must equal a.size(1)\");\n\n    auto out = torch::empty({M, N}, a.options());\n\n    float alpha = 1.0f;\n    float beta = 0.0f;\n\n    // Try cublasLt path\n    ensure_lt_handle();\n\n    bool lt_success = false;\n    do {\n        cublasLtMatmulDesc_t op_desc = nullptr;\n        cublasLtMatrixLayout_t layout_a = nullptr, layout_b = nullptr, layout_c = nullptr;\n        cublasLtMatmulPreference_t pref = nullptr;\n\n        if (cublasLtMatmulDescCreate(&op_desc, CUBLAS_COMPUTE_32F, CUDA_R_32F) != CUBLAS_STATUS_SUCCESS) break;\n\n        // We compute: out[M,N] = a[M,K] @ b[N,K]^T\n        // Using col-major trick: out^T[N,M] = b[N,K] @ a[M,K]^T\n        // In cublasLt col-major: C(N,M) = op(A)(N,K) * op(B)(K,M)\n        // A_lt = b data, stored row-major [N,K] = col-major [K,N], op=T => [N,K], lda=K\n        // B_lt = a data, stored row-major [M,K] = col-major [K,M], op=N => [K,M], ldb=K\n        // C_lt = out data, col-major [N,M], ldc=N\n        cublasOperation_t transa = CUBLAS_OP_T;\n        cublasOperation_t transb = CUBLAS_OP_N;\n        if (cublasLtMatmulDescSetAttribute(op_desc, CUBLASLT_MATMUL_DESC_TRANSA, &transa, sizeof(transa)) != CUBLAS_STATUS_SUCCESS) {\n            cublasLtMatmulDescDestroy(op_desc); break;\n        }\n        if (cublasLtMatmulDescSetAttribute(op_desc, CUBLASLT_MATMUL_DESC_TRANSB, &transb, sizeof(transb)) != CUBLAS_STATUS_SUCCESS) {\n            cublasLtMatmulDescDestroy(op_desc); break;\n        }\n\n        // A_lt layout: col-major [K, N], lda=K (b's raw storage)\n        if (cublasLtMatrixLayoutCreate(&layout_a, CUDA_R_32F, K, N, K) != CUBLAS_STATUS_SUCCESS) {\n            cublasLtMatmulDescDestroy(op_desc); break;\n        }\n        // B_lt layout: col-major [K, M], ldb=K (a's raw storage)\n        if (cublasLtMatrixLayoutCreate(&layout_b, CUDA_R_32F, K, M, K) != CUBLAS_STATUS_SUCCESS) {\n            cublasLtMatrixLayoutDestroy(layout_a);\n            cublasLtMatmulDescDestroy(op_desc); break;\n        }\n        // C_lt layout: col-major [N, M], ldc=N (out's raw storage)\n        if (cublasLtMatrixLayoutCreate(&layout_c, CUDA_R_32F, N, M, N) != CUBLAS_STATUS_SUCCESS) {\n            cublasLtMatrixLayoutDestroy(layout_b);\n            cublasLtMatrixLayoutDestroy(layout_a);\n            cublasLtMatmulDescDestroy(op_desc); break;\n        }\n\n        // Workspace: 4 MB\n        size_t workspace_size = 4 * 1024 * 1024;\n        auto workspace = torch::empty({(int64_t)workspace_size},\n            torch::TensorOptions().dtype(torch::kUInt8).device(a.device()));\n\n        if (cublasLtMatmulPreferenceCreate(&pref) != CUBLAS_STATUS_SUCCESS) {\n            cublasLtMatrixLayoutDestroy(layout_c);\n            cublasLtMatrixLayoutDestroy(layout_b);\n            cublasLtMatrixLayoutDestroy(layout_a);\n            cublasLtMatmulDescDestroy(op_desc); break;\n        }\n        if (cublasLtMatmulPreferenceSetAttribute(pref, CUBLASLT_MATMUL_PREF_MAX_WORKSPACE_BYTES,\n                &workspace_size, sizeof(workspace_size)) != CUBLAS_STATUS_SUCCESS) {\n            cublasLtMatmulPreferenceDestroy(pref);\n            cublasLtMatrixLayoutDestroy(layout_c);\n            cublasLtMatrixLayoutDestroy(layout_b);\n            cublasLtMatrixLayoutDestroy(layout_a);\n            cublasLtMatmulDescDestroy(op_desc); break;\n        }\n\n        cublasLtMatmulHeuristicResult_t heuristic_result;\n        int returned_results = 0;\n        cublasStatus_t heur_status = cublasLtMatmulAlgoGetHeuristic(\n            s_lt_handle, op_desc,\n            layout_a, layout_b, layout_c, layout_c,\n            pref, 1, &heuristic_result, &returned_results);\n\n        if (heur_status == CUBLAS_STATUS_SUCCESS && returned_results > 0) {\n            cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n            cublasStatus_t gemm_status = cublasLtMatmul(\n                s_lt_handle, op_desc,\n                &alpha,\n                b.data_ptr<float>(), layout_a,\n                a.data_ptr<float>(), layout_b,\n                &beta,\n                out.data_ptr<float>(), layout_c,\n                out.data_ptr<float>(), layout_c,\n                &heuristic_result.algo,\n                workspace.data_ptr(), workspace_size,\n                stream);\n            if (gemm_status == CUBLAS_STATUS_SUCCESS) {\n                lt_success = true;\n            }\n        }\n\n        cublasLtMatmulPreferenceDestroy(pref);\n        cublasLtMatrixLayoutDestroy(layout_c);\n        cublasLtMatrixLayoutDestroy(layout_b);\n        cublasLtMatrixLayoutDestroy(layout_a);\n        cublasLtMatmulDescDestroy(op_desc);\n    } while (false);\n\n    if (!lt_success) {\n        // Fallback to cublasSgemm\n        cublasHandle_t handle = at::cuda::getCurrentCUDABlasHandle();\n        cublasSgemm(\n            handle,\n            CUBLAS_OP_T,\n            CUBLAS_OP_N,\n            (int)N, (int)M, (int)K,\n            &alpha,\n            b.data_ptr<float>(), (int)K,\n            a.data_ptr<float>(), (int)K,\n            &beta,\n            out.data_ptr<float>(), (int)N\n        );\n    }\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a single matrix multiplication (C = A * B)\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Performs matrix multiplication.\n\n                Args:\n                    A: Input tensor of shape (M, K).\n                    B: Input tensor of shape (K, N).\n\n                Returns:\n                    Output tensor of shape (M, N).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return _stark_get_extension().matmul_with_transposed_b(A, B);\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Refine the existing direct library TN dispatch by swapping the plain `cublasSgemm` call for a `cublasLtMatmul` TN fast path with a small temporary workspace and immediate fallback to the current SGEMM path if heuristic selection fails.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current CUDA source with an implementation that keeps the same exported function signature but adds `#include <cublasLt.h>` and uses `cublasLtMatmul` first. Inside `matmul_with_transposed_b_cuda`, keep the existing CUDA/float32/2D/contiguous/shape checks and output allocation. Create or reuse a static `cublasLtHandle_t` local to this translation unit. Build a matmul descriptor for compute type `CUBLAS_COMPUTE_32F` and scale type `CUDA_R_32F`, set `TRANSA=CUBLAS_OP_T` for `b` and `TRANSB=CUBLAS_OP_N` for `a`, and create matrix layouts matching the existing row-major reinterpretation trick: `b` as underlying col-major `[K,N]` with ld=`K`, `a` as underlying col-major `[K,M]` with ld=`K`, and output as col-major `[N,M]` with ld=`N`. Allocate a small temporary workspace tensor (for example 4 MB via `torch::empty({4 * 1024 * 1024}, torch::TensorOptions().dtype(torch::kUInt8).device(a.device()))`), set a preference max-workspace-bytes attribute, query one heuristic algorithm with `cublasLtMatmulAlgoGetHeuristic`, and if one is returned call `cublasLtMatmul` on the current CUDA stream. If any Lt step fails or no heuristic is returned, fall back immediately to the existing `cublasSgemm(handle, CUBLAS_OP_T, CUBLAS_OP_N, N, M, K, ...)` call. Keep exact FP32 math, no TF32/math-mode changes, and return the same `out` tensor.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00312,
+      "score": 0.00312,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3240047",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_b_gpu4/08_L1_P17_Auto_P17_20260716_045623/eval_traces/20260716_050742_3238589_c9878682_kernelbench_l1_17_17_matmul_with_transposed_b"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00314,
+      "speedup": 1.0064102564102564,
+      "reference_runtimes": {
+        "torch_eager": 0.00314
+      },
+      "speedups": {
+        "torch_eager": 1.0064102564102564
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "best_lineage_push",
+      "performance_hypothesis": "Using `cublasLtMatmul` with an explicit TN descriptor and a bounded workspace will let the library choose a slightly better FP32 algorithm for this large fixed-shape GEMM than the current plain `cublasSgemm` path, improving runtime without changing math semantics.",
+      "single_change_focus": "Replace the body of `matmul_with_transposed_b_cuda` with a `cublasLtMatmul` TN fast path plus fallback to the existing `cublasSgemm` implementation.",
+      "mutation_family": "cublaslt_tn_workspace",
+      "target_metric": "speedup"
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p17_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b);\n\ntorch::Tensor matmul_with_transposed_b(torch::Tensor a, torch::Tensor b) {\n    return matmul_with_transposed_b_cuda(a, b);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matmul_with_transposed_b\", &matmul_with_transposed_b, \"Matmul with logical transposed B (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <ATen/cuda/CUDAContext.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b) {\n    TORCH_CHECK(a.is_cuda(), \"a must be a CUDA tensor\");\n    TORCH_CHECK(b.is_cuda(), \"b must be a CUDA tensor\");\n    TORCH_CHECK(a.dtype() == torch::kFloat32, \"a must be float32\");\n    TORCH_CHECK(b.dtype() == torch::kFloat32, \"b must be float32\");\n    TORCH_CHECK(a.dim() == 2, \"a must be 2D\");\n    TORCH_CHECK(b.dim() == 2, \"b must be 2D\");\n    TORCH_CHECK(a.is_contiguous(), \"a must be contiguous\");\n    TORCH_CHECK(b.is_contiguous(), \"b must be contiguous\");\n\n    int64_t M = a.size(0);\n    int64_t K = a.size(1);\n    int64_t N = b.size(0);\n    TORCH_CHECK(b.size(1) == K, \"b.size(1) must equal a.size(1)\");\n\n    auto out = torch::empty({M, N}, a.options());\n    cublasHandle_t handle = at::cuda::getCurrentCUDABlasHandle();\n\n    const float alpha = 1.0f;\n    const float beta = 0.0f;\n\n    cublasStatus_t status = cublasGemmEx(\n        handle,\n        CUBLAS_OP_T,\n        CUBLAS_OP_N,\n        static_cast<int>(N),\n        static_cast<int>(M),\n        static_cast<int>(K),\n        &alpha,\n        b.data_ptr<float>(),\n        CUDA_R_32F,\n        static_cast<int>(K),\n        a.data_ptr<float>(),\n        CUDA_R_32F,\n        static_cast<int>(K),\n        &beta,\n        out.data_ptr<float>(),\n        CUDA_R_32F,\n        static_cast<int>(N),\n        CUBLAS_COMPUTE_32F,\n        CUBLAS_GEMM_DEFAULT_TENSOR_OP\n    );\n    TORCH_CHECK(status == CUBLAS_STATUS_SUCCESS, \"cublasGemmEx failed with status \", static_cast<int>(status));\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a single matrix multiplication (C = A * B)\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Performs matrix multiplication.\n\n                Args:\n                    A: Input tensor of shape (M, K).\n                    B: Input tensor of shape (K, N).\n\n                Returns:\n                    Output tensor of shape (M, N).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return _stark_get_extension().matmul_with_transposed_b(A, B);\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Refine the existing direct library TN dispatch by changing only the CUDA GEMM call site to an explicit `cublasGemmEx` Tensor Op path while keeping the exported API, output allocation, and forward wiring unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the existing CUDA source with the current champion structure but change only the GEMM backend details: keep the same includes plus add any needed cuBLAS enum-compatible headers if required; keep all existing TORCH_CHECK validation, M/K/N extraction, output allocation, and `at::cuda::getCurrentCUDABlasHandle()` acquisition; before launching GEMM, preserve the same row-major-to-column-major TN mapping used today; replace the `cublasSgemm(...)` call with `cublasGemmEx(...)` using `CUBLAS_OP_T` for `b`, `CUBLAS_OP_N` for `a`, dimensions `(N, M, K)`, `CUDA_R_32F` for A/B/C, compute type `CUBLAS_COMPUTE_32F`, and algorithm `CUBLAS_GEMM_DEFAULT_TENSOR_OP`; keep `alpha=1.0f`, `beta=0.0f`, leading dimensions identical to the current implementation (`ldb=K` for `b`, `lda=K` for `a`, `ldc=N` for `out`), and keep the same error check and return value.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00311,
+      "score": 0.00311,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3240327",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_b_gpu4/08_L1_P17_Auto_P17_20260716_045623/eval_traces/20260716_051117_3238589_d86e94b5_kernelbench_l1_17_17_matmul_with_transposed_b"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00311,
+      "speedup": 1.0,
+      "reference_runtimes": {
+        "torch_eager": 0.00311
+      },
+      "speedups": {
+        "torch_eager": 1.0
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Replacing `cublasSgemm` with `cublasGemmEx` using the same TN mapping and `CUBLAS_GEMM_DEFAULT_TENSOR_OP` will let cuBLAS choose a faster Ampere Tensor Core implementation for this large FP32 GEMM while preserving the championâs low-overhead extension structure.",
+      "single_change_focus": "Swap the current `cublasSgemm` call in `matmul_with_transposed_b_cuda` for an equivalent `cublasGemmEx` TN dispatch with explicit CUDA_R_32F operands/output and Tensor Op default algorithm.",
+      "mutation_family": "gemmex_tn_refine",
+      "target_metric": "speedup"
+    },
+    "phase2_root": {
+      "node_id": "phase2_root",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p17_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b);\n\ntorch::Tensor matmul_with_transposed_b(torch::Tensor a, torch::Tensor b) {\n    return matmul_with_transposed_b_cuda(a, b);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matmul_with_transposed_b\", &matmul_with_transposed_b, \"Matmul with logical transposed B (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <ATen/cuda/CUDAContext.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b) {\n    TORCH_CHECK(a.is_cuda(), \"a must be a CUDA tensor\");\n    TORCH_CHECK(b.is_cuda(), \"b must be a CUDA tensor\");\n    TORCH_CHECK(a.dtype() == torch::kFloat32, \"a must be float32\");\n    TORCH_CHECK(b.dtype() == torch::kFloat32, \"b must be float32\");\n    TORCH_CHECK(a.dim() == 2, \"a must be 2D\");\n    TORCH_CHECK(b.dim() == 2, \"b must be 2D\");\n    TORCH_CHECK(a.is_contiguous(), \"a must be contiguous\");\n    TORCH_CHECK(b.is_contiguous(), \"b must be contiguous\");\n\n    // a: [M, K], b: [N, K], out: [M, N]\n    // We compute out = a @ b.T\n    // In cuBLAS column-major: C = A^T * B^T where A,B,C are column-major\n    // Equivalently: out^T = b @ a^T\n    // cuBLAS: C(N,M) = op(B)(N,K) * op(A)(K,M)\n    // With op(B)=N (B is [N,K] stored row-major = [K,N] col-major) and op(A)=T\n    // We call: C = B * A^T  => C is [N,M] col-major = [M,N] row-major = out\n\n    int64_t M = a.size(0);\n    int64_t K = a.size(1);\n    int64_t N = b.size(0);\n    TORCH_CHECK(b.size(1) == K, \"b.size(1) must equal a.size(1)\");\n\n    auto out = torch::empty({M, N}, a.options());\n\n    cublasHandle_t handle = at::cuda::getCurrentCUDABlasHandle();\n\n    float alpha = 1.0f;\n    float beta = 0.0f;\n\n    // cuBLAS is column-major.\n    // We want: out[M,N] = a[M,K] @ b[N,K]^T\n    // Treat row-major [M,N] as col-major [N,M].\n    // Compute col-major C[N,M] = B[N,K] * A[M,K]^T\n    // cublasSgemm(handle, transa, transb, m, n, k, alpha, A, lda, B, ldb, beta, C, ldc)\n    // where m=N, n=M, k=K\n    // A_cublas = b (row-major [N,K] = col-major [K,N]), transa=N => op(A)=A, lda=K\n    // B_cublas = a (row-major [M,K] = col-major [K,M]), transb=T => op(B)=B^T=[M,K]^T=[K,M]->wait\n    // Let me redo:\n    // C_col[N,M] = B_col[N,K] * A_col[K,M]\n    // b row-major [N,K] stored as col-major [K,N]: to get col-major [N,K] we need CUBLAS_OP_T on b\n    // a row-major [M,K] stored as col-major [K,M]: to get col-major [K,M] we need CUBLAS_OP_N on a\n    // cublasSgemm: C(m,n) = op(A)(m,k) * op(B)(k,n)\n    // We want C_col(N,M): m=N, n=M, k=K\n    // op(A_cublas)(N,K): A_cublas=b_ptr, CUBLAS_OP_T, lda=N (b is col-major [K,N], lda=K... )\n    // This is getting confusing. Use the standard trick:\n    // out = a @ b^T  <=>  out^T = b @ a^T\n    // In cuBLAS col-major: compute out^T which is [N,M] col-major\n    // = b (as [N,K] row-major = [K,N] col-major, need CUBLAS_OP_T to get [N,K])\n    //   @ a^T (a is [M,K] row-major = [K,M] col-major, CUBLAS_OP_N gives [K,M], we need [K,M] -> that's a^T in row-major sense)\n    // cublasSgemm(handle, CUBLAS_OP_T, CUBLAS_OP_N, N, M, K, &alpha,\n    //             b_ptr, K,   // A in col-major is [K,N], op=T gives [N,K], lda=K\n    //             a_ptr, K,   // B in col-major is [K,M], op=N gives [K,M], ldb=K\n    //             &beta, out_ptr, N)  // C is [N,M] col-major, ldc=N\n    // Result: out_ptr stores [N,M] col-major = [M,N] row-major = desired output\n\n    cublasSgemm(\n        handle,\n        CUBLAS_OP_T,  // op on b: treat b's col-major [K,N] as [N,K]\n        CUBLAS_OP_N,  // op on a: treat a's col-major [K,M] as [K,M]\n        (int)N, (int)M, (int)K,\n        &alpha,\n        b.data_ptr<float>(), (int)K,\n        a.data_ptr<float>(), (int)K,\n        &beta,\n        out.data_ptr<float>(), (int)N\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a single matrix multiplication (C = A * B)\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Performs matrix multiplication.\n\n                Args:\n                    A: Input tensor of shape (M, K).\n                    B: Input tensor of shape (K, N).\n\n                Returns:\n                    Output tensor of shape (M, N).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return _stark_get_extension().matmul_with_transposed_b(A, B);\n        # <<<END_IMPROVE>>>\n",
+      "origin": "phase2_root",
+      "child_ids": [
+        "phase2_n1",
+        "phase2_n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Replace the Python `torch.matmul(A, B.T)` path with a custom CUDA extension entrypoint that dispatches a TN GEMM directly on `A:[M,K]` and `B:[N,K]` using library transpose flags, avoiding any explicit transpose/materialization of `B`.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the placeholder with a minimal C++ binding that declares an exported function `torch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b);`, defines a thin wrapper `torch::Tensor matmul_with_transposed_b(torch::Tensor a, torch::Tensor b)` returning the CUDA implementation, and registers it in `PYBIND11_MODULE` as `m.def(\"matmul_with_transposed_b\", &matmul_with_transposed_b, \"Matmul with logical transposed B (CUDA)\");`. Keep this file limited to declarations/bindings; do not add unrelated logic.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the placeholder with a CUDA implementation that includes the necessary ATen/CUDA and cuBLAS headers, validates that `a` and `b` are CUDA, float32, 2D, and contiguous, interprets shapes as `a:[M,K]` and `b:[N,K]`, allocates `out = torch::empty({M, N}, a.options())`, creates or acquires a cuBLAS handle on the current CUDA stream, and launches a GEMM using library transpose flags so the original `b` storage is consumed as the transposed operand without materializing `B.T`. Use row-major aware leading dimensions/transpose settings consistent with computing `out = a @ b.t()`. Return `out` and raise a clear error on unsupported inputs.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace `return torch.matmul(A, B.T)` with `return _stark_get_extension().matmul_with_transposed_b(A, B)` so forward dispatches directly to the custom CUDA entrypoint while leaving the signature and surrounding scaffold unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0031,
+      "score": 0.0031,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3239048",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_b_gpu4/08_L1_P17_Auto_P17_20260716_045623/eval_traces/20260716_045902_3238589_99f4bb95_kernelbench_l1_17_17_matmul_with_transposed_b"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00313,
+      "speedup": 1.0096774193548388,
+      "reference_runtimes": {
+        "torch_eager": 0.00313
+      },
+      "speedups": {
+        "torch_eager": 1.0096774193548388
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Routing the benchmark directly through a CUDA extension entrypoint that allocates the output and invokes cuBLAS/cuBLASLt with `op(A)=N` and `op(B)=T` on the original `B` storage will shave framework overhead and avoid any hidden transpose/view handling, yielding a small speedup while keeping the same underlying high-performance GEMM family.",
+      "single_change_focus": "Implement one exported CUDA GEMM fast path and replace the fallback return with a direct call to it.",
+      "mutation_family": "library_tn_dispatch",
+      "target_metric": "speedup"
+    },
+    "phase2_n1": {
+      "node_id": "phase2_n1",
+      "parent_id": "phase2_root",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p17_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b);\n\ntorch::Tensor matmul_with_transposed_b(torch::Tensor a, torch::Tensor b) {\n    return matmul_with_transposed_b_cuda(a, b);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matmul_with_transposed_b\", &matmul_with_transposed_b, \"Matmul with logical transposed B (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n// Tiled TN GEMM: out[M,N] = A[M,K] @ B[N,K]^T\n// Each thread block computes a BLOCK_M x BLOCK_N tile of output.\n// Each thread computes a TM x TN sub-tile.\n\n#define BLOCK_M 64\n#define BLOCK_N 64\n#define BLOCK_K 16\n#define TM 4\n#define TN 4\n#define WARP_M (BLOCK_M / TM)   // 16\n#define WARP_N (BLOCK_N / TN)   // 16\n// threads per block = WARP_M * WARP_N = 256\n\n__global__ void matmul_tn_tiled_kernel(\n    const float* __restrict__ A,\n    const float* __restrict__ B,\n    float* __restrict__ C,\n    int M, int N, int K\n) {\n    // Block tile origin\n    int block_row = blockIdx.y * BLOCK_M;\n    int block_col = blockIdx.x * BLOCK_N;\n\n    // Thread index within block\n    int tid = threadIdx.x;\n    int thread_row = tid / WARP_N;  // 0..15\n    int thread_col = tid % WARP_N;  // 0..15\n\n    // Global row/col for this thread's sub-tile\n    int row_start = block_row + thread_row * TM;\n    int col_start = block_col + thread_col * TN;\n\n    // Shared memory for A and B tiles\n    __shared__ float smA[BLOCK_M][BLOCK_K];\n    __shared__ float smB[BLOCK_N][BLOCK_K];\n\n    // Accumulator\n    float acc[TM][TN];\n    #pragma unroll\n    for (int i = 0; i < TM; i++)\n        #pragma unroll\n        for (int j = 0; j < TN; j++)\n            acc[i][j] = 0.0f;\n\n    // Number of threads = BLOCK_M * BLOCK_N / (TM * TN) = 256\n    // Load A tile: BLOCK_M x BLOCK_K = 64*16 = 1024 elements, 256 threads -> 4 each\n    // Load B tile: BLOCK_N x BLOCK_K = 64*16 = 1024 elements, 256 threads -> 4 each\n\n    int num_tiles = (K + BLOCK_K - 1) / BLOCK_K;\n\n    for (int t = 0; t < num_tiles; t++) {\n        int k_base = t * BLOCK_K;\n\n        // Load A tile: rows [block_row, block_row+BLOCK_M), cols [k_base, k_base+BLOCK_K)\n        // 256 threads load 1024 elements: each thread loads 4\n        #pragma unroll\n        for (int i = 0; i < 4; i++) {\n            int idx = tid + i * 256;\n            int r = idx / BLOCK_K;  // 0..63\n            int c = idx % BLOCK_K;  // 0..15\n            int global_r = block_row + r;\n            int global_c = k_base + c;\n            smA[r][c] = (global_r < M && global_c < K) ? A[global_r * K + global_c] : 0.0f;\n        }\n\n        // Load B tile: rows [block_col, block_col+BLOCK_N), cols [k_base, k_base+BLOCK_K)\n        // B[n, k] stored as B[n*K + k]\n        #pragma unroll\n        for (int i = 0; i < 4; i++) {\n            int idx = tid + i * 256;\n            int r = idx / BLOCK_K;  // 0..63\n            int c = idx % BLOCK_K;  // 0..15\n            int global_r = block_col + r;\n            int global_c = k_base + c;\n            smB[r][c] = (global_r < N && global_c < K) ? B[global_r * K + global_c] : 0.0f;\n        }\n\n        __syncthreads();\n\n        // Compute partial products\n        #pragma unroll\n        for (int k = 0; k < BLOCK_K; k++) {\n            float a_reg[TM], b_reg[TN];\n            #pragma unroll\n            for (int i = 0; i < TM; i++)\n                a_reg[i] = smA[thread_row * TM + i][k];\n            #pragma unroll\n            for (int j = 0; j < TN; j++)\n                b_reg[j] = smB[thread_col * TN + j][k];\n            #pragma unroll\n            for (int i = 0; i < TM; i++)\n                #pragma unroll\n                for (int j = 0; j < TN; j++)\n                    acc[i][j] += a_reg[i] * b_reg[j];\n        }\n\n        __syncthreads();\n    }\n\n    // Write output\n    #pragma unroll\n    for (int i = 0; i < TM; i++) {\n        int row = row_start + i;\n        #pragma unroll\n        for (int j = 0; j < TN; j++) {\n            int col = col_start + j;\n            if (row < M && col < N)\n                C[row * N + col] = acc[i][j];\n        }\n    }\n}\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b) {\n    TORCH_CHECK(a.is_cuda(), \"a must be a CUDA tensor\");\n    TORCH_CHECK(b.is_cuda(), \"b must be a CUDA tensor\");\n    TORCH_CHECK(a.dtype() == torch::kFloat32, \"a must be float32\");\n    TORCH_CHECK(b.dtype() == torch::kFloat32, \"b must be float32\");\n    TORCH_CHECK(a.dim() == 2, \"a must be 2D\");\n    TORCH_CHECK(b.dim() == 2, \"b must be 2D\");\n    TORCH_CHECK(a.is_contiguous(), \"a must be contiguous\");\n    TORCH_CHECK(b.is_contiguous(), \"b must be contiguous\");\n\n    int64_t M = a.size(0);\n    int64_t K = a.size(1);\n    int64_t N = b.size(0);\n    TORCH_CHECK(b.size(1) == K, \"b.size(1) must equal a.size(1)\");\n\n    auto out = torch::empty({M, N}, a.options());\n\n    dim3 block(WARP_M * WARP_N);  // 256 threads\n    dim3 grid((N + BLOCK_N - 1) / BLOCK_N, (M + BLOCK_M - 1) / BLOCK_M);\n\n    matmul_tn_tiled_kernel<<<grid, block, 0, at::cuda::getCurrentCUDAStream()>>>(\n        a.data_ptr<float>(),\n        b.data_ptr<float>(),\n        out.data_ptr<float>(),\n        (int)M, (int)N, (int)K\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a single matrix multiplication (C = A * B)\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Performs matrix multiplication.\n\n                Args:\n                    A: Input tensor of shape (M, K).\n                    B: Input tensor of shape (K, N).\n\n                Returns:\n                    Output tensor of shape (M, N).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return _stark_get_extension().matmul_with_transposed_b(A, B);\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Move away from the already-flat cuBLAS/cuBLASLt TN library variants and test a shape-specialized custom CUDA TN GEMM kernel that directly consumes `A:[M,K]` and `B:[N,K]` without materializing `B.T`, aiming to trade some library sophistication for much lower register pressure and higher active warps.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the helper region with a declaration of `torch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b);`, a thin exported wrapper `matmul_with_transposed_b` that forwards to it, and the pybind registration for `matmul_with_transposed_b` only; keep the public entrypoint name unchanged.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current cuBLAS-based implementation with: (1) a CUDA kernel `matmul_tn_tiled_kernel` that computes `out[row, col] = sum_k a[row, k] * b[col, k]` directly from `A:[M,K]` and `B:[N,K]`; (2) use 2D block tiling with shared-memory staging for both operands, e.g. `BLOCK_M=64`, `BLOCK_N=64`, `BLOCK_K=16`, and a modest per-thread output tile to keep register count down; (3) load `A` and `B` tiles with bounds checks, where `B` is indexed in its stored layout as `b[col, k]` so no transpose buffer is created; (4) accumulate in float registers and write `out[M,N]`; (5) in `matmul_with_transposed_b_cuda`, validate CUDA/float32/2D/contiguous inputs, allocate `out`, launch the kernel over `(ceil_div(N,BLOCK_N), ceil_div(M,BLOCK_M))`, and return `out`; (6) keep a fallback to `at::matmul(a, b.transpose(0, 1))` only for unsupported dtypes/devices or if launch configuration assumptions are violated, but use the custom kernel on the benchmarked CUDA float32 contiguous path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the return statement with a direct call to `_stark_get_extension().matmul_with_transposed_b(A, B)` and do not add any extra Python-side transpose or policy toggles.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0146,
+      "score": 0.0146,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3240966",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_b_gpu4/08_L1_P17_Auto_P17_20260716_045623/eval_traces/20260716_051820_3238589_79000f02_kernelbench_l1_17_17_matmul_with_transposed_b"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00312,
+      "speedup": 0.21369863013698628,
+      "reference_runtimes": {
+        "torch_eager": 0.00312
+      },
+      "speedups": {
+        "torch_eager": 0.21369863013698628
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "A custom TN kernel using 2D shared-memory tiling with a smaller per-thread accumulator tile will reduce register pressure versus `ampere_sgemm_128x64_tn`, raise active warps above the current ~31%, and improve latency hiding enough to offset any loss of library autotuning for this fixed large shape.",
+      "single_change_focus": "Replace the current CUDA backend body with one shared-memory tiled custom TN kernel dispatch, keeping the same exported extension entrypoint and forward call site.",
+      "mutation_family": "custom_tiled_tn_kernel",
+      "target_metric": "speedup"
+    },
+    "phase2_n2": {
+      "node_id": "phase2_n2",
+      "parent_id": "phase2_n1",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p17_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b);\n\ntorch::Tensor matmul_with_transposed_b(torch::Tensor a, torch::Tensor b) {\n    return matmul_with_transposed_b_cuda(a, b);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matmul_with_transposed_b\", &matmul_with_transposed_b, \"Matmul with logical transposed B (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <cublasLt.h>\n#include <ATen/cuda/CUDAContext.h>\n#include <mutex>\n#include <unordered_map>\n\nstruct LtCache {\n    cublasLtHandle_t lt_handle = nullptr;\n    cublasLtMatmulDesc_t op_desc = nullptr;\n    cublasLtMatrixLayout_t layout_a = nullptr;\n    cublasLtMatrixLayout_t layout_b = nullptr;\n    cublasLtMatrixLayout_t layout_c = nullptr;\n    cublasLtMatmulHeuristicResult_t heuristic;\n    bool valid = false;\n    int64_t M = 0, N = 0, K = 0;\n    torch::DeviceIndex device = -1;\n};\n\nstatic std::mutex g_lt_mutex;\nstatic LtCache g_lt_cache;\n\nstatic void destroy_lt_cache(LtCache& c) {\n    if (c.layout_c) { cublasLtMatrixLayoutDestroy(c.layout_c); c.layout_c = nullptr; }\n    if (c.layout_b) { cublasLtMatrixLayoutDestroy(c.layout_b); c.layout_b = nullptr; }\n    if (c.layout_a) { cublasLtMatrixLayoutDestroy(c.layout_a); c.layout_a = nullptr; }\n    if (c.op_desc)  { cublasLtMatmulDescDestroy(c.op_desc);    c.op_desc  = nullptr; }\n    if (c.lt_handle){ cublasLtDestroy(c.lt_handle);            c.lt_handle= nullptr; }\n    c.valid = false;\n}\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b) {\n    TORCH_CHECK(a.is_cuda(), \"a must be a CUDA tensor\");\n    TORCH_CHECK(b.is_cuda(), \"b must be a CUDA tensor\");\n    TORCH_CHECK(a.dtype() == torch::kFloat32, \"a must be float32\");\n    TORCH_CHECK(b.dtype() == torch::kFloat32, \"b must be float32\");\n    TORCH_CHECK(a.dim() == 2, \"a must be 2D\");\n    TORCH_CHECK(b.dim() == 2, \"b must be 2D\");\n    TORCH_CHECK(a.is_contiguous(), \"a must be contiguous\");\n    TORCH_CHECK(b.is_contiguous(), \"b must be contiguous\");\n\n    int64_t M = a.size(0);\n    int64_t K = a.size(1);\n    int64_t N = b.size(0);\n    TORCH_CHECK(b.size(1) == K, \"b.size(1) must equal a.size(1)\");\n\n    auto out = torch::empty({M, N}, a.options());\n\n    float alpha = 1.0f, beta = 0.0f;\n\n    // Try cublasLt path with caching\n    {\n        std::lock_guard<std::mutex> lock(g_lt_mutex);\n        auto dev = a.device().index();\n\n        bool need_rebuild = !g_lt_cache.valid ||\n                            g_lt_cache.M != M ||\n                            g_lt_cache.N != N ||\n                            g_lt_cache.K != K ||\n                            g_lt_cache.device != dev;\n\n        if (need_rebuild) {\n            destroy_lt_cache(g_lt_cache);\n\n            bool ok = true;\n            if (cublasLtCreate(&g_lt_cache.lt_handle) != CUBLAS_STATUS_SUCCESS) ok = false;\n\n            if (ok && cublasLtMatmulDescCreate(&g_lt_cache.op_desc,\n                                               CUBLAS_COMPUTE_32F,\n                                               CUDA_R_32F) != CUBLAS_STATUS_SUCCESS) ok = false;\n\n            if (ok) {\n                // We want: out[M,N] = A[M,K] @ B[N,K]^T\n                // Using col-major reinterpretation:\n                //   out^T [N,M] col-major = B[N,K] (row-major) @ A^T\n                // cublasSgemm equivalent:\n                //   C(N,M) = op(B)(N,K) * op(A)(K,M)\n                //   B row-major [N,K] = col-major [K,N], need CUBLAS_OP_T -> [N,K]\n                //   A row-major [M,K] = col-major [K,M], need CUBLAS_OP_N -> [K,M]\n                // So: transa=T on B (lda=K), transb=N on A (ldb=K), ldc=N\n                // In cublasLt: matmulDesc transa/transb refer to the first/second operand\n                cublasOperation_t op_b = CUBLAS_OP_T;\n                cublasOperation_t op_a = CUBLAS_OP_N;\n                cublasLtMatmulDescSetAttribute(g_lt_cache.op_desc,\n                    CUBLASLT_MATMUL_DESC_TRANSA, &op_b, sizeof(op_b));\n                cublasLtMatmulDescSetAttribute(g_lt_cache.op_desc,\n                    CUBLASLT_MATMUL_DESC_TRANSB, &op_a, sizeof(op_a));\n\n                // Layout for B (first arg): col-major [K,N], lda=K\n                if (cublasLtMatrixLayoutCreate(&g_lt_cache.layout_a,\n                        CUDA_R_32F, K, N, K) != CUBLAS_STATUS_SUCCESS) ok = false;\n                // Layout for A (second arg): col-major [K,M], ldb=K\n                if (ok && cublasLtMatrixLayoutCreate(&g_lt_cache.layout_b,\n                        CUDA_R_32F, K, M, K) != CUBLAS_STATUS_SUCCESS) ok = false;\n                // Layout for out (C): col-major [N,M], ldc=N\n                if (ok && cublasLtMatrixLayoutCreate(&g_lt_cache.layout_c,\n                        CUDA_R_32F, N, M, N) != CUBLAS_STATUS_SUCCESS) ok = false;\n            }\n\n            if (ok) {\n                // Use a preference with 32 MB workspace\n                cublasLtMatmulPreference_t pref;\n                size_t workspace_size = 32 * 1024 * 1024;\n                if (cublasLtMatmulPreferenceCreate(&pref) == CUBLAS_STATUS_SUCCESS) {\n                    cublasLtMatmulPreferenceSetAttribute(pref,\n                        CUBLASLT_MATMUL_PREF_MAX_WORKSPACE_BYTES,\n                        &workspace_size, sizeof(workspace_size));\n                    int returned = 0;\n                    cublasStatus_t hs = cublasLtMatmulAlgoGetHeuristic(\n                        g_lt_cache.lt_handle,\n                        g_lt_cache.op_desc,\n                        g_lt_cache.layout_a,\n                        g_lt_cache.layout_b,\n                        g_lt_cache.layout_c,\n                        g_lt_cache.layout_c,\n                        pref, 1,\n                        &g_lt_cache.heuristic,\n                        &returned);\n                    cublasLtMatmulPreferenceDestroy(pref);\n                    if (hs != CUBLAS_STATUS_SUCCESS || returned == 0) ok = false;\n                } else {\n                    ok = false;\n                }\n            }\n\n            if (ok) {\n                g_lt_cache.M = M;\n                g_lt_cache.N = N;\n                g_lt_cache.K = K;\n                g_lt_cache.device = dev;\n                g_lt_cache.valid = true;\n            } else {\n                destroy_lt_cache(g_lt_cache);\n            }\n        }\n\n        if (g_lt_cache.valid) {\n            // Allocate workspace\n            size_t ws_bytes = g_lt_cache.heuristic.workspaceSize;\n            torch::Tensor workspace;\n            void* ws_ptr = nullptr;\n            if (ws_bytes > 0) {\n                workspace = torch::empty({(int64_t)ws_bytes},\n                    torch::TensorOptions().device(a.device()).dtype(torch::kUInt8));\n                ws_ptr = workspace.data_ptr();\n            }\n\n            cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n            cublasStatus_t st = cublasLtMatmul(\n                g_lt_cache.lt_handle,\n                g_lt_cache.op_desc,\n                &alpha,\n                b.data_ptr<float>(),  // first operand = B\n                g_lt_cache.layout_a,\n                a.data_ptr<float>(),  // second operand = A\n                g_lt_cache.layout_b,\n                &beta,\n                out.data_ptr<float>(),\n                g_lt_cache.layout_c,\n                out.data_ptr<float>(),\n                g_lt_cache.layout_c,\n                &g_lt_cache.heuristic.algo,\n                ws_ptr, ws_bytes,\n                stream);\n\n            if (st == CUBLAS_STATUS_SUCCESS) {\n                return out;\n            }\n            // Fall through to cublasSgemm fallback\n        }\n    }\n\n    // Fallback: cublasSgemm TN path\n    cublasHandle_t handle = at::cuda::getCurrentCUDABlasHandle();\n    cublasSgemm(\n        handle,\n        CUBLAS_OP_T,\n        CUBLAS_OP_N,\n        (int)N, (int)M, (int)K,\n        &alpha,\n        b.data_ptr<float>(), (int)K,\n        a.data_ptr<float>(), (int)K,\n        &beta,\n        out.data_ptr<float>(), (int)N\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a single matrix multiplication (C = A * B)\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Performs matrix multiplication.\n\n                Args:\n                    A: Input tensor of shape (M, K).\n                    B: Input tensor of shape (K, N).\n\n                Returns:\n                    Output tensor of shape (M, N).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return _stark_get_extension().matmul_with_transposed_b(A, B);\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Replace the current slow custom tiled CUDA kernel with a shape-specialized `cublasLtMatmul` TN path in `cuda_cu`, using a materially larger reusable workspace and cached heuristic selection for the fixed large `(M,N,K)=(2048,4096,8192)` regime.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the entire custom tiled kernel implementation with a CUDA wrapper that validates CUDA/float32/2D/contiguous inputs, allocates `out = torch::empty({M, N}, a.options())`, and dispatches `cublasLtMatmul` for `out = a @ b.T` using row-major reinterpretation as column-major TN GEMM. Include `#include <cublas_v2.h>`, `#include <cublasLt.h>`, and `#include <ATen/cuda/CUDAContext.h>`. Create or reuse a process-local `cublasLtHandle_t` and cache the best `cublasLtMatmulHeuristicResult_t` plus descriptors/layout metadata keyed by `(device,dtype,M,N,K)`. Use `cublasLtMatmulDescCreate` with compute type `CUBLAS_COMPUTE_32F` and `CUDA_R_32F`, set transpose attributes so the logical operation remains exactly `A[M,K] @ B[N,K]^T -> out[M,N]`, and create matrix layouts that correctly reinterpret row-major tensors without copying. Request a materially larger workspace budget (for example 32 MB via `torch::empty({workspace_bytes}, torch::TensorOptions().device(a.device()).dtype(torch::kUInt8))`) and pass it to `cublasLtMatmulAlgoGetHeuristic`; if a heuristic is found, call `cublasLtMatmul` on the current CUDA stream. If no heuristic is returned or the call fails, fall back to an exact library GEMM path in the same function that preserves current semantics. Remove the entire handwritten `__global__` kernel and its launch.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0031,
+      "score": 0.0031,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3241332",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_b_gpu4/08_L1_P17_Auto_P17_20260716_045623/eval_traces/20260716_052153_3238589_a86e2aeb_kernelbench_l1_17_17_matmul_with_transposed_b"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00316,
+      "speedup": 1.0193548387096776,
+      "reference_runtimes": {
+        "torch_eager": 0.00316
+      },
+      "speedups": {
+        "torch_eager": 1.0193548387096776
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current custom kernel underperforms because it cannot match cuBLAS scheduling, and the prior flat `cublasLt` result was likely constrained by too little workspace and shallow heuristic selection; a cached TN `cublasLtMatmul` with larger workspace should unlock a better Ampere tensor-op algorithm for this fixed shape without changing semantics.",
+      "single_change_focus": "Replace only the `cuda_cu` backend body with a cached shape-specialized `cublasLtMatmul` TN implementation plus fallback to the existing exact path if no suitable heuristic is found.",
+      "mutation_family": "cublaslt_workspace_cache",
+      "target_metric": "speedup"
+    },
+    "phase2_n3": {
+      "node_id": "phase2_n3",
+      "parent_id": "phase2_n2",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p17_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b);\n\ntorch::Tensor matmul_with_transposed_b(torch::Tensor a, torch::Tensor b) {\n    return matmul_with_transposed_b_cuda(a, b);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matmul_with_transposed_b\", &matmul_with_transposed_b, \"Matmul with logical transposed B (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <cublasLt.h>\n#include <ATen/cuda/CUDAContext.h>\n#include <mutex>\n\nstruct LtCache {\n    cublasLtHandle_t lt_handle = nullptr;\n    cublasLtMatmulDesc_t op_desc = nullptr;\n    cublasLtMatrixLayout_t layout_a = nullptr;\n    cublasLtMatrixLayout_t layout_b = nullptr;\n    cublasLtMatrixLayout_t layout_c = nullptr;\n    cublasLtMatmulHeuristicResult_t heuristic;\n    bool valid = false;\n    int64_t M = 0, N = 0, K = 0;\n    torch::DeviceIndex device = -1;\n};\n\nstatic std::mutex g_lt_mutex;\nstatic LtCache g_lt_cache;\n\nstatic void destroy_lt_cache(LtCache& c) {\n    if (c.layout_c) { cublasLtMatrixLayoutDestroy(c.layout_c); c.layout_c = nullptr; }\n    if (c.layout_b) { cublasLtMatrixLayoutDestroy(c.layout_b); c.layout_b = nullptr; }\n    if (c.layout_a) { cublasLtMatrixLayoutDestroy(c.layout_a); c.layout_a = nullptr; }\n    if (c.op_desc)  { cublasLtMatmulDescDestroy(c.op_desc);    c.op_desc  = nullptr; }\n    if (c.lt_handle){ cublasLtDestroy(c.lt_handle);            c.lt_handle= nullptr; }\n    c.valid = false;\n}\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b) {\n    TORCH_CHECK(a.is_cuda(), \"a must be a CUDA tensor\");\n    TORCH_CHECK(b.is_cuda(), \"b must be a CUDA tensor\");\n    TORCH_CHECK(a.dtype() == torch::kFloat32, \"a must be float32\");\n    TORCH_CHECK(b.dtype() == torch::kFloat32, \"b must be float32\");\n    TORCH_CHECK(a.dim() == 2, \"a must be 2D\");\n    TORCH_CHECK(b.dim() == 2, \"b must be 2D\");\n    TORCH_CHECK(a.is_contiguous(), \"a must be contiguous\");\n    TORCH_CHECK(b.is_contiguous(), \"b must be contiguous\");\n\n    int64_t M = a.size(0);\n    int64_t K = a.size(1);\n    int64_t N = b.size(0);\n    TORCH_CHECK(b.size(1) == K, \"b.size(1) must equal a.size(1)\");\n\n    auto out = torch::empty({M, N}, a.options());\n\n    float alpha = 1.0f, beta = 0.0f;\n\n    // Try cublasLt path with caching\n    {\n        std::lock_guard<std::mutex> lock(g_lt_mutex);\n        auto dev = a.device().index();\n\n        bool need_rebuild = !g_lt_cache.valid ||\n                            g_lt_cache.M != M ||\n                            g_lt_cache.N != N ||\n                            g_lt_cache.K != K ||\n                            g_lt_cache.device != dev;\n\n        if (need_rebuild) {\n            destroy_lt_cache(g_lt_cache);\n\n            bool ok = true;\n            if (cublasLtCreate(&g_lt_cache.lt_handle) != CUBLAS_STATUS_SUCCESS) ok = false;\n\n            if (ok && cublasLtMatmulDescCreate(&g_lt_cache.op_desc,\n                                               CUBLAS_COMPUTE_32F,\n                                               CUDA_R_32F) != CUBLAS_STATUS_SUCCESS) ok = false;\n\n            if (ok) {\n                cublasOperation_t op_b = CUBLAS_OP_T;\n                cublasOperation_t op_a = CUBLAS_OP_N;\n                cublasLtMatmulDescSetAttribute(g_lt_cache.op_desc,\n                    CUBLASLT_MATMUL_DESC_TRANSA, &op_b, sizeof(op_b));\n                cublasLtMatmulDescSetAttribute(g_lt_cache.op_desc,\n                    CUBLASLT_MATMUL_DESC_TRANSB, &op_a, sizeof(op_a));\n\n                // Layout for B (first arg): col-major [K,N], lda=K\n                if (cublasLtMatrixLayoutCreate(&g_lt_cache.layout_a,\n                        CUDA_R_32F, K, N, K) != CUBLAS_STATUS_SUCCESS) ok = false;\n                // Layout for A (second arg): col-major [K,M], ldb=K\n                if (ok && cublasLtMatrixLayoutCreate(&g_lt_cache.layout_b,\n                        CUDA_R_32F, K, M, K) != CUBLAS_STATUS_SUCCESS) ok = false;\n                // Layout for out (C): col-major [N,M], ldc=N\n                if (ok && cublasLtMatrixLayoutCreate(&g_lt_cache.layout_c,\n                        CUDA_R_32F, N, M, N) != CUBLAS_STATUS_SUCCESS) ok = false;\n            }\n\n            if (ok) {\n                // Use a preference with 128 MB workspace and request 8 candidates\n                cublasLtMatmulPreference_t pref;\n                size_t workspace_size = 128 * 1024 * 1024;\n                if (cublasLtMatmulPreferenceCreate(&pref) == CUBLAS_STATUS_SUCCESS) {\n                    cublasLtMatmulPreferenceSetAttribute(pref,\n                        CUBLASLT_MATMUL_PREF_MAX_WORKSPACE_BYTES,\n                        &workspace_size, sizeof(workspace_size));\n                    const int NUM_ALGOS = 8;\n                    cublasLtMatmulHeuristicResult_t candidates[NUM_ALGOS];\n                    int returned = 0;\n                    cublasStatus_t hs = cublasLtMatmulAlgoGetHeuristic(\n                        g_lt_cache.lt_handle,\n                        g_lt_cache.op_desc,\n                        g_lt_cache.layout_a,\n                        g_lt_cache.layout_b,\n                        g_lt_cache.layout_c,\n                        g_lt_cache.layout_c,\n                        pref, NUM_ALGOS,\n                        candidates,\n                        &returned);\n                    cublasLtMatmulPreferenceDestroy(pref);\n                    if (hs == CUBLAS_STATUS_SUCCESS && returned > 0) {\n                        // Pick the first (best) candidate\n                        g_lt_cache.heuristic = candidates[0];\n                    } else {\n                        ok = false;\n                    }\n                } else {\n                    ok = false;\n                }\n            }\n\n            if (ok) {\n                g_lt_cache.M = M;\n                g_lt_cache.N = N;\n                g_lt_cache.K = K;\n                g_lt_cache.device = dev;\n                g_lt_cache.valid = true;\n            } else {\n                destroy_lt_cache(g_lt_cache);\n            }\n        }\n\n        if (g_lt_cache.valid) {\n            // Allocate workspace\n            size_t ws_bytes = g_lt_cache.heuristic.workspaceSize;\n            torch::Tensor workspace;\n            void* ws_ptr = nullptr;\n            if (ws_bytes > 0) {\n                workspace = torch::empty({(int64_t)ws_bytes},\n                    torch::TensorOptions().device(a.device()).dtype(torch::kUInt8));\n                ws_ptr = workspace.data_ptr();\n            }\n\n            cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n            cublasStatus_t st = cublasLtMatmul(\n                g_lt_cache.lt_handle,\n                g_lt_cache.op_desc,\n                &alpha,\n                b.data_ptr<float>(),  // first operand = B\n                g_lt_cache.layout_a,\n                a.data_ptr<float>(),  // second operand = A\n                g_lt_cache.layout_b,\n                &beta,\n                out.data_ptr<float>(),\n                g_lt_cache.layout_c,\n                out.data_ptr<float>(),\n                g_lt_cache.layout_c,\n                &g_lt_cache.heuristic.algo,\n                ws_ptr, ws_bytes,\n                stream);\n\n            if (st == CUBLAS_STATUS_SUCCESS) {\n                return out;\n            }\n            // Fall through to cublasSgemm fallback\n        }\n    }\n\n    // Fallback: cublasSgemm TN path\n    cublasHandle_t handle = at::cuda::getCurrentCUDABlasHandle();\n    cublasSgemm(\n        handle,\n        CUBLAS_OP_T,\n        CUBLAS_OP_N,\n        (int)N, (int)M, (int)K,\n        &alpha,\n        b.data_ptr<float>(), (int)K,\n        a.data_ptr<float>(), (int)K,\n        &beta,\n        out.data_ptr<float>(), (int)N\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a single matrix multiplication (C = A * B)\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Performs matrix multiplication.\n\n                Args:\n                    A: Input tensor of shape (M, K).\n                    B: Input tensor of shape (K, N).\n\n                Returns:\n                    Output tensor of shape (M, N).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return _stark_get_extension().matmul_with_transposed_b(A, B);\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Refine the working cached `cublasLtMatmul` TN path by widening heuristic search inside `cuda_cu` only: increase workspace budget materially and request multiple candidate algorithms, then cache the top returned algo for the fixed `(M,N,K)` shape.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "In the existing cached `cublasLt` implementation, replace only the heuristic-selection setup so that it no longer requests a single algorithm with a 32 MB cap. Keep the current TN descriptor/layout mapping and fallback structure, but change the preference block to: (1) use a materially larger max-workspace budget such as 128 MB; (2) request multiple heuristic candidates (for example 8) into a small fixed local array of `cublasLtMatmulHeuristicResult_t`; (3) if any candidates are returned, store the first returned candidate in `g_lt_cache.heuristic` and keep the cache valid; otherwise mark Lt invalid and fall back exactly as today. Leave the launch site using `g_lt_cache.heuristic.workspaceSize` and `g_lt_cache.heuristic.algo` unchanged except for consuming the newly cached result.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00319,
+      "score": 0.00319,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3241583",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_b_gpu4/08_L1_P17_Auto_P17_20260716_045623/eval_traces/20260716_052504_3238589_9e61ebe6_kernelbench_l1_17_17_matmul_with_transposed_b"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00311,
+      "speedup": 0.9749216300940439,
+      "reference_runtimes": {
+        "torch_eager": 0.00311
+      },
+      "speedups": {
+        "torch_eager": 0.9749216300940439
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "The current cached `cublasLt` implementation is likely leaving performance on the table because it limits heuristic selection to one candidate under a 32 MB workspace cap; raising the workspace cap and asking for several heuristics should let `cublasLt` choose a stronger TN kernel for this fixed large shape without changing semantics.",
+      "single_change_focus": "Broaden only the `cublasLt` heuristic-selection block in `cuda_cu` to use a much larger workspace budget and multiple requested algorithms, while keeping the cached descriptors, dispatch shape, and fallback path intact.",
+      "mutation_family": "cublaslt_deeper_heuristic",
+      "target_metric": "speedup"
+    },
+    "phase2_n4": {
+      "node_id": "phase2_n4",
+      "parent_id": "phase2_root",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p17_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b);\n\ntorch::Tensor matmul_with_transposed_b(torch::Tensor a, torch::Tensor b) {\n    return matmul_with_transposed_b_cuda(a, b);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matmul_with_transposed_b\", &matmul_with_transposed_b, \"Matmul with logical transposed B (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <ATen/cuda/CUDAContext.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b) {\n    TORCH_CHECK(a.is_cuda(), \"a must be a CUDA tensor\");\n    TORCH_CHECK(b.is_cuda(), \"b must be a CUDA tensor\");\n    TORCH_CHECK(a.dtype() == torch::kFloat32, \"a must be float32\");\n    TORCH_CHECK(b.dtype() == torch::kFloat32, \"b must be float32\");\n    TORCH_CHECK(a.dim() == 2, \"a must be 2D\");\n    TORCH_CHECK(b.dim() == 2, \"b must be 2D\");\n    TORCH_CHECK(a.is_contiguous(), \"a must be contiguous\");\n    TORCH_CHECK(b.is_contiguous(), \"b must be contiguous\");\n\n    int64_t M = a.size(0);\n    int64_t K = a.size(1);\n    int64_t N = b.size(0);\n    TORCH_CHECK(b.size(1) == K, \"b.size(1) must equal a.size(1)\");\n\n    auto out = torch::empty({M, N}, a.options());\n\n    cublasHandle_t handle = at::cuda::getCurrentCUDABlasHandle();\n\n    float alpha = 1.0f;\n    float beta = 0.0f;\n\n    // Save current math mode and enable TF32 tensor ops\n    cublasMath_t saved_math_mode;\n    cublasGetMathMode(handle, &saved_math_mode);\n    cublasSetMathMode(handle, CUBLAS_TF32_TENSOR_OP_MATH);\n\n    cublasSgemm(\n        handle,\n        CUBLAS_OP_T,\n        CUBLAS_OP_N,\n        (int)N, (int)M, (int)K,\n        &alpha,\n        b.data_ptr<float>(), (int)K,\n        a.data_ptr<float>(), (int)K,\n        &beta,\n        out.data_ptr<float>(), (int)N\n    );\n\n    // Restore original math mode\n    cublasSetMathMode(handle, saved_math_mode);\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a single matrix multiplication (C = A * B)\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Performs matrix multiplication.\n\n                Args:\n                    A: Input tensor of shape (M, K).\n                    B: Input tensor of shape (K, N).\n\n                Returns:\n                    Output tensor of shape (M, N).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return _stark_get_extension().matmul_with_transposed_b(A, B);\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Enable TF32 math mode on the existing cuBLAS SGEMM path so Ampere can pick a Tensor Core kernel without changing the Python interface or GEMM layout handling.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Wrap the current `cublasSgemm` dispatch in a save/set/restore math-mode sequence: read the existing cuBLAS math mode, set `CUBLAS_TF32_TENSOR_OP_MATH` before the GEMM, call the same TN SGEMM with unchanged shapes/leading dimensions, and restore the saved math mode afterward. Keep all shape checks, allocations, and the exported function signature unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "correctness_issue=Output mismatch",
+        "max_difference=['0.251953', '0.259521', '0.254150']",
+        "avg_difference=['0.206949', '0.207107', '0.207053']",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3241841",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_b_gpu4/08_L1_P17_Auto_P17_20260716_045623/eval_traces/20260716_052754_3238589_5140e268_kernelbench_l1_17_17_matmul_with_transposed_b"
+      ],
+      "failure_type": "correctness_error",
+      "node_status": "correctness_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "correctness",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Temporarily switching the active cuBLAS handle to TF32 tensor-op math before the existing `cublasSgemm` call will route this large Ampere GEMM to a faster Tensor Core kernel with minimal host-side overhead.",
+      "single_change_focus": "Add a scoped TF32 math-mode toggle around the existing `cublasSgemm` call in `cuda_cu`, then restore the original mode immediately after the GEMM.",
+      "mutation_family": "tf32_mathmode_guard",
+      "target_metric": "speedup"
+    },
+    "phase2_n5": {
+      "node_id": "phase2_n5",
+      "parent_id": "phase2_n3",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p17_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b);\n\ntorch::Tensor matmul_with_transposed_b(torch::Tensor a, torch::Tensor b) {\n    return matmul_with_transposed_b_cuda(a, b);\n}\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matmul_with_transposed_b\", &matmul_with_transposed_b, \"Matmul with logical transposed B (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <cublasLt.h>\n#include <ATen/cuda/CUDAContext.h>\n#include <mutex>\n\nstruct LtCache {\n    cublasLtHandle_t lt_handle = nullptr;\n    cublasLtMatmulDesc_t op_desc = nullptr;\n    cublasLtMatrixLayout_t layout_a = nullptr;\n    cublasLtMatrixLayout_t layout_b = nullptr;\n    cublasLtMatrixLayout_t layout_c = nullptr;\n    cublasLtMatmulHeuristicResult_t heuristic;\n    bool valid = false;\n    int64_t M = 0, N = 0, K = 0;\n    torch::DeviceIndex device = -1;\n    // Persistent workspace buffer\n    void* workspace_ptr = nullptr;\n    size_t workspace_bytes_cached = 0;\n};\n\nstatic std::mutex g_lt_mutex;\nstatic LtCache g_lt_cache;\n\nstatic void destroy_lt_cache(LtCache& c) {\n    if (c.workspace_ptr) {\n        cudaFree(c.workspace_ptr);\n        c.workspace_ptr = nullptr;\n        c.workspace_bytes_cached = 0;\n    }\n    if (c.layout_c) { cublasLtMatrixLayoutDestroy(c.layout_c); c.layout_c = nullptr; }\n    if (c.layout_b) { cublasLtMatrixLayoutDestroy(c.layout_b); c.layout_b = nullptr; }\n    if (c.layout_a) { cublasLtMatrixLayoutDestroy(c.layout_a); c.layout_a = nullptr; }\n    if (c.op_desc)  { cublasLtMatmulDescDestroy(c.op_desc);    c.op_desc  = nullptr; }\n    if (c.lt_handle){ cublasLtDestroy(c.lt_handle);            c.lt_handle= nullptr; }\n    c.valid = false;\n}\n\ntorch::Tensor matmul_with_transposed_b_cuda(torch::Tensor a, torch::Tensor b) {\n    TORCH_CHECK(a.is_cuda(), \"a must be a CUDA tensor\");\n    TORCH_CHECK(b.is_cuda(), \"b must be a CUDA tensor\");\n    TORCH_CHECK(a.dtype() == torch::kFloat32, \"a must be float32\");\n    TORCH_CHECK(b.dtype() == torch::kFloat32, \"b must be float32\");\n    TORCH_CHECK(a.dim() == 2, \"a must be 2D\");\n    TORCH_CHECK(b.dim() == 2, \"b must be 2D\");\n    TORCH_CHECK(a.is_contiguous(), \"a must be contiguous\");\n    TORCH_CHECK(b.is_contiguous(), \"b must be contiguous\");\n\n    int64_t M = a.size(0);\n    int64_t K = a.size(1);\n    int64_t N = b.size(0);\n    TORCH_CHECK(b.size(1) == K, \"b.size(1) must equal a.size(1)\");\n\n    auto out = torch::empty({M, N}, a.options());\n\n    float alpha = 1.0f, beta = 0.0f;\n\n    // Try cublasLt path with caching\n    {\n        std::lock_guard<std::mutex> lock(g_lt_mutex);\n        auto dev = a.device().index();\n\n        bool need_rebuild = !g_lt_cache.valid ||\n                            g_lt_cache.M != M ||\n                            g_lt_cache.N != N ||\n                            g_lt_cache.K != K ||\n                            g_lt_cache.device != dev;\n\n        if (need_rebuild) {\n            destroy_lt_cache(g_lt_cache);\n\n            bool ok = true;\n            if (cublasLtCreate(&g_lt_cache.lt_handle) != CUBLAS_STATUS_SUCCESS) ok = false;\n\n            if (ok && cublasLtMatmulDescCreate(&g_lt_cache.op_desc,\n                                               CUBLAS_COMPUTE_32F,\n                                               CUDA_R_32F) != CUBLAS_STATUS_SUCCESS) ok = false;\n\n            if (ok) {\n                cublasOperation_t op_b = CUBLAS_OP_T;\n                cublasOperation_t op_a = CUBLAS_OP_N;\n                cublasLtMatmulDescSetAttribute(g_lt_cache.op_desc,\n                    CUBLASLT_MATMUL_DESC_TRANSA, &op_b, sizeof(op_b));\n                cublasLtMatmulDescSetAttribute(g_lt_cache.op_desc,\n                    CUBLASLT_MATMUL_DESC_TRANSB, &op_a, sizeof(op_a));\n\n                // Layout for B (first arg): col-major [K,N], lda=K\n                if (cublasLtMatrixLayoutCreate(&g_lt_cache.layout_a,\n                        CUDA_R_32F, K, N, K) != CUBLAS_STATUS_SUCCESS) ok = false;\n                // Layout for A (second arg): col-major [K,M], ldb=K\n                if (ok && cublasLtMatrixLayoutCreate(&g_lt_cache.layout_b,\n                        CUDA_R_32F, K, M, K) != CUBLAS_STATUS_SUCCESS) ok = false;\n                // Layout for out (C): col-major [N,M], ldc=N\n                if (ok && cublasLtMatrixLayoutCreate(&g_lt_cache.layout_c,\n                        CUDA_R_32F, N, M, N) != CUBLAS_STATUS_SUCCESS) ok = false;\n            }\n\n            if (ok) {\n                // Use a preference with 32 MB workspace\n                cublasLtMatmulPreference_t pref;\n                size_t workspace_size = 32 * 1024 * 1024;\n                if (cublasLtMatmulPreferenceCreate(&pref) == CUBLAS_STATUS_SUCCESS) {\n                    cublasLtMatmulPreferenceSetAttribute(pref,\n                        CUBLASLT_MATMUL_PREF_MAX_WORKSPACE_BYTES,\n                        &workspace_size, sizeof(workspace_size));\n                    int returned = 0;\n                    cublasStatus_t hs = cublasLtMatmulAlgoGetHeuristic(\n                        g_lt_cache.lt_handle,\n                        g_lt_cache.op_desc,\n                        g_lt_cache.layout_a,\n                        g_lt_cache.layout_b,\n                        g_lt_cache.layout_c,\n                        g_lt_cache.layout_c,\n                        pref, 1,\n                        &g_lt_cache.heuristic,\n                        &returned);\n                    cublasLtMatmulPreferenceDestroy(pref);\n                    if (hs != CUBLAS_STATUS_SUCCESS || returned == 0) ok = false;\n                } else {\n                    ok = false;\n                }\n            }\n\n            if (ok) {\n                // Pre-allocate persistent workspace\n                size_t ws_needed = g_lt_cache.heuristic.workspaceSize;\n                if (ws_needed > 0) {\n                    cudaError_t err = cudaMalloc(&g_lt_cache.workspace_ptr, ws_needed);\n                    if (err != cudaSuccess) {\n                        g_lt_cache.workspace_ptr = nullptr;\n                        g_lt_cache.workspace_bytes_cached = 0;\n                        // Still mark valid; we'll pass nullptr workspace\n                    } else {\n                        g_lt_cache.workspace_bytes_cached = ws_needed;\n                    }\n                }\n                g_lt_cache.M = M;\n                g_lt_cache.N = N;\n                g_lt_cache.K = K;\n                g_lt_cache.device = dev;\n                g_lt_cache.valid = true;\n            } else {\n                destroy_lt_cache(g_lt_cache);\n            }\n        }\n\n        if (g_lt_cache.valid) {\n            size_t ws_bytes = g_lt_cache.heuristic.workspaceSize;\n            void* ws_ptr = nullptr;\n            if (ws_bytes > 0) {\n                if (g_lt_cache.workspace_bytes_cached >= ws_bytes) {\n                    ws_ptr = g_lt_cache.workspace_ptr;\n                } else {\n                    // Grow the persistent workspace\n                    if (g_lt_cache.workspace_ptr) cudaFree(g_lt_cache.workspace_ptr);\n                    if (cudaMalloc(&g_lt_cache.workspace_ptr, ws_bytes) == cudaSuccess) {\n                        g_lt_cache.workspace_bytes_cached = ws_bytes;\n                        ws_ptr = g_lt_cache.workspace_ptr;\n                    } else {\n                        g_lt_cache.workspace_ptr = nullptr;\n                        g_lt_cache.workspace_bytes_cached = 0;\n                        ws_bytes = 0;\n                    }\n                }\n            }\n\n            cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n            cublasStatus_t st = cublasLtMatmul(\n                g_lt_cache.lt_handle,\n                g_lt_cache.op_desc,\n                &alpha,\n                b.data_ptr<float>(),  // first operand = B\n                g_lt_cache.layout_a,\n                a.data_ptr<float>(),  // second operand = A\n                g_lt_cache.layout_b,\n                &beta,\n                out.data_ptr<float>(),\n                g_lt_cache.layout_c,\n                out.data_ptr<float>(),\n                g_lt_cache.layout_c,\n                &g_lt_cache.heuristic.algo,\n                ws_ptr, ws_bytes,\n                stream);\n\n            if (st == CUBLAS_STATUS_SUCCESS) {\n                return out;\n            }\n            // Fall through to cublasSgemm fallback\n        }\n    }\n\n    // Fallback: cublasSgemm TN path\n    cublasHandle_t handle = at::cuda::getCurrentCUDABlasHandle();\n    cublasSgemm(\n        handle,\n        CUBLAS_OP_T,\n        CUBLAS_OP_N,\n        (int)N, (int)M, (int)K,\n        &alpha,\n        b.data_ptr<float>(), (int)K,\n        a.data_ptr<float>(), (int)K,\n        &beta,\n        out.data_ptr<float>(), (int)N\n    );\n\n    return out;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs a single matrix multiplication (C = A * B)\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Performs matrix multiplication.\n\n                Args:\n                    A: Input tensor of shape (M, K).\n                    B: Input tensor of shape (K, N).\n\n                Returns:\n                    Output tensor of shape (M, N).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return _stark_get_extension().matmul_with_transposed_b(A, B);\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Refine the working cached `cublasLtMatmul` TN path by removing per-call workspace allocation overhead while keeping the existing descriptors, heuristic choice, and SGEMM fallback unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current `cuda_cu` body with the same cached `cublasLtMatmul` TN implementation, but extend `LtCache` to store a persistent workspace buffer pointer/owner (for example a `torch::Tensor workspace_buf` plus `size_t workspace_bytes_cached`). In the fast path, remove the local `torch::empty` workspace allocation and instead lazily allocate `workspace_buf` only when `heuristic.workspaceSize > workspace_bytes_cached` or the device changes, then reuse `workspace_buf.data_ptr()` for later calls. Keep descriptor caching, heuristic selection, and the exact `cublasSgemm` fallback otherwise unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00317,
+      "score": 0.00317,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3242162",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_b_gpu4/08_L1_P17_Auto_P17_20260716_045623/eval_traces/20260716_053055_3238589_8de5a0be_kernelbench_l1_17_17_matmul_with_transposed_b"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00315,
+      "speedup": 0.9936908517350157,
+      "reference_runtimes": {
+        "torch_eager": 0.00315
+      },
+      "speedups": {
+        "torch_eager": 0.9936908517350157
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "The current champion still pays measurable overhead from allocating a fresh workspace tensor on every call; caching and reusing a device-local workspace buffer inside the existing `LtCache` should reduce hot-path host/runtime overhead without changing the chosen GEMM algorithm.",
+      "single_change_focus": "Replace only the per-call workspace allocation in the cached `cublasLt` fast path with persistent reusable workspace stored in the existing cache object and grown only when the selected heuristic requires more bytes.",
+      "mutation_family": "lt_workspace_reuse",
+      "target_metric": "speedup"
+    }
+  }
+}

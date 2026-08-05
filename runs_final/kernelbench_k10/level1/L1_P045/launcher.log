@@ -1,0 +1,75 @@
+[KernelWeaver] repo: /data/dyj/KernelWeaver
+[KernelWeaver] command: /data/dyj/miniconda3/envs/stark/bin/python -u stark_cli.py run-kernelbench --experiment main --level 1 --problem-id 45 --backend cuda --output-dir /data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/08_L1_P45_AvgPool2d_P45 --env-file /data/dyj/STARK/.env.server --route-config codeagent_claude --deliberation-config main --max-attempts 10 --verbose
+[KernelWeaver] started_at: 2026-07-07 00:19:36
+[KernelWeaver] CUDA_VISIBLE_DEVICES=4
+[KernelWeaver] CUDALLM_DEVICE=4
+[KernelWeaver] KERNELWEAVER_CONDA_ENV=stark
+[KernelWeaver] KERNELWEAVER_ENV_FILE=/data/dyj/STARK/.env.server
+[KernelWeaver] CUDA_HOME=/usr/local/cuda-12.8
+[KernelWeaver] NVCC_PATH=/usr/local/cuda-12.8/bin/nvcc
+[workflow] root_evaluation_start task=kernelbench_l1_45_45_average_pooling_2d
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_45_45_average_pooling_2d trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/08_L1_P45_AvgPool2d_P45/eval_traces/20260707_001937_1107518_ce31f7ad_kernelbench_l1_45_45_average_pooling_2d
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_45_45_average_pooling_2d
+[workflow] root_evaluation_done status=correct runtime=19800.0 us
+[diagnostics] enabled=True mode=root_ncu_v1 kernel=void unnamed>::avg_pool2d_out_cuda_frame<float, float>(int, const T1 *, long, long, long, long, int, int, int, int, int, int, int, T1 *, int, bool, bool) raw_metrics=22
+[deliberation] start mode=multi_model_v0 providers=openai-compatible,claude-compatible,gemini-compatible
+[deliberation] phase=propose provider=openai-compatible status=start
+[deliberation] phase=propose provider=claude-compatible status=start
+[deliberation] phase=propose provider=gemini-compatible status=start
+[deliberation] phase=propose provider=openai-compatible status=ok elapsed=61.654s status=ok strategies=4
+[deliberation] phase=propose provider=claude-compatible status=ok elapsed=82.464s status=ok strategies=4
+[deliberation] phase=propose provider=gemini-compatible status=ok elapsed=177.321s status=error strategies=0
+[deliberation] phase=review provider=openai-compatible status=start
+[deliberation] phase=review provider=claude-compatible status=start
+[deliberation] phase=review provider=gemini-compatible status=start
+[deliberation] phase=review provider=openai-compatible status=ok elapsed=19.742s status=ok scores=8
+[deliberation] phase=review provider=gemini-compatible status=ok elapsed=23.541s status=ok scores=8
+[deliberation] phase=review provider=claude-compatible status=ok elapsed=35.291s status=ok scores=8
+[deliberation] done elapsed=212.654s strategies=8
+task=kernelbench_l1_45_45_average_pooling_2d workflow=stark phase1 root status=correct root runtime=19800.0 us
+[phase1 attempt 1] workflow=stark selected=root status=correct reason=exploit_best_score mode=explore
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_45_45_average_pooling_2d trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/08_L1_P45_AvgPool2d_P45/eval_traces/20260707_002934_1107518_3131f894_kernelbench_l1_45_45_average_pooling_2d
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_45_45_average_pooling_2d
+  -> child=n1 stage=phase1 origin=plan_code status=runtime_fail score=n/a strategy=strategy_02
+[phase1 attempt 2] workflow=stark selected=n1 status=runtime_fail reason=debug_retry_failure mode=debug
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_45_45_average_pooling_2d trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/08_L1_P45_AvgPool2d_P45/eval_traces/20260707_003257_1107518_65f34b64_kernelbench_l1_45_45_average_pooling_2d
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_45_45_average_pooling_2d
+  -> child=n2 stage=phase1 origin=debug status=correct score=18300.0 us strategy=strategy_02
+[phase1 attempt 3] workflow=stark selected=n2 status=correct reason=explore_leaf mode=mutate_champion
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_45_45_average_pooling_2d trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/08_L1_P45_AvgPool2d_P45/eval_traces/20260707_004004_1107518_aecc7de0_kernelbench_l1_45_45_average_pooling_2d
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_45_45_average_pooling_2d
+  -> child=n3 stage=phase1 origin=plan_code status=runtime_fail score=n/a strategy=strategy_08
+[phase1 attempt 4] workflow=stark selected=n2 status=correct reason=exploit_best_score mode=best_lineage_push
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_45_45_average_pooling_2d trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/08_L1_P45_AvgPool2d_P45/eval_traces/20260707_004347_1107518_b5f0f92c_kernelbench_l1_45_45_average_pooling_2d
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_45_45_average_pooling_2d
+  -> child=n4 stage=phase1 origin=plan_code status=runtime_fail score=n/a strategy=strategy_08
+[phase1 attempt 5] workflow=stark selected=n3 status=runtime_fail reason=debug_retry_failure mode=debug
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_45_45_average_pooling_2d trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/08_L1_P45_AvgPool2d_P45/eval_traces/20260707_004721_1107518_5f8753c1_kernelbench_l1_45_45_average_pooling_2d
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_45_45_average_pooling_2d
+  -> child=n5 stage=phase1 origin=debug status=runtime_fail score=n/a strategy=strategy_08
+task=kernelbench_l1_45_45_average_pooling_2d workflow=stark phase2 root status=correct root runtime=18300.0 us
+[phase2 attempt 1] workflow=stark selected=root status=correct reason=exploit_best_score mode=explore
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_45_45_average_pooling_2d trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/08_L1_P45_AvgPool2d_P45/eval_traces/20260707_005650_1107518_2fa40776_kernelbench_l1_45_45_average_pooling_2d
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_45_45_average_pooling_2d
+  -> child=n1 stage=phase2 origin=plan_code status=correct score=20500.0 us strategy=strategy_04
+[phase2 attempt 2] workflow=stark selected=n1 status=correct reason=explore_leaf mode=explore
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_45_45_average_pooling_2d trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/08_L1_P45_AvgPool2d_P45/eval_traces/20260707_010312_1107518_1601828a_kernelbench_l1_45_45_average_pooling_2d
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_45_45_average_pooling_2d
+  -> child=n2 stage=phase2 origin=plan_code status=correct score=18200.0 us strategy=strategy_03
+[phase2 attempt 3] workflow=stark selected=n2 status=correct reason=explore_leaf mode=mutate_champion
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_45_45_average_pooling_2d trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/08_L1_P45_AvgPool2d_P45/eval_traces/20260707_010947_1107518_ac02a81c_kernelbench_l1_45_45_average_pooling_2d
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_45_45_average_pooling_2d
+  -> child=n3 stage=phase2 origin=plan_code status=correct score=18200.0 us strategy=strategy_03
+[phase2 attempt 4] workflow=stark selected=n2 status=correct reason=exploit_best_score mode=best_lineage_push
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_45_45_average_pooling_2d trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/08_L1_P45_AvgPool2d_P45/eval_traces/20260707_011756_1107518_66f8dae4_kernelbench_l1_45_45_average_pooling_2d
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_45_45_average_pooling_2d
+  -> child=n4 stage=phase2 origin=plan_code status=correct score=18200.0 us strategy=strategy_03
+[phase2 attempt 5] workflow=stark selected=n3 status=correct reason=explore_leaf mode=mutate_champion
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_45_45_average_pooling_2d trace_dir=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/08_L1_P45_AvgPool2d_P45/eval_traces/20260707_012436_1107518_40905fb1_kernelbench_l1_45_45_average_pooling_2d
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_45_45_average_pooling_2d
+  -> child=n5 stage=phase2 origin=plan_code status=correct score=18200.0 us strategy=strategy_03
+saved=/data/dyj/KernelWeaver/runs/main_l1_15_claude_cuda_main_4way_20260707_001550/08_L1_P45_AvgPool2d_P45/run.json
+workflow=stark task=kernelbench_l1_45_45_average_pooling_2d best_node=phase2_n2 status=correct
+run_profile=main search=main evaluator=main measurement=main
+deliberation=main strategies=8 enabled=True
+best_runtime=18200.0 us reference_runtime=19800.0 us speedup=1.088x

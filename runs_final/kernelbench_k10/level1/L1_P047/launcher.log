@@ -1,0 +1,73 @@
+[KernelWeaver] repo: /data/dyj/KernelWeaver
+[KernelWeaver] command: /data/dyj/miniconda3/envs/stark/bin/python -u stark_cli.py run-kernelbench --experiment main --level 1 --problem-id 47 --backend cuda --output-dir /data/dyj/KernelWeaver/runs/retry_failed_main_l1_15_claude_cuda_main_4way_20260707_125933/09_L1_P47_SumReduction_P47 --env-file /data/dyj/STARK/.env.server --route-config codeagent_claude --deliberation-config main --max-attempts 10 --verbose
+[KernelWeaver] started_at: 2026-07-07 13:02:34
+[KernelWeaver] CUDA_VISIBLE_DEVICES=2
+[KernelWeaver] CUDALLM_DEVICE=2
+[KernelWeaver] KERNELWEAVER_CONDA_ENV=stark
+[KernelWeaver] KERNELWEAVER_ENV_FILE=/data/dyj/STARK/.env.server
+[KernelWeaver] CUDA_HOME=/usr/local/cuda-12.8
+[KernelWeaver] NVCC_PATH=/usr/local/cuda-12.8/bin/nvcc
+[workflow] root_evaluation_start task=kernelbench_l1_47_47_sum_reduction_over_a_dimension
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension trace_dir=/data/dyj/KernelWeaver/runs/retry_failed_main_l1_15_claude_cuda_main_4way_20260707_125933/09_L1_P47_SumReduction_P47/eval_traces/20260707_130235_1230861_01187c79_kernelbench_l1_47_47_sum_reduction_over_a_dimension
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension
+[workflow] root_evaluation_done status=correct runtime=11900.0 us
+[diagnostics] enabled=True mode=root_ncu_v1 kernel=void reduce_kernel<512, 1, ReduceOp<float, func_wrapper_t<float, sum_functor<float, float, float>::operator ()(TensorIterator &)::[lambda(float, float) (instance 1)]>, unsigned int, float, 4, 4>>(T3) raw_metrics=22
+[deliberation] start mode=multi_model_v0 providers=openai-compatible,claude-compatible,gemini-compatible
+[deliberation] phase=propose provider=openai-compatible status=start
+[deliberation] phase=propose provider=claude-compatible status=start
+[deliberation] phase=propose provider=gemini-compatible status=start
+[deliberation] phase=propose provider=openai-compatible status=ok elapsed=65.543s status=ok strategies=4
+[deliberation] phase=propose provider=claude-compatible status=ok elapsed=72.263s status=ok strategies=4
+[deliberation] phase=propose provider=gemini-compatible status=ok elapsed=92.839s status=error strategies=0
+[deliberation] phase=review provider=openai-compatible status=start
+[deliberation] phase=review provider=claude-compatible status=start
+[deliberation] phase=review provider=gemini-compatible status=start
+[deliberation] phase=review provider=openai-compatible status=ok elapsed=14.004s status=ok scores=8
+[deliberation] phase=review provider=claude-compatible status=ok elapsed=24.257s status=ok scores=8
+[deliberation] phase=review provider=gemini-compatible status=ok elapsed=32.596s status=ok scores=8
+[deliberation] done elapsed=125.485s strategies=8
+task=kernelbench_l1_47_47_sum_reduction_over_a_dimension workflow=stark phase1 root status=correct root runtime=11900.0 us
+[phase1 attempt 1] workflow=stark selected=root status=correct reason=exploit_best_score mode=explore
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension trace_dir=/data/dyj/KernelWeaver/runs/retry_failed_main_l1_15_claude_cuda_main_4way_20260707_125933/09_L1_P47_SumReduction_P47/eval_traces/20260707_130851_1230861_fd2fd6ca_kernelbench_l1_47_47_sum_reduction_over_a_dimension
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension
+  -> child=n1 stage=phase1 origin=plan_code status=correct score=12700.0 us strategy=strategy_01
+[phase1 attempt 2] workflow=stark selected=n1 status=correct reason=explore_leaf mode=explore
+  -> child=n2 stage=phase1 origin=plan_code status=compile_fail score=n/a strategy=strategy_06
+[phase1 attempt 3] workflow=stark selected=n2 status=compile_fail reason=debug_retry_failure mode=debug
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension trace_dir=/data/dyj/KernelWeaver/runs/retry_failed_main_l1_15_claude_cuda_main_4way_20260707_125933/09_L1_P47_SumReduction_P47/eval_traces/20260707_131347_1230861_f9ec850a_kernelbench_l1_47_47_sum_reduction_over_a_dimension
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension
+  -> child=n3 stage=phase1 origin=debug status=correct score=10600.0 us strategy=strategy_06
+[phase1 attempt 4] workflow=stark selected=n3 status=correct reason=exploit_best_score mode=mutate_champion
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension trace_dir=/data/dyj/KernelWeaver/runs/retry_failed_main_l1_15_claude_cuda_main_4way_20260707_125933/09_L1_P47_SumReduction_P47/eval_traces/20260707_131905_1230861_5b6861dd_kernelbench_l1_47_47_sum_reduction_over_a_dimension
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension
+  -> child=n4 stage=phase1 origin=plan_code status=correct score=10700.0 us strategy=strategy_06
+[phase1 attempt 5] workflow=stark selected=n4 status=correct reason=explore_leaf mode=mutate_champion
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension trace_dir=/data/dyj/KernelWeaver/runs/retry_failed_main_l1_15_claude_cuda_main_4way_20260707_125933/09_L1_P47_SumReduction_P47/eval_traces/20260707_132407_1230861_6c614300_kernelbench_l1_47_47_sum_reduction_over_a_dimension
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension
+  -> child=n5 stage=phase1 origin=plan_code status=correct score=10600.0 us strategy=strategy_06
+task=kernelbench_l1_47_47_sum_reduction_over_a_dimension workflow=stark phase2 root status=correct root runtime=10600.0 us
+[phase2 attempt 1] workflow=stark selected=root status=correct reason=exploit_best_score mode=explore
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension trace_dir=/data/dyj/KernelWeaver/runs/retry_failed_main_l1_15_claude_cuda_main_4way_20260707_125933/09_L1_P47_SumReduction_P47/eval_traces/20260707_133636_1230861_2bdf5b36_kernelbench_l1_47_47_sum_reduction_over_a_dimension
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension
+  -> child=n1 stage=phase2 origin=plan_code status=correct score=27800.0 us strategy=strategy_02
+[phase2 attempt 2] workflow=stark selected=n1 status=correct reason=explore_leaf mode=explore
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension trace_dir=/data/dyj/KernelWeaver/runs/retry_failed_main_l1_15_claude_cuda_main_4way_20260707_125933/09_L1_P47_SumReduction_P47/eval_traces/20260707_134103_1230861_81126131_kernelbench_l1_47_47_sum_reduction_over_a_dimension
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension
+  -> child=n2 stage=phase2 origin=plan_code status=runtime_fail score=n/a strategy=strategy_01
+[phase2 attempt 3] workflow=stark selected=n2 status=runtime_fail reason=debug_retry_failure mode=debug
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension trace_dir=/data/dyj/KernelWeaver/runs/retry_failed_main_l1_15_claude_cuda_main_4way_20260707_125933/09_L1_P47_SumReduction_P47/eval_traces/20260707_134432_1230861_e7684bf9_kernelbench_l1_47_47_sum_reduction_over_a_dimension
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension
+  -> child=n3 stage=phase2 origin=debug status=correct score=10600.0 us strategy=strategy_01
+[phase2 attempt 4] workflow=stark selected=root status=correct reason=exploit_best_score mode=explore
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension trace_dir=/data/dyj/KernelWeaver/runs/retry_failed_main_l1_15_claude_cuda_main_4way_20260707_125933/09_L1_P47_SumReduction_P47/eval_traces/20260707_134934_1230861_9c500e24_kernelbench_l1_47_47_sum_reduction_over_a_dimension
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension
+  -> child=n4 stage=phase2 origin=plan_code status=runtime_fail score=n/a strategy=strategy_01
+[phase2 attempt 5] workflow=stark selected=n3 status=correct reason=explore_leaf mode=explore
+[evaluator] isolated_worker_start timeout=900s detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension trace_dir=/data/dyj/KernelWeaver/runs/retry_failed_main_l1_15_claude_cuda_main_4way_20260707_125933/09_L1_P47_SumReduction_P47/eval_traces/20260707_135431_1230861_dc218425_kernelbench_l1_47_47_sum_reduction_over_a_dimension
+[evaluator] isolated_worker_done exit_code=0 detached_session=true task=kernelbench_l1_47_47_sum_reduction_over_a_dimension
+  -> child=n5 stage=phase2 origin=plan_code status=runtime_fail score=n/a strategy=strategy_01
+saved=/data/dyj/KernelWeaver/runs/retry_failed_main_l1_15_claude_cuda_main_4way_20260707_125933/09_L1_P47_SumReduction_P47/run.json
+workflow=stark task=kernelbench_l1_47_47_sum_reduction_over_a_dimension best_node=n3 status=correct
+run_profile=main search=main evaluator=main measurement=main
+deliberation=main strategies=8 enabled=True
+best_runtime=10600.0 us reference_runtime=11900.0 us speedup=1.123x

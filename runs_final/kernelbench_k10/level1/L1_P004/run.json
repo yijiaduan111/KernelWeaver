@@ -1,0 +1,2136 @@
+{
+  "task_name": "kernelbench_l1_4_4_matrix_vector_multiplication",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": false,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_claude",
+    "plan_provider": "openai-compatible",
+    "code_provider": "claude-compatible",
+    "debug_provider": "openai-compatible",
+    "search_provider": "claude-compatible",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "diagnostics_enabled": false,
+    "diagnostics_mode": "root_ncu_v1",
+    "diagnostics_timeout_seconds": 300,
+    "diagnostics_warmup_runs": 2,
+    "diagnostics_profile_runs": 3,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1,
+    "deliberation_provider_timeout_seconds": 180,
+    "deliberation_phase_timeout_seconds": 240,
+    "evaluator_isolation": "candidate_subprocess",
+    "evaluator_timeout_seconds": 900,
+    "explore_fraction": 0.4,
+    "challenger_fraction": 0.3,
+    "plateau_delta_threshold": 0.03,
+    "plateau_recovery_mutation_attempts": 2,
+    "plateau_window": 3,
+    "deliberation_upgrade_enabled": true,
+    "deliberation_max_rounds": 3,
+    "deliberation_min_remaining_attempts": 8,
+    "phase_two_enabled": true,
+    "phase_two_split_attempts": 5
+  },
+  "best_node_id": "phase2_n5",
+  "leaderboard": [
+    "phase2_n5",
+    "phase2_n2"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "root",
+      "n1"
+    ],
+    [
+      "root",
+      "n2"
+    ],
+    [],
+    [
+      "phase2_root"
+    ],
+    [
+      "phase2_root",
+      "phase2_n1"
+    ],
+    [
+      "phase2_n2",
+      "phase2_root"
+    ],
+    [
+      "phase2_n5",
+      "phase2_n2"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "root",
+    "n3",
+    "phase2_root",
+    "phase2_n1",
+    "phase2_n2",
+    "phase2_n2",
+    "phase2_n3"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {}
+  ],
+  "pruned_nodes": {},
+  "debug_stats": {
+    "total_attempts": 0,
+    "per_node": {}
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 10,
+    "debug_attempts": 0,
+    "failure_counts": {
+      "builtins.RuntimeError": 1
+    },
+    "failure_stage_counts": {
+      "runtime": 1
+    },
+    "invalid_proposals": 0,
+    "attempt_mode_counts": {
+      "explore": 7,
+      "mutate_champion": 2,
+      "best_lineage_push": 1
+    },
+    "provider_transient_error_count": 0,
+    "provider_transient_budget_exhausted_count": 0,
+    "provider_transient_errors_by_stage": {},
+    "provider_transient_errors_by_origin": {},
+    "provider_transient_errors": [],
+    "phase_two_triggered": true,
+    "phase_two_seed_node_id": "n2",
+    "pruned_count": 0
+  },
+  "benchmark_family": "kernelbench",
+  "level": 1,
+  "problem_id": 4,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level1/4_Matrix_vector_multiplication_.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.00882
+  },
+  "speedups": {
+    "torch_eager": 1.0022727272727272
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "matmul",
+    "summary": "Matrix multiplication style computation; preserve dimensions and consider tiled implementations.",
+    "source": "KernelBench/KernelBench/level1/4_Matrix_vector_multiplication_.py",
+    "exact_facts": null,
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "cuda_cu",
+      "cuda_cpp",
+      "user_helpers"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "matmul",
+        "source_excerpt": "\"\"\"\n        Performs matrix-vector multiplication.\n\n        Args:\n            A: Input matrix of shape (M, K).\n            B: Input vector of shape (K, 1).\n\n        Returns:\n            Output vector of shape (M, 1).\n        \"\"\"",
+        "op_names": [
+          "_matrix_vector_multiplication_",
+          "a",
+          "args",
+          "b",
+          "c",
+          "input",
+          "k",
+          "kernelbench",
+          "level1",
+          "m",
+          "matmul",
+          "matrix"
+        ],
+        "optimization_intents": [
+          "use_tiled_matrix_multiply",
+          "preserve_matrix_shapes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use tiled GEMM structure",
+          "preserve strides and matrix dimensions"
+        ],
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "matmul",
+        "source_excerpt": "return torch.matmul(A, B)",
+        "op_names": [
+          "_matrix_vector_multiplication_",
+          "a",
+          "args",
+          "b",
+          "c",
+          "input",
+          "k",
+          "kernelbench",
+          "level1",
+          "m",
+          "matmul",
+          "matrix"
+        ],
+        "optimization_intents": [
+          "use_tiled_matrix_multiply",
+          "preserve_matrix_shapes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "use tiled GEMM structure",
+          "preserve strides and matrix dimensions"
+        ],
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "cuda_cpp",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+        "op_names": [
+          "add",
+          "cuda",
+          "custom",
+          "entrypoints",
+          "exports",
+          "extension",
+          "for",
+          "h",
+          "here",
+          "include",
+          "m",
+          "pybind"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      },
+      {
+        "anchor_name": "cuda_cu",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+        "op_names": [
+          "add",
+          "and",
+          "cuda",
+          "cuda_runtime",
+          "exported",
+          "extension",
+          "functions",
+          "h",
+          "here",
+          "include",
+          "kernels",
+          "torch"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      },
+      {
+        "anchor_name": "init_body",
+        "region_role": "init",
+        "semantic_type": "state_initialization",
+        "source_excerpt": "",
+        "op_names": [],
+        "optimization_intents": [
+          "inspect_source_before_editing"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 2
+      },
+      {
+        "anchor_name": "user_helpers",
+        "region_role": "helper",
+        "semantic_type": "helper_region",
+        "source_excerpt": "",
+        "op_names": [],
+        "optimization_intents": [
+          "inspect_source_before_editing"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 2
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "use_tiled_matrix_multiply",
+        "summary": "use tiled matrix multiply",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "cuda_cu",
+          "cuda_cpp",
+          "user_helpers"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "use tiled GEMM structure",
+            "preserve strides and matrix dimensions"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use block_m/block_n/block_k tiling"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "preserve_matrix_shapes",
+        "summary": "preserve matrix shapes",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "cuda_cu",
+          "cuda_cpp",
+          "user_helpers"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "use tiled GEMM structure",
+            "preserve strides and matrix dimensions"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use block_m/block_n/block_k tiling"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve M/N/K dimensions and transpose semantics",
+          "handle tensor contiguity assumptions"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve M/N/K dimensions and transpose semantics",
+      "handle tensor contiguity assumptions"
+    ]
+  },
+  "diagnostics_profile": {
+    "enabled": true,
+    "mode": "root_ncu_v1",
+    "ncu_profile": {
+      "enabled": true,
+      "status": "ok",
+      "profiler": "ncu",
+      "kernel_name": "void dot_kernel<float, 128, 0, cublasDotParams<cublasGemvTensorStridedBatched<const float>, cublasGemvTensorStridedBatched<float>>>(T4)",
+      "row_count": 11,
+      "kernel_launch_count": 11,
+      "raw_metrics": {
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 97.38,
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": 38.51,
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": 19.11,
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": 13.55,
+        "sm__warps_active.avg.pct_of_peak_sustained_active": 99.37,
+        "launch__registers_per_thread": 28,
+        "launch__occupancy_limit_registers": 16,
+        "launch__occupancy_limit_shared_mem": 21,
+        "launch__occupancy_limit_warps": 12,
+        "gpu__time_duration.avg": 9810912,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.81,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.01,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+        "smsp__sass_branch_targets_threads_divergent.avg": 0,
+        "smsp__sass_branch_targets_threads_uniform.avg": 144896,
+        "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+        "smsp__warps_eligible.avg": 2593169.6
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ],
+      "error": null
+    },
+    "notes": [
+      "Profiled the root candidate program with Nsight Compute."
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_03",
+        "intent": "triton_row_wise_evict_policy",
+        "summary": "Use Triton to implement a row-wise GEMV, applying evict_first to A and evict_last to B to optimize L2 cache usage.",
+        "target_anchors": [
+          "user_helpers",
+          "forward_stmt_1",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Create a Triton kernel where each block computes one or more rows of C (M dimension).",
+          "Loop over the K dimension in chunks (e.g., BLOCK_K=1024 or 4096).",
+          "Use tl.load with evict_policy='evict_first' for matrix A to prevent L2 cache pollution, since it is read exactly once.",
+          "Use tl.load with evict_policy='evict_last' for vector B to keep it resident in the L2 cache across all rows."
+        ],
+        "expected_gain": "May slightly outperform cuBLAS by strictly enforcing optimal L2 cache policies for this heavily memory-bound (97% DRAM throughput) operation.",
+        "risk_notes": [
+          "Triton tuning parameters (BLOCK_M, BLOCK_K) must be carefully chosen to avoid register spills.",
+          "Ensure boundary conditions are masked correctly if dimensions are not perfectly divisible by block sizes."
+        ],
+        "memory_methods": [
+          "evict_first",
+          "evict_last"
+        ],
+        "mutation_axes": [
+          "memory_access_pattern",
+          "cache_management"
+        ],
+        "forbidden_patterns": [
+          "Do not load the entire vector B into SRAM if it exceeds shared memory limits (it is 4MB)."
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 5.0,
+          "openai-compatible": 3.0,
+          "claude-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Plausible Triton experiment with sensible cache-policy ideas, but benefit is uncertain because L2 residency hints may not materially beat tuned library behavior in a strongly bandwidth-bound GEMV. Moderate risk from extra tuning and backend integration complexity.",
+          "claude-compatible": "Triton row-wise GEMV with evict_first for A and evict_last for B is well-motivated given the 97% DRAM throughput profile. Cache policy control is a genuine differentiator over cuBLAS. BLOCK_K tuning (1024-4096) is straightforward. Boundary masking is manageable. This is one of the more promising strategies given the memory-bound regime and the ability to enforce cache behavior that cuBLAS cannot guarantee.",
+          "gemini-compatible": "Excellent Triton strategy. Applying 'evict_first' to the massive matrix A (which is read exactly once) and 'evict_last' to vector B (which is reused across rows) perfectly aligns with the hardware's cache hierarchy for this memory-bound operation."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_02",
+        "intent": "replace_sgemv_with_cublasLt_or_sgemm_n1_fastpath",
+        "summary": "The current best path still profiles as a `dot_kernel` with ~97% DRAM throughput and only ~13.6% SM utilization, so the vendor BLAS call is landing on a memory-bound reduction-style kernel rather than a fuller GEMM pipeline. Explore a CUDA fast path that routes the exact contiguous float32 `(M,K) @ (K,1)` case through `cublasLtMatmul` or `cublasSgemm` with `N=1` and heuristic algo/workspace selection.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1"
+        ],
+        "implementation_hints": [
+          "Keep ModelNew I/O unchanged and preserve the existing fallback in `forward_stmt_1` for non-fast-path shapes/dtypes.",
+          "Use only the exact contiguous CUDA float32 case, because this is where the current scaffold already safely dispatches.",
+          "Prefer backend selection knobs that may avoid the current `dot_kernel` family: matmul descriptors, workspace-enabled heuristics, and explicit leading-dimension/layout mapping for row-major inputs.",
+          "Benchmark whether the backend switches from the current dot-style kernel family to a single matmul-like kernel with better issue efficiency."
+        ],
+        "expected_gain": "Low-to-moderate; likely 1.00x-1.08x if the library selects a better kernel family, otherwise flat.",
+        "risk_notes": [
+          "May still resolve to the same internal dot-style implementation and show no gain.",
+          "Workspace/planner setup can add complexity without changing steady-state throughput.",
+          "Need to preserve exact M/K/N semantics and row-major mapping correctness."
+        ],
+        "memory_methods": [
+          "Rely on library-managed tiling/cache reuse instead of the current reduction-oriented path.",
+          "Prefer kernels that increase arithmetic scheduling without increasing A traffic."
+        ],
+        "mutation_axes": [
+          "BLAS backend choice",
+          "layout descriptor mapping",
+          "workspace-enabled heuristic selection",
+          "exact-shape fast-path gating"
+        ],
+        "forbidden_patterns": [
+          "Do not change ModelNew inputs or output shape.",
+          "Do not broaden the fast path beyond CUDA float32 2D `(M,K)` and `(K,1)` without explicit guards.",
+          "Do not add host-side copies or explicit transpose materialization of `A` for this dynamic path."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 5.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Best risk-adjusted option. Keeps I/O and semantics stable, leverages vendor kernels/heuristics, and is easy to guard to the exact contiguous float32 MxK @ Kx1 case. Even if gains are modest, correctness and maintenance risk are much lower than bespoke kernels.",
+          "claude-compatible": "Routing through cublasLtMatmul with workspace-enabled heuristics is low-risk and could trigger a better internal kernel selection than the current dot_kernel path. However, the acknowledged risk that it may resolve to the same implementation is significant. Low implementation complexity makes it worth trying as a quick experiment before more invasive changes.",
+          "gemini-compatible": "Routing to cublasLt or cublasSgemm with N=1 is worth trying, but cuBLAS's dedicated cublasSgemv is already highly optimized for this exact case. Gains are possible but uncertain."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_05",
+        "intent": "cuda_non_temporal_loads",
+        "summary": "Implement a custom CUDA kernel using PTX non-temporal loads (ld.global.cs) for matrix A to prevent L2 cache pollution.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Write a custom CUDA kernel where each warp or block processes a row of C.",
+          "Use float4 vectorized loads with __ldcs (or inline PTX asm volatile(\"ld.global.cs.v4.f32 ...\")) for matrix A.",
+          "Use regular loads for vector B to ensure it stays in the L2 cache.",
+          "Perform warp-level or block-level reductions to accumulate the dot product."
+        ],
+        "expected_gain": "Explicit cache management via PTX could marginally improve effective DRAM bandwidth over standard library calls by eliminating cache thrashing.",
+        "risk_notes": [
+          "Inline PTX requires careful handling of pointer alignment (float4 requires 16-byte alignment).",
+          "Custom reductions might introduce instruction overhead compared to highly tuned cuBLAS."
+        ],
+        "memory_methods": [
+          "non_temporal_loads",
+          "float4_vectorization"
+        ],
+        "mutation_axes": [
+          "instruction_level_optimization",
+          "cache_management"
+        ],
+        "forbidden_patterns": [
+          "Do not use non-temporal loads for vector B, as it needs to be reused across rows."
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 5.0,
+          "openai-compatible": 2.0,
+          "claude-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Non-temporal/PTX load tuning is interesting but very low-confidence and architecture-sensitive. Inline PTX, alignment constraints, and custom reduction overhead make this a risky optimization for likely marginal gains.",
+          "claude-compatible": "PTX non-temporal loads (ld.global.cs) for A to prevent L2 pollution is a targeted and technically sound idea for a streaming-read matrix. Float4 vectorization adds throughput. However, alignment requirements add risk, and the gain over a well-tuned cuBLAS path that already achieves 97% DRAM throughput is likely marginal. Implementation complexity is moderate.",
+          "gemini-compatible": "Using PTX non-temporal loads (`__ldcs`) for matrix A is the textbook optimization for this shape. It prevents the 8GB matrix from thrashing the L2 cache, leaving it available for vector B. Highly recommended for a custom CUDA implementation."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "cuda_cublaslt_matmul",
+        "summary": "Replace cublasSgemv with cublasLtMatmul to leverage newer hardware-specific GEMV heuristics.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Use the cuBLASLt API instead of the legacy cuBLAS API.",
+          "Set up cublasLtMatrixLayout_t for A, B, and C, and cublasLtMatmulDesc_t for the operation.",
+          "Provide a workspace buffer to allow cuBLASLt to select the most optimal algorithm for the extreme M=2048, K=1M shape."
+        ],
+        "expected_gain": "cublasLt often contains more advanced kernels and better heuristics for extreme shapes compared to the legacy cublasSgemv API.",
+        "risk_notes": [
+          "The cuBLASLt API is verbose and requires careful setup of descriptors.",
+          "May fallback to the same kernel as cublasSgemv, yielding no additional speedup."
+        ],
+        "memory_methods": [
+          "library_heuristics",
+          "workspace_allocation"
+        ],
+        "mutation_axes": [
+          "library_backend_swap"
+        ],
+        "forbidden_patterns": [
+          "Do not use cublasSgemv, as it was already explored in the root candidate."
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 3.0,
+          "openai-compatible": 4.0,
+          "claude-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Strong practical candidate, similar in spirit to strategy_02. cuBLASLt may expose better heuristics or workspace-enabled algos for this extreme shape with relatively low semantic risk, though it may still map to the same kernel family and end up flat.",
+          "claude-compatible": "Essentially the same idea as strategy_02 but more explicitly targeting cublasLt. The API verbosity is a real cost, and the acknowledged risk of falling back to the same kernel is significant. Overlaps heavily with strategy_02; if both are attempted, this should be tried second. Score reflects the duplication and uncertain upside.",
+          "gemini-compatible": "Similar to strategy 2, using cuBLASLt might unlock better heuristics, but it often falls back to the same underlying kernels as cublasSgemv for N=1."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_01",
+        "intent": "build_persistent_multirow_gemv_with_reused_b_tiles",
+        "summary": "The Nsight profile is dominated by long scoreboard stalls (~0.83) under near-peak DRAM bandwidth, which points to latency from repeatedly streaming `A` while underusing compute. A custom persistent GEMV kernel can load a tile of `B` once into shared memory and reuse it across multiple output rows per CTA, raising work per fetched `B` tile and reducing per-row reduction overhead versus the earlier row-blocked variants.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1",
+          "user_helpers"
+        ],
+        "implementation_hints": [
+          "Specialize only for the observed regime: very large `K`, modest `M`, contiguous float32 inputs, and single output column.",
+          "Assign each CTA a small row group and iterate over `K` in staged tiles; keep several row accumulators in registers while broadcasting each `B` tile from shared memory.",
+          "Use vectorized loads from `A` and `B` where alignment permits, and consider a persistent/block-strided row schedule so CTAs stay resident across the full `K` sweep.",
+          "Prefer warp-local reductions or direct per-thread partial accumulation structures that minimize full-block sync frequency."
+        ],
+        "expected_gain": "Moderate but uncertain; likely 0.98x-1.12x depending on how much extra `B` reuse and launch consolidation offsets the unavoidable A streaming cost.",
+        "risk_notes": [
+          "A previous multi-row tiled attempt was nearly flat, so only a materially different schedule/pipeline is worth trying.",
+          "Register pressure can quickly reduce occupancy and erase gains.",
+          "This kernel remains fundamentally bandwidth-bound because `A` dominates total bytes read."
+        ],
+        "memory_methods": [
+          "Shared-memory staging of `B` tiles reused across several rows.",
+          "Register blocking over multiple output rows per thread/warp."
+        ],
+        "mutation_axes": [
+          "rows per CTA",
+          "K tile size",
+          "threads per block",
+          "vector width",
+          "persistent scheduling depth"
+        ],
+        "forbidden_patterns": [
+          "Do not allocate shared tiles for `A`; the matrix is too large and each element is single-use per output.",
+          "Do not introduce atomics for the final `C` write in the base design.",
+          "Do not assume non-contiguous tensors unless explicitly normalized by the existing fast-path guards."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 3.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Reasonable custom CUDA direction for this GEMV-like regime, especially reusing B across multiple rows, but expected upside is capped because A streaming dominates bandwidth and a similar multi-row idea already looked flat. Medium implementation risk from register pressure and occupancy tradeoffs.",
+          "claude-compatible": "Persistent multi-row GEMV with B-tile reuse is a reasonable idea for amortizing B loads, but the prior note that a similar multi-row tiled attempt was nearly flat is a red flag. The fundamental bottleneck is A streaming (M*K floats, single-use), so B reuse provides limited relief. Register pressure risk is real. Worth one careful attempt but expectations should be low.",
+          "gemini-compatible": "Tiling B in shared memory is a standard approach, but since B is 4MB it can largely reside in L2 cache. The main bottleneck is streaming the 8GB matrix A, so complex shared memory staging for B might not yield significant gains over a well-tuned L2-reliant kernel."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "triton_split_k_evict_policy",
+        "summary": "Use Triton with a split-K grid to increase SM occupancy for the large K dimension, combined with optimal cache eviction policies.",
+        "target_anchors": [
+          "user_helpers",
+          "forward_stmt_1",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "Add a split-K axis to the Triton grid (e.g., grid = (M // BLOCK_M, SPLIT_K)).",
+          "Each block computes a partial dot product for its K-slice.",
+          "Use tl.atomic_add to accumulate the partial results into the output vector C.",
+          "Maintain the evict_first policy for A and evict_last for B."
+        ],
+        "expected_gain": "Better workload distribution across SMs if M=2048 doesn't fully saturate the GPU, potentially improving bandwidth utilization and hiding memory latency.",
+        "risk_notes": [
+          "Atomic additions to C introduce a small overhead, though C is small enough (8KB) to fit entirely in L2.",
+          "Requires tuning SPLIT_K to balance parallelism and atomic contention."
+        ],
+        "memory_methods": [
+          "split_k",
+          "atomic_add"
+        ],
+        "mutation_axes": [
+          "parallelism_distribution",
+          "grid_mapping"
+        ],
+        "forbidden_patterns": [
+          "Do not use regular non-atomic writes for C when SPLIT_K is active."
+        ],
+        "source_models": [
+          "gemini-compatible"
+        ],
+        "model_scores": {
+          "gemini-compatible": 4.0,
+          "openai-compatible": 2.0,
+          "claude-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Split-K can raise parallelism, but for N=1 GEMV it adds atomic accumulation overhead to a memory-bound kernel and may not improve the real bottleneck. Higher correctness/performance risk than the simpler row-wise Triton path.",
+          "claude-compatible": "Split-K with atomic accumulation adds parallelism across the K dimension, which could help SM utilization (currently ~13.6%). However, atomic contention on C (2048 elements) and the overhead of partial accumulation may offset gains. The combination with evict policies is sound. Requires careful SPLIT_K tuning. Moderate risk, moderate potential upside.",
+          "gemini-compatible": "Split-K can be beneficial to increase occupancy and better hide memory latency, especially since K is extremely large (1M). However, M=2048 already provides a decent amount of parallelism, so the overhead of atomic reductions needs to be carefully balanced."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_07",
+        "intent": "use_async_pipelined_copy_for_b_and_latency_hiding",
+        "summary": "Because the profile shows heavy long-scoreboard stalls with very low SM throughput, a custom kernel that explicitly pipelines `B` tile movement with computation may help hide memory latency even if total DRAM traffic for `A` is unchanged. This is a refinement of the custom GEMV family focused on overlapping global fetch of the next `B` tile with FMAs on the current tile.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_1"
+        ],
+        "implementation_hints": [
+          "Restrict to architectures and shapes where asynchronous shared-memory staging is supported; otherwise keep the current library path or a simpler kernel fallback.",
+          "Double-buffer `B` tiles in shared memory and overlap staging of tile `t+1` while computing tile `t` across a row group.",
+          "Combine async staging with vectorized `A` reads and register-resident accumulators so the compute loop is not sync-heavy.",
+          "Tune tile size conservatively because the current profile already has high active warps; the goal is latency hiding, not just occupancy."
+        ],
+        "expected_gain": "Low-to-moderate; likely 1.00x-1.10x if scoreboard stalls are reduced without inflating shared-memory or register limits.",
+        "risk_notes": [
+          "Benefits depend strongly on GPU architecture and compiler lowering.",
+          "More complex synchronization can backfire for a simple GEMV if tile sizes are poorly chosen.",
+          "If `A` traffic remains the sole bottleneck, overlap may not materially change wall time."
+        ],
+        "memory_methods": [
+          "Async copy / double-buffered shared-memory tiles for `B`.",
+          "Software pipelining across the K loop."
+        ],
+        "mutation_axes": [
+          "pipeline stages",
+          "shared-memory tile depth",
+          "vector width",
+          "row-group size",
+          "architecture-gated dispatch"
+        ],
+        "forbidden_patterns": [
+          "Do not force this path on unsupported architectures.",
+          "Do not expand shared-memory usage so far that occupancy drops below the current already-high active-warp regime.",
+          "Do not add extra global buffering of full `B` outside the kernel."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 3.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Async pipelining of B tiles could reduce scoreboard stalls, but the kernel remains dominated by A traffic and added synchronization/shared-memory complexity can easily erase wins. Worth considering after simpler library routing options, not before.",
+          "claude-compatible": "Async pipelined copy for B tiles with double-buffering is architecturally sound but the analysis itself notes that if A traffic is the sole bottleneck, overlap won't change wall time. The profile shows high active warps already, so latency hiding via pipelining has limited headroom. Complex synchronization for a simple GEMV adds risk without clear upside. Low priority.",
+          "gemini-compatible": "Vector B is only 4MB and will likely stay resident in L2 cache. The primary bottleneck is the memory bandwidth required to stream the 8GB matrix A. Pipelining B into shared memory won't alleviate the main bottleneck."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "shape_specialize_and_gate_for_extreme_m_small_n1_case",
+        "summary": "The execution facts show a very specific regime: `A` is `[2048, 1048576]` and `B` is `[1048576,1]`. Since broad generic kernels have not improved over SGEMV, a narrow shape-specialized CUDA path may outperform by hardwiring launch geometry and vectorization choices for the extreme `M<<K`, `N=1` case while leaving all other cases on the current fallback.",
+        "target_anchors": [
+          "forward_stmt_1",
+          "cuda_cu",
+          "cuda_cpp",
+          "init_body"
+        ],
+        "implementation_hints": [
+          "Keep the current SGEMV-backed path as the default fast path, but add an even narrower dispatch condition for the extreme single-column regime if dimensions/alignment match.",
+          "Specialize launch geometry around the known small `M` and huge `K`: fixed rows-per-CTA, fixed vector width, and unroll depth tuned for `K`-streaming.",
+          "Use `init_body` only if lightweight cached metadata or capability flags are helpful; avoid storing tensor-shape-dependent state.",
+          "Measure whether specialization reduces launch overhead or improves cache behavior enough to beat the generic BLAS path."
+        ],
+        "expected_gain": "Low but targeted; likely 1.00x-1.06x if the workload distribution is stable and highly repetitive.",
+        "risk_notes": [
+          "Very narrow specialization can overfit this benchmark and lose badly on nearby shapes.",
+          "Extra dispatch branches add maintenance cost for limited upside.",
+          "If alignment or contiguity assumptions miss, correctness or performance can regress."
+        ],
+        "memory_methods": [
+          "Hardwired vectorized loads and fixed row grouping tuned for the observed shape.",
+          "Optionally cache only static capability/dispatch metadata, not tensor data."
+        ],
+        "mutation_axes": [
+          "exact-shape guard",
+          "vector width",
+          "unroll factor",
+          "rows per CTA",
+          "fallback ordering"
+        ],
+        "forbidden_patterns": [
+          "Do not cache or persist input tensor contents across forwards.",
+          "Do not replace the generic fallback for unhandled shapes/dtypes.",
+          "Do not assume TF32 or reduced precision unless explicitly allowed by the benchmark contract."
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 2.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Shape-specialized gating is safe if narrowly guarded, but it risks overfitting this benchmark for very small upside. Usefulness depends on repeatability of the exact shape regime, and maintenance cost is high relative to likely gain.",
+          "claude-compatible": "Shape specialization for the exact [2048, 1048576] x [1048576, 1] case is the narrowest possible approach. The expected gain of 1.00x-1.06x is the lowest in the portfolio, and overfitting risk is explicitly acknowledged. The strategy adds dispatch complexity for minimal upside. Only worth pursuing if all other strategies have been exhausted and the benchmark is known to be fixed-shape.",
+          "gemini-compatible": "Hardwiring launch geometry for this specific shape is a valid micro-optimization, but without addressing the memory access patterns (like non-temporal loads), it is unlikely to significantly outperform cuBLAS."
+        },
+        "priority": 2
+      }
+    ],
+    "proposal_errors": {
+      "claude-compatible": "Expecting ',' delimiter: line 1 column 3854 (char 3853)"
+    },
+    "review_errors": {},
+    "deliberation_round": 1
+  },
+  "phase_transition": {
+    "source_phase": 1,
+    "target_phase": 2,
+    "split_attempts": 5,
+    "trigger_attempt": 5,
+    "root": {
+      "node_id": "root",
+      "strategy_name": null,
+      "runtime": 0.00882,
+      "speedup": 1.0,
+      "plan_summary": null,
+      "changed_regions": [],
+      "lineage": [
+        "root"
+      ]
+    },
+    "selected": {
+      "node_id": "n2",
+      "strategy_name": "strategy_08",
+      "runtime": 0.00882,
+      "speedup": 1.0,
+      "plan_summary": "Replace the custom per-row reduction kernel path with a narrow CUDA extension wrapper that calls cuBLAS `cublasSgemv` on the exact contiguous float32 `(M,K) x (K,1)` case, keeping `torch.matmul` as fallback. This intentionally explores a different family from the regressed row-blocked kernel and directly targets the observed multi-launch dot-style library behavior.",
+      "changed_regions": [
+        "cuda_cpp",
+        "cuda_cu",
+        "forward_stmt_1"
+      ],
+      "lineage": [
+        "root",
+        "n1",
+        "n2"
+      ]
+    },
+    "attempts": [
+      {
+        "node_id": "n1",
+        "parent_id": "root",
+        "strategy_name": "strategy_05",
+        "attempt_mode": "explore",
+        "mutation_family": "row_blocked_gemv_float4",
+        "single_change_focus": "one block per row with vectorized float4 accumulation and block reduction",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00914,
+        "speedup": 0.9649890590809627,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Replace the cuBLAS dot-style path with a single custom GEMV CUDA kernel: one block per output row, float4 vectorized loads over K, and a block reduction to write one (M,1) result."
+      },
+      {
+        "node_id": "n2",
+        "parent_id": "n1",
+        "strategy_name": "strategy_08",
+        "attempt_mode": "explore",
+        "mutation_family": "cublas_sgemv_fastpath",
+        "single_change_focus": "Implement a cuBLAS SGEMV-backed extension entrypoint and route only the exact fast-path case through it.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00882,
+        "speedup": 1.0,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Replace the custom per-row reduction kernel path with a narrow CUDA extension wrapper that calls cuBLAS `cublasSgemv` on the exact contiguous float32 `(M,K) x (K,1)` case, keeping `torch.matmul` as fallback. This intentionally explores a different family from the regressed row-blocked kernel and directly targets the observed multi-launch dot-style library behavior."
+      },
+      {
+        "node_id": "n3",
+        "parent_id": "n2",
+        "strategy_name": "strategy_03",
+        "attempt_mode": "explore",
+        "mutation_family": "multi_row_b_tile_gemv",
+        "single_change_focus": "Swap the SGEMV call for a custom CUDA kernel where each block owns a small row group and iterates over K in shared-memory B tiles with register accumulators per row.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00883,
+        "speedup": 0.998867497168743,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Replace the cuBLAS SGEMV fast path with a custom multi-row GEMV kernel that reuses each loaded B tile across several output rows, keeping the existing Python/C++ entrypoint structure intact."
+      },
+      {
+        "node_id": "n4",
+        "parent_id": "root",
+        "strategy_name": "strategy_06",
+        "attempt_mode": "explore",
+        "mutation_family": "warp_per_row_gemv",
+        "single_change_focus": "Replace the generic/custom placeholder backend with one specialized warp-per-row CUDA GEMV entrypoint and call it only for the exact fast-path case.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00908,
+        "speedup": 0.9713656387665198,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Explore a warp-per-row GEMV kernel that avoids block-wide shared-memory reductions and instead uses warp shuffle reduction plus loop unrolling for the extreme M<<K shape."
+      },
+      {
+        "node_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_08",
+        "attempt_mode": "explore",
+        "mutation_family": "cublas_sgemv_refine",
+        "single_change_focus": "Replace the custom CUDA GEMV kernel with a thin SGEMV wrapper and keep the forward fast path calling that wrapper only for the exact CUDA float32 matrix-vector case.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_1",
+          "forward_stmt_2"
+        ],
+        "compile_ok": true,
+        "correct": false,
+        "runtime": null,
+        "speedup": null,
+        "failure_stage": "runtime",
+        "failure_type": "builtins.RuntimeError",
+        "plan_summary": "Refine the proven SGEMV fast path by replacing the regressed custom CUDA kernel with a thin vendor-BLAS-backed implementation, while keeping the ModelNew interface and Python fallback unchanged."
+      }
+    ],
+    "trace_summary": "effective=n2:Implement a cuBLAS SGEMV-backed extension entrypoint and route only the exact fast-path case through it.:1.000x | flat=n1:one block per row with vectorized float4 accumulation and block reduction:0.965x; n3:Swap the SGEMV call for a custom CUDA kernel where each block owns a small row group and iterates over K in shared-memory B tiles with register accumulators per row.:0.999x; n4:Replace the generic/custom placeholder backend with one specialized warp-per-row CUDA GEMV entrypoint and call it only for the exact fast-path case.:0.971x | failed=n5:Replace the custom CUDA GEMV kernel with a thin SGEMV wrapper and keep the forward fast path calling that wrapper only for the exact CUDA float32 matrix-vector case.:builtins.RuntimeError",
+    "root_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void dot_kernel<float, 128, 0, cublasDotParams<cublasGemvTensorStridedBatched<const float>, cublasGemvTensorStridedBatched<float>>>(T4)",
+        "row_count": 11,
+        "kernel_launch_count": 11,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 97.38,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 38.51,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 19.11,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 13.55,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 99.37,
+          "launch__registers_per_thread": 28,
+          "launch__occupancy_limit_registers": 16,
+          "launch__occupancy_limit_shared_mem": 21,
+          "launch__occupancy_limit_warps": 12,
+          "gpu__time_duration.avg": 9810912,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.81,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.01,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 144896,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 2593169.6
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "selected_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void dot_kernel<float, 128, 0, cublasDotParams<cublasGemvTensorStridedBatched<const float>, cublasGemvTensorStridedBatched<float>>>(T4)",
+        "row_count": 16,
+        "kernel_launch_count": 16,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 97.35,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 38.38,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 19.11,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 13.56,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 99.33,
+          "launch__registers_per_thread": 28,
+          "launch__occupancy_limit_registers": 16,
+          "launch__occupancy_limit_shared_mem": 21,
+          "launch__occupancy_limit_warps": 12,
+          "gpu__time_duration.avg": 9817952,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.83,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.01,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 144896,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 2612860.71
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "diagnostics_delta": {
+      "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": -0.030000000000001137,
+      "gpu__time_duration.avg": 7040,
+      "l1tex__throughput.avg.pct_of_peak_sustained_active": 0.0,
+      "launch__occupancy_limit_registers": 0,
+      "launch__occupancy_limit_shared_mem": 0,
+      "launch__occupancy_limit_warps": 0,
+      "launch__registers_per_thread": 0,
+      "lts__throughput.avg.pct_of_peak_sustained_elapsed": -0.12999999999999545,
+      "sm__throughput.avg.pct_of_peak_sustained_elapsed": 0.009999999999999787,
+      "sm__warps_active.avg.pct_of_peak_sustained_active": -0.04000000000000625,
+      "smsp__sass_branch_targets_threads_divergent.avg": 0,
+      "smsp__sass_branch_targets_threads_uniform.avg": 0,
+      "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.019999999999999907,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+      "smsp__warps_eligible.avg": 19691.10999999987
+    }
+  },
+  "feedback_state": {
+    "total_attempts": 11,
+    "compile_rate": 1.0,
+    "correct_rate": 0.9090909090909091,
+    "best_speedup": 1.0022727272727272,
+    "best_strategy_name": "strategy_05",
+    "phase": "refinement",
+    "current_champion_id": "phase2_n5",
+    "current_champion_speedup": 1.0022727272727272,
+    "plateau_detected": false,
+    "recent_improvement_deltas": [
+      0.03501094091903734,
+      0.06183794917915686,
+      0.04875921375921366
+    ],
+    "recent_regression_deltas": [
+      -0.028634361233480177,
+      -0.060702875399361145,
+      -0.04762156026628217,
+      -0.16905960208168258,
+      0.0
+    ],
+    "recent_successful_mutation_families": [
+      "streaming_A_cached_B_gemv",
+      "single_accumulator_unroll1"
+    ],
+    "recent_failed_mutation_families": [
+      "cublaslt_exact_shape_fastpath",
+      "dual_accumulator_unroll2",
+      "async_b_tile_pipeline",
+      "cublas_sgemv_fastpath"
+    ],
+    "last_mutation_outcome": "regressed_or_flat",
+    "recent_attempts": [
+      {
+        "attempt_id": "n4",
+        "parent_id": "root",
+        "strategy_name": "strategy_06",
+        "mode": "explore",
+        "mutation_family": "warp_per_row_gemv",
+        "speedup": 0.9713656387665198,
+        "parent_speedup": 1.0,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the generic/custom placeholder backend with one specialized warp-per-row CUDA GEMV entrypoint and call it only for the exact fast-path case."
+      },
+      {
+        "attempt_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_08",
+        "mode": "explore",
+        "mutation_family": "cublas_sgemv_refine",
+        "speedup": null,
+        "parent_speedup": 0.998867497168743,
+        "compile_ok": true,
+        "correct": false,
+        "failure_stage": "runtime",
+        "failure_type": "builtins.RuntimeError",
+        "single_change_focus": "Replace the custom CUDA GEMV kernel with a thin SGEMV wrapper and keep the forward fast path calling that wrapper only for the exact CUDA float32 matrix-vector case."
+      },
+      {
+        "attempt_id": "phase2_n1",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_06",
+        "mode": "explore",
+        "mutation_family": "cublaslt_exact_shape_fastpath",
+        "speedup": 0.9392971246006389,
+        "parent_speedup": 1.0,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the SGEMV wrapper with a cuBLASLtMatmul wrapper for the exact `(M,K) x (K,1)` CUDA float32 path."
+      },
+      {
+        "attempt_id": "phase2_n2",
+        "parent_id": "phase2_n1",
+        "strategy_name": "strategy_05",
+        "mode": "explore",
+        "mutation_family": "streaming_A_cached_B_gemv",
+        "speedup": 1.0011350737797957,
+        "parent_speedup": 0.9392971246006389,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the exact fast-path backend implementation with one specialized custom CUDA kernel that uses streaming/non-temporal loads for `A` and normal cached loads for `B`."
+      },
+      {
+        "attempt_id": "phase2_n3",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_05",
+        "mode": "mutate_champion",
+        "mutation_family": "dual_accumulator_unroll2",
+        "speedup": 0.9535135135135135,
+        "parent_speedup": 1.0011350737797957,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the inner accumulation loop in the existing CUDA kernel with a 2-way unrolled, dual-accumulator variant while keeping the same launch geometry and reduction structure."
+      },
+      {
+        "attempt_id": "phase2_n4",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_07",
+        "mode": "best_lineage_push",
+        "mutation_family": "async_b_tile_pipeline",
+        "speedup": 0.8320754716981131,
+        "parent_speedup": 1.0011350737797957,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace direct per-warp global loads of B inside the current warp-per-row kernel with a shared-memory tiled, double-buffered B pipeline while leaving launch geometry, A streaming loads, and warp reduction unchanged."
+      },
+      {
+        "attempt_id": "phase2_n5",
+        "parent_id": "phase2_n3",
+        "strategy_name": "strategy_05",
+        "mode": "mutate_champion",
+        "mutation_family": "single_accumulator_unroll1",
+        "speedup": 1.0022727272727272,
+        "parent_speedup": 0.9535135135135135,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Remove the 2-way unrolled dual-accumulator inner loop from the existing CUDA GEMV kernel and replace it with a single-accumulator version that keeps the same warp-per-row structure, vectorized loads, and tail handling."
+      },
+      {
+        "attempt_id": "phase2_root",
+        "parent_id": "n2",
+        "strategy_name": "strategy_08",
+        "mode": "explore",
+        "mutation_family": "cublas_sgemv_fastpath",
+        "speedup": 1.0,
+        "parent_speedup": 1.0,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Implement a cuBLAS SGEMV-backed extension entrypoint and route only the exact fast-path case through it."
+      }
+    ],
+    "champion": {
+      "node_id": "phase2_n5",
+      "speedup": 1.0022727272727272,
+      "strategy_name": "strategy_05",
+      "mutation_family": "single_accumulator_unroll1",
+      "lineage": [
+        "root",
+        "n1",
+        "n2",
+        "phase2_root",
+        "phase2_n1",
+        "phase2_n2",
+        "phase2_n3",
+        "phase2_n5"
+      ],
+      "recent_positive_mutations": [
+        {
+          "attempt_id": "phase2_n2",
+          "strategy_name": "strategy_05",
+          "mode": "explore",
+          "mutation_family": "streaming_A_cached_B_gemv",
+          "speedup": 1.0011350737797957,
+          "parent_speedup": 0.9392971246006389,
+          "single_change_focus": "Replace the exact fast-path backend implementation with one specialized custom CUDA kernel that uses streaming/non-temporal loads for `A` and normal cached loads for `B`."
+        },
+        {
+          "attempt_id": "phase2_n5",
+          "strategy_name": "strategy_05",
+          "mode": "mutate_champion",
+          "mutation_family": "single_accumulator_unroll1",
+          "speedup": 1.0022727272727272,
+          "parent_speedup": 0.9535135135135135,
+          "single_change_focus": "Remove the 2-way unrolled dual-accumulator inner loop from the existing CUDA GEMV kernel and replace it with a single-accumulator version that keeps the same warp-per-row structure, vectorized loads, and tail handling."
+        }
+      ],
+      "recent_negative_mutations": [
+        {
+          "attempt_id": "phase2_n1",
+          "strategy_name": "strategy_06",
+          "mode": "explore",
+          "mutation_family": "cublaslt_exact_shape_fastpath",
+          "speedup": 0.9392971246006389,
+          "parent_speedup": 1.0,
+          "single_change_focus": "Replace the SGEMV wrapper with a cuBLASLtMatmul wrapper for the exact `(M,K) x (K,1)` CUDA float32 path."
+        },
+        {
+          "attempt_id": "phase2_n3",
+          "strategy_name": "strategy_05",
+          "mode": "mutate_champion",
+          "mutation_family": "dual_accumulator_unroll2",
+          "speedup": 0.9535135135135135,
+          "parent_speedup": 1.0011350737797957,
+          "single_change_focus": "Replace the inner accumulation loop in the existing CUDA kernel with a 2-way unrolled, dual-accumulator variant while keeping the same launch geometry and reduction structure."
+        },
+        {
+          "attempt_id": "phase2_n4",
+          "strategy_name": "strategy_07",
+          "mode": "best_lineage_push",
+          "mutation_family": "async_b_tile_pipeline",
+          "speedup": 0.8320754716981131,
+          "parent_speedup": 1.0011350737797957,
+          "single_change_focus": "Replace direct per-warp global loads of B inside the current warp-per-row kernel with a shared-memory tiled, double-buffered B pipeline while leaving launch geometry, A streaming loads, and warp reduction unchanged."
+        },
+        {
+          "attempt_id": "phase2_root",
+          "strategy_name": "strategy_08",
+          "mode": "explore",
+          "mutation_family": "cublas_sgemv_fastpath",
+          "speedup": 1.0,
+          "parent_speedup": 1.0,
+          "single_change_focus": "Implement a cuBLAS SGEMV-backed extension entrypoint and route only the exact fast-path case through it."
+        }
+      ],
+      "plateau_detected": false,
+      "lineage_plateau_depth": 0
+    }
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "user_helpers",
+      "region_role": "helper",
+      "start_line": 36,
+      "end_line": 37,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 40,
+      "end_line": 45,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 49,
+      "end_line": 55,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 64,
+      "end_line": 65,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 68,
+      "end_line": 81,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n\"\"\"\n        Performs matrix-vector multiplication.\n\n        Args:\n            A: Input matrix of shape (M, K).\n            B: Input vector of shape (K, 1).\n\n        Returns:\n            Output vector of shape (M, 1).\n        \"\"\"",
+      "source_hash": "be24cc303ac4"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 82,
+      "end_line": 84,
+      "source_excerpt": "return torch.matmul(A, B)",
+      "source_hash": "962d73290091"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p4_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs matrix-vector multiplication (C = A * B).\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Performs matrix-vector multiplication.\n\n                Args:\n                    A: Input matrix of shape (M, K).\n                    B: Input vector of shape (K, 1).\n\n                Returns:\n                    Output vector of shape (M, 1).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return torch.matmul(A, B)\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1",
+        "n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00882,
+      "score": 0.00882,
+      "logs": [
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3216487",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_a_gpu3/02_L1_P4_Auto_P4_20260716_013349/eval_traces/20260716_013351_3216459_89da9157_kernelbench_l1_4_4_matrix_vector_multiplication"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00882,
+      "speedup": 1.0,
+      "reference_runtimes": {
+        "torch_eager": 0.00882
+      },
+      "speedups": {
+        "torch_eager": 1.0
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": null,
+      "single_change_focus": null,
+      "mutation_family": null,
+      "target_metric": null
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p4_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matrix_vector_mul\", &matrix_vector_mul, \"Matrix-vector multiply (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n#define BLOCK_SIZE 256\n\n__global__ void gemv_float4_kernel(\n    const float* __restrict__ A,\n    const float* __restrict__ B,\n    float* __restrict__ C,\n    int M, int K)\n{\n    int row = blockIdx.x;\n    if (row >= M) return;\n\n    const float* a_row = A + row * K;\n    float sum = 0.0f;\n\n    // float4 vectorized loads\n    int K4 = K / 4;\n    const float4* a4 = reinterpret_cast<const float4*>(a_row);\n    const float4* b4 = reinterpret_cast<const float4*>(B);\n\n    for (int i = threadIdx.x; i < K4; i += BLOCK_SIZE) {\n        float4 av = a4[i];\n        float4 bv = b4[i];\n        sum += av.x * bv.x + av.y * bv.y + av.z * bv.z + av.w * bv.w;\n    }\n\n    // scalar tail\n    int tail_start = K4 * 4;\n    for (int i = tail_start + threadIdx.x; i < K; i += BLOCK_SIZE) {\n        sum += a_row[i] * B[i];\n    }\n\n    // warp reduction\n    unsigned mask = 0xffffffff;\n    for (int offset = 16; offset > 0; offset >>= 1)\n        sum += __shfl_down_sync(mask, sum, offset);\n\n    // block reduction via shared memory\n    __shared__ float smem[BLOCK_SIZE / 32];\n    int lane = threadIdx.x & 31;\n    int warp = threadIdx.x >> 5;\n    if (lane == 0) smem[warp] = sum;\n    __syncthreads();\n\n    if (warp == 0) {\n        sum = (lane < (BLOCK_SIZE / 32)) ? smem[lane] : 0.0f;\n        for (int offset = (BLOCK_SIZE / 32) >> 1; offset > 0; offset >>= 1)\n            sum += __shfl_down_sync(mask, sum, offset);\n        if (lane == 0) C[row] = sum;\n    }\n}\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B) {\n    TORCH_CHECK(A.is_cuda() && B.is_cuda(), \"Inputs must be CUDA tensors\");\n    TORCH_CHECK(A.dtype() == torch::kFloat32 && B.dtype() == torch::kFloat32, \"Inputs must be float32\");\n    TORCH_CHECK(A.dim() == 2, \"A must be 2D\");\n    TORCH_CHECK(B.dim() == 2 && B.size(1) == 1, \"B must be shape (K, 1)\");\n\n    A = A.contiguous();\n    B = B.contiguous();\n\n    int M = A.size(0);\n    int K = A.size(1);\n\n    auto C = torch::empty({M, 1}, A.options());\n\n    dim3 grid(M);\n    dim3 block(BLOCK_SIZE);\n\n    gemv_float4_kernel<<<grid, block>>>(\n        A.data_ptr<float>(),\n        B.data_ptr<float>(),\n        C.data_ptr<float>(),\n        M, K\n    );\n\n    return C;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs matrix-vector multiplication (C = A * B).\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (A.is_cuda and B.is_cuda and\n                    A.dtype == torch.float32 and B.dtype == torch.float32 and\n                    A.dim() == 2 and B.dim() == 2 and B.size(1) == 1):\n                    return _stark_get_extension().matrix_vector_mul(A, B)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return torch.matmul(A, B)\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Replace the cuBLAS dot-style path with a single custom GEMV CUDA kernel: one block per output row, float4 vectorized loads over K, and a block reduction to write one (M,1) result.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the empty pybind module with a declaration for `torch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B);` and export it as `m.def(\"matrix_vector_mul\", &matrix_vector_mul, \"Matrix-vector multiply (CUDA)\");`. Keep the file limited to binding code and include only the necessary Torch header.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the placeholder CUDA region with a custom kernel and wrapper: validate CUDA float32 tensors, require A to be 2D and B to be shape (K,1) or contiguous viewable to length K, allocate output as `(M, 1)`, launch one block per row with 256 threads, use float4 loads for the K loop when aligned plus a scalar tail fallback, accumulate in registers, reduce within the block using warp shuffles plus a small shared-memory stage, and write one scalar per row. Expose the wrapper as `matrix_vector_mul(torch::Tensor A, torch::Tensor B)` returning the output tensor.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the placeholder docstring/comment block with a fast-path guard: if both inputs are CUDA float32 tensors with `A.dim()==2` and `B.dim()==2` and `B.size(1)==1`, call `_stark_get_extension().matrix_vector_mul(A, B)` and return it immediately; otherwise fall through to the existing PyTorch fallback path.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Keep the fallback as `return torch.matmul(A, B)` for unsupported layouts/devices/dtypes so semantics remain unchanged outside the optimized CUDA path.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00914,
+      "score": 0.00914,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "autofix_tensor_property_call",
+        "applied_region_patch:forward_stmt_1:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3217344",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_a_gpu3/02_L1_P4_Auto_P4_20260716_013349/eval_traces/20260716_014201_3216459_6b4f0d5a_kernelbench_l1_4_4_matrix_vector_multiplication"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00882,
+      "speedup": 0.9649890590809627,
+      "reference_runtimes": {
+        "torch_eager": 0.00882
+      },
+      "speedups": {
+        "torch_eager": 0.9649890590809627
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "A dedicated row-blocked GEMV kernel will outperform the current cuBLAS dot path by turning 11 launches into one launch, keeping each row resident in a block, and reducing global memory transactions with float4 loads.",
+      "single_change_focus": "one block per row with vectorized float4 accumulation and block reduction",
+      "mutation_family": "row_blocked_gemv_float4",
+      "target_metric": "speedup"
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p4_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matrix_vector_mul\", &matrix_vector_mul, \"Matrix-vector multiply via cuBLAS SGEMV (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <ATen/cuda/CUDAContext.h>\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B) {\n    TORCH_CHECK(A.is_cuda() && B.is_cuda(), \"Inputs must be CUDA tensors\");\n    TORCH_CHECK(A.dtype() == torch::kFloat32 && B.dtype() == torch::kFloat32, \"Inputs must be float32\");\n    TORCH_CHECK(A.dim() == 2, \"A must be 2D\");\n    TORCH_CHECK(B.dim() == 2 && B.size(1) == 1, \"B must be shape (K, 1)\");\n\n    A = A.contiguous();\n    B = B.contiguous();\n\n    int M = (int)A.size(0);\n    int K = (int)A.size(1);\n\n    auto C = torch::zeros({M, 1}, A.options());\n\n    cublasHandle_t handle = at::cuda::getCurrentCUDABlasHandle();\n\n    // PyTorch stores A in row-major (C order): A[M,K].\n    // cuBLAS is column-major. Treat A as column-major A_cm[K,M].\n    // We want C = A * B, i.e. C[M,1] = A[M,K] * B[K,1].\n    // In column-major terms: C_cm[M,1] = A_cm^T[M,K] * B_cm[K,1]\n    // => cublasSgemv with CUBLAS_OP_T, m=K, n=M, lda=K\n    //    computes y = alpha * A_cm^T * x + beta * y\n    //    where A_cm is K x M (lda=K), x is length M, y is length K -- wrong.\n    //\n    // Correct mapping:\n    // cublasSgemv(handle, CUBLAS_OP_N, m, n, alpha, A, lda, x, incx, beta, y, incy)\n    // computes y = alpha * op(A) * x + beta * y\n    // With CUBLAS_OP_N: y[m] = alpha * A[m x n] * x[n] + beta * y[m]\n    // We want: C[M] = A_row_major[M,K] * B[K]\n    // Treat A_row_major as column-major A_cm[K,M] (lda=K).\n    // Use CUBLAS_OP_T: op(A_cm) = A_cm^T which is [M,K] in col-major = A_row_major.\n    // So: y[M] = alpha * A_cm^T[M,K] * x[K] + beta * y[M]\n    // => cublasSgemv(handle, CUBLAS_OP_T, K, M, &alpha, A_ptr, K, B_ptr, 1, &beta, C_ptr, 1)\n\n    const float alpha = 1.0f;\n    const float beta  = 0.0f;\n\n    cublasStatus_t status = cublasSgemv(\n        handle,\n        CUBLAS_OP_T,\n        K,   // m (rows of A_cm = K)\n        M,   // n (cols of A_cm = M)\n        &alpha,\n        A.data_ptr<float>(),  // A_cm pointer\n        K,                    // lda\n        B.data_ptr<float>(),  // x vector of length K\n        1,\n        &beta,\n        C.data_ptr<float>(),  // y vector of length M\n        1\n    );\n\n    TORCH_CHECK(status == CUBLAS_STATUS_SUCCESS, \"cublasSgemv failed with status \", (int)status);\n\n    return C;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs matrix-vector multiplication (C = A * B).\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (A.is_cuda and B.is_cuda and\n                        A.dtype == torch.float32 and B.dtype == torch.float32 and\n                        A.dim() == 2 and B.dim() == 2 and B.size(1) == 1):\n                    return _stark_get_extension().matrix_vector_mul(A, B)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return torch.matmul(A, B)\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n3",
+        "phase2_root"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_08",
+      "plan_summary": "Replace the custom per-row reduction kernel path with a narrow CUDA extension wrapper that calls cuBLAS `cublasSgemv` on the exact contiguous float32 `(M,K) x (K,1)` case, keeping `torch.matmul` as fallback. This intentionally explores a different family from the regressed row-blocked kernel and directly targets the observed multi-launch dot-style library behavior.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the C++ extension stub with a declaration for `torch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B);` and a `PYBIND11_MODULE` export that binds `matrix_vector_mul` under the same name. Do not add extra APIs.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the custom CUDA kernel implementation with a cuBLAS-based wrapper: include `<cublas_v2.h>` and `<ATen/cuda/CUDAContext.h>`, validate that `A` and `B` are CUDA float32 with shapes `(M,K)` and `(K,1)`, make them contiguous, allocate output `C` as shape `{M,1}`, obtain the current cuBLAS handle via `at::cuda::getDefaultCUDABlasHandle()`, set alpha=1 and beta=0, and call `cublasSgemv` using transpose mode over row-major storage so the result equals `torch.matmul(A, B)`. Use `A.data_ptr<float>()`, `B.data_ptr<float>()`, and `C.data_ptr<float>()`, and add `TORCH_CHECK` on the cuBLAS status. Return `C`. Remove the prior custom kernel entirely.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the Python fast-path guard so it still checks CUDA, float32, `A.dim()==2`, `B.dim()==2`, and `B.size(1)==1`, but routes that case to `_stark_get_extension().matrix_vector_mul(A, B)` as the only specialized path; otherwise fall through to the existing `torch.matmul` fallback unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00882,
+      "score": 0.00882,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "autofix_tensor_property_call",
+        "applied_region_patch:forward_stmt_1:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3217680",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_a_gpu3/02_L1_P4_Auto_P4_20260716_013349/eval_traces/20260716_014813_3216459_ef007e65_kernelbench_l1_4_4_matrix_vector_multiplication"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00882,
+      "speedup": 1.0,
+      "reference_runtimes": {
+        "torch_eager": 0.00882
+      },
+      "speedups": {
+        "torch_eager": 1.0
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "A dedicated `cublasSgemv` call will consolidate the observed dot-style execution into a single vendor-tuned GEMV launch for this extreme matrix-vector shape, reducing launch/dispatch overhead without fighting the already-near-peak DRAM bandwidth wall via a custom kernel.",
+      "single_change_focus": "Implement a cuBLAS SGEMV-backed extension entrypoint and route only the exact fast-path case through it.",
+      "mutation_family": "cublas_sgemv_fastpath",
+      "target_metric": "speedup"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p4_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matrix_vector_mul\", &matrix_vector_mul, \"Matrix-vector multiply via cuBLAS SGEMV (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n#define ROWS_PER_BLOCK 4\n#define THREADS 256\n#define TILE_K 256\n\n__global__ void gemv_multi_row_kernel(\n    const float* __restrict__ A,\n    const float* __restrict__ B,\n    float* __restrict__ C,\n    int M, int K)\n{\n    // Each block handles ROWS_PER_BLOCK consecutive rows\n    int block_row = blockIdx.x * ROWS_PER_BLOCK;\n    int tid = threadIdx.x;\n\n    // Shared memory for B tile and reduction\n    __shared__ float s_B[TILE_K];\n    __shared__ float s_reduce[ROWS_PER_BLOCK][THREADS];\n\n    // Per-thread accumulators for each row\n    float acc[ROWS_PER_BLOCK] = {0.f, 0.f, 0.f, 0.f};\n\n    // Determine valid rows\n    int valid_rows = min(ROWS_PER_BLOCK, M - block_row);\n\n    // Loop over K in tiles\n    for (int k_base = 0; k_base < K; k_base += TILE_K) {\n        int tile_end = min(TILE_K, K - k_base);\n\n        // Cooperatively load B tile into shared memory\n        for (int i = tid; i < tile_end; i += THREADS) {\n            s_B[i] = B[k_base + i];\n        }\n        __syncthreads();\n\n        // Each thread accumulates over the tile for each row\n        // Use float4 when possible\n        int vec_end = (tile_end / 4) * 4;\n        for (int i = tid * 4; i < vec_end; i += THREADS * 4) {\n            float4 bv = *reinterpret_cast<const float4*>(&s_B[i]);\n            for (int r = 0; r < valid_rows; r++) {\n                const float* A_row = A + (block_row + r) * K + k_base;\n                float4 av = *reinterpret_cast<const float4*>(&A_row[i]);\n                acc[r] += av.x * bv.x + av.y * bv.y + av.z * bv.z + av.w * bv.w;\n            }\n        }\n        // Handle tail\n        for (int i = vec_end + tid; i < tile_end; i += THREADS) {\n            float bv = s_B[i];\n            for (int r = 0; r < valid_rows; r++) {\n                acc[r] += A[(block_row + r) * K + k_base + i] * bv;\n            }\n        }\n        __syncthreads();\n    }\n\n    // Block-level reduction for each row\n    for (int r = 0; r < valid_rows; r++) {\n        s_reduce[r][tid] = acc[r];\n    }\n    __syncthreads();\n\n    for (int r = 0; r < valid_rows; r++) {\n        // Tree reduction\n        for (int stride = THREADS / 2; stride > 0; stride >>= 1) {\n            if (tid < stride) {\n                s_reduce[r][tid] += s_reduce[r][tid + stride];\n            }\n            __syncthreads();\n        }\n        if (tid == 0) {\n            C[block_row + r] = s_reduce[r][0];\n        }\n    }\n}\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B) {\n    TORCH_CHECK(A.is_cuda() && B.is_cuda(), \"Inputs must be CUDA tensors\");\n    TORCH_CHECK(A.dtype() == torch::kFloat32 && B.dtype() == torch::kFloat32, \"Inputs must be float32\");\n    TORCH_CHECK(A.dim() == 2, \"A must be 2D\");\n    TORCH_CHECK(B.dim() == 2 && B.size(1) == 1, \"B must be shape (K, 1)\");\n\n    A = A.contiguous();\n    B = B.contiguous();\n\n    int M = (int)A.size(0);\n    int K = (int)A.size(1);\n\n    auto C = torch::empty({M, 1}, A.options());\n\n    int grid_x = (M + ROWS_PER_BLOCK - 1) / ROWS_PER_BLOCK;\n    dim3 grid(grid_x);\n    dim3 block(THREADS);\n\n    gemv_multi_row_kernel<<<grid, block>>>(\n        A.data_ptr<float>(),\n        B.data_ptr<float>(),\n        C.data_ptr<float>(),\n        M, K\n    );\n\n    return C;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs matrix-vector multiplication (C = A * B).\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (A.is_cuda and B.is_cuda and\n                        A.dtype == torch.float32 and B.dtype == torch.float32 and\n                        A.dim() == 2 and B.dim() == 2 and B.size(1) == 1):\n                    return _stark_get_extension().matrix_vector_mul(A, B)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return torch.matmul(A, B)\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Replace the cuBLAS SGEMV fast path with a custom multi-row GEMV kernel that reuses each loaded B tile across several output rows, keeping the existing Python/C++ entrypoint structure intact.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the cuBLAS-based implementation with a custom CUDA kernel implementation under the same exported function `matrix_vector_mul`. Implement a kernel for contiguous CUDA float32 inputs where each block processes `ROWS_PER_BLOCK=4` output rows, uses `THREADS=256`, loops over K in `TILE_K=256` chunks, cooperatively loads one `B` tile into shared memory once per chunk, and has each thread accumulate partial sums for up to 4 rows by reading the matching `A` elements for those rows. After the K loop, reduce each row accumulator across the block using warp shuffles plus a small shared-memory staging area, then write the final 4 outputs into a `(M,1)` output tensor. Keep tensor validation and `.contiguous()` handling in `matrix_vector_mul`, launch the custom kernel only for the validated float32 CUDA `(M,K) x (K,1)` case, include a scalar/tail path for non-multiples of 4 or tile size, and remove the `cublasSgemv` call entirely.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00883,
+      "score": 0.00883,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3218012",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_a_gpu3/02_L1_P4_Auto_P4_20260716_013349/eval_traces/20260716_015425_3216459_3f1b4e3e_kernelbench_l1_4_4_matrix_vector_multiplication"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00882,
+      "speedup": 0.998867497168743,
+      "reference_runtimes": {
+        "torch_eager": 0.00882
+      },
+      "speedups": {
+        "torch_eager": 0.998867497168743
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "A block computing multiple rows at once, while cooperatively loading a tile of `B` once into shared memory and reusing it across those rows, will outperform the current SGEMV path on this extreme GEMV shape by reducing redundant global reads of `B` and improving memory-level efficiency.",
+      "single_change_focus": "Swap the SGEMV call for a custom CUDA kernel where each block owns a small row group and iterates over K in shared-memory B tiles with register accumulators per row.",
+      "mutation_family": "multi_row_b_tile_gemv",
+      "target_metric": "speedup"
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p4_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matrix_vector_mul_warp(torch::Tensor A, torch::Tensor B);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matrix_vector_mul_warp\", &matrix_vector_mul_warp, \"Warp-per-row GEMV (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n#define WARPS_PER_BLOCK 4\n#define WARP_SIZE 32\n\n__global__ void warp_gemv_kernel(const float* __restrict__ A,\n                                  const float* __restrict__ B,\n                                  float* __restrict__ C,\n                                  int M, int K) {\n    int warp_id_in_block = threadIdx.x / WARP_SIZE;\n    int lane = threadIdx.x % WARP_SIZE;\n    int row = blockIdx.x * WARPS_PER_BLOCK + warp_id_in_block;\n    if (row >= M) return;\n\n    const float* a_row = A + (long long)row * K;\n    float sum = 0.0f;\n\n    // Each lane strides over K with step=32\n    // Use float4 vectorized loads where possible\n    int k4_end = (K / 4) * 4;  // largest multiple of 4\n    // Each lane handles indices: lane, lane+32, lane+64, ...\n    // For float4: each lane loads 4 consecutive floats at position base+lane*4\n    // Actually let's do scalar with unrolling for simplicity and correctness\n    int k = lane;\n    #pragma unroll 8\n    for (; k + 7*WARP_SIZE < K; k += 8*WARP_SIZE) {\n        sum += a_row[k]                * __ldg(&B[k]);\n        sum += a_row[k + WARP_SIZE]   * __ldg(&B[k + WARP_SIZE]);\n        sum += a_row[k + 2*WARP_SIZE] * __ldg(&B[k + 2*WARP_SIZE]);\n        sum += a_row[k + 3*WARP_SIZE] * __ldg(&B[k + 3*WARP_SIZE]);\n        sum += a_row[k + 4*WARP_SIZE] * __ldg(&B[k + 4*WARP_SIZE]);\n        sum += a_row[k + 5*WARP_SIZE] * __ldg(&B[k + 5*WARP_SIZE]);\n        sum += a_row[k + 6*WARP_SIZE] * __ldg(&B[k + 6*WARP_SIZE]);\n        sum += a_row[k + 7*WARP_SIZE] * __ldg(&B[k + 7*WARP_SIZE]);\n    }\n    for (; k < K; k += WARP_SIZE) {\n        sum += a_row[k] * __ldg(&B[k]);\n    }\n\n    // Warp-level reduction using shuffle\n    sum += __shfl_down_sync(0xffffffff, sum, 16);\n    sum += __shfl_down_sync(0xffffffff, sum, 8);\n    sum += __shfl_down_sync(0xffffffff, sum, 4);\n    sum += __shfl_down_sync(0xffffffff, sum, 2);\n    sum += __shfl_down_sync(0xffffffff, sum, 1);\n\n    if (lane == 0) {\n        C[row] = sum;\n    }\n}\n\ntorch::Tensor matrix_vector_mul_warp(torch::Tensor A, torch::Tensor B) {\n    TORCH_CHECK(A.is_cuda() && B.is_cuda(), \"Inputs must be CUDA tensors\");\n    TORCH_CHECK(A.dtype() == torch::kFloat32 && B.dtype() == torch::kFloat32, \"Inputs must be float32\");\n    TORCH_CHECK(A.dim() == 2, \"A must be 2D\");\n    TORCH_CHECK(B.dim() == 2 && B.size(1) == 1, \"B must be shape (K, 1)\");\n    TORCH_CHECK(A.size(1) == B.size(0), \"Dimension mismatch\");\n\n    A = A.contiguous();\n    B = B.contiguous();\n\n    int M = (int)A.size(0);\n    int K = (int)A.size(1);\n\n    auto C = torch::zeros({M, 1}, A.options());\n\n    int blocks = (M + WARPS_PER_BLOCK - 1) / WARPS_PER_BLOCK;\n    int threads = WARPS_PER_BLOCK * WARP_SIZE;\n\n    warp_gemv_kernel<<<blocks, threads>>>(\n        A.data_ptr<float>(),\n        B.data_ptr<float>(),\n        C.data_ptr<float>(),\n        M, K\n    );\n\n    return C;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs matrix-vector multiplication (C = A * B).\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (A.is_cuda and B.is_cuda and\n                        A.dtype == torch.float32 and B.dtype == torch.float32 and\n                        A.dim() == 2 and B.dim() == 2 and B.size(1) == 1 and\n                        A.size(1) == B.size(0)):\n                    return _stark_get_extension().matrix_vector_mul_warp(A, B)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return torch.matmul(A, B)\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Explore a warp-per-row GEMV kernel that avoids block-wide shared-memory reductions and instead uses warp shuffle reduction plus loop unrolling for the extreme M<<K shape.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the placeholder module with a declaration `torch::Tensor matrix_vector_mul_warp(torch::Tensor A, torch::Tensor B);` and a `PYBIND11_MODULE` export that binds exactly one function named `matrix_vector_mul_warp`. Do not add extra APIs or change the extension/module scaffold.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the placeholder CUDA region with a complete implementation of `matrix_vector_mul_warp(torch::Tensor A, torch::Tensor B)`: validate both tensors are CUDA, float32, `A.dim()==2`, `B.dim()==2`, `B.size(1)==1`, and `A.size(1)==B.size(0)`; make contiguous local copies; allocate output `C = torch::zeros({M, 1}, A.options())`; launch a custom kernel where each warp computes one output row, each block contains 128 threads (4 warps), row index is derived from block/warp id, each lane accumulates `A[row*K + k] * B[k]` for `k = lane; k < K; k += 32` with `#pragma unroll 8` on the inner stepped loop body when possible, reduce within the warp using `__shfl_down_sync`, and lane 0 writes `C[row][0]`; include bounds checks for rows beyond `M`; return `C`. Keep implementation self-contained in this anchor and avoid cuBLAS calls.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the placeholder/docstring block with a narrow fast-path guard: if `A` and `B` are CUDA float32 tensors with `A.dim()==2`, `B.dim()==2`, `B.size(1)==1`, and `A.size(1)==B.size(0)`, call `_stark_get_extension().matrix_vector_mul_warp(A, B)`; otherwise fall through to the existing fallback in `forward_stmt_2`. Do not alter the fallback anchor.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00908,
+      "score": 0.00908,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "autofix_tensor_property_call",
+        "applied_region_patch:forward_stmt_1:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3218394",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_a_gpu3/02_L1_P4_Auto_P4_20260716_013349/eval_traces/20260716_015916_3216459_69d2fe86_kernelbench_l1_4_4_matrix_vector_multiplication"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00882,
+      "speedup": 0.9713656387665198,
+      "reference_runtimes": {
+        "torch_eager": 0.00882
+      },
+      "speedups": {
+        "torch_eager": 0.9713656387665198
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "A warp-per-row kernel with 4 warps per block, scalar streaming over `K` with `#pragma unroll`, read-only access for `B`, and warp-shuffle reduction will reduce synchronization/reduction overhead versus prior block-reduction kernels and may beat the generic dot-style cuBLAS path for this very tall-K GEMV.",
+      "single_change_focus": "Replace the generic/custom placeholder backend with one specialized warp-per-row CUDA GEMV entrypoint and call it only for the exact fast-path case.",
+      "mutation_family": "warp_per_row_gemv",
+      "target_metric": "speedup"
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p4_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matrix_vector_mul\", &matrix_vector_mul, \"Matrix-vector multiply via cuBLAS SGEMV (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n\nstatic cublasHandle_t g_cublas_handle = nullptr;\n\nstatic cublasHandle_t get_cublas_handle() {\n    if (g_cublas_handle == nullptr) {\n        cublasCreate(&g_cublas_handle);\n    }\n    return g_cublas_handle;\n}\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B) {\n    TORCH_CHECK(A.is_cuda() && B.is_cuda(), \"Inputs must be CUDA tensors\");\n    TORCH_CHECK(A.dtype() == torch::kFloat32 && B.dtype() == torch::kFloat32, \"Inputs must be float32\");\n    TORCH_CHECK(A.dim() == 2, \"A must be 2D\");\n    TORCH_CHECK(B.dim() == 2 && B.size(1) == 1, \"B must be shape (K, 1)\");\n\n    A = A.contiguous();\n    B = B.contiguous();\n\n    int M = (int)A.size(0);\n    int K = (int)A.size(1);\n\n    auto C = torch::empty({M, 1}, A.options());\n\n    // A is row-major (M x K), stored as column-major (K x M) from cuBLAS perspective.\n    // We want C = A * B, i.e., C[i] = sum_j A[i,j] * B[j].\n    // cuBLAS is column-major. Treat A as column-major (K x M) matrix.\n    // cublasSgemv with CUBLAS_OP_T: y = alpha * A^T * x + beta * y\n    // where A is K x M (col-major), A^T is M x K, x is B (K), y is C (M).\n    // So: cublasSgemv(handle, CUBLAS_OP_T, K, M, &alpha, A_ptr, K, B_ptr, 1, &beta, C_ptr, 1)\n\n    float alpha = 1.0f;\n    float beta = 0.0f;\n\n    cublasHandle_t handle = get_cublas_handle();\n    cublasSetStream(handle, at::cuda::getCurrentCUDAStream());\n\n    cublasSgemv(handle, CUBLAS_OP_T,\n                K, M,\n                &alpha,\n                A.data_ptr<float>(), K,\n                B.data_ptr<float>(), 1,\n                &beta,\n                C.data_ptr<float>(), 1);\n\n    return C;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs matrix-vector multiplication (C = A * B).\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (A.is_cuda and B.is_cuda and\n                        A.dtype == torch.float32 and B.dtype == torch.float32 and\n                        A.dim() == 2 and B.dim() == 2 and B.size(1) == 1):\n                    return _stark_get_extension().matrix_vector_mul(A, B)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return torch.matmul(A, B)\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_08",
+      "plan_summary": "Refine the proven SGEMV fast path by replacing the regressed custom CUDA kernel with a thin vendor-BLAS-backed implementation, while keeping the ModelNew interface and Python fallback unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the current pybind stub with a declaration and binding for `matrix_vector_mul(torch::Tensor A, torch::Tensor B)`, keeping the exported name unchanged and wiring it to the CUDA implementation in `cuda_cu`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Remove the hand-written multi-row kernel and implement `matrix_vector_mul` as a thin SGEMV-backed CUDA wrapper that checks CUDA/float32/2D shapes, makes inputs contiguous, allocates `(M, 1)`, and dispatches a single vendor BLAS matrix-vector call using the correct transpose flag for row-major `A`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Keep the existing CUDA/float32/shape guard, but make the fast path call the extension entrypoint directly with no extra preprocessing beyond the backend's contiguity handling.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Preserve the `torch.matmul(A, B)` fallback exactly for unsupported inputs.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": false,
+      "runtime": null,
+      "score": null,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "autofix_tensor_property_call",
+        "applied_region_patch:forward_stmt_1:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "runtime_error_name=builtins.RuntimeError",
+        "runtime_error=Error building extension 'stark_cuda_l1_p4_cdcce697c704': [1/3] /usr/local/cuda-12.8/bin/nvcc --generate-dependencies-with-compile --dependency-output cuda.cuda.o.d -DTORCH_EXTENSION_NAME=stark_cud...",
+        "runtime_error_traceback=ninja: build stopped: subcommand failed.",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3218716",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_a_gpu3/02_L1_P4_Auto_P4_20260716_013349/eval_traces/20260716_020431_3216459_0f4a07e0_kernelbench_l1_4_4_matrix_vector_multiplication",
+        "isolated_worker_stderr_tail=compiler-options '-fPIC' -O3 --use_fast_math -std=c++17 -c /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l1_p4_cdcce697c704/cuda.cu -o cuda.cuda.o \nFAILED: [code=2] cuda.cuda.o \n/usr/local/cuda-12.8/bin/nvcc --generate-dependencies-with-compile --dependency-output cuda.cuda.o.d -DTORCH_EXTENSION_NAME=stark_cuda_l1_p4_cdcce697c704 -DTORCH_API_INCLUDE_EXTENSION_H -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include/torch/csrc/api/include -isystem /usr/local/cuda-12.8/include -isystem /data/dyj/miniconda3/envs/stark/include/python3.10 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr -gencode=arch=compute_89,code=compute_89 -gencode=arch=compute_89,code=sm_89 --compiler-options '-fPIC' -O3 --use_fast_math -std=c++17 -c /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l1_p4_cdcce697c704/cuda.cu -o cuda.cuda.o \n/data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l1_p4_cdcce697c704/cuda.cu(44): error: namespace \"at::cuda\" has no member \"getCurrentCUDAStream\"\n                    (handle, at::cuda::getCurrentCUDAStream());\n                                       ^\n\n1 error detected in the compilation of \"/data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l1_p4_cdcce697c704/cuda.cu\".\n[2/3] c++ -MMD -MF main.o.d -DTORCH_EXTENSION_NAME=stark_cuda_l1_p4_cdcce697c704 -DTORCH_API_INCLUDE_EXTENSION_H -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include -isystem /data/dyj/miniconda3/envs/stark/lib/python3.10/site-packages/torch/include/torch/csrc/api/include -isystem /usr/local/cuda-12.8/include -isystem /data/dyj/miniconda3/envs/stark/include/python3.10 -fPIC -std=c++17 -O3 -c /data/dyj/.cache/torch_extensions/py310_cu128/stark_cuda_l1_p4_cdcce697c704/main.cpp -o main.o \nninja: build stopped: subcommand failed."
+      ],
+      "failure_type": "builtins.RuntimeError",
+      "node_status": "runtime_fail",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": "runtime",
+      "reference_runtime": null,
+      "speedup": null,
+      "reference_runtimes": {},
+      "speedups": {},
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Restoring a direct SGEMV-backed entrypoint will remove the custom kernel's synchronization and reduction overhead and return the workload to the best-performing known path.",
+      "single_change_focus": "Replace the custom CUDA GEMV kernel with a thin SGEMV wrapper and keep the forward fast path calling that wrapper only for the exact CUDA float32 matrix-vector case.",
+      "mutation_family": "cublas_sgemv_refine",
+      "target_metric": "speedup"
+    },
+    "phase2_root": {
+      "node_id": "phase2_root",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p4_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matrix_vector_mul\", &matrix_vector_mul, \"Matrix-vector multiply via cuBLAS SGEMV (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublas_v2.h>\n#include <ATen/cuda/CUDAContext.h>\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B) {\n    TORCH_CHECK(A.is_cuda() && B.is_cuda(), \"Inputs must be CUDA tensors\");\n    TORCH_CHECK(A.dtype() == torch::kFloat32 && B.dtype() == torch::kFloat32, \"Inputs must be float32\");\n    TORCH_CHECK(A.dim() == 2, \"A must be 2D\");\n    TORCH_CHECK(B.dim() == 2 && B.size(1) == 1, \"B must be shape (K, 1)\");\n\n    A = A.contiguous();\n    B = B.contiguous();\n\n    int M = (int)A.size(0);\n    int K = (int)A.size(1);\n\n    auto C = torch::zeros({M, 1}, A.options());\n\n    cublasHandle_t handle = at::cuda::getCurrentCUDABlasHandle();\n\n    // PyTorch stores A in row-major (C order): A[M,K].\n    // cuBLAS is column-major. Treat A as column-major A_cm[K,M].\n    // We want C = A * B, i.e. C[M,1] = A[M,K] * B[K,1].\n    // In column-major terms: C_cm[M,1] = A_cm^T[M,K] * B_cm[K,1]\n    // => cublasSgemv with CUBLAS_OP_T, m=K, n=M, lda=K\n    //    computes y = alpha * A_cm^T * x + beta * y\n    //    where A_cm is K x M (lda=K), x is length M, y is length K -- wrong.\n    //\n    // Correct mapping:\n    // cublasSgemv(handle, CUBLAS_OP_N, m, n, alpha, A, lda, x, incx, beta, y, incy)\n    // computes y = alpha * op(A) * x + beta * y\n    // With CUBLAS_OP_N: y[m] = alpha * A[m x n] * x[n] + beta * y[m]\n    // We want: C[M] = A_row_major[M,K] * B[K]\n    // Treat A_row_major as column-major A_cm[K,M] (lda=K).\n    // Use CUBLAS_OP_T: op(A_cm) = A_cm^T which is [M,K] in col-major = A_row_major.\n    // So: y[M] = alpha * A_cm^T[M,K] * x[K] + beta * y[M]\n    // => cublasSgemv(handle, CUBLAS_OP_T, K, M, &alpha, A_ptr, K, B_ptr, 1, &beta, C_ptr, 1)\n\n    const float alpha = 1.0f;\n    const float beta  = 0.0f;\n\n    cublasStatus_t status = cublasSgemv(\n        handle,\n        CUBLAS_OP_T,\n        K,   // m (rows of A_cm = K)\n        M,   // n (cols of A_cm = M)\n        &alpha,\n        A.data_ptr<float>(),  // A_cm pointer\n        K,                    // lda\n        B.data_ptr<float>(),  // x vector of length K\n        1,\n        &beta,\n        C.data_ptr<float>(),  // y vector of length M\n        1\n    );\n\n    TORCH_CHECK(status == CUBLAS_STATUS_SUCCESS, \"cublasSgemv failed with status \", (int)status);\n\n    return C;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs matrix-vector multiplication (C = A * B).\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (A.is_cuda and B.is_cuda and\n                        A.dtype == torch.float32 and B.dtype == torch.float32 and\n                        A.dim() == 2 and B.dim() == 2 and B.size(1) == 1):\n                    return _stark_get_extension().matrix_vector_mul(A, B)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return torch.matmul(A, B)\n        # <<<END_IMPROVE>>>\n",
+      "origin": "phase2_root",
+      "child_ids": [
+        "phase2_n1"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_08",
+      "plan_summary": "Replace the custom per-row reduction kernel path with a narrow CUDA extension wrapper that calls cuBLAS `cublasSgemv` on the exact contiguous float32 `(M,K) x (K,1)` case, keeping `torch.matmul` as fallback. This intentionally explores a different family from the regressed row-blocked kernel and directly targets the observed multi-launch dot-style library behavior.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the C++ extension stub with a declaration for `torch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B);` and a `PYBIND11_MODULE` export that binds `matrix_vector_mul` under the same name. Do not add extra APIs.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the custom CUDA kernel implementation with a cuBLAS-based wrapper: include `<cublas_v2.h>` and `<ATen/cuda/CUDAContext.h>`, validate that `A` and `B` are CUDA float32 with shapes `(M,K)` and `(K,1)`, make them contiguous, allocate output `C` as shape `{M,1}`, obtain the current cuBLAS handle via `at::cuda::getDefaultCUDABlasHandle()`, set alpha=1 and beta=0, and call `cublasSgemv` using transpose mode over row-major storage so the result equals `torch.matmul(A, B)`. Use `A.data_ptr<float>()`, `B.data_ptr<float>()`, and `C.data_ptr<float>()`, and add `TORCH_CHECK` on the cuBLAS status. Return `C`. Remove the prior custom kernel entirely.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the Python fast-path guard so it still checks CUDA, float32, `A.dim()==2`, `B.dim()==2`, and `B.size(1)==1`, but routes that case to `_stark_get_extension().matrix_vector_mul(A, B)` as the only specialized path; otherwise fall through to the existing `torch.matmul` fallback unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00882,
+      "score": 0.00882,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "autofix_tensor_property_call",
+        "applied_region_patch:forward_stmt_1:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3217680",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_a_gpu3/02_L1_P4_Auto_P4_20260716_013349/eval_traces/20260716_014813_3216459_ef007e65_kernelbench_l1_4_4_matrix_vector_multiplication"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00882,
+      "speedup": 1.0,
+      "reference_runtimes": {
+        "torch_eager": 0.00882
+      },
+      "speedups": {
+        "torch_eager": 1.0
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "A dedicated `cublasSgemv` call will consolidate the observed dot-style execution into a single vendor-tuned GEMV launch for this extreme matrix-vector shape, reducing launch/dispatch overhead without fighting the already-near-peak DRAM bandwidth wall via a custom kernel.",
+      "single_change_focus": "Implement a cuBLAS SGEMV-backed extension entrypoint and route only the exact fast-path case through it.",
+      "mutation_family": "cublas_sgemv_fastpath",
+      "target_metric": "speedup"
+    },
+    "phase2_n1": {
+      "node_id": "phase2_n1",
+      "parent_id": "phase2_root",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p4_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matrix_vector_mul\", &matrix_vector_mul, \"Matrix-vector multiply via cuBLASLt (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <cublasLt.h>\n#include <ATen/cuda/CUDAContext.h>\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B) {\n    TORCH_CHECK(A.is_cuda() && B.is_cuda(), \"Inputs must be CUDA tensors\");\n    TORCH_CHECK(A.dtype() == torch::kFloat32 && B.dtype() == torch::kFloat32, \"Inputs must be float32\");\n    TORCH_CHECK(A.dim() == 2, \"A must be 2D\");\n    TORCH_CHECK(B.dim() == 2 && B.size(1) == 1, \"B must be shape (K, 1)\");\n\n    A = A.contiguous();\n    B = B.contiguous();\n\n    int64_t M = A.size(0);\n    int64_t K = A.size(1);\n\n    auto C = torch::zeros({M, 1}, A.options());\n\n    // Use cublasLtMatmul to compute C = A * B\n    // A is row-major [M, K], B is [K, 1], C is [M, 1]\n    // cuBLASLt is column-major, so we describe:\n    //   A_col = A^T => [K, M] col-major with ld=M  (but A is row-major [M,K] => treat as col-major [K,M] with ld=K)\n    //   We want: C = A * B\n    //   In col-major: C_col[M,1] = op(A_col) * B_col[K,1]\n    //   A_col is [K,M] col-major (ld=K), op=TRANSPOSE => op(A_col) is [M,K]\n    //   So: C_col[M,1] = A_col^T[M,K] * B_col[K,1]  -- correct!\n\n    cublasLtHandle_t ltHandle = reinterpret_cast<cublasLtHandle_t>(at::cuda::getCurrentCUDABlasHandle());\n\n    cublasLtMatmulDesc_t operationDesc = nullptr;\n    cublasLtMatrixLayout_t Adesc = nullptr, Bdesc = nullptr, Cdesc = nullptr;\n\n    cublasLtMatmulDescCreate(&operationDesc, CUBLAS_COMPUTE_32F, CUDA_R_32F);\n\n    // A is row-major [M,K]: treat as col-major [K,M] with ld=K, then transpose\n    cublasOperation_t transA = CUBLAS_OP_T;\n    cublasOperation_t transB = CUBLAS_OP_N;\n    cublasLtMatmulDescSetAttribute(operationDesc, CUBLASLT_MATMUL_DESC_TRANSA, &transA, sizeof(transA));\n    cublasLtMatmulDescSetAttribute(operationDesc, CUBLASLT_MATMUL_DESC_TRANSB, &transB, sizeof(transB));\n\n    // A layout: col-major [K, M] with ld=K (this is the raw row-major A[M,K] reinterpreted)\n    cublasLtMatrixLayoutCreate(&Adesc, CUDA_R_32F, K, M, K);\n    // B layout: col-major [K, 1] with ld=K\n    cublasLtMatrixLayoutCreate(&Bdesc, CUDA_R_32F, K, 1, K);\n    // C layout: col-major [M, 1] with ld=M\n    cublasLtMatrixLayoutCreate(&Cdesc, CUDA_R_32F, M, 1, M);\n\n    // Workspace\n    const size_t workspaceSize = 4 * 1024 * 1024; // 4 MB\n    void* workspace = nullptr;\n    cudaMalloc(&workspace, workspaceSize);\n\n    // Heuristic search\n    cublasLtMatmulHeuristicResult_t heuristicResult = {};\n    cublasLtMatmulPreference_t preference = nullptr;\n    cublasLtMatmulPreferenceCreate(&preference);\n    cublasLtMatmulPreferenceSetAttribute(preference, CUBLASLT_MATMUL_PREF_MAX_WORKSPACE_BYTES,\n                                         &workspaceSize, sizeof(workspaceSize));\n\n    int returnedResults = 0;\n    cublasLtMatmulAlgoGetHeuristic(ltHandle, operationDesc, Adesc, Bdesc, Cdesc, Cdesc,\n                                   preference, 1, &heuristicResult, &returnedResults);\n\n    const float alpha = 1.0f;\n    const float beta  = 0.0f;\n\n    cublasStatus_t status;\n    if (returnedResults > 0) {\n        status = cublasLtMatmul(\n            ltHandle,\n            operationDesc,\n            &alpha,\n            A.data_ptr<float>(),\n            Adesc,\n            B.data_ptr<float>(),\n            Bdesc,\n            &beta,\n            C.data_ptr<float>(),\n            Cdesc,\n            C.data_ptr<float>(),\n            Cdesc,\n            &heuristicResult.algo,\n            workspace,\n            workspaceSize,\n            at::cuda::getCurrentCUDAStream()\n        );\n    } else {\n        // Fallback: no algo found, use null algo\n        status = cublasLtMatmul(\n            ltHandle,\n            operationDesc,\n            &alpha,\n            A.data_ptr<float>(),\n            Adesc,\n            B.data_ptr<float>(),\n            Bdesc,\n            &beta,\n            C.data_ptr<float>(),\n            Cdesc,\n            C.data_ptr<float>(),\n            Cdesc,\n            nullptr,\n            workspace,\n            workspaceSize,\n            at::cuda::getCurrentCUDAStream()\n        );\n    }\n\n    cudaFree(workspace);\n    cublasLtMatmulPreferenceDestroy(preference);\n    cublasLtMatrixLayoutDestroy(Adesc);\n    cublasLtMatrixLayoutDestroy(Bdesc);\n    cublasLtMatrixLayoutDestroy(Cdesc);\n    cublasLtMatmulDescDestroy(operationDesc);\n\n    TORCH_CHECK(status == CUBLAS_STATUS_SUCCESS, \"cublasLtMatmul failed with status \", (int)status);\n\n    return C;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs matrix-vector multiplication (C = A * B).\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (A.is_cuda and B.is_cuda and\n                        A.dtype == torch.float32 and B.dtype == torch.float32 and\n                        A.dim() == 2 and B.dim() == 2 and B.size(1) == 1):\n                    return _stark_get_extension().matrix_vector_mul(A, B)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return torch.matmul(A, B)\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Swap the exact CUDA float32 `(M,K) x (K,1)` fast path from legacy `cublasSgemv` to `cublasLtMatmul` with workspace-backed heuristics, while keeping the Python fallback unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Add the cuBLASLt declarations or helper wrapper prototype needed for a matmul-backed entrypoint, and export the same `matrix_vector_mul` symbol from pybind so the Python call site stays unchanged.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current `cublasSgemv` implementation with a `cublasLtMatmul` implementation that creates matrix layouts for row-major `A`, column vector `B`, and output `C`, sets alpha/beta, uses a small workspace, and preserves the exact contiguous float32 guard and fallback behavior.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Keep the existing exact CUDA float32 2D fast-path guard, but ensure it calls the same extension entrypoint that now routes to the cuBLASLt-backed implementation.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00939,
+      "score": 0.00939,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_1:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3219521",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_a_gpu3/02_L1_P4_Auto_P4_20260716_013349/eval_traces/20260716_021222_3216459_d2ab8a16_kernelbench_l1_4_4_matrix_vector_multiplication"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00882,
+      "speedup": 0.9392971246006389,
+      "reference_runtimes": {
+        "torch_eager": 0.00882
+      },
+      "speedups": {
+        "torch_eager": 0.9392971246006389
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Using cuBLASLt with explicit layouts and a small workspace on the exact single-column case will expose a better matmul heuristic than SGEMV and reduce the current long-scoreboard, memory-bound behavior.",
+      "single_change_focus": "Replace the SGEMV wrapper with a cuBLASLtMatmul wrapper for the exact `(M,K) x (K,1)` CUDA float32 path.",
+      "mutation_family": "cublaslt_exact_shape_fastpath",
+      "target_metric": "speedup"
+    },
+    "phase2_n2": {
+      "node_id": "phase2_n2",
+      "parent_id": "phase2_n1",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p4_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matrix_vector_mul\", &matrix_vector_mul, \"Matrix-vector multiply custom CUDA GEMV (streaming A, cached B)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Custom GEMV kernel: one warp per output row.\n// A is loaded with non-temporal (streaming) loads via __ldcs to avoid cache pollution.\n// B is loaded with normal cached loads so it stays resident in L2.\n// Each warp handles one row of A, accumulates dot product, then warp-reduces.\n__global__ void gemv_streaming_kernel(const float* __restrict__ A,\n                                       const float* __restrict__ B,\n                                       float* __restrict__ C,\n                                       int M, int K) {\n    // One warp per row\n    int row = blockIdx.x * blockDim.y + threadIdx.y;\n    if (row >= M) return;\n\n    const float* A_row = A + (long long)row * K;\n    float sum = 0.0f;\n\n    int lane = threadIdx.x; // 0..31\n\n    // Vectorized loop: process 4 floats at a time using float4\n    // Use __ldcs for non-temporal streaming load of A\n    int K4 = K / 4;\n    const float4* A_row4 = reinterpret_cast<const float4*>(A_row);\n    const float4* B4 = reinterpret_cast<const float4*>(B);\n\n    for (int i = lane; i < K4; i += 32) {\n        // Non-temporal load for A (streaming, evict-first)\n        float4 a4 = __ldcs(A_row4 + i);\n        // Normal cached load for B (reused across rows)\n        float4 b4 = B4[i];\n        sum += a4.x * b4.x + a4.y * b4.y + a4.z * b4.z + a4.w * b4.w;\n    }\n\n    // Handle tail elements\n    int tail_start = K4 * 4;\n    for (int i = tail_start + lane; i < K; i += 32) {\n        sum += __ldcs(A_row + i) * B[i];\n    }\n\n    // Warp reduction\n    sum += __shfl_down_sync(0xffffffff, sum, 16);\n    sum += __shfl_down_sync(0xffffffff, sum, 8);\n    sum += __shfl_down_sync(0xffffffff, sum, 4);\n    sum += __shfl_down_sync(0xffffffff, sum, 2);\n    sum += __shfl_down_sync(0xffffffff, sum, 1);\n\n    if (lane == 0) {\n        C[row] = sum;\n    }\n}\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B) {\n    TORCH_CHECK(A.is_cuda() && B.is_cuda(), \"Inputs must be CUDA tensors\");\n    TORCH_CHECK(A.dtype() == torch::kFloat32 && B.dtype() == torch::kFloat32, \"Inputs must be float32\");\n    TORCH_CHECK(A.dim() == 2, \"A must be 2D\");\n    TORCH_CHECK(B.dim() == 2 && B.size(1) == 1, \"B must be shape (K, 1)\");\n    TORCH_CHECK(A.size(1) == B.size(0), \"Dimension mismatch\");\n\n    A = A.contiguous();\n    B = B.contiguous();\n\n    int M = (int)A.size(0);\n    int K = (int)A.size(1);\n\n    auto C = torch::zeros({M, 1}, A.options());\n\n    // One warp per row; pack multiple warps per block\n    const int WARPS_PER_BLOCK = 4;\n    dim3 block(32, WARPS_PER_BLOCK);\n    dim3 grid((M + WARPS_PER_BLOCK - 1) / WARPS_PER_BLOCK);\n\n    gemv_streaming_kernel<<<grid, block>>>(\n        A.data_ptr<float>(),\n        B.data_ptr<float>(),\n        C.data_ptr<float>(),\n        M, K\n    );\n\n    return C;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs matrix-vector multiplication (C = A * B).\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (A.is_cuda and B.is_cuda and\n                        A.dtype == torch.float32 and B.dtype == torch.float32 and\n                        A.dim() == 2 and B.dim() == 2 and B.size(1) == 1 and\n                        A.size(1) == B.size(0)):\n                    return _stark_get_extension().matrix_vector_mul(A, B)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return torch.matmul(A, B)\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n3",
+        "phase2_n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Explore a materially different backend family from the flat SGEMV/cuBLASLt paths by replacing the exact-case BLAS wrapper with a custom CUDA GEMV kernel that uses non-temporal loads for the streaming matrix `A` while leaving the reusable vector `B` on normal cached loads.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the helper with a declaration and pybind export for a single entrypoint `matrix_vector_mul(torch::Tensor A, torch::Tensor B)` described as a custom CUDA GEMV kernel, keeping the module scaffold otherwise unchanged.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the cuBLASLt implementation with a custom CUDA implementation specialized to contiguous CUDA float32 `A` of shape `(M,K)` and `B` of shape `(K,1)`: validate CUDA/float32/2D inputs and `A.size(1)==B.size(0)`, call `.contiguous()` on both tensors, allocate `C = torch::zeros({M,1}, A.options())`, launch one warp per output row (or an equivalent narrow exact-case mapping) over `K` with a vectorized main loop using 16-byte `float4` reads when alignment permits, load `A` through `__ldcs` or inline PTX `ld.global.cs` non-temporal loads in the vectorized path, load `B` through normal cached reads, accumulate partial sums in registers, reduce within the warp via shuffle reduction, write one output element per row, handle the scalar tail for `K % 4`, and return `C`; do not keep any cuBLAS/cuBLASLt code in this anchor.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the dispatch guard so the extension is called only when `A` and `B` are CUDA float32 tensors, both 2D, `B.size(1) == 1`, and `A.size(1) == B.size(0)`; otherwise fall through to the existing `torch.matmul` fallback.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00881,
+      "score": 0.00881,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "autofix_tensor_property_call",
+        "applied_region_patch:forward_stmt_1:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3219915",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_a_gpu3/02_L1_P4_Auto_P4_20260716_013349/eval_traces/20260716_021739_3216459_a7100dcf_kernelbench_l1_4_4_matrix_vector_multiplication"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00882,
+      "speedup": 1.0011350737797957,
+      "reference_runtimes": {
+        "torch_eager": 0.00882
+      },
+      "speedups": {
+        "torch_eager": 1.0011350737797957
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "A custom exact-case GEMV that streams `A` with non-temporal global loads while reading `B` through normal cached loads will reduce cache pollution from the one-time-use matrix traffic, helping `B` stay resident and slightly lowering memory-latency stalls compared with the current BLAS dot-style kernel family.",
+      "single_change_focus": "Replace the exact fast-path backend implementation with one specialized custom CUDA kernel that uses streaming/non-temporal loads for `A` and normal cached loads for `B`.",
+      "mutation_family": "streaming_A_cached_B_gemv",
+      "target_metric": "speedup"
+    },
+    "phase2_n3": {
+      "node_id": "phase2_n3",
+      "parent_id": "phase2_n2",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p4_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matrix_vector_mul\", &matrix_vector_mul, \"Matrix-vector multiply custom CUDA GEMV (streaming A, cached B)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Custom GEMV kernel: one warp per output row.\n// A is loaded with non-temporal (streaming) loads via __ldcs to avoid cache pollution.\n// B is loaded with normal cached loads so it stays resident in L2.\n// Uses dual accumulators and 2-way unrolled float4 loop for ILP.\n__global__ void gemv_streaming_kernel(const float* __restrict__ A,\n                                       const float* __restrict__ B,\n                                       float* __restrict__ C,\n                                       int M, int K) {\n    // One warp per row\n    int row = blockIdx.x * blockDim.y + threadIdx.y;\n    if (row >= M) return;\n\n    const float* A_row = A + (long long)row * K;\n    float sum0 = 0.0f;\n    float sum1 = 0.0f;\n\n    int lane = threadIdx.x; // 0..31\n\n    int K4 = K / 4;\n    const float4* A_row4 = reinterpret_cast<const float4*>(A_row);\n    const float4* B4 = reinterpret_cast<const float4*>(B);\n\n    // 2-way unrolled loop: each lane processes two float4 chunks per iteration\n    // stride = 32 lanes * 2 chunks = 64 float4 elements per iteration\n    int K4_unrolled = (K4 / 2) * 2;\n\n    for (int i = lane * 2; i < K4_unrolled; i += 64) {\n        float4 a0 = __ldcs(A_row4 + i);\n        float4 a1 = __ldcs(A_row4 + i + 1);\n        float4 b0 = B4[i];\n        float4 b1 = B4[i + 1];\n        sum0 += a0.x * b0.x + a0.y * b0.y + a0.z * b0.z + a0.w * b0.w;\n        sum1 += a1.x * b1.x + a1.y * b1.y + a1.z * b1.z + a1.w * b1.w;\n    }\n\n    // Cleanup: remaining single float4 chunks\n    for (int i = K4_unrolled + lane; i < K4; i += 32) {\n        float4 a4 = __ldcs(A_row4 + i);\n        float4 b4 = B4[i];\n        sum0 += a4.x * b4.x + a4.y * b4.y + a4.z * b4.z + a4.w * b4.w;\n    }\n\n    float sum = sum0 + sum1;\n\n    // Handle tail elements (K % 4)\n    int tail_start = K4 * 4;\n    for (int i = tail_start + lane; i < K; i += 32) {\n        sum += __ldcs(A_row + i) * B[i];\n    }\n\n    // Warp reduction\n    sum += __shfl_down_sync(0xffffffff, sum, 16);\n    sum += __shfl_down_sync(0xffffffff, sum, 8);\n    sum += __shfl_down_sync(0xffffffff, sum, 4);\n    sum += __shfl_down_sync(0xffffffff, sum, 2);\n    sum += __shfl_down_sync(0xffffffff, sum, 1);\n\n    if (lane == 0) {\n        C[row] = sum;\n    }\n}\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B) {\n    TORCH_CHECK(A.is_cuda() && B.is_cuda(), \"Inputs must be CUDA tensors\");\n    TORCH_CHECK(A.dtype() == torch::kFloat32 && B.dtype() == torch::kFloat32, \"Inputs must be float32\");\n    TORCH_CHECK(A.dim() == 2, \"A must be 2D\");\n    TORCH_CHECK(B.dim() == 2 && B.size(1) == 1, \"B must be shape (K, 1)\");\n    TORCH_CHECK(A.size(1) == B.size(0), \"Dimension mismatch\");\n\n    A = A.contiguous();\n    B = B.contiguous();\n\n    int M = (int)A.size(0);\n    int K = (int)A.size(1);\n\n    auto C = torch::zeros({M, 1}, A.options());\n\n    // One warp per row; pack multiple warps per block\n    const int WARPS_PER_BLOCK = 4;\n    dim3 block(32, WARPS_PER_BLOCK);\n    dim3 grid((M + WARPS_PER_BLOCK - 1) / WARPS_PER_BLOCK);\n\n    gemv_streaming_kernel<<<grid, block>>>(\n        A.data_ptr<float>(),\n        B.data_ptr<float>(),\n        C.data_ptr<float>(),\n        M, K\n    );\n\n    return C;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs matrix-vector multiplication (C = A * B).\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (A.is_cuda and B.is_cuda and\n                        A.dtype == torch.float32 and B.dtype == torch.float32 and\n                        A.dim() == 2 and B.dim() == 2 and B.size(1) == 1 and\n                        A.size(1) == B.size(0)):\n                    return _stark_get_extension().matrix_vector_mul(A, B)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return torch.matmul(A, B)\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Refine the current custom streaming GEMV kernel with a minimal ILP-oriented change inside the CUDA kernel rather than switching kernel families.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current kernel body with the same warp-per-row structure and launch wrapper, but change only the main accumulation loop to use two independent scalar accumulators (`sum0`, `sum1`) and a 2-way unrolled `float4` loop. Compute `K4 = K / 4`, then `K4_unrolled = (K4 / 2) * 2`. For each lane, iterate `for (int i = lane * 2; i < K4_unrolled; i += 64)` and load two `float4` values from `A_row4` using `__ldcs(A_row4 + i)` and `__ldcs(A_row4 + i + 1)`, plus the corresponding cached `B4[i]` and `B4[i+1]`; accumulate into `sum0` and `sum1` separately. After that, handle any remaining single `float4` chunks in a cleanup loop `for (int i = K4_unrolled + lane; i < K4; i += 32)`. Then combine with `float sum = sum0 + sum1`, keep the existing tail-scalar loop for `K % 4`, and preserve the current warp-shuffle reduction and wrapper function/launch configuration unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00925,
+      "score": 0.00925,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3220229",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_a_gpu3/02_L1_P4_Auto_P4_20260716_013349/eval_traces/20260716_022222_3216459_9bc132a2_kernelbench_l1_4_4_matrix_vector_multiplication"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00882,
+      "speedup": 0.9535135135135135,
+      "reference_runtimes": {
+        "torch_eager": 0.00882
+      },
+      "speedups": {
+        "torch_eager": 0.9535135135135135
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Using two independent partial sums and processing two `float4` chunks per lane iteration in the current warp-per-row kernel will create more instruction-level parallelism, helping hide global-memory latency from streaming `A` loads and slightly reducing long-scoreboard stalls.",
+      "single_change_focus": "Replace the inner accumulation loop in the existing CUDA kernel with a 2-way unrolled, dual-accumulator variant while keeping the same launch geometry and reduction structure.",
+      "mutation_family": "dual_accumulator_unroll2",
+      "target_metric": "speedup"
+    },
+    "phase2_n4": {
+      "node_id": "phase2_n4",
+      "parent_id": "phase2_n2",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p4_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matrix_vector_mul\", &matrix_vector_mul, \"Matrix-vector multiply custom CUDA GEMV (streaming A, cached B)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Tile size for B staging in shared memory (per buffer, in floats)\n// 2 buffers x 1024 floats x 4 bytes = 8 KB shared memory per block\n// With WARPS_PER_BLOCK=4 warps (128 threads), this keeps occupancy healthy.\n#define TILE_K 1024\n\n// Custom GEMV kernel: one warp per output row.\n// A is loaded with non-temporal (streaming) loads via __ldcs.\n// B is staged through double-buffered shared memory tiles to hide fetch latency.\n__global__ void gemv_streaming_kernel(const float* __restrict__ A,\n                                       const float* __restrict__ B,\n                                       float* __restrict__ C,\n                                       int M, int K) {\n    // Double-buffered shared memory for B tiles\n    __shared__ float smem_b[2][TILE_K];\n\n    int row = blockIdx.x * blockDim.y + threadIdx.y;\n    int lane = threadIdx.x;  // 0..31\n    int warp_id = threadIdx.y;\n    // Flat thread index within block for cooperative B loading\n    int tid = warp_id * 32 + lane;\n    int block_threads = blockDim.x * blockDim.y;  // 32 * WARPS_PER_BLOCK\n\n    float sum = 0.0f;\n\n    int num_tiles = (K + TILE_K - 1) / TILE_K;\n    int cur_buf = 0;\n\n    // Preload first tile of B cooperatively\n    {\n        int tile_start = 0;\n        int tile_len = (K < TILE_K) ? K : TILE_K;\n        for (int i = tid; i < tile_len; i += block_threads) {\n            smem_b[cur_buf][i] = B[tile_start + i];\n        }\n        // Pad remainder to zero if tile_len < TILE_K\n        for (int i = tile_len + tid; i < TILE_K; i += block_threads) {\n            smem_b[cur_buf][i] = 0.0f;\n        }\n    }\n    __syncthreads();\n\n    for (int t = 0; t < num_tiles; t++) {\n        int next_buf = 1 - cur_buf;\n        int next_tile_start = (t + 1) * TILE_K;\n\n        // Preload next tile while computing current tile\n        if (t + 1 < num_tiles) {\n            int next_tile_len = K - next_tile_start;\n            if (next_tile_len > TILE_K) next_tile_len = TILE_K;\n            for (int i = tid; i < next_tile_len; i += block_threads) {\n                smem_b[next_buf][i] = B[next_tile_start + i];\n            }\n            for (int i = next_tile_len + tid; i < TILE_K; i += block_threads) {\n                smem_b[next_buf][i] = 0.0f;\n            }\n        }\n\n        // Compute dot product for this tile (only if row is valid)\n        if (row < M) {\n            int tile_start = t * TILE_K;\n            int tile_len = K - tile_start;\n            if (tile_len > TILE_K) tile_len = TILE_K;\n\n            const float* A_row = A + (long long)row * K + tile_start;\n\n            // Vectorized loop over tile using float4\n            int tile_len4 = tile_len / 4;\n            const float4* A_row4 = reinterpret_cast<const float4*>(A_row);\n            const float4* smem_b4 = reinterpret_cast<const float4*>(smem_b[cur_buf]);\n\n            for (int i = lane; i < tile_len4; i += 32) {\n                float4 a4 = __ldcs(A_row4 + i);\n                float4 b4 = smem_b4[i];\n                sum += a4.x * b4.x + a4.y * b4.y + a4.z * b4.z + a4.w * b4.w;\n            }\n\n            // Tail elements\n            int tail_start = tile_len4 * 4;\n            for (int i = tail_start + lane; i < tile_len; i += 32) {\n                sum += __ldcs(A_row + i) * smem_b[cur_buf][i];\n            }\n        }\n\n        cur_buf = next_buf;\n        __syncthreads();\n    }\n\n    // Warp reduction\n    if (row < M) {\n        sum += __shfl_down_sync(0xffffffff, sum, 16);\n        sum += __shfl_down_sync(0xffffffff, sum, 8);\n        sum += __shfl_down_sync(0xffffffff, sum, 4);\n        sum += __shfl_down_sync(0xffffffff, sum, 2);\n        sum += __shfl_down_sync(0xffffffff, sum, 1);\n\n        if (lane == 0) {\n            C[row] = sum;\n        }\n    }\n}\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B) {\n    TORCH_CHECK(A.is_cuda() && B.is_cuda(), \"Inputs must be CUDA tensors\");\n    TORCH_CHECK(A.dtype() == torch::kFloat32 && B.dtype() == torch::kFloat32, \"Inputs must be float32\");\n    TORCH_CHECK(A.dim() == 2, \"A must be 2D\");\n    TORCH_CHECK(B.dim() == 2 && B.size(1) == 1, \"B must be shape (K, 1)\");\n    TORCH_CHECK(A.size(1) == B.size(0), \"Dimension mismatch\");\n\n    A = A.contiguous();\n    B = B.contiguous();\n\n    int M = (int)A.size(0);\n    int K = (int)A.size(1);\n\n    auto C = torch::zeros({M, 1}, A.options());\n\n    // One warp per row; pack multiple warps per block\n    const int WARPS_PER_BLOCK = 4;\n    dim3 block(32, WARPS_PER_BLOCK);\n    dim3 grid((M + WARPS_PER_BLOCK - 1) / WARPS_PER_BLOCK);\n\n    gemv_streaming_kernel<<<grid, block>>>(\n        A.data_ptr<float>(),\n        B.data_ptr<float>(),\n        C.data_ptr<float>(),\n        M, K\n    );\n\n    return C;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs matrix-vector multiplication (C = A * B).\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (A.is_cuda and B.is_cuda and\n                        A.dtype == torch.float32 and B.dtype == torch.float32 and\n                        A.dim() == 2 and B.dim() == 2 and B.size(1) == 1 and\n                        A.size(1) == B.size(0)):\n                    return _stark_get_extension().matrix_vector_mul(A, B)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return torch.matmul(A, B)\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_07",
+      "plan_summary": "Refine the current winning custom GEMV kernel by keeping the existing warp-per-row structure and non-temporal A streaming, but stage B through a double-buffered shared-memory tile pipeline so global fetch of the next B chunk overlaps FMAs on the current chunk.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current CUDA kernel implementation with a refined version that preserves the exported `matrix_vector_mul(torch::Tensor A, torch::Tensor B)` wrapper and the existing shape/dtype checks, contiguity normalization, launch geometry, and return shape, but changes only the kernel body to use shared-memory tiled staging of `B`. Keep one warp per output row and keep `A` loads as streaming/non-temporal loads. Concretely: allocate two shared-memory float buffers sized `TILE_K` each (for example 1024 or 2048 floats, chosen conservatively to keep occupancy healthy); in the kernel, cooperatively load `B[k0:k0+TILE_K]` into shared memory across all threads in the CTA, then while warps compute FMAs for that tile using `A_row[k0 + lane + 32*t]` and shared `B`, preload the next tile into the alternate buffer. Use `cp.async`/pipeline-style async shared copies only when `__CUDA_ARCH__` supports it; otherwise use a standard cooperative shared-memory load plus `__syncthreads()` fallback. Keep the inner accumulation single-accumulator (do not reintroduce dual accumulators), keep warp-shuffle reduction logic unchanged, and keep the host wrapper launching the same block/grid shape as the champion unless a tiny shared-memory-compatible constant adjustment is strictly required. The wrapper should still return a `(M,1)` tensor and should not modify other anchors.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0106,
+      "score": 0.0106,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3220563",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_a_gpu3/02_L1_P4_Auto_P4_20260716_013349/eval_traces/20260716_022756_3216459_a44e9324_kernelbench_l1_4_4_matrix_vector_multiplication"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00882,
+      "speedup": 0.8320754716981131,
+      "reference_runtimes": {
+        "torch_eager": 0.00882
+      },
+      "speedups": {
+        "torch_eager": 0.8320754716981131
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "best_lineage_push",
+      "performance_hypothesis": "If each CTA cooperatively stages B into shared memory with double buffering while warps stream A rows, the repeated per-warp B fetch latency that contributes to long-scoreboard stalls will be reduced enough to slightly improve wall time even though A remains the dominant bandwidth cost.",
+      "single_change_focus": "Replace direct per-warp global loads of B inside the current warp-per-row kernel with a shared-memory tiled, double-buffered B pipeline while leaving launch geometry, A streaming loads, and warp reduction unchanged.",
+      "mutation_family": "async_b_tile_pipeline",
+      "target_metric": "speedup"
+    },
+    "phase2_n5": {
+      "node_id": "phase2_n5",
+      "parent_id": "phase2_n3",
+      "depth": 7,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l1_p4_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"matrix_vector_mul\", &matrix_vector_mul, \"Matrix-vector multiply custom CUDA GEMV (streaming A, cached B)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Custom GEMV kernel: one warp per output row.\n// A is loaded with non-temporal (streaming) loads via __ldcs to avoid cache pollution.\n// B is loaded with normal cached loads so it stays resident in L2.\n// Single-accumulator, no unrolling to minimize register pressure.\n__global__ void gemv_streaming_kernel(const float* __restrict__ A,\n                                       const float* __restrict__ B,\n                                       float* __restrict__ C,\n                                       int M, int K) {\n    // One warp per row\n    int row = blockIdx.x * blockDim.y + threadIdx.y;\n    if (row >= M) return;\n\n    const float* A_row = A + (long long)row * K;\n    float sum = 0.0f;\n\n    int lane = threadIdx.x; // 0..31\n\n    // Vectorized loop: process 4 floats at a time using float4\n    // Use __ldcs for non-temporal streaming load of A\n    int K4 = K / 4;\n    const float4* A_row4 = reinterpret_cast<const float4*>(A_row);\n    const float4* B4 = reinterpret_cast<const float4*>(B);\n\n    for (int i = lane; i < K4; i += 32) {\n        // Non-temporal load for A (streaming, evict-first)\n        float4 a4 = __ldcs(A_row4 + i);\n        // Normal cached load for B (reused across rows)\n        float4 b4 = B4[i];\n        sum += a4.x * b4.x + a4.y * b4.y + a4.z * b4.z + a4.w * b4.w;\n    }\n\n    // Handle tail elements (K % 4)\n    int tail_start = K4 * 4;\n    for (int i = tail_start + lane; i < K; i += 32) {\n        sum += __ldcs(A_row + i) * B[i];\n    }\n\n    // Warp reduction\n    sum += __shfl_down_sync(0xffffffff, sum, 16);\n    sum += __shfl_down_sync(0xffffffff, sum, 8);\n    sum += __shfl_down_sync(0xffffffff, sum, 4);\n    sum += __shfl_down_sync(0xffffffff, sum, 2);\n    sum += __shfl_down_sync(0xffffffff, sum, 1);\n\n    if (lane == 0) {\n        C[row] = sum;\n    }\n}\n\ntorch::Tensor matrix_vector_mul(torch::Tensor A, torch::Tensor B) {\n    TORCH_CHECK(A.is_cuda() && B.is_cuda(), \"Inputs must be CUDA tensors\");\n    TORCH_CHECK(A.dtype() == torch::kFloat32 && B.dtype() == torch::kFloat32, \"Inputs must be float32\");\n    TORCH_CHECK(A.dim() == 2, \"A must be 2D\");\n    TORCH_CHECK(B.dim() == 2 && B.size(1) == 1, \"B must be shape (K, 1)\");\n    TORCH_CHECK(A.size(1) == B.size(0), \"Dimension mismatch\");\n\n    A = A.contiguous();\n    B = B.contiguous();\n\n    int M = (int)A.size(0);\n    int K = (int)A.size(1);\n\n    auto C = torch::zeros({M, 1}, A.options());\n\n    // One warp per row; pack multiple warps per block\n    const int WARPS_PER_BLOCK = 4;\n    dim3 block(32, WARPS_PER_BLOCK);\n    dim3 grid((M + WARPS_PER_BLOCK - 1) / WARPS_PER_BLOCK);\n\n    gemv_streaming_kernel<<<grid, block>>>(\n        A.data_ptr<float>(),\n        B.data_ptr<float>(),\n        C.data_ptr<float>(),\n        M, K\n    );\n\n    return C;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        Simple model that performs matrix-vector multiplication (C = A * B).\n        \"\"\"\n    def __init__(self):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        # <<<END_IMPROVE>>>\n\n    def forward(self, A: torch.Tensor, B: torch.Tensor) -> torch.Tensor:\n        # <<<IMPROVE:forward_stmt_1>>>\n        if (A.is_cuda and B.is_cuda and\n                        A.dtype == torch.float32 and B.dtype == torch.float32 and\n                        A.dim() == 2 and B.dim() == 2 and B.size(1) == 1 and\n                        A.size(1) == B.size(0)):\n                    return _stark_get_extension().matrix_vector_mul(A, B)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        return torch.matmul(A, B)\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Refine the current streaming-A/cached-B CUDA GEMV champion with a lower-register-pressure inner loop, keeping the warp-per-row kernel and exact fast-path dispatch intact.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "In the existing `gemv_streaming_kernel`, replace the dual-accumulator 2-way unrolled `float4` inner loop with a single-accumulator loop that still uses `__ldcs` for A, cached loads for B, and the same warp-reduction epilogue; keep the launch geometry, wrapper signature, and tail path unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0088,
+      "score": 0.0088,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=3220888",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/p1_p30_skip_main_claude_cuda_main_20260716_005609/lane_a_gpu3/02_L1_P4_Auto_P4_20260716_013349/eval_traces/20260716_023259_3216459_33e67e26_kernelbench_l1_4_4_matrix_vector_multiplication"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.00882,
+      "speedup": 1.0022727272727272,
+      "reference_runtimes": {
+        "torch_eager": 0.00882
+      },
+      "speedups": {
+        "torch_eager": 1.0022727272727272
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "The current dual-accumulator unroll likely increases register pressure enough to hurt scheduling more than it helps ILP, so simplifying the inner accumulation loop should recover occupancy and reduce long scoreboard stalls.",
+      "single_change_focus": "Remove the 2-way unrolled dual-accumulator inner loop from the existing CUDA GEMV kernel and replace it with a single-accumulator version that keeps the same warp-per-row structure, vectorized loads, and tail handling.",
+      "mutation_family": "single_accumulator_unroll1",
+      "target_metric": "speedup"
+    }
+  }
+}

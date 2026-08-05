@@ -1,0 +1,2141 @@
+{
+  "task_name": "kernelbench_l2_37_37_matmul_swish_sum_groupnorm",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": false,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_claude",
+    "plan_provider": "openai-compatible",
+    "code_provider": "claude-compatible",
+    "debug_provider": "openai-compatible",
+    "search_provider": "claude-compatible",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "diagnostics_enabled": false,
+    "diagnostics_mode": "root_ncu_v1",
+    "diagnostics_timeout_seconds": 300,
+    "diagnostics_warmup_runs": 2,
+    "diagnostics_profile_runs": 3,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1,
+    "deliberation_provider_timeout_seconds": 180,
+    "deliberation_phase_timeout_seconds": 240,
+    "evaluator_isolation": "candidate_subprocess",
+    "evaluator_timeout_seconds": 900,
+    "explore_fraction": 0.4,
+    "challenger_fraction": 0.3,
+    "plateau_delta_threshold": 0.03,
+    "plateau_recovery_mutation_attempts": 2,
+    "plateau_window": 3,
+    "deliberation_upgrade_enabled": true,
+    "deliberation_max_rounds": 3,
+    "deliberation_min_remaining_attempts": 8,
+    "phase_two_enabled": true,
+    "phase_two_split_attempts": 5
+  },
+  "best_node_id": "phase2_n5",
+  "leaderboard": [
+    "phase2_n5",
+    "phase2_n2"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "n1",
+      "root"
+    ],
+    [
+      "n2",
+      "n1"
+    ],
+    [],
+    [
+      "phase2_root"
+    ],
+    [
+      "phase2_root",
+      "phase2_n1"
+    ],
+    [
+      "phase2_n2",
+      "phase2_root"
+    ],
+    [
+      "phase2_n5",
+      "phase2_n2"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "n2",
+    "n3",
+    "phase2_root",
+    "phase2_n1",
+    "phase2_n2",
+    "phase2_n2",
+    "phase2_n3"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {}
+  ],
+  "pruned_nodes": {},
+  "debug_stats": {
+    "total_attempts": 0,
+    "per_node": {}
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 10,
+    "debug_attempts": 0,
+    "failure_counts": {},
+    "failure_stage_counts": {},
+    "invalid_proposals": 0,
+    "attempt_mode_counts": {
+      "explore": 3,
+      "mutate_champion": 6,
+      "best_lineage_push": 1
+    },
+    "provider_transient_error_count": 0,
+    "provider_transient_budget_exhausted_count": 0,
+    "provider_transient_errors_by_stage": {},
+    "provider_transient_errors_by_origin": {},
+    "provider_transient_errors": [],
+    "phase_two_triggered": true,
+    "phase_two_seed_node_id": "n2",
+    "pruned_count": 0
+  },
+  "benchmark_family": "kernelbench",
+  "level": 2,
+  "problem_id": 37,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level2/37_Matmul_Swish_Sum_GroupNorm.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.011800000000000001
+  },
+  "speedups": {
+    "torch_eager": 1.710144927536232
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "normalization",
+    "summary": "Normalization computation; preserve statistics axes, epsilon, and affine state while fusing where safe.",
+    "source": "KernelBench/KernelBench/level2/37_Matmul_Swish_Sum_GroupNorm.py",
+    "exact_facts": null,
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "forward_stmt_3",
+      "forward_stmt_4",
+      "forward_stmt_5",
+      "forward_stmt_6"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "\"\"\"\n        Args:\n            x (torch.Tensor): Input tensor of shape (batch_size, in_features).\n        Returns:\n            torch.Tensor: Output tensor of shape (batch_size, out_features).\n        \"\"\"",
+        "op_names": [
+          "_matmul_swish_sum_groupnorm",
+          "a",
+          "activation",
+          "and",
+          "applies",
+          "args",
+          "batch_size",
+          "bias",
+          "bias_shape",
+          "group_norm",
+          "groupnorm",
+          "in_features"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x = self.matmul(x)",
+        "op_names": [
+          "_matmul_swish_sum_groupnorm",
+          "a",
+          "activation",
+          "and",
+          "applies",
+          "args",
+          "batch_size",
+          "bias",
+          "bias_shape",
+          "group_norm",
+          "groupnorm",
+          "in_features"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_3",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x = torch.sigmoid(x) * x",
+        "op_names": [
+          "_matmul_swish_sum_groupnorm",
+          "a",
+          "activation",
+          "and",
+          "applies",
+          "args",
+          "arithmetic",
+          "batch_size",
+          "bias",
+          "bias_shape",
+          "group_norm",
+          "groupnorm"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_4",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x = x + self.bias",
+        "op_names": [
+          "_matmul_swish_sum_groupnorm",
+          "a",
+          "activation",
+          "and",
+          "applies",
+          "args",
+          "arithmetic",
+          "batch_size",
+          "bias",
+          "bias_shape",
+          "group_norm",
+          "groupnorm"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_5",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "x = self.group_norm(x)",
+        "op_names": [
+          "_matmul_swish_sum_groupnorm",
+          "a",
+          "activation",
+          "and",
+          "applies",
+          "args",
+          "batch_size",
+          "bias",
+          "bias_shape",
+          "group_norm",
+          "groupnorm",
+          "in_features"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_6",
+        "region_role": "forward",
+        "semantic_type": "normalization",
+        "source_excerpt": "return x",
+        "op_names": [
+          "_matmul_swish_sum_groupnorm",
+          "a",
+          "activation",
+          "and",
+          "applies",
+          "args",
+          "batch_size",
+          "bias",
+          "bias_shape",
+          "group_norm",
+          "groupnorm",
+          "in_features"
+        ],
+        "optimization_intents": [
+          "fuse_statistics_and_affine",
+          "preserve_normalization_axes"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "compute statistics over the exact normalized axes",
+          "fuse affine transform when present"
+        ],
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "fuse_statistics_and_affine",
+        "summary": "fuse statistics and affine",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "compute statistics over the exact normalized axes",
+            "fuse affine transform when present"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "keep mean/variance axes explicit"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "preserve_normalization_axes",
+        "summary": "preserve normalization axes",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5",
+          "forward_stmt_6"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "compute statistics over the exact normalized axes",
+            "fuse affine transform when present"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "keep mean/variance axes explicit"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve statistics axes, epsilon, and affine parameters",
+          "avoid changing output dtype or shape"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve statistics axes, epsilon, and affine parameters",
+      "avoid changing output dtype or shape"
+    ]
+  },
+  "diagnostics_profile": {
+    "enabled": true,
+    "mode": "root_ncu_v1",
+    "ncu_profile": {
+      "enabled": true,
+      "status": "ok",
+      "profiler": "ncu",
+      "kernel_name": "ampere_sgemm_128x128_tn",
+      "row_count": 31,
+      "kernel_launch_count": 31,
+      "raw_metrics": {
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 13.24,
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": 64.86,
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": 52.34,
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": 71.55,
+        "sm__warps_active.avg.pct_of_peak_sustained_active": 33.12,
+        "launch__registers_per_thread": 118,
+        "launch__occupancy_limit_registers": 2,
+        "launch__occupancy_limit_shared_mem": 3,
+        "launch__occupancy_limit_warps": 6,
+        "gpu__time_duration.avg": 6262464,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.02,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.34,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+        "smsp__sass_branch_targets_threads_divergent.avg": 0,
+        "smsp__sass_branch_targets_threads_uniform.avg": 23680,
+        "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+        "smsp__warps_eligible.avg": 28022516.92
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ],
+      "error": null
+    },
+    "notes": [
+      "Profiled the root candidate program with Nsight Compute."
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_05",
+        "intent": "multi_group_cta_with_register_tiling",
+        "summary": "Pack 4 groups from the same sample into one 128-thread block, with each 32-thread quarter-warp owning one group. Each lane processes two channels via float2, and all four groups share a single warp-shuffle-based reduction without any cross-group synchronization. This amortizes kernel launch overhead across 4x more work per block while keeping each group's reduction warp-local.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Launch grid=(N, num_groups/4), block=128; warp_id=threadIdx.x/32 identifies the group within the block, lane=threadIdx.x&31",
+          "Each warp computes group index = blockIdx.y*4 + warp_id, channel base = group_index*64 + lane*2",
+          "All reduction is warp-local (__shfl_down_sync with mask 0xffffffff) â no smem, no __syncthreads needed",
+          "Register-tile: preload both float2 channels into registers before computing Swish to avoid re-fetching",
+          "Use __launch_bounds__(128, 2) â 4 warps per block, max 2 blocks/SM targets 8 warps active",
+          "Prefetch gamma and beta for the 4 groups into registers at the start to avoid repeated L1 lookups",
+          "Specialize num_groups=64 as a template argument so the compiler can unroll the warp structure"
+        ],
+        "expected_gain": "15-25% over current champion: 4x fewer kernel launches (grid shrinks by 4x), no smem, no cross-warp sync, better instruction-level parallelism within the SM as four independent warps issue simultaneously",
+        "risk_notes": [
+          "Requires num_groups divisible by 4; add a runtime check and fall back to the 2-group or 1-group variant if not",
+          "Register pressure increases with 4 groups per block â monitor that __launch_bounds__ does not spill",
+          "The 0xffffffff warp mask is only valid when all 32 lanes are active (group_sz==64 means 2 elements per lane, not divergent)"
+        ],
+        "memory_methods": [
+          "float2 vectorized loads/stores",
+          "register prefetch of gamma/beta"
+        ],
+        "mutation_axes": [
+          "block_occupancy",
+          "launch_geometry",
+          "register_tiling"
+        ],
+        "forbidden_patterns": [
+          "shared memory for intra-group reduction",
+          "cross-warp synchronization",
+          "scalar loads when float2 is safe"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 4.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "Reasonable launch amortization idea, but register pressure and divisibility constraints reduce risk-adjusted value.",
+          "claude-compatible": "Packing 4 groups per 128-thread block is a strong occupancy play â 4x fewer grid blocks with zero cross-warp synchronization needed. Register prefetch of gamma/beta for all 4 groups is smart given the fixed C=4096 layout. The main risk is register pressure with 4 groups in flight; the __launch_bounds__(128,2) hint helps bound this. Runtime fallback for num_groups not divisible by 4 is essential. Risk-adjusted value is solid.",
+          "gemini-compatible": "Packing multiple independent groups into a single CTA (e.g., 4 warps handling 4 groups) drastically reduces the grid size and launch overhead while maintaining the benefits of warp-local reductions."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_01",
+        "intent": "cublaslt_epilogue_fusion",
+        "summary": "Move Swish and bias add into the GEMM epilogue using cuBLASLt, then run only a specialized GroupNorm kernel afterward so the large GEMM output is not written and reread for separate elementwise ops.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5"
+        ],
+        "implementation_hints": [
+          "The NCU evidence shows the dominant kernel is still `ampere_sgemm_128x128_tn` with high SM throughput and low DRAM pressure, so optimizing around the GEMM boundary is more promising than micro-tuning the already-fused post-op kernel alone.",
+          "Use a cuBLASLt matmul path that preserves the same linear result as `self.matmul(x)` and applies supported epilogues for bias and activation before the custom normalization step.",
+          "Keep the Python forward signature unchanged by replacing the matmul call site with an extension entrypoint that performs GEMM+epilogue and then invokes the GroupNorm specialization.",
+          "If a direct Swish epilogue is unavailable in the target stack, still consider bias epilogue in GEMM and keep Swish fused into the GroupNorm kernel as a fallback variant."
+        ],
+        "expected_gain": "Moderate potential end-to-end gain by removing one full-tensor write/read pair around the dominant GEMM path.",
+        "risk_notes": [
+          "cuBLASLt epilogue support varies by toolkit and exact activation; fallback planning is required.",
+          "Need careful handling of `nn.Linear` weight layout/transposition and exact bias placement semantics.",
+          "Do not fold bias into GroupNorm affine parameters; bias participates in normalization statistics."
+        ],
+        "memory_methods": [
+          "Exploit GEMM epilogue fusion to keep post-GEMM values in the producer pipeline longer.",
+          "Minimize global round-trips for the `[32768, 4096]` activation tensor."
+        ],
+        "mutation_axes": [
+          "cuBLAS vs cuBLASLt backend",
+          "bias-only epilogue vs bias+activation epilogue",
+          "GEMM-output staging strategy before GroupNorm"
+        ],
+        "forbidden_patterns": [
+          "Replacing GroupNorm with LayerNorm-like reductions",
+          "Altering `self.matmul` numerics beyond normal library tolerance",
+          "Moving the bias after normalization"
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 3.0,
+          "claude-compatible": 4.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Good end-to-end idea, but cuBLASLt epilogue support and bias/shape semantics make it moderately risky.",
+          "claude-compatible": "High-value target: removing the write/read round-trip on the large [32768,4096] activation tensor is meaningful. cuBLASLt epilogue for bias+Swish is plausible on Ampere. Main risk is toolkit-dependent epilogue availability and weight transposition semantics. Fallback to bias-only epilogue is a sensible hedge. Slightly discounted from 5 because the dominant kernel is already SM-throughput bound rather than memory-bound, so the gain may be moderate rather than large.",
+          "gemini-compatible": "Fusing operations into the GEMM epilogue via cuBLASLt is highly effective for reducing memory bandwidth, though native support for Swish (SiLU) epilogues may depend on the specific CUDA/cuBLAS version."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_02",
+        "intent": "persistent_groupnorm_grid_stride",
+        "summary": "Keep the validated fused Swish+bias+GroupNorm path, but replace the one-block-per-(sample,group) launch with a fixed-size CTA pool that grid-strides over all `N * num_groups` work items to cut the extreme launch count and improve scheduler efficiency.",
+        "target_anchors": [
+          "cuda_cu",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Preserve the existing fused math and exact GroupNorm axes, but map logical `(sample, group)` pairs onto a linear index processed in a `for` loop inside each CTA.",
+          "Choose the CTA count from SM count rather than from `N * num_groups`; the current shape implies about 2M logical groups, so launch overhead and block scheduling can dominate the lightweight post-op kernel.",
+          "Retain the current 64-thread specialized reduction for each 64-channel group; only the outer work distribution changes.",
+          "Keep output layout and Python-facing call unchanged."
+        ],
+        "expected_gain": "Low-to-moderate end-to-end gain; most plausible if the current fused kernel is launch-bound due to the very large logical grid.",
+        "risk_notes": [
+          "Must preserve one independent mean/variance computation per original group instance.",
+          "If the loop body accumulates extra live state, register pressure can rise and erase the benefit.",
+          "Do not change normalized axes or affine semantics."
+        ],
+        "memory_methods": [
+          "Reuse the current register-resident per-element `pre_norm` value across the reduction and affine writeback.",
+          "Use grid-stride traversal to amortize parameter/global-memory latency across more work per CTA."
+        ],
+        "mutation_axes": [
+          "CTA count tied to SMs",
+          "grid-stride over `(sample,group)` pairs",
+          "persistent vs fully expanded grid"
+        ],
+        "forbidden_patterns": [
+          "Changing GroupNorm statistics across multiple groups or samples",
+          "Merging different groups into one reduction",
+          "Changing output dtype or shape"
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 4.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Low-risk launch-geometry improvement that preserves math; likely useful if the current kernel is scheduler-bound.",
+          "claude-compatible": "Addresses a real problem (2M-block grid launch overhead) with a well-understood technique. However, with N*num_groups=2M and a lightweight 64-thread kernel, the scheduler overhead may not dominate wall time â the GEMM is the bottleneck. Low risk since math is unchanged, but expected upside is limited unless profiling confirms launch saturation as the post-GEMM bottleneck.",
+          "gemini-compatible": "Implementing a grid-stride loop is a very practical way to mitigate the massive kernel launch overhead associated with launching millions of blocks for small groups."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_03",
+        "intent": "vectorized_float2_io_with_warp32_reduction",
+        "summary": "Replace scalar per-thread loads/stores in the fused kernel with float2 vectorized accesses so each of 32 lanes processes two contiguous channels per group. Each warp handles one 64-channel group entirely, eliminating shared memory entirely and replacing it with pure warp-shuffle reductions for mean and variance.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Launch one warp (32 threads) per (sample, group): grid=(N, num_groups), block=32",
+          "Each lane loads float2 at offset chan=group*64 + lane*2 and chan+1, applying Swish+bias to both elements",
+          "Compute per-lane sum and sumsq over both elements before warp reduce",
+          "Use __shfl_down_sync(0xffffffff, val, offset) for 5 levels to reduce over 32 lanes â no __syncthreads, no smem needed",
+          "Compute mean and variance from warp-reduced totals, broadcast via __shfl_sync(0xffffffff, val, 0)",
+          "Apply gamma/beta affine transform and store via float2 stores",
+          "Use __launch_bounds__(32, 8) to increase occupancy vs current __launch_bounds__(64, 4)",
+          "Keep group_sz==64 as a compile-time constant via template parameter or #define to enable loop unrolling"
+        ],
+        "expected_gain": "10-20% over current champion: removes smem traffic and __syncthreads, halves the active thread count per group which doubles theoretical occupancy from 4 to 8 warps/SM, and float2 coalescing maintains full memory bandwidth",
+        "risk_notes": [
+          "Assumes group_sz is exactly 64; must guard with TORCH_CHECK at the wrapper level",
+          "float2 loads require input base pointer to be 8-byte aligned â valid for torch::empty_like allocations but assert alignment before launch",
+          "Broadcasting mean/inv_std via __shfl_sync lane 0 must happen after the full 5-level reduce is complete"
+        ],
+        "memory_methods": [
+          "float2 vectorized loads/stores",
+          "warp shuffle reduce (no smem)"
+        ],
+        "mutation_axes": [
+          "thread_block_geometry",
+          "memory_access_pattern",
+          "reduction_algorithm"
+        ],
+        "forbidden_patterns": [
+          "__shared__ memory for this kernel",
+          "block-level __syncthreads",
+          "scalar float loads when float2 is viable"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 4.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "High-performance potential, but very assumption-heavy (exact 64 channels, alignment, warp-only reduction) and easier to break.",
+          "claude-compatible": "Technically sound: 32-thread warp per group with float2 loads is a natural fit for 64-channel groups. Eliminating shared memory and __syncthreads in favor of warp shuffles is a clean win. The 10-20% projected gain is plausible. Alignment guard and exact group_sz==64 check are necessary safety rails. Risk is low-moderate assuming those guards are in place.",
+          "gemini-compatible": "Mapping exactly one warp to a 64-channel group using float2 memory accesses is an optimal design. It completely eliminates shared memory and block synchronization in favor of fast warp shuffles."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_07",
+        "intent": "persistent_thread_block_with_grid_striding",
+        "summary": "Replace the fine-grained (N * num_groups) grid with a persistent-block grid that strides over all (sample, group) pairs. Each block processes multiple (sample, group) tuples in a loop, keeping warps alive and hiding launch latency. This is especially beneficial given N=32768 and num_groups=64 produces 2M kernel invocations in the current design.",
+        "target_anchors": [
+          "cuda_cu",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Launch a fixed grid of, e.g., 2048 or 4096 blocks of 32 threads each; compute total_groups = N * num_groups",
+          "Each block iterates: for (int idx = blockIdx.x; idx < total_groups; idx += gridDim.x) and processes one group per iteration",
+          "Within each iteration, lane=threadIdx.x handles 2 channels (float2) of the 64-channel group",
+          "All reduction is warp-local â keeps the same warp shuffle path but amortizes launch overhead",
+          "Choose gridDim.x as a multiple of SM count (e.g., num_SMs * 4) to fill the GPU without oversubscription",
+          "Use cudaOccupancyMaxActiveBlocksPerMultiprocessor to tune grid size at runtime on first call and cache the result",
+          "Keep the same Swish + bias + GroupNorm math; only the indexing and outer loop change"
+        ],
+        "expected_gain": "5-12% over current champion: eliminates per-block scheduler overhead for the 2M-element grid, improves wave efficiency for non-power-of-2 grids, and keeps SMs busy between wave boundaries",
+        "risk_notes": [
+          "Grid-stride loops add a branch per iteration; verify the branch is predicted not-taken in all but the last wave",
+          "Persistent blocks can stall if later iterations require data not yet written â not an issue here since each group is independent",
+          "Must tune gridDim.x for the target GPU SM count; a wrong value undersubscribes or wastes launch slots"
+        ],
+        "memory_methods": [
+          "grid-stride loop",
+          "float2 coalesced loads"
+        ],
+        "mutation_axes": [
+          "launch_geometry",
+          "grid_persistence",
+          "occupancy_tuning"
+        ],
+        "forbidden_patterns": [
+          "one-block-per-group grid when N*num_groups >> SM_count*waves",
+          "dynamic parallelism"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 4.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Strong risk-adjusted option: persistent blocks and grid-striding usually help when the logical grid is huge.",
+          "claude-compatible": "Grid-stride persistent blocks are a textbook fix for launch-overhead-bound kernels, but largely overlaps with strategy_02 in intent. The SM-count-aware gridDim.x tuning via cudaOccupancyMaxActiveBlocksPerMultiprocessor is a nice touch. Same concern as strategy_02: whether launch overhead actually dominates the post-GEMM kernel needs profiling confirmation. If it does, this is a clean low-risk win; if not, the gain evaporates.",
+          "gemini-compatible": "Persistent thread blocks are a strong alternative to Strategy 02 for handling the 2M+ logical groups, effectively bypassing the hardware scheduler's block launch bottlenecks."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "cublas_gemm_swap_to_cublaslt_with_epilogue",
+        "summary": "The NCU profile shows the GEMM (ampere_sgemm_128x128_tn) runs at 71.7% SM throughput and 33% warp occupancy, limited by register count (118 regs/thread, occupancy_limit_registers=2). The post-GEMM kernel is already fast. Replace the nn.Linear GEMM dispatch with a cuBLASLt matmul that uses a custom epilogue (RELU/GELU fused epilogue is available; use the identity epilogue here but avoid the extra output copy), then feed directly into the existing fused kernel. This removes one full-tensor memory round-trip between GEMM output and the fused kernel input.",
+        "target_anchors": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Create a cublasLtHandle_t once at module init and cache it; use a workspace of ~32MB",
+          "Configure cublasLtMatmulDesc_t with CUBLAS_COMPUTE_32F and CUDA_R_32F for A/B/C",
+          "Set CUBLASLT_MATMUL_DESC_TRANSA=CUBLAS_OP_T to match nn.Linear's weight layout (out_features x in_features stored row-major)",
+          "Use CUBLASLT_EPILOGUE_DEFAULT to write raw GEMM output directly into the buffer consumed by the fused kernel",
+          "Bias addition is absorbed into the fused Swish+GN kernel so do not use CUBLASLT_EPILOGUE_BIAS here",
+          "Pre-allocate the GEMM output buffer as a persistent member tensor to avoid torch::empty_like on every forward call",
+          "Keep the existing fused_swish_bias_groupnorm_kernel as-is; only the producer (GEMM) changes",
+          "Export the cuBLASLt wrapper through cuda_cpp pybind and call it from forward_stmt_2 replacing self.matmul(x)"
+        ],
+        "expected_gain": "5-15% end-to-end: cuBLASLt can select a better algorithm than the default ampere_sgemm_128x128_tn for this shape (32768x1024 x 1024x4096), and persistent output buffer eliminates one allocation per forward call",
+        "risk_notes": [
+          "cuBLASLt algorithm selection is shape-dependent; must run heuristic search (cublasLtMatmulAlgoGetHeuristic) and cache the result for this fixed shape",
+          "Weight tensor must be kept contiguous and not modified between forward calls; register a contiguous clone in __init__",
+          "The nn.Linear bias (not the separate self.bias) must be handled: either fold it into the cuBLASLt BIAS epilogue or add it inside the fused kernel as a second bias vector â do not silently drop it",
+          "If input batch size varies at runtime, the cached algorithm and workspace may be invalid; guard with shape checks"
+        ],
+        "memory_methods": [
+          "persistent pre-allocated GEMM output buffer",
+          "cuBLASLt algorithm heuristic cache"
+        ],
+        "mutation_axes": [
+          "gemm_backend",
+          "memory_allocation_strategy",
+          "kernel_pipeline"
+        ],
+        "forbidden_patterns": [
+          "torch::empty_like inside the forward hot path",
+          "ignoring nn.Linear's additive bias",
+          "running cuBLASLt algorithm search on every forward call"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 4.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Practical producer-side optimization with a clear memory-round-trip benefit, though it still depends on cuBLASLt heuristics and bias handling.",
+          "claude-compatible": "Conceptually overlaps significantly with strategy_01 but focuses on the cuBLASLt algorithm selection benefit rather than epilogue fusion. The persistent output buffer to avoid repeated allocation is a genuine micro-optimization. However, the projected 5-15% gain is on the lower end and the implementation complexity (handle caching, heuristic search, bias accounting) is high relative to the expected return. The nn.Linear bias accounting risk is real and easy to get wrong.",
+          "gemini-compatible": "Largely overlaps with Strategy 01. Pre-allocating the output buffer and using cuBLASLt is good, but the identity/custom epilogue might not fully absorb the Swish operation without custom kernels."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "constant_param_broadcast",
+        "summary": "Exploit the fixed `C=4096` parameter size by broadcasting `bias`, `gamma`, and `beta` from constant-memory-style storage or a similarly cache-friendly read-only path, reducing repeated parameter fetch cost across all samples.",
+        "target_anchors": [
+          "cuda_cu",
+          "cuda_cpp",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "For this workload, `bias`, `gamma`, and `beta` together total 48KB in FP32, which fits within the typical 64KB constant-memory budget and is reused across all 32768 samples.",
+          "Use a dedicated parameter upload/update path only when the tensors change, then have the fused kernel read the per-channel parameters from the read-only broadcast path.",
+          "If full constant placement is awkward, prefer explicitly read-only/cache-friendly loads over ordinary global loads for these tensors.",
+          "Keep the existing fused reduction structure intact; this is a parameter-access optimization, not a math rewrite."
+        ],
+        "expected_gain": "Small-to-moderate gain, especially if the fused kernel becomes parameter-read heavy after launch overhead is reduced.",
+        "risk_notes": [
+          "Only worthwhile when channel count and parameter shapes match the fixed-size assumption; add a safe fallback for other shapes.",
+          "Parameter update synchronization must be correct if weights/bias are mutable between forwards.",
+          "Benefit may be muted if L1/L2 already capture most reuse."
+        ],
+        "memory_methods": [
+          "Use broadcast-friendly storage for read-only per-channel parameters.",
+          "Exploit cross-sample reuse of identical parameter vectors instead of refetching them from generic global memory."
+        ],
+        "mutation_axes": [
+          "full constant memory",
+          "read-only cache path",
+          "static upload per module vs refresh per forward"
+        ],
+        "forbidden_patterns": [
+          "Caching input activations or statistics in constant memory",
+          "Assuming params are immutable across training-style updates",
+          "Changing affine parameter order or indexing"
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 2.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Small upside and limited by cache behavior; only helps if parameter reads are a real bottleneck.",
+          "claude-compatible": "48KB of bias+gamma+beta fits constant memory, but L2/L1 cache likely already captures most of this reuse given the fixed parameter vectors are read identically by all 32768 samples. Constant memory has its own bandwidth limits and serialization under high occupancy. Benefit is probably marginal and this is a complex change for a small expected return. Worth trying only after higher-leverage changes are exhausted.",
+          "gemini-compatible": "While constant memory can be useful, the L1/L2 cache hierarchy typically handles read-only parameter broadcasts (like gamma/beta) very efficiently, making this a lower-impact optimization."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "specialized_64channel_vector_tiles",
+        "summary": "Keep the current one-pass statistics kernel but specialize the 64-channel group path around wider per-lane contiguous transactions and a minimal live-value footprint, targeting fewer instructions and better memory coalescing without changing the successful reduction topology.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "The previous warp32/two-values-per-lane and vectorized-lane experiments were slightly worse, so keep the proven 64-thread two-warp mapping as the base and mutate only the load/store packing and live-range structure.",
+          "Focus on paired contiguous channel handling only where alignment is guaranteed, and avoid adding extra temporaries that could increase register pressure.",
+          "Since the root GEMM profile shows register-limited occupancy (`launch__registers_per_thread=118` on the dominant kernel), be conservative about any fused-kernel change that inflates registers.",
+          "Prefer instruction-count and access-pattern cleanup over more aggressive remapping."
+        ],
+        "expected_gain": "Small gain; this is a low-risk refinement path if broader GEMM-bound changes are not feasible.",
+        "risk_notes": [
+          "This area already showed diminishing returns in phase 1, so upside is likely limited.",
+          "Vector assumptions must respect contiguous channel layout and alignment.",
+          "Any added register pressure can negate the benefit quickly."
+        ],
+        "memory_methods": [
+          "Use aligned contiguous transactions for channel-local reads/writes when safe.",
+          "Shorten lifetimes of `pre_norm`, partial sums, and affine intermediates to avoid spills."
+        ],
+        "mutation_axes": [
+          "aligned vector width",
+          "load/store packing only",
+          "instruction-live-range trimming"
+        ],
+        "forbidden_patterns": [
+          "Switching back to a one-warp reduction that already regressed",
+          "Using approximate normalization math",
+          "Reordering operations in a way that changes GroupNorm statistics"
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 2.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "Safest but likely low payoff; looks like incremental tuning after earlier regressions.",
+          "claude-compatible": "Self-described as a low-risk refinement with limited upside, and the proposal notes prior experiments in this direction already showed diminishing returns. Instruction-count trimming and aligned loads are worthwhile hygiene but unlikely to move the needle meaningfully. Useful only as a polish pass after higher-impact strategies land. Score reflects honesty about the ceiling here rather than dismissing the approach.",
+          "gemini-compatible": "A conservative refinement of the existing two-warp approach. It is low risk but likely offers diminishing returns compared to the single-warp (Strategy 03) or multi-group (Strategy 05) redesigns."
+        },
+        "priority": 3
+      }
+    ],
+    "proposal_errors": {
+      "gemini-compatible": "Expecting ',' delimiter: line 18 column 115 (char 1133)"
+    },
+    "review_errors": {},
+    "deliberation_round": 1
+  },
+  "phase_transition": {
+    "source_phase": 1,
+    "target_phase": 2,
+    "split_attempts": 5,
+    "trigger_attempt": 5,
+    "root": {
+      "node_id": "root",
+      "strategy_name": null,
+      "runtime": 0.0119,
+      "speedup": 0.9831932773109242,
+      "plan_summary": null,
+      "changed_regions": [],
+      "lineage": [
+        "root"
+      ]
+    },
+    "selected": {
+      "node_id": "n2",
+      "strategy_name": "strategy_05",
+      "runtime": 0.00696,
+      "speedup": 1.6810344827586206,
+      "plan_summary": "Refine the champion by specializing GroupNorm for the fixed 64-channel groups and cutting reduction overhead inside the fused post-op CUDA kernel, while keeping the validated fusion path intact.",
+      "changed_regions": [
+        "cuda_cu"
+      ],
+      "lineage": [
+        "root",
+        "n1",
+        "n2"
+      ]
+    },
+    "attempts": [
+      {
+        "node_id": "n1",
+        "parent_id": "root",
+        "strategy_name": "strategy_04",
+        "attempt_mode": "explore",
+        "mutation_family": "postop_fusion",
+        "single_change_focus": "Fuse the post-GEMM elementwise and normalization work into one custom CUDA kernel.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "forward_stmt_5"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0069900000000000006,
+        "speedup": 1.7024320457796853,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Fuse Swish, bias add, and GroupNorm into one CUDA postprocessing kernel after the existing GEMM to remove extra full-tensor memory passes and launches."
+      },
+      {
+        "node_id": "n2",
+        "parent_id": "n1",
+        "strategy_name": "strategy_05",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "gn_singlepass_reduce",
+        "single_change_focus": "Replace the current mean-then-variance reduction in the fused CUDA kernel with a one-pass reduction specialized for 64-channel groups.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00696,
+        "speedup": 1.6810344827586206,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the champion by specializing GroupNorm for the fixed 64-channel groups and cutting reduction overhead inside the fused post-op CUDA kernel, while keeping the validated fusion path intact."
+      },
+      {
+        "node_id": "n3",
+        "parent_id": "n2",
+        "strategy_name": "strategy_04",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "warp2x_lane_mapping",
+        "single_change_focus": "Replace the current 64-thread two-warp fused GroupNorm block with a 32-thread one-warp kernel where each lane processes two contiguous channels in the 64-channel group and performs warp-only reductions for mean and variance.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.00704,
+        "speedup": 1.6761363636363638,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing fused post-GEMM kernel by changing only the CUDA kernel mapping: keep Swish+bias+GroupNorm fused, but specialize the fixed 64-channel group to one warp per group with each lane processing two channels, removing the current two-warp block reduction overhead."
+      },
+      {
+        "node_id": "n4",
+        "parent_id": "n2",
+        "strategy_name": "strategy_04",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "dual_group_block",
+        "single_change_focus": "Change the fused kernel launch geometry so each 128-thread block processes two groups from the same sample, retaining the existing 64-thread-per-group reduction and affine math for each half-block independently.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0069900000000000006,
+        "speedup": 1.688125894134478,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing fused post-GEMM kernel by reducing launch overhead while preserving the successful 64-thread-per-group computation pattern."
+      },
+      {
+        "node_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_04",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "vectorized_lane_io",
+        "single_change_focus": "Vectorize the per-lane input/output access in the warp32 fast path.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0069900000000000006,
+        "speedup": 1.67381974248927,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing fused post-op CUDA kernel by vectorizing the fixed 64-channel warp32 fast path loads/stores while preserving the same Swish, bias, mean/variance, and affine math."
+      }
+    ],
+    "trace_summary": "effective=n1:Fuse the post-GEMM elementwise and normalization work into one custom CUDA kernel.:1.702x; n4:Change the fused kernel launch geometry so each 128-thread block processes two groups from the same sample, retaining the existing 64-thread-per-group reduction and affine math for each half-block independently.:1.688x | flat=n2:Replace the current mean-then-variance reduction in the fused CUDA kernel with a one-pass reduction specialized for 64-channel groups.:1.681x; n3:Replace the current 64-thread two-warp fused GroupNorm block with a 32-thread one-warp kernel where each lane processes two contiguous channels in the 64-channel group and performs warp-only reductions for mean and variance.:1.676x; n5:Vectorize the per-lane input/output access in the warp32 fast path.:1.674x",
+    "root_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "ampere_sgemm_128x128_tn",
+        "row_count": 31,
+        "kernel_launch_count": 31,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 13.24,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 64.86,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 52.34,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 71.55,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 33.12,
+          "launch__registers_per_thread": 118,
+          "launch__occupancy_limit_registers": 2,
+          "launch__occupancy_limit_shared_mem": 3,
+          "launch__occupancy_limit_warps": 6,
+          "gpu__time_duration.avg": 6262464,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.02,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.34,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 23680,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 28022516.92
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "selected_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "ampere_sgemm_128x128_tn",
+        "row_count": 11,
+        "kernel_launch_count": 11,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 13.35,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 65.38,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 52.29,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 71.7,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 33.04,
+          "launch__registers_per_thread": 118,
+          "launch__occupancy_limit_registers": 2,
+          "launch__occupancy_limit_shared_mem": 3,
+          "launch__occupancy_limit_warps": 6,
+          "gpu__time_duration.avg": 6203520,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.02,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.34,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 23680,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 28063140.68
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "diagnostics_delta": {
+      "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 0.10999999999999943,
+      "gpu__time_duration.avg": -58944,
+      "l1tex__throughput.avg.pct_of_peak_sustained_active": -0.05000000000000426,
+      "launch__occupancy_limit_registers": 0,
+      "launch__occupancy_limit_shared_mem": 0,
+      "launch__occupancy_limit_warps": 0,
+      "launch__registers_per_thread": 0,
+      "lts__throughput.avg.pct_of_peak_sustained_elapsed": 0.519999999999996,
+      "sm__throughput.avg.pct_of_peak_sustained_elapsed": 0.15000000000000568,
+      "sm__warps_active.avg.pct_of_peak_sustained_active": -0.0799999999999983,
+      "smsp__sass_branch_targets_threads_divergent.avg": 0,
+      "smsp__sass_branch_targets_threads_uniform.avg": 0,
+      "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+      "smsp__warps_eligible.avg": 40623.759999997914
+    }
+  },
+  "feedback_state": {
+    "total_attempts": 11,
+    "compile_rate": 1.0,
+    "correct_rate": 1.0,
+    "best_speedup": 1.710144927536232,
+    "best_strategy_name": "strategy_05",
+    "phase": "refinement",
+    "current_champion_id": "phase2_n5",
+    "current_champion_speedup": 1.710144927536232,
+    "plateau_detected": false,
+    "recent_improvement_deltas": [
+      0.7192387684687611,
+      0.007091411375857337,
+      0.05007661885270931,
+      0.036386062288004783
+    ],
+    "recent_regression_deltas": [
+      -0.0023166211470937448,
+      -0.03082291717328922,
+      -0.026529319189813494,
+      -0.19662070277544896,
+      0.0
+    ],
+    "recent_successful_mutation_families": [
+      "four_group_warp_local",
+      "late_affine_loads"
+    ],
+    "recent_failed_mutation_families": [
+      "persistent_group_grid",
+      "vectorized_lane_io",
+      "const_param_path",
+      "gn_singlepass_reduce"
+    ],
+    "last_mutation_outcome": "regressed_or_flat",
+    "recent_attempts": [
+      {
+        "attempt_id": "n4",
+        "parent_id": "n2",
+        "strategy_name": "strategy_04",
+        "mode": "mutate_champion",
+        "mutation_family": "dual_group_block",
+        "speedup": 1.688125894134478,
+        "parent_speedup": 1.6810344827586206,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Change the fused kernel launch geometry so each 128-thread block processes two groups from the same sample, retaining the existing 64-thread-per-group reduction and affine math for each half-block independently."
+      },
+      {
+        "attempt_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_04",
+        "mode": "mutate_champion",
+        "mutation_family": "vectorized_lane_io",
+        "speedup": 1.67381974248927,
+        "parent_speedup": 1.6761363636363638,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Vectorize the per-lane input/output access in the warp32 fast path."
+      },
+      {
+        "attempt_id": "phase2_n1",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_02",
+        "mode": "explore",
+        "mutation_family": "persistent_group_grid",
+        "speedup": 1.6502115655853313,
+        "parent_speedup": 1.6810344827586206,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the one-block-per-(sample,group) launch with a persistent 64-thread CTA kernel that loops over linearized group indices, reusing the current fused Swish+bias+GroupNorm body unchanged for each iteration."
+      },
+      {
+        "attempt_id": "phase2_n2",
+        "parent_id": "phase2_n1",
+        "strategy_name": "strategy_05",
+        "mode": "explore",
+        "mutation_family": "four_group_warp_local",
+        "speedup": 1.7002881844380406,
+        "parent_speedup": 1.6502115655853313,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the current 64-thread per-group fused GroupNorm kernel with a 128-thread four-warp kernel where each warp handles one 64-channel group from the same sample and each lane computes two contiguous channels, using only warp shuffles for sum/sumsq and no shared memory."
+      },
+      {
+        "attempt_id": "phase2_n3",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_08",
+        "mode": "mutate_champion",
+        "mutation_family": "vectorized_lane_io",
+        "speedup": 1.6737588652482271,
+        "parent_speedup": 1.7002881844380406,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Vectorize the per-lane input, parameter, and output accesses in the existing four-warp kernel while keeping the reduction topology unchanged."
+      },
+      {
+        "attempt_id": "phase2_n4",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_04",
+        "mode": "best_lineage_push",
+        "mutation_family": "const_param_path",
+        "speedup": 1.5036674816625917,
+        "parent_speedup": 1.7002881844380406,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Swap the fused kernel's parameter reads from global tensor pointers to constant-memory arrays, with a runtime fallback to the existing pointer-based path when `C != 4096`."
+      },
+      {
+        "attempt_id": "phase2_n5",
+        "parent_id": "phase2_n3",
+        "strategy_name": "strategy_05",
+        "mode": "mutate_champion",
+        "mutation_family": "late_affine_loads",
+        "speedup": 1.710144927536232,
+        "parent_speedup": 1.6737588652482271,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Delay affine parameter loads to the post-reduction stage so only input values and pre-norm intermediates stay live during the warp reduction."
+      },
+      {
+        "attempt_id": "phase2_root",
+        "parent_id": "n2",
+        "strategy_name": "strategy_05",
+        "mode": "mutate_champion",
+        "mutation_family": "gn_singlepass_reduce",
+        "speedup": 1.6810344827586206,
+        "parent_speedup": 1.6810344827586206,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Replace the current mean-then-variance reduction in the fused CUDA kernel with a one-pass reduction specialized for 64-channel groups."
+      }
+    ],
+    "champion": {
+      "node_id": "phase2_n5",
+      "speedup": 1.710144927536232,
+      "strategy_name": "strategy_05",
+      "mutation_family": "late_affine_loads",
+      "lineage": [
+        "root",
+        "n1",
+        "n2",
+        "phase2_root",
+        "phase2_n1",
+        "phase2_n2",
+        "phase2_n3",
+        "phase2_n5"
+      ],
+      "recent_positive_mutations": [
+        {
+          "attempt_id": "phase2_n2",
+          "strategy_name": "strategy_05",
+          "mode": "explore",
+          "mutation_family": "four_group_warp_local",
+          "speedup": 1.7002881844380406,
+          "parent_speedup": 1.6502115655853313,
+          "single_change_focus": "Replace the current 64-thread per-group fused GroupNorm kernel with a 128-thread four-warp kernel where each warp handles one 64-channel group from the same sample and each lane computes two contiguous channels, using only warp shuffles for sum/sumsq and no shared memory."
+        },
+        {
+          "attempt_id": "phase2_n5",
+          "strategy_name": "strategy_05",
+          "mode": "mutate_champion",
+          "mutation_family": "late_affine_loads",
+          "speedup": 1.710144927536232,
+          "parent_speedup": 1.6737588652482271,
+          "single_change_focus": "Delay affine parameter loads to the post-reduction stage so only input values and pre-norm intermediates stay live during the warp reduction."
+        }
+      ],
+      "recent_negative_mutations": [
+        {
+          "attempt_id": "phase2_n1",
+          "strategy_name": "strategy_02",
+          "mode": "explore",
+          "mutation_family": "persistent_group_grid",
+          "speedup": 1.6502115655853313,
+          "parent_speedup": 1.6810344827586206,
+          "single_change_focus": "Replace the one-block-per-(sample,group) launch with a persistent 64-thread CTA kernel that loops over linearized group indices, reusing the current fused Swish+bias+GroupNorm body unchanged for each iteration."
+        },
+        {
+          "attempt_id": "phase2_n3",
+          "strategy_name": "strategy_08",
+          "mode": "mutate_champion",
+          "mutation_family": "vectorized_lane_io",
+          "speedup": 1.6737588652482271,
+          "parent_speedup": 1.7002881844380406,
+          "single_change_focus": "Vectorize the per-lane input, parameter, and output accesses in the existing four-warp kernel while keeping the reduction topology unchanged."
+        },
+        {
+          "attempt_id": "phase2_n4",
+          "strategy_name": "strategy_04",
+          "mode": "best_lineage_push",
+          "mutation_family": "const_param_path",
+          "speedup": 1.5036674816625917,
+          "parent_speedup": 1.7002881844380406,
+          "single_change_focus": "Swap the fused kernel's parameter reads from global tensor pointers to constant-memory arrays, with a runtime fallback to the existing pointer-based path when `C != 4096`."
+        },
+        {
+          "attempt_id": "phase2_root",
+          "strategy_name": "strategy_05",
+          "mode": "mutate_champion",
+          "mutation_family": "gn_singlepass_reduce",
+          "speedup": 1.6810344827586206,
+          "parent_speedup": 1.6810344827586206,
+          "single_change_focus": "Replace the current mean-then-variance reduction in the fused CUDA kernel with a one-pass reduction specialized for 64-channel groups."
+        }
+      ],
+      "plateau_detected": false,
+      "lineage_plateau_depth": 0
+    }
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "user_helpers",
+      "region_role": "helper",
+      "start_line": 36,
+      "end_line": 37,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 40,
+      "end_line": 45,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 49,
+      "end_line": 55,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 64,
+      "end_line": 68,
+      "source_excerpt": "self.matmul = nn.Linear(in_features, out_features)\nself.bias = nn.Parameter(torch.randn(bias_shape))\nself.group_norm = nn.GroupNorm(num_groups, out_features)",
+      "source_hash": "9ae7a770a786"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 71,
+      "end_line": 80,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n\"\"\"\n        Args:\n            x (torch.Tensor): Input tensor of shape (batch_size, in_features).\n        Returns:\n            torch.Tensor: Output tensor of shape (batch_size, out_features).\n        \"\"\"",
+      "source_hash": "d05d4a59b64b"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 81,
+      "end_line": 83,
+      "source_excerpt": "x = self.matmul(x)",
+      "source_hash": "8d2341aeec5d"
+    },
+    {
+      "anchor_name": "forward_stmt_3",
+      "region_role": "forward",
+      "start_line": 84,
+      "end_line": 86,
+      "source_excerpt": "x = torch.sigmoid(x) * x",
+      "source_hash": "73b045712d5a"
+    },
+    {
+      "anchor_name": "forward_stmt_4",
+      "region_role": "forward",
+      "start_line": 87,
+      "end_line": 89,
+      "source_excerpt": "x = x + self.bias",
+      "source_hash": "0c4267605d34"
+    },
+    {
+      "anchor_name": "forward_stmt_5",
+      "region_role": "forward",
+      "start_line": 90,
+      "end_line": 92,
+      "source_excerpt": "x = self.group_norm(x)",
+      "source_hash": "bde1544587c3"
+    },
+    {
+      "anchor_name": "forward_stmt_6",
+      "region_role": "forward",
+      "start_line": 93,
+      "end_line": 95,
+      "source_excerpt": "return x",
+      "source_hash": "03c387736bb5"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p37_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a matrix multiplication, applies Swish activation, sums with a bias term, and normalizes with GroupNorm.\n        \"\"\"\n    def __init__(self, in_features, out_features, num_groups, bias_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.group_norm = nn.GroupNorm(num_groups, out_features)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_features).\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_features).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = torch.sigmoid(x) * x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        x = x + self.bias\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        x = self.group_norm(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0119,
+      "score": 0.0119,
+      "logs": [
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=592283",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/09_L2_P37_Auto_P37_20260720_002733/eval_traces/20260720_002734_592255_ff30230d_kernelbench_l2_37_37_matmul_swish_sum_groupnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.011699999999999999,
+      "speedup": 0.9831932773109242,
+      "reference_runtimes": {
+        "torch_eager": 0.011699999999999999
+      },
+      "speedups": {
+        "torch_eager": 0.9831932773109242
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": null,
+      "single_change_focus": null,
+      "mutation_family": null,
+      "target_metric": null
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p37_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_swish_bias_groupnorm\", &fused_swish_bias_groupnorm,\n          \"Fused Swish + bias add + GroupNorm (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float warp_reduce_sum(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val += __shfl_down_sync(0xffffffffu, val, offset);\n    return val;\n}\n\n// One block per (sample, group): blockIdx.x=sample, blockIdx.y=group\n// blockDim.x = group_size = C / num_groups (assumed == 64)\n__global__ void __launch_bounds__(64, 4) fused_swish_bias_groupnorm_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    const float* __restrict__ gamma,\n    const float* __restrict__ beta,\n    float* __restrict__ output,\n    int N, int C, float eps\n) {\n    const int sample   = blockIdx.x;\n    const int group    = blockIdx.y;\n    const int group_sz = blockDim.x;// 64\n    const int tid      = threadIdx.x;\n    const int chan     = group * group_sz + tid;\n\n    // 1. Load GEMM output, apply Swish (x * sigmoid(x)), add bias\n    float v = input[sample * C + chan];\n    float pre_norm = v * (1.0f / (1.0f + __expf(-v))) + bias[chan];\n\n    // Shared: [0]=warp0partial, [1]=warp1 partial, [2]=mean, [3]=inv_std\n    __shared__ float smem[4];\n\n    int warp_id = tid >> 5;\n    int lane_id = tid & 31;\n\n    //2. Mean: two-warp reduction\n    float sum = warp_reduce_sum(pre_norm);\n    if (lane_id == 0) smem[warp_id] = sum;\n    __syncthreads();\n\n    if (tid == 0) {\n        smem[2] = (smem[0] + smem[1]) * (1.0f / (float)group_sz);\n    }\n    __syncthreads();\n    float mean = smem[2];\n\n    // 3. Variance: two-warp reduction\n    float diff = pre_norm - mean;\n    float var_sum = warp_reduce_sum(diff * diff);\n    if (lane_id == 0) smem[warp_id] = var_sum;\n    __syncthreads();\n\n    if (tid == 0) {\n        float var = (smem[0] + smem[1]) * (1.0f / (float)group_sz);\n        smem[3] = rsqrtf(var + eps);\n    }\n    __syncthreads();\n    float inv_std = smem[3];\n\n    // 4. Apply GroupNorm affine and store\n    output[sample * C + chan] = gamma[chan] * (pre_norm - mean) * inv_std + beta[chan];\n}\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n) {\n    const int N = input.size(0);\n    const int C = input.size(1);\n    const int group_sz = C / num_groups;\n\n    auto output = torch::empty_like(input);\n\n    dim3 grid(N, num_groups);\n    dim3 block(group_sz);\n\n    fused_swish_bias_groupnorm_kernel<<<grid, block>>>(\n        input.data_ptr<float>(),\n        bias.data_ptr<float>(),\n        gamma.data_ptr<float>(),\n        beta.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, eps\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a matrix multiplication, applies Swish activation, sums with a bias term, and normalizes with GroupNorm.\n        \"\"\"\n    def __init__(self, in_features, out_features, num_groups, bias_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.group_norm = nn.GroupNorm(num_groups, out_features)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_features).\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_features).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = _stark_get_extension().fused_swish_bias_groupnorm(\n            x.contiguous(),\n            self.bias,\n            self.group_norm.weight,\n            self.group_norm.bias,\n            self.group_norm.num_groups,\n            float(self.group_norm.eps)\n        )\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Fuse Swish, bias add, and GroupNorm into one CUDA postprocessing kernel after the existing GEMM to remove extra full-tensor memory passes and launches.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Append a pybind11 export for a new CUDA entrypoint named `fused_swish_bias_groupnorm` that takes the GEMM output plus bias/groupnorm parameters and returns the fused normalized tensor.",
+          "operation": "append"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Append the CUDA implementation for `fused_swish_bias_groupnorm`: one kernel should read the matmul output once, apply Swish and the additive bias in registers, compute per-sample/per-group mean and variance over exactly 64 channels, then apply GroupNorm affine scale/shift and write the final tensor once.",
+          "operation": "append"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the standalone Swish line with a call to `_stark_get_extension().fused_swish_bias_groupnorm(...)` so the post-GEMM path is driven by the custom CUDA kernel instead of separate PyTorch ops.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_4",
+          "instruction": "Remove the separate bias-add pass by folding `self.bias` into the fused CUDA entrypoint; keep no independent tensor add here.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_5",
+          "instruction": "Remove the standalone GroupNorm call and route normalization through the fused CUDA entrypoint using `self.group_norm.weight`, `self.group_norm.bias`, and `self.group_norm.eps`.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0069900000000000006,
+      "score": 0.0069900000000000006,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "applied_region_patch:forward_stmt_4:replace",
+        "applied_region_patch:forward_stmt_5:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=593501",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/09_L2_P37_Auto_P37_20260720_002733/eval_traces/20260720_003321_592255_5ed739bc_kernelbench_l2_37_37_matmul_swish_sum_groupnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0119,
+      "speedup": 1.7024320457796853,
+      "reference_runtimes": {
+        "torch_eager": 0.0119
+      },
+      "speedups": {
+        "torch_eager": 1.7024320457796853
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current slowdown is dominated by separate Swish, bias, and GroupNorm tensor passes; fusing them after GEMM should reduce DRAM traffic enough to recover a clear speedup.",
+      "single_change_focus": "Fuse the post-GEMM elementwise and normalization work into one custom CUDA kernel.",
+      "mutation_family": "postop_fusion",
+      "target_metric": "speedup"
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p37_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_swish_bias_groupnorm\", &fused_swish_bias_groupnorm,\n          \"Fused Swish + bias add + GroupNorm (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float warp_reduce_sum(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val += __shfl_down_sync(0xffffffffu, val, offset);\n    return val;\n}\n\n// One block per (sample, group): blockIdx.x=sample, blockIdx.y=group\n// blockDim.x = group_size = C / num_groups (assumed == 64)\n__global__ void __launch_bounds__(64, 4) fused_swish_bias_groupnorm_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    const float* __restrict__ gamma,\n    const float* __restrict__ beta,\n    float* __restrict__ output,\n    int N, int C, float eps\n) {\n    const int sample   = blockIdx.x;\n    const int group    = blockIdx.y;\n    const int group_sz = blockDim.x; // 64\n    const int tid      = threadIdx.x;\n    const int chan     = group * group_sz + tid;\n\n    // 1. Load GEMM output, apply Swish (x * sigmoid(x)), add bias\n    float v = input[sample * C + chan];\n    float pre_norm = v * (1.0f / (1.0f + __expf(-v))) + bias[chan];\n\n    // Single-pass reduction: accumulate both sum and sumsq in one round.\n    // smem layout: [0]=warp0_sum, [1]=warp1_sum, [2]=warp0_sumsq, [3]=warp1_sumsq\n    __shared__ float smem[4];\n\n    int warp_id = tid >> 5;\n    int lane_id = tid & 31;\n\n    float w_sum   = warp_reduce_sum(pre_norm);\n    float w_sumsq = warp_reduce_sum(pre_norm * pre_norm);\n    if (lane_id == 0) {\n        smem[warp_id]     = w_sum;\n        smem[warp_id + 2] = w_sumsq;\n    }\n    __syncthreads();\n\n    if (tid == 0) {\n        float total_sum   = smem[0] + smem[1];\n        float total_sumsq = smem[2] + smem[3];\n        float mean = total_sum * (1.0f / (float)group_sz);\n        float var  = total_sumsq * (1.0f / (float)group_sz) - mean * mean;\n        smem[0] = mean;\n        smem[1] = rsqrtf(var + eps);\n    }\n    __syncthreads();\n\n    float mean    = smem[0];\n    float inv_std = smem[1];\n\n    // 2. Apply GroupNorm affine and store\n    output[sample * C + chan] = gamma[chan] * (pre_norm - mean) * inv_std + beta[chan];\n}\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n) {\n    const int N = input.size(0);\n    const int C = input.size(1);\n    const int group_sz = C / num_groups;\n\n    auto output = torch::empty_like(input);\n\n    dim3 grid(N, num_groups);\n    dim3 block(group_sz);\n\n    fused_swish_bias_groupnorm_kernel<<<grid, block>>>(\n        input.data_ptr<float>(),\n        bias.data_ptr<float>(),\n        gamma.data_ptr<float>(),\n        beta.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, eps\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a matrix multiplication, applies Swish activation, sums with a bias term, and normalizes with GroupNorm.\n        \"\"\"\n    def __init__(self, in_features, out_features, num_groups, bias_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.group_norm = nn.GroupNorm(num_groups, out_features)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_features).\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_features).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = _stark_get_extension().fused_swish_bias_groupnorm(\n            x.contiguous(),\n            self.bias,\n            self.group_norm.weight,\n            self.group_norm.bias,\n            self.group_norm.num_groups,\n            float(self.group_norm.eps)\n        )\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n3",
+        "n4",
+        "phase2_root"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Refine the champion by specializing GroupNorm for the fixed 64-channel groups and cutting reduction overhead inside the fused post-op CUDA kernel, while keeping the validated fusion path intact.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current `smem[4]`-based two-step mean/variance path inside `fused_swish_bias_groupnorm_kernel` with a single-pass reduction: each thread keeps `pre_norm`, accumulates both `sum` and `sumsq` for the 64-element group, reduces those values with the existing warp-shuffle helper, computes `mean = sum / group_sz`, `var = sumsq / group_sz - mean * mean`, then derives `inv_std = rsqrtf(var + eps)` before the final affine writeback. Keep the same grid/block launch, input/output types, and final `gamma`/`beta` application.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00696,
+      "score": 0.00696,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=593988",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/09_L2_P37_Auto_P37_20260720_002733/eval_traces/20260720_003746_592255_7c7d510b_kernelbench_l2_37_37_matmul_swish_sum_groupnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.011699999999999999,
+      "speedup": 1.6810344827586206,
+      "reference_runtimes": {
+        "torch_eager": 0.011699999999999999
+      },
+      "speedups": {
+        "torch_eager": 1.6810344827586206
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Replacing the two-stage mean/variance reduction with a single-pass sum/sumsq reduction will reduce synchronization and shared-memory traffic enough to improve the fused kernel latency without changing numerical behavior materially.",
+      "single_change_focus": "Replace the current mean-then-variance reduction in the fused CUDA kernel with a one-pass reduction specialized for 64-channel groups.",
+      "mutation_family": "gn_singlepass_reduce",
+      "target_metric": "speedup"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p37_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_swish_bias_groupnorm\", &fused_swish_bias_groupnorm,\n          \"Fused Swish + bias add + GroupNorm (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float warp_reduce_sum(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val += __shfl_down_sync(0xffffffffu, val, offset);\n    return val;\n}\n\n// Warp-specialized kernel: one warp (32 threads) per (sample, group).\n// Each lane tid processes two channels: group*64+tid and group*64+tid+32.\n// Pure warp-shuffle reductions: no shared memory, no __syncthreads.\n__global__ void __launch_bounds__(32, 8) fused_swish_bias_groupnorm_kernel_warp32(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    const float* __restrict__ gamma,\n    const float* __restrict__ beta,\n    float* __restrict__ output,\n    int N, int C, float eps\n) {\n    const int sample= blockIdx.x;\n    const int group     = blockIdx.y;\n    const int tid       = threadIdx.x;// 0..31\n    const int base_chan = group * 64;\n    const int chan0     = base_chan + tid;\n    const int chan1     = base_chan + tid + 32;\n\n    // Load, apply Swish (x * sigmoid(x)), add per-channel bias\n    float r0 = input[sample * C + chan0];\n    float r1 = input[sample * C + chan1];\n    float v0 = r0 * (1.0f / (1.0f + __expf(-r0))) + bias[chan0];\n    float v1 = r1 * (1.0f / (1.0f + __expf(-r1))) + bias[chan1];\n\n    // Single-pass reduction: each lane contributes sum and sumsq for its two channels\n    float local_sum   = v0 + v1;\n    float local_sumsq = v0 * v0 + v1 * v1;\n\n    float total_sum   = warp_reduce_sum(local_sum);\n    float total_sumsq = warp_reduce_sum(local_sumsq);\n\n    // Lane 0 computes mean and inv_std; broadcast to all lanes via shfl\n    float mean =0.0f, inv_std = 0.0f;\n    if (tid == 0) {\n        mean          = total_sum * (1.0f / 64.0f);\n        float var     = total_sumsq * (1.0f / 64.0f) - mean * mean;\n        inv_std       = rsqrtf(var + eps);\n    }\n    mean    = __shfl_sync(0xffffffffu, mean,    0);\n    inv_std = __shfl_sync(0xffffffffu, inv_std, 0);\n\n    // Apply GroupNorm affine and store both channels\n    output[sample * C + chan0] = gamma[chan0] * (v0 - mean) * inv_std + beta[chan0];\n    output[sample * C + chan1] = gamma[chan1] * (v1 - mean) * inv_std + beta[chan1];\n}\n\n// General fallback for group_sz != 64 (two-warp, shared-memory reduction)\n__global__ void __launch_bounds__(64, 4) fused_swish_bias_groupnorm_kernel_general(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    const float* __restrict__ gamma,\n    const float* __restrict__ beta,\n    float* __restrict__ output,\n    int N, int C, int group_sz, float eps\n) {\n    const int sample   = blockIdx.x;\n    const int group    = blockIdx.y;\n    const int tid      = threadIdx.x;\n    const int chan     = group * group_sz + tid;\n\n    float v        = input[sample * C + chan];\n    float pre_norm = v * (1.0f / (1.0f + __expf(-v))) + bias[chan];\n\n    __shared__ float smem[4];\n\n    int warp_id = tid >> 5;\n    int lane_id = tid & 31;\n\n    float w_sum   = warp_reduce_sum(pre_norm);\n    float w_sumsq = warp_reduce_sum(pre_norm * pre_norm);\n    if (lane_id == 0) {\n        smem[warp_id]     = w_sum;\n        smem[warp_id + 2] = w_sumsq;\n    }\n    __syncthreads();\n\n    if (tid == 0) {\n        float total_sum   = smem[0] + smem[1];\n        float total_sumsq = smem[2] + smem[3];\n        float mean = total_sum * (1.0f / (float)group_sz);\n        float var  = total_sumsq * (1.0f / (float)group_sz) - mean * mean;\n        smem[0] = mean;\n        smem[1] = rsqrtf(var + eps);\n    }\n    __syncthreads();\n\n    float mean    = smem[0];\n    float inv_std = smem[1];\n\n    output[sample * C + chan] = gamma[chan] * (pre_norm - mean) * inv_std + beta[chan];\n}\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n) {\n    const int N        = input.size(0);\n    const int C        = input.size(1);\n    const int group_sz = C / num_groups;\n\n    auto output = torch::empty_like(input);\n\n    dim3 grid(N, num_groups);\n\n    if (group_sz == 64) {\n        // Warp-specialized path: 32 threads, each lane handles 2 channels\n        dim3 block(32);\n        fused_swish_bias_groupnorm_kernel_warp32<<<grid, block>>>(\n            input.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            gamma.data_ptr<float>(),\n            beta.data_ptr<float>(),\n            output.data_ptr<float>(),\n            N, C, eps\n        );\n    } else {\n        // General fallback\n        dim3 block(group_sz);\n        fused_swish_bias_groupnorm_kernel_general<<<grid, block>>>(\n            input.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            gamma.data_ptr<float>(),\n            beta.data_ptr<float>(),\n            output.data_ptr<float>(),\n            N, C, group_sz, eps\n        );\n    }\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a matrix multiplication, applies Swish activation, sums with a bias term, and normalizes with GroupNorm.\n        \"\"\"\n    def __init__(self, in_features, out_features, num_groups, bias_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.group_norm = nn.GroupNorm(num_groups, out_features)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_features).\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_features).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = _stark_get_extension().fused_swish_bias_groupnorm(\n            x.contiguous(),\n            self.bias,\n            self.group_norm.weight,\n            self.group_norm.bias,\n            self.group_norm.num_groups,\n            float(self.group_norm.eps)\n        )\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Refine the existing fused post-GEMM kernel by changing only the CUDA kernel mapping: keep Swish+bias+GroupNorm fused, but specialize the fixed 64-channel group to one warp per group with each lane processing two channels, removing the current two-warp block reduction overhead.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the fused kernel implementation with a warp-specialized version for `group_sz == 64`: launch `blockDim.x = 32` and keep `grid = (N, num_groups)`. Inside the kernel, compute `base_chan = group * 64 + threadIdx.x`, then load and process two channels per lane at offsets `base_chan` and `base_chan + 32`. For each loaded value, apply Swish and add `bias[channel]`, keep both pre-norm values in registers, accumulate `local_sum = v0 + v1` and `local_sumsq = v0*v0 + v1*v1`, reduce these with warp shuffles only, have lane 0 compute `mean = sum / 64` and `inv_std = rsqrtf(sumsq / 64 - mean * mean + eps)`, broadcast `mean` and `inv_std` with `__shfl_sync`, then write both normalized outputs using `gamma[channel] * (value - mean) * inv_std + beta[channel]`. Keep the exported wrapper signature unchanged, enforce this specialized path when `C / num_groups == 64`, and use a simple fallback to the existing 64-thread kernel logic for any other group size so scaffold behavior stays general.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00704,
+      "score": 0.00704,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=594387",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/09_L2_P37_Auto_P37_20260720_002733/eval_traces/20260720_004145_592255_d43d3334_kernelbench_l2_37_37_matmul_swish_sum_groupnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.011800000000000001,
+      "speedup": 1.6761363636363638,
+      "reference_runtimes": {
+        "torch_eager": 0.011800000000000001
+      },
+      "speedups": {
+        "torch_eager": 1.6761363636363638
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "If the fused kernel is remapped from 64 threads handling one channel each to 32 threads handling two channels each, then each group reduction fits in a single warp with no inter-warp combine and fewer barriers, reducing kernel overhead enough to improve end-to-end runtime over the current champion.",
+      "single_change_focus": "Replace the current 64-thread two-warp fused GroupNorm block with a 32-thread one-warp kernel where each lane processes two contiguous channels in the 64-channel group and performs warp-only reductions for mean and variance.",
+      "mutation_family": "warp2x_lane_mapping",
+      "target_metric": "speedup"
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p37_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_swish_bias_groupnorm\", &fused_swish_bias_groupnorm,\n          \"Fused Swish + bias add + GroupNorm (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float warp_reduce_sum(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val += __shfl_down_sync(0xffffffffu, val, offset);\n    return val;\n}\n\n// Dual-group kernel: each 128-thread block handles 2 adjacent groups from the same sample.\n// grid = (N, num_groups/2), block = 128\n__global__ void __launch_bounds__(128, 4) fused_swish_bias_groupnorm_dual_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    const float* __restrict__ gamma,\n    const float* __restrict__ beta,\n    float* __restrict__ output,\n    int N, int C, float eps\n) {\n    const int sample= blockIdx.x;\n    const int subgroup  = threadIdx.x >> 6;   // 0 or 1\n    const int local_tid = threadIdx.x & 63;\n    const int group     = blockIdx.y * 2 + subgroup;\n    const int chan      = group * 64 + local_tid;\n\n    // 1. Load GEMM output, apply Swish, add bias\n    float v = input[sample * C + chan];\n    float pre_norm = v * (1.0f / (1.0f + __expf(-v))) + bias[chan];\n\n    // smem[0..3]: warp sums (warp 0..3 of128-thread block)\n    // smem[4..7]: warp sumsq\n    __shared__ float smem[8];\n\n    const int warp_id = threadIdx.x >> 5;   // 0,1,2,3\n    const int lane_id = threadIdx.x & 31;\n\n    float w_sum   = warp_reduce_sum(pre_norm);\n    float w_sumsq = warp_reduce_sum(pre_norm * pre_norm);\n    if (lane_id == 0) {\n        smem[warp_id]     = w_sum;\n        smem[warp_id + 4] = w_sumsq;\n    }\n    __syncthreads();\n\n    // Thread 0 finalises subgroup 0 stats; thread 64 finalises subgroup 1 stats.\n    // No conflict: each writer touches different smem slots.\n    if (threadIdx.x == 0) {\n        float total_sum   = smem[0] + smem[1];\n        float total_sumsq = smem[4] + smem[5];\n        float mean = total_sum * (1.0f / 64.0f);\n        float var  = total_sumsq * (1.0f / 64.0f) - mean * mean;\n        smem[0] = mean;\n        smem[1] = rsqrtf(var + eps);\n    }\n    if (threadIdx.x == 64) {\n        float total_sum   = smem[2] + smem[3];\n        float total_sumsq = smem[6] + smem[7];\n        float mean = total_sum * (1.0f / 64.0f);\n        float var  = total_sumsq * (1.0f / 64.0f) - mean * mean;\n        smem[2] = mean;\n        smem[3] = rsqrtf(var + eps);\n    }\n    __syncthreads();\n\n    // subgroup 0 -> smem[0],smem[1]; subgroup 1 -> smem[2],smem[3]\n    float mean    = smem[subgroup * 2];\n    float inv_std = smem[subgroup * 2 + 1];\n\n    output[sample * C + chan] = gamma[chan] * (pre_norm - mean) * inv_std + beta[chan];\n}\n\n// Fallback: one block per (sample, group), blockDim.x = group_sz\n__global__ void __launch_bounds__(64, 4) fused_swish_bias_groupnorm_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    const float* __restrict__ gamma,\n    const float* __restrict__ beta,\n    float* __restrict__ output,\n    int N, int C, float eps\n) {\n    const int sample   = blockIdx.x;\n    const int group    = blockIdx.y;\n    const int group_sz = blockDim.x;\n    const int tid      = threadIdx.x;\n    const int chan     = group * group_sz + tid;\n\n    float v = input[sample * C + chan];\n    float pre_norm = v * (1.0f / (1.0f + __expf(-v))) + bias[chan];\n\n    __shared__ float smem[4];\n\n    int warp_id = tid >> 5;\n    int lane_id = tid & 31;\n\n    float w_sum   = warp_reduce_sum(pre_norm);\n    float w_sumsq = warp_reduce_sum(pre_norm * pre_norm);\n    if (lane_id == 0) {\n        smem[warp_id]     = w_sum;\n        smem[warp_id + 2] = w_sumsq;\n    }\n    __syncthreads();\n\n    if (tid == 0) {\n        float total_sum   = smem[0] + smem[1];\n        float total_sumsq = smem[2] + smem[3];\n        float mean = total_sum * (1.0f / (float)group_sz);\n        float var  = total_sumsq * (1.0f / (float)group_sz) - mean * mean;\n        smem[0] = mean;\n        smem[1] = rsqrtf(var + eps);\n    }\n    __syncthreads();\n\n    float mean    = smem[0];\n    float inv_std = smem[1];\n\n    output[sample * C + chan] = gamma[chan] * (pre_norm - mean) * inv_std + beta[chan];\n}\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n) {\n    const int N = input.size(0);\n    const int C = input.size(1);\n    const int group_sz = C / num_groups;\n\n    auto output = torch::empty_like(input);\n\n    if (group_sz == 64 && (num_groups % 2 == 0)) {\n        // Fast path: pack two groups per128-thread block, halving the block count\n        dim3 grid(N, num_groups / 2);\n        dim3 block(128);\n        fused_swish_bias_groupnorm_dual_kernel<<<grid, block>>>(\n            input.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            gamma.data_ptr<float>(),\n            beta.data_ptr<float>(),\n            output.data_ptr<float>(),\n            N, C, eps\n        );\n    } else {\n        // Generic fallback\n        dim3 grid(N, num_groups);\n        dim3 block(group_sz);\n        fused_swish_bias_groupnorm_kernel<<<grid, block>>>(\n            input.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            gamma.data_ptr<float>(),\n            beta.data_ptr<float>(),\n            output.data_ptr<float>(),\n            N, C, eps\n        );\n    }\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a matrix multiplication, applies Swish activation, sums with a bias term, and normalizes with GroupNorm.\n        \"\"\"\n    def __init__(self, in_features, out_features, num_groups, bias_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.group_norm = nn.GroupNorm(num_groups, out_features)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_features).\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_features).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = _stark_get_extension().fused_swish_bias_groupnorm(\n            x.contiguous(),\n            self.bias,\n            self.group_norm.weight,\n            self.group_norm.bias,\n            self.group_norm.num_groups,\n            float(self.group_norm.eps)\n        )\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Refine the existing fused post-GEMM kernel by reducing launch overhead while preserving the successful 64-thread-per-group computation pattern.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current fused kernel with a variant that uses `blockDim.x = 128` and `grid = (N, num_groups / 2)` for the fixed 64-channel group case. Inside the kernel, split threads into two 64-thread half-blocks: `local_tid = threadIdx.x & 63`, `subgroup = threadIdx.x >> 6`, `group = blockIdx.y * 2 + subgroup`, `chan = group * 64 + local_tid`. Compute Swish+bias exactly as before for each thread. Perform the existing two-warp reduction separately within each half-block by storing four partials per subgroup in shared memory (e.g. sum/sumsq or mean/inv_std slots indexed by `subgroup`). Broadcast each subgroup's mean and inv_std back only to its own 64 threads, then apply affine and store. Keep the exported wrapper name unchanged, specialize to the `group_sz == 64 && (num_groups % 2 == 0)` fast path with this 128-thread kernel, and fall back to the old 64-thread-per-group kernel for any non-64 or odd-group case.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0069900000000000006,
+      "score": 0.0069900000000000006,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=596158",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/09_L2_P37_Auto_P37_20260720_002733/eval_traces/20260720_004527_592255_7af47f68_kernelbench_l2_37_37_matmul_swish_sum_groupnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.011800000000000001,
+      "speedup": 1.688125894134478,
+      "reference_runtimes": {
+        "torch_eager": 0.011800000000000001
+      },
+      "speedups": {
+        "torch_eager": 1.688125894134478
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "The fused kernel is likely paying avoidable launch/scheduling overhead from using one 64-thread block for every single group (N*64 blocks). Packing two independent 64-channel groups from the same sample into one 128-thread block should reduce block count by 2x while keeping the stable two-warp-per-group reduction logic, improving throughput without the regression seen from one-warp/two-channel remapping.",
+      "single_change_focus": "Change the fused kernel launch geometry so each 128-thread block processes two groups from the same sample, retaining the existing 64-thread-per-group reduction and affine math for each half-block independently.",
+      "mutation_family": "dual_group_block",
+      "target_metric": "speedup"
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p37_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_swish_bias_groupnorm\", &fused_swish_bias_groupnorm,\n          \"Fused Swish + bias add + GroupNorm (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float warp_reduce_sum(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val += __shfl_down_sync(0xffffffffu, val, offset);\n    return val;\n}\n\n// Warp-specialized kernel: one warp (32 threads) per (sample, group).\n// Each lane tid handles two CONTIGUOUS channels via float2 vectorized IO:\n//   channels base_chan + 2*tid  and  base_chan + 2*tid + 1.\n// Alignment: base_chan = group*64, so base_chan*4 bytes is always256-byte aligned.\n__global__ void __launch_bounds__(32, 8) fused_swish_bias_groupnorm_kernel_warp32(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    const float* __restrict__ gamma,\n    const float* __restrict__ beta,\n    float* __restrict__ output,\n    int N, int C, float eps\n) {\n    const int sample    = blockIdx.x;\n    const int group     = blockIdx.y;\n    const int tid       = threadIdx.x; // 0..31\n    const int base_chan = group * 64;\n\n    // Vectorized float2 loads: each lane reads 2 adjacent channels (8 bytes) in a single transaction\n    const float2* in2  = reinterpret_cast<const float2*>(input + sample * C + base_chan);\n    const float2* bi2  = reinterpret_cast<const float2*>(bias  + base_chan);\n    const float2* ga2  = reinterpret_cast<const float2*>(gamma + base_chan);\n    const float2* be2  = reinterpret_cast<const float2*>(beta  + base_chan);\n\n    float2 r2  = in2[tid];\n    float2 b2  = bi2[tid];\n    float2 g2  = ga2[tid];\n    float2 bt2 = be2[tid];\n\n    // Swish activation (x * sigmoid(x)) + bias add for both channels\n    float v0 = r2.x * (1.0f / (1.0f + __expf(-r2.x))) + b2.x;\n    float v1 = r2.y * (1.0f / (1.0f + __expf(-r2.y))) + b2.y;\n\n    // Single-pass warp reduction for mean and variance\n    float local_sum   = v0 + v1;\n    float local_sumsq = v0 * v0 + v1 * v1;\n\n    float total_sum   = warp_reduce_sum(local_sum);\n    float total_sumsq = warp_reduce_sum(local_sumsq);\n\n    // Lane 0 computes mean and inv_std; broadcast to all lanes\n    float mean = 0.0f, inv_std = 0.0f;\n    if (tid == 0) {\n        mean= total_sum * (1.0f / 64.0f);\n        float var = total_sumsq * (1.0f / 64.0f) - mean * mean;\n        inv_std   = rsqrtf(var + eps);\n    }\n    mean    = __shfl_sync(0xffffffffu, mean,    0);\n    inv_std = __shfl_sync(0xffffffffu, inv_std, 0);\n\n    // Apply GroupNorm affine and store with float2 vectorized write\n    float2 out2;\n    out2.x = g2.x * (v0 - mean) * inv_std + bt2.x;\n    out2.y = g2.y * (v1 - mean) * inv_std + bt2.y;\n\n    float2* out_ptr = reinterpret_cast<float2*>(output + sample * C + base_chan);\n    out_ptr[tid] = out2;\n}\n\n// General fallback for group_sz != 64 (two-warp, shared-memory reduction)\n__global__ void __launch_bounds__(64, 4) fused_swish_bias_groupnorm_kernel_general(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    const float* __restrict__ gamma,\n    const float* __restrict__ beta,\n    float* __restrict__ output,\n    int N, int C, int group_sz, float eps\n) {\n    const int sample   = blockIdx.x;\n    const int group    = blockIdx.y;\n    const int tid      = threadIdx.x;\n    const int chan     = group * group_sz + tid;\n\n    float v        = input[sample * C + chan];\n    float pre_norm = v * (1.0f / (1.0f + __expf(-v))) + bias[chan];\n\n    __shared__ float smem[4];\n\n    int warp_id = tid >> 5;\n    int lane_id = tid & 31;\n\n    float w_sum   = warp_reduce_sum(pre_norm);\n    float w_sumsq = warp_reduce_sum(pre_norm * pre_norm);\n    if (lane_id == 0) {\n        smem[warp_id]     = w_sum;\n        smem[warp_id + 2] = w_sumsq;\n    }\n    __syncthreads();\n\n    if (tid == 0) {\n        float total_sum   = smem[0] + smem[1];\n        float total_sumsq = smem[2] + smem[3];\n        float mean = total_sum * (1.0f / (float)group_sz);\n        float var  = total_sumsq * (1.0f / (float)group_sz) - mean * mean;\n        smem[0] = mean;\n        smem[1] = rsqrtf(var + eps);\n    }\n    __syncthreads();\n\n    float mean    = smem[0];\n    float inv_std = smem[1];\n\n    output[sample * C + chan] = gamma[chan] * (pre_norm - mean) * inv_std + beta[chan];\n}\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n) {\n    const int N        = input.size(0);\n    const int C        = input.size(1);\n    const int group_sz = C / num_groups;\n\n    auto output = torch::empty_like(input);\n\n    dim3 grid(N, num_groups);\n\n    if (group_sz == 64) {\n        // Warp-specialized path: 32 threads, each lane handles 2 adjacent channels via float2\n        dim3 block(32);\n        fused_swish_bias_groupnorm_kernel_warp32<<<grid, block>>>(\n            input.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            gamma.data_ptr<float>(),\n            beta.data_ptr<float>(),\n            output.data_ptr<float>(),\n            N, C, eps\n        );\n    } else {\n        // General fallback\n        dim3 block(group_sz);\n        fused_swish_bias_groupnorm_kernel_general<<<grid, block>>>(\n            input.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            gamma.data_ptr<float>(),\n            beta.data_ptr<float>(),\n            output.data_ptr<float>(),\n            N, C, group_sz, eps\n        );\n    }\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a matrix multiplication, applies Swish activation, sums with a bias term, and normalizes with GroupNorm.\n        \"\"\"\n    def __init__(self, in_features, out_features, num_groups, bias_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.group_norm = nn.GroupNorm(num_groups, out_features)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_features).\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_features).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = _stark_get_extension().fused_swish_bias_groupnorm(\n            x.contiguous(),\n            self.bias,\n            self.group_norm.weight,\n            self.group_norm.bias,\n            self.group_norm.num_groups,\n            float(self.group_norm.eps)\n        )\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Refine the existing fused post-op CUDA kernel by vectorizing the fixed 64-channel warp32 fast path loads/stores while preserving the same Swish, bias, mean/variance, and affine math.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace only the `fused_swish_bias_groupnorm_kernel_warp32` path so each lane reads and writes its two contiguous channels with vectorized/aligned IO (e.g. `float2` or equivalent paired scalar access), while leaving the Swish, bias add, reduction, mean/variance, affine math, and the general fallback kernel unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0069900000000000006,
+      "score": 0.0069900000000000006,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=596353",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/09_L2_P37_Auto_P37_20260720_002733/eval_traces/20260720_004958_592255_8e128a23_kernelbench_l2_37_37_matmul_swish_sum_groupnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.011699999999999999,
+      "speedup": 1.67381974248927,
+      "reference_runtimes": {
+        "torch_eager": 0.011699999999999999
+      },
+      "speedups": {
+        "torch_eager": 1.67381974248927
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "If each lane loads and stores its two contiguous channels with vectorized IO in the 64-channel warp32 path, the kernel will reduce instruction count and memory overhead without affecting numerics, yielding a small net speedup.",
+      "single_change_focus": "Vectorize the per-lane input/output access in the warp32 fast path.",
+      "mutation_family": "vectorized_lane_io",
+      "target_metric": "speedup"
+    },
+    "phase2_root": {
+      "node_id": "phase2_root",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p37_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_swish_bias_groupnorm\", &fused_swish_bias_groupnorm,\n          \"Fused Swish + bias add + GroupNorm (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float warp_reduce_sum(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val += __shfl_down_sync(0xffffffffu, val, offset);\n    return val;\n}\n\n// One block per (sample, group): blockIdx.x=sample, blockIdx.y=group\n// blockDim.x = group_size = C / num_groups (assumed == 64)\n__global__ void __launch_bounds__(64, 4) fused_swish_bias_groupnorm_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    const float* __restrict__ gamma,\n    const float* __restrict__ beta,\n    float* __restrict__ output,\n    int N, int C, float eps\n) {\n    const int sample   = blockIdx.x;\n    const int group    = blockIdx.y;\n    const int group_sz = blockDim.x; // 64\n    const int tid      = threadIdx.x;\n    const int chan     = group * group_sz + tid;\n\n    // 1. Load GEMM output, apply Swish (x * sigmoid(x)), add bias\n    float v = input[sample * C + chan];\n    float pre_norm = v * (1.0f / (1.0f + __expf(-v))) + bias[chan];\n\n    // Single-pass reduction: accumulate both sum and sumsq in one round.\n    // smem layout: [0]=warp0_sum, [1]=warp1_sum, [2]=warp0_sumsq, [3]=warp1_sumsq\n    __shared__ float smem[4];\n\n    int warp_id = tid >> 5;\n    int lane_id = tid & 31;\n\n    float w_sum   = warp_reduce_sum(pre_norm);\n    float w_sumsq = warp_reduce_sum(pre_norm * pre_norm);\n    if (lane_id == 0) {\n        smem[warp_id]     = w_sum;\n        smem[warp_id + 2] = w_sumsq;\n    }\n    __syncthreads();\n\n    if (tid == 0) {\n        float total_sum   = smem[0] + smem[1];\n        float total_sumsq = smem[2] + smem[3];\n        float mean = total_sum * (1.0f / (float)group_sz);\n        float var  = total_sumsq * (1.0f / (float)group_sz) - mean * mean;\n        smem[0] = mean;\n        smem[1] = rsqrtf(var + eps);\n    }\n    __syncthreads();\n\n    float mean    = smem[0];\n    float inv_std = smem[1];\n\n    // 2. Apply GroupNorm affine and store\n    output[sample * C + chan] = gamma[chan] * (pre_norm - mean) * inv_std + beta[chan];\n}\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n) {\n    const int N = input.size(0);\n    const int C = input.size(1);\n    const int group_sz = C / num_groups;\n\n    auto output = torch::empty_like(input);\n\n    dim3 grid(N, num_groups);\n    dim3 block(group_sz);\n\n    fused_swish_bias_groupnorm_kernel<<<grid, block>>>(\n        input.data_ptr<float>(),\n        bias.data_ptr<float>(),\n        gamma.data_ptr<float>(),\n        beta.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, eps\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a matrix multiplication, applies Swish activation, sums with a bias term, and normalizes with GroupNorm.\n        \"\"\"\n    def __init__(self, in_features, out_features, num_groups, bias_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.group_norm = nn.GroupNorm(num_groups, out_features)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_features).\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_features).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = _stark_get_extension().fused_swish_bias_groupnorm(\n            x.contiguous(),\n            self.bias,\n            self.group_norm.weight,\n            self.group_norm.bias,\n            self.group_norm.num_groups,\n            float(self.group_norm.eps)\n        )\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "phase2_root",
+      "child_ids": [
+        "phase2_n1"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Refine the champion by specializing GroupNorm for the fixed 64-channel groups and cutting reduction overhead inside the fused post-op CUDA kernel, while keeping the validated fusion path intact.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current `smem[4]`-based two-step mean/variance path inside `fused_swish_bias_groupnorm_kernel` with a single-pass reduction: each thread keeps `pre_norm`, accumulates both `sum` and `sumsq` for the 64-element group, reduces those values with the existing warp-shuffle helper, computes `mean = sum / group_sz`, `var = sumsq / group_sz - mean * mean`, then derives `inv_std = rsqrtf(var + eps)` before the final affine writeback. Keep the same grid/block launch, input/output types, and final `gamma`/`beta` application.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00696,
+      "score": 0.00696,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=593988",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/09_L2_P37_Auto_P37_20260720_002733/eval_traces/20260720_003746_592255_7c7d510b_kernelbench_l2_37_37_matmul_swish_sum_groupnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.011699999999999999,
+      "speedup": 1.6810344827586206,
+      "reference_runtimes": {
+        "torch_eager": 0.011699999999999999
+      },
+      "speedups": {
+        "torch_eager": 1.6810344827586206
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Replacing the two-stage mean/variance reduction with a single-pass sum/sumsq reduction will reduce synchronization and shared-memory traffic enough to improve the fused kernel latency without changing numerical behavior materially.",
+      "single_change_focus": "Replace the current mean-then-variance reduction in the fused CUDA kernel with a one-pass reduction specialized for 64-channel groups.",
+      "mutation_family": "gn_singlepass_reduce",
+      "target_metric": "speedup"
+    },
+    "phase2_n1": {
+      "node_id": "phase2_n1",
+      "parent_id": "phase2_root",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p37_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_swish_bias_groupnorm\", &fused_swish_bias_groupnorm,\n          \"Fused Swish + bias add + GroupNorm (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n__device__ __forceinline__ float warp_reduce_sum(float val) {\n    for (int offset = 16; offset > 0; offset >>= 1)\n        val += __shfl_down_sync(0xffffffffu, val, offset);\n    return val;\n}\n\n// Persistent grid-stride kernel: each 64-thread block processes multiple\n// (sample, group) pairs via a loop over linearized group indices.\n// group_sz is fixed at 64; smem is 4 floats per block.\n__global__ void __launch_bounds__(64, 8) fused_swish_bias_groupnorm_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    const float* __restrict__ gamma,\n    const float* __restrict__ beta,\n    float* __restrict__ output,\n    int N, int C, int num_groups, float eps\n) {\n    const int group_sz    = 64;\n    const int total_groups = N * num_groups;\n    const int tid         = threadIdx.x;\n    const int warp_id     = tid >> 5;\n    const int lane_id     = tid & 31;\n\n    __shared__ float smem[4];\n\n    for (int linear_idx = blockIdx.x; linear_idx < total_groups; linear_idx += gridDim.x) {\n        const int sample = linear_idx / num_groups;\n        const int group  = linear_idx - sample * num_groups;\n        const int chan   = group * group_sz + tid;\n        const int base   = sample * C + chan;\n\n        // 1. Load GEMM output, apply Swish, add bias\n        float v = input[base];\n        float pre_norm = v * (1.0f / (1.0f + __expf(-v))) + bias[chan];\n\n        // Single-pass two-warp reduction for sum and sumsq\n        float w_sum   = warp_reduce_sum(pre_norm);\n        float w_sumsq = warp_reduce_sum(pre_norm * pre_norm);\n        if (lane_id == 0) {\n            smem[warp_id]     = w_sum;\n            smem[warp_id + 2] = w_sumsq;\n        }\n        __syncthreads();\n\n        if (tid == 0) {\n            float total_sum   = smem[0] + smem[1];\n            float total_sumsq = smem[2] + smem[3];\n            float mean = total_sum * (1.0f / (float)group_sz);\n            float var  = total_sumsq * (1.0f / (float)group_sz) - mean * mean;\n            smem[0] = mean;\n            smem[1] = rsqrtf(var + eps);\n        }\n        __syncthreads();\n\n        float mean    = smem[0];\n        float inv_std = smem[1];\n\n        // 2. Apply GroupNorm affine and store\n        output[base] = gamma[chan] * (pre_norm - mean) * inv_std + beta[chan];\n\n        // Ensure smem is free before next iteration\n        __syncthreads();\n    }\n}\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n) {\n    TORCH_CHECK(input.is_cuda() && input.is_contiguous(), \"input must be contiguous CUDA tensor\");\n    TORCH_CHECK(input.scalar_type() == torch::kFloat32, \"input must be float32\");\n\n    const int N  = input.size(0);\n    const int C  = input.size(1);\n    const int group_sz = C / num_groups;\n    TORCH_CHECK(group_sz == 64, \"This kernel specializes for group_sz == 64\");\n\n    const int total_groups = N * num_groups;\n\n    auto output = torch::empty_like(input);\n\n    // Use a fixed CTA count capped to avoid over-subscription.\n    // 4096 blocks of 64 threads each; grid-strides over all total_groups.\n    int blocks = min(total_groups, 4096);\n\n    fused_swish_bias_groupnorm_kernel<<<blocks, 64>>>(\n        input.data_ptr<float>(),\n        bias.data_ptr<float>(),\n        gamma.data_ptr<float>(),\n        beta.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, num_groups, eps\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a matrix multiplication, applies Swish activation, sums with a bias term, and normalizes with GroupNorm.\n        \"\"\"\n    def __init__(self, in_features, out_features, num_groups, bias_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.group_norm = nn.GroupNorm(num_groups, out_features)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_features).\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_features).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = _stark_get_extension().fused_swish_bias_groupnorm(\n            x.contiguous(),\n            self.bias,\n            self.group_norm.weight,\n            self.group_norm.bias,\n            self.group_norm.num_groups,\n            float(self.group_norm.eps)\n        )\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Refine the fused Swish+bias+GroupNorm CUDA path by keeping the validated 64-thread per-group math intact while changing only the launch/work distribution to a persistent grid-stride kernel over logical (sample, group) items.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current kernel launch topology with a persistent grid-stride variant while preserving the existing fused math and 64-thread reduction pattern. Concretely: keep `warp_reduce_sum` as-is; replace `fused_swish_bias_groupnorm_kernel` so it uses `const int group_sz = 64`, computes `const int total_groups = N * (C / group_sz)`, and loops `for (int linear_idx = blockIdx.x; linear_idx < total_groups; linear_idx += gridDim.x)`. Inside the loop derive `sample = linear_idx / num_groups` and `group = linear_idx - sample * num_groups`, then run the same per-thread Swish+bias load, shared-memory two-warp sum/sumsq reduction, mean/variance computation, affine writeback, and `__syncthreads()` barriers as the current champion for that logical group. Update the C++ wrapper to enforce CUDA/contiguous/float32 inputs, `TORCH_CHECK(group_sz == 64)`, compute `int num_groups = C / group_sz`, choose a fixed launch count such as `int blocks = min(total_groups, 4096)` (or another SM-friendly constant cap), launch `dim3 grid(blocks), block(64)`, and pass `num_groups` into the kernel. Keep the exported function name and Python call site unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00709,
+      "score": 0.00709,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=598193",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/09_L2_P37_Auto_P37_20260720_002733/eval_traces/20260720_005748_592255_1635b2b4_kernelbench_l2_37_37_matmul_swish_sum_groupnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.011699999999999999,
+      "speedup": 1.6502115655853313,
+      "reference_runtimes": {
+        "torch_eager": 0.011699999999999999
+      },
+      "speedups": {
+        "torch_eager": 1.6502115655853313
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If the fused kernel is still paying meaningful overhead from launching one CTA per logical group, then switching to a fixed CTA pool that grid-strides over all groups will improve scheduler efficiency and trim runtime while preserving the champion's successful per-group computation.",
+      "single_change_focus": "Replace the one-block-per-(sample,group) launch with a persistent 64-thread CTA kernel that loops over linearized group indices, reusing the current fused Swish+bias+GroupNorm body unchanged for each iteration.",
+      "mutation_family": "persistent_group_grid",
+      "target_metric": "speedup"
+    },
+    "phase2_n2": {
+      "node_id": "phase2_n2",
+      "parent_id": "phase2_n1",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p37_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_swish_bias_groupnorm\", &fused_swish_bias_groupnorm,\n          \"Fused Swish + bias add + GroupNorm (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// One 128-thread block processes 4 consecutive groups from the same sample.\n// Each 32-lane warp owns one 64-channel group; each lane handles 2 contiguous\n// channels, so all reduction is warp-local -- no smem, no __syncthreads.\n__global__ void __launch_bounds__(128, 2) fused_swish_bias_groupnorm_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    const float* __restrict__ gamma,\n    const float* __restrict__ beta,\n    float* __restrict__ output,\n    int N, int C, int num_groups, float eps\n) {\n    const int sample  = blockIdx.x;\n    const int warp_id = threadIdx.x >> 5;\n    const int lane    = threadIdx.x & 31;\n    const int group   = blockIdx.y * 4 + warp_id;\n\n    if (group >= num_groups) return;\n\n    // Each lane covers 2 contiguous channels within this group\n    const int c0   = group * 64 + lane * 2;\n    const int c1   = c0 + 1;\n    const int base = sample * C;\n\n    // Load GEMM output, apply Swish (x * sigmoid(x)), add bias\n    float v0 = input[base + c0];\n    float v1 = input[base + c1];\nfloat pre0 = v0 * (1.0f / (1.0f + __expf(-v0))) + bias[c0];\n    float pre1 = v1 * (1.0f / (1.0f + __expf(-v1))) + bias[c1];\n\n    // Per-lane accumulation over 2 elements\n    float sum   = pre0 + pre1;\n    float sumsq = pre0 * pre0 + pre1 * pre1;\n\n    // Warp-local reduction across 32 lanes (covers all 64 channels)\n    for (int offset = 16; offset > 0; offset >>= 1) {\n        sum   += __shfl_down_sync(0xffffffffu, sum,   offset);\n        sumsq += __shfl_down_sync(0xffffffffu, sumsq, offset);\n    }\n\n    // Compute mean/inv_std on lane 0, then broadcast to all lanes\n    float mean    = 0.0f;\n    float inv_std = 0.0f;\n    if (lane == 0) {\n        mean    = sum * (1.0f / 64.0f);\n        float var = sumsq * (1.0f / 64.0f) - mean * mean;\n        inv_std = rsqrtf(var + eps);\n    }\n    mean    = __shfl_sync(0xffffffffu, mean,    0);\n    inv_std = __shfl_sync(0xffffffffu, inv_std, 0);\n\n    // Apply GroupNorm affine transform and write output\n    output[base + c0] = gamma[c0] * (pre0 - mean) * inv_std + beta[c0];\n    output[base + c1] = gamma[c1] * (pre1 - mean) * inv_std + beta[c1];\n}\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n) {\n    TORCH_CHECK(input.is_cuda() && input.is_contiguous(),\n                \"input must be a contiguous CUDA tensor\");\n    TORCH_CHECK(input.scalar_type() == torch::kFloat32,\n                \"input must be float32\");\n\n    const int N        = input.size(0);\n    const int C        = input.size(1);\n    const int group_sz = C / num_groups;\n    TORCH_CHECK(group_sz == 64,\n                \"This kernel specializes for group_sz == 64\");\n    TORCH_CHECK(num_groups % 4 == 0,\n                \"num_groups must be divisible by 4 for the 4-group-per-block kernel\");\n\n    auto output = torch::empty_like(input);\n\n    // Grid: x=samples, y=groups/4 (each block covers 4 consecutive groups)\n    const int grid_y = (num_groups + 3) / 4;\n    dim3 grid(N, grid_y);\n    dim3 block(128);\n\n    fused_swish_bias_groupnorm_kernel<<<grid, block>>>(\n        input.data_ptr<float>(),\n        bias.data_ptr<float>(),\n        gamma.data_ptr<float>(),\n        beta.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, num_groups, eps\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a matrix multiplication, applies Swish activation, sums with a bias term, and normalizes with GroupNorm.\n        \"\"\"\n    def __init__(self, in_features, out_features, num_groups, bias_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.group_norm = nn.GroupNorm(num_groups, out_features)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_features).\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_features).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = _stark_get_extension().fused_swish_bias_groupnorm(\n            x.contiguous(),\n            self.bias,\n            self.group_norm.weight,\n            self.group_norm.bias,\n            self.group_norm.num_groups,\n            float(self.group_norm.eps)\n        )\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n3",
+        "phase2_n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Refine the working fused post-GEMM GroupNorm path by changing only the CUDA kernel geometry: pack multiple 64-channel groups from the same sample into one 128-thread CTA so each 32-lane warp owns one group and performs a warp-local reduction with no shared memory or block-wide sync.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the existing kernel implementation with a warp-local 128-thread specialization for `group_sz == 64`: launch `blockDim.x = 128` and `grid = (N, (num_groups + 3) / 4)`. Inside the kernel, compute `warp_id = threadIdx.x >> 5`, `lane = threadIdx.x & 31`, `group = blockIdx.y * 4 + warp_id`, and return early for `group >= num_groups`. For each active warp, map that warp to one `(sample, group)` pair from the same sample. Each lane processes two contiguous channels: `c0 = group * 64 + lane * 2`, `c1 = c0 + 1`. Load the two input values, apply `swish(x) + bias[channel]` to both, accumulate `sum = v0 + v1` and `sumsq = v0*v0 + v1*v1`, then reduce both across the warp with `__shfl_down_sync(0xffffffffu, ...)`. Broadcast mean and `inv_std` from lane 0 with `__shfl_sync`, then write the two outputs with the existing affine formula using `gamma` and `beta`. Remove shared memory and all `__syncthreads()` from this kernel. Keep the exported wrapper name `fused_swish_bias_groupnorm`, keep the `group_sz == 64` guard, and update the wrapper launch configuration to the new `(N, ceil_div(num_groups, 4))` grid and 128-thread block.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00694,
+      "score": 0.00694,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=598469",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/09_L2_P37_Auto_P37_20260720_002733/eval_traces/20260720_010128_592255_00d46e1d_kernelbench_l2_37_37_matmul_swish_sum_groupnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.011800000000000001,
+      "speedup": 1.7002881844380406,
+      "reference_runtimes": {
+        "torch_eager": 0.011800000000000001
+      },
+      "speedups": {
+        "torch_eager": 1.7002881844380406
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Changing from one 64-thread block per group to one 128-thread block handling four groups with warp-local 32-lane reductions will reduce block scheduling and `__syncthreads()` overhead while preserving coalesced contiguous channel access, improving throughput of the fused post-op kernel without touching the dominant GEMM path.",
+      "single_change_focus": "Replace the current 64-thread per-group fused GroupNorm kernel with a 128-thread four-warp kernel where each warp handles one 64-channel group from the same sample and each lane computes two contiguous channels, using only warp shuffles for sum/sumsq and no shared memory.",
+      "mutation_family": "four_group_warp_local",
+      "target_metric": "speedup"
+    },
+    "phase2_n3": {
+      "node_id": "phase2_n3",
+      "parent_id": "phase2_n2",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p37_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_swish_bias_groupnorm\", &fused_swish_bias_groupnorm,\n          \"Fused Swish + bias add + GroupNorm (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// One 128-thread block processes 4 consecutive groups from the same sample.\n// Each 32-lane warp owns one 64-channel group; each lane handles 2 contiguous\n// channels via float2 vectorized loads/stores, so all reduction is warp-local --\n// no smem, no __syncthreads.\n__global__ void __launch_bounds__(128, 2) fused_swish_bias_groupnorm_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    const float* __restrict__ gamma,\n    const float* __restrict__ beta,\n    float* __restrict__ output,\n    int N, int C, int num_groups, float eps\n) {\n    const int sample  = blockIdx.x;\n    const int warp_id = threadIdx.x >> 5;\n    const int lane    = threadIdx.x & 31;\n    const int group   = blockIdx.y * 4 + warp_id;\n\n    if (group >= num_groups) return;\n\n    // Each lane covers 2 contiguous channels within this group\n    const int c0   = group * 64 + lane * 2;\n    const int base = sample * C;\n\n    // Vectorized loads: pack both channels per lane into one 8-byte transaction\n    float2 in_v   = __ldg(reinterpret_cast<const float2*>(input + base + c0));\n    float2 bias_v = __ldg(reinterpret_cast<const float2*>(bias + c0));\n    float2 gam_v  = __ldg(reinterpret_cast<const float2*>(gamma + c0));\n    float2 bet_v  = __ldg(reinterpret_cast<const float2*>(beta + c0));\n\n    // Apply Swish (x * sigmoid(x)) and add bias -- keep pre0/pre1 register-resident\n    float pre0 = in_v.x * (1.0f / (1.0f + __expf(-in_v.x))) + bias_v.x;\n    float pre1 = in_v.y * (1.0f / (1.0f + __expf(-in_v.y))) + bias_v.y;\n\n    // Per-lane accumulation over 2 elements\n    float sum   = pre0 + pre1;\n    float sumsq = pre0 * pre0 + pre1 * pre1;\n\n    // Warp-local reduction across 32 lanes (covers all 64 channels)\n    for (int offset = 16; offset > 0; offset >>= 1) {\n        sum   += __shfl_down_sync(0xffffffffu, sum,   offset);\n        sumsq += __shfl_down_sync(0xffffffffu, sumsq, offset);\n    }\n\n    // Compute mean/inv_std on lane 0, then broadcast to all lanes\n    float mean    = 0.0f;\n    float inv_std = 0.0f;\n    if (lane == 0) {\n        mean    = sum * (1.0f / 64.0f);\n        float var = sumsq * (1.0f / 64.0f) - mean * mean;\n        inv_std = rsqrtf(var + eps);\n    }\n    mean    = __shfl_sync(0xffffffffu, mean,    0);\n    inv_std = __shfl_sync(0xffffffffu, inv_std, 0);\n\n    // Apply GroupNorm affine transform and write output via float2 store\n    float2 out_v;\n    out_v.x = gam_v.x * (pre0 - mean) * inv_std + bet_v.x;\n    out_v.y = gam_v.y * (pre1 - mean) * inv_std + bet_v.y;\n    *reinterpret_cast<float2*>(output + base + c0) = out_v;\n}\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n) {\n    TORCH_CHECK(input.is_cuda() && input.is_contiguous(),\n                \"input must be a contiguous CUDA tensor\");\n    TORCH_CHECK(input.scalar_type() == torch::kFloat32,\n                \"input must be float32\");\n\n    const int N        = input.size(0);\n    const int C        = input.size(1);\n    const int group_sz = C / num_groups;\n    TORCH_CHECK(group_sz == 64,\n                \"This kernel specializes for group_sz == 64\");\n    TORCH_CHECK(num_groups % 4 == 0,\n                \"num_groups must be divisible by 4 for the 4-group-per-block kernel\");\n\n    auto output = torch::empty_like(input);\n\n    const int grid_y = (num_groups + 3) / 4;\n    dim3 grid(N, grid_y);\n    dim3 block(128);\n\n    fused_swish_bias_groupnorm_kernel<<<grid, block>>>(\n        input.data_ptr<float>(),\n        bias.data_ptr<float>(),\n        gamma.data_ptr<float>(),\n        beta.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, num_groups, eps\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a matrix multiplication, applies Swish activation, sums with a bias term, and normalizes with GroupNorm.\n        \"\"\"\n    def __init__(self, in_features, out_features, num_groups, bias_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.group_norm = nn.GroupNorm(num_groups, out_features)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_features).\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_features).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = _stark_get_extension().fused_swish_bias_groupnorm(\n            x.contiguous(),\n            self.bias,\n            self.group_norm.weight,\n            self.group_norm.bias,\n            self.group_norm.num_groups,\n            float(self.group_norm.eps)\n        )\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_08",
+      "plan_summary": "Refine the current fused 4-warp GroupNorm kernel by tightening memory access and live ranges inside the already-correct CUDA path, rather than changing launch geometry or normalization math.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current scalar per-channel load/store sequence in `fused_swish_bias_groupnorm_kernel` with a packed `float2`-style lane path for the two contiguous channels handled by each lane, keep the same warp-shuffle reduction over 64 channels, and trim temporary lifetimes so `pre0/pre1`, sum, and sumsq stay register-resident until writeback.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00705,
+      "score": 0.00705,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=598797",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/09_L2_P37_Auto_P37_20260720_002733/eval_traces/20260720_010453_592255_f901d063_kernelbench_l2_37_37_matmul_swish_sum_groupnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.011800000000000001,
+      "speedup": 1.6737588652482271,
+      "reference_runtimes": {
+        "torch_eager": 0.011800000000000001
+      },
+      "speedups": {
+        "torch_eager": 1.6737588652482271
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Packing each lane's two channels into vectorized loads/stores and shortening temporary lifetimes will reduce per-thread instruction pressure without changing the warp-local reduction path.",
+      "single_change_focus": "Vectorize the per-lane input, parameter, and output accesses in the existing four-warp kernel while keeping the reduction topology unchanged.",
+      "mutation_family": "vectorized_lane_io",
+      "target_metric": "speedup"
+    },
+    "phase2_n4": {
+      "node_id": "phase2_n4",
+      "parent_id": "phase2_n2",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p37_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_swish_bias_groupnorm\", &fused_swish_bias_groupnorm,\n          \"Fused Swish + bias add + GroupNorm (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Constant memory for the fixed C=4096 specialization.\n// 3 * 4096 * sizeof(float) = 48 KB, fits within the 64 KB constant-memory budget.\n__constant__ float const_bias[4096];\n__constant__ float const_gamma[4096];\n__constant__ float const_beta[4096];\n\n// Constant-memory kernel: reads bias/gamma/beta from __constant__ arrays for broadcast efficiency.\n__global__ void __launch_bounds__(128, 2) fused_swish_bias_groupnorm_kernel_const(\n    const float* __restrict__ input,\n    float* __restrict__ output,\n    int N, int C, int num_groups, float eps\n) {\n    const int sample  = blockIdx.x;\n    const int warp_id = threadIdx.x >> 5;\n    const int lane    = threadIdx.x & 31;\n    const int group   = blockIdx.y * 4 + warp_id;\n\n    if (group >= num_groups) return;\n\n    const int c0   = group * 64 + lane * 2;\n    const int c1   = c0 + 1;\n    const int base = sample * C;\n\n    float v0   = input[base + c0];\n    float v1   = input[base + c1];\n    float pre0 = v0 * (1.0f / (1.0f + __expf(-v0))) + const_bias[c0];\n    float pre1 = v1 * (1.0f / (1.0f + __expf(-v1))) + const_bias[c1];\n\n    float sum   = pre0 + pre1;\n    float sumsq = pre0 * pre0 + pre1 * pre1;\n\n    for (int offset = 16; offset > 0; offset >>= 1) {\n        sum   += __shfl_down_sync(0xffffffffu, sum,   offset);\n        sumsq += __shfl_down_sync(0xffffffffu, sumsq, offset);\n    }\n\n    float mean    = 0.0f;\n    float inv_std = 0.0f;\n    if (lane == 0) {\n        mean    = sum * (1.0f / 64.0f);\n        float var = sumsq * (1.0f / 64.0f) - mean * mean;\n        inv_std = rsqrtf(var + eps);\n    }\n    mean    = __shfl_sync(0xffffffffu, mean,    0);\n    inv_std = __shfl_sync(0xffffffffu, inv_std, 0);\n\n    output[base + c0] = const_gamma[c0] * (pre0 - mean) * inv_std + const_beta[c0];\n    output[base + c1] = const_gamma[c1] * (pre1 - mean) * inv_std + const_beta[c1];\n}\n\n// Fallback pointer-based kernel for shapes that do not match the constant-memory specialization.\n__global__ void __launch_bounds__(128, 2) fused_swish_bias_groupnorm_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    const float* __restrict__ gamma,\n    const float* __restrict__ beta,\n    float* __restrict__ output,\n    int N, int C, int num_groups, float eps\n) {\n    const int sample  = blockIdx.x;\n    const int warp_id = threadIdx.x >> 5;\n    const int lane    = threadIdx.x & 31;\n    const int group   = blockIdx.y * 4 + warp_id;\n\n    if (group >= num_groups) return;\n\n    const int c0   = group * 64 + lane * 2;\n    const int c1   = c0 + 1;\n    const int base = sample * C;\n\n    float v0   = input[base + c0];\n    float v1   = input[base + c1];\n    float pre0 = v0 * (1.0f / (1.0f + __expf(-v0))) + bias[c0];\n    float pre1 = v1 * (1.0f / (1.0f + __expf(-v1))) + bias[c1];\n\n    float sum   = pre0 + pre1;\n    float sumsq = pre0 * pre0 + pre1 * pre1;\n\n    for (int offset = 16; offset > 0; offset >>= 1) {\n        sum   += __shfl_down_sync(0xffffffffu, sum,   offset);\n        sumsq += __shfl_down_sync(0xffffffffu, sumsq, offset);\n    }\n\n    float mean    = 0.0f;\n    float inv_std = 0.0f;\n    if (lane == 0) {\n        mean    = sum * (1.0f / 64.0f);\n        float var = sumsq * (1.0f / 64.0f) - mean * mean;\n        inv_std = rsqrtf(var + eps);\n    }\n    mean    = __shfl_sync(0xffffffffu, mean,    0);\n    inv_std = __shfl_sync(0xffffffffu, inv_std, 0);\n\n    output[base + c0] = gamma[c0] * (pre0 - mean) * inv_std + beta[c0];\n    output[base + c1] = gamma[c1] * (pre1 - mean) * inv_std + beta[c1];\n}\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n) {\n    TORCH_CHECK(input.is_cuda() && input.is_contiguous(),\n                \"input must be a contiguous CUDA tensor\");\n    TORCH_CHECK(input.scalar_type() == torch::kFloat32,\n                \"input must be float32\");\n\n    const int N        = input.size(0);\n    const int C        = input.size(1);\n    const int group_sz = C / num_groups;\n    TORCH_CHECK(group_sz == 64,\n                \"This kernel specializes for group_sz == 64\");\n    TORCH_CHECK(num_groups % 4 == 0,\n                \"num_groups must be divisible by 4 for the 4-group-per-block kernel\");\n\n    auto output = torch::empty_like(input);\n\n    const int grid_y = (num_groups + 3) / 4;\n    dim3 grid(N, grid_y);\n    dim3 block(128);\n\n    if (C == 4096) {\n        // Upload per-channel parameters to constant memory (device-to-device, synchronous w.r.t. host).\n        // Constant memory is broadcast across all threads reading the same address, giving\n        // better effective bandwidth for the32768-sample reuse pattern than generic global loads.\n        cudaMemcpyToSymbol(const_bias,  bias.data_ptr<float>(),  C * sizeof(float), 0, cudaMemcpyDeviceToDevice);\n        cudaMemcpyToSymbol(const_gamma, gamma.data_ptr<float>(), C * sizeof(float), 0, cudaMemcpyDeviceToDevice);\n        cudaMemcpyToSymbol(const_beta,  beta.data_ptr<float>(),  C * sizeof(float), 0, cudaMemcpyDeviceToDevice);\n\n        fused_swish_bias_groupnorm_kernel_const<<<grid, block>>>(\n            input.data_ptr<float>(),\n            output.data_ptr<float>(),\n            N, C, num_groups, eps\n        );\n    } else {\n        fused_swish_bias_groupnorm_kernel<<<grid, block>>>(\n            input.data_ptr<float>(),\n            bias.data_ptr<float>(),\n            gamma.data_ptr<float>(),\n            beta.data_ptr<float>(),\n            output.data_ptr<float>(),\n            N, C, num_groups, eps\n        );\n    }\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a matrix multiplication, applies Swish activation, sums with a bias term, and normalizes with GroupNorm.\n        \"\"\"\n    def __init__(self, in_features, out_features, num_groups, bias_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.group_norm = nn.GroupNorm(num_groups, out_features)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_features).\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_features).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = _stark_get_extension().fused_swish_bias_groupnorm(\n            x.contiguous(),\n            self.bias,\n            self.group_norm.weight,\n            self.group_norm.bias,\n            self.group_norm.num_groups,\n            float(self.group_norm.eps)\n        )\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Refine the existing four-warp fused post-op kernel by moving the fixed-size per-channel `bias`, `gamma`, and `beta` vectors onto a constant-memory read path while preserving the current 4-groups-per-CTA warp-local reduction structure.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current CUDA source with a version that preserves the exported `fused_swish_bias_groupnorm(input, bias, gamma, beta, num_groups, eps)` wrapper and the existing four-warp / 128-thread fused kernel math, but adds three `__constant__ float` arrays sized 4096 for bias/gamma/beta. In the wrapper, when `input.size(1) == 4096` and `group_sz == 64`, copy the incoming CUDA tensors into those constant arrays using device-to-device `cudaMemcpyToSymbol` calls before launch, then launch a constant-memory kernel variant that removes the bias/gamma/beta pointer parameters and reads `const_bias[c]`, `const_gamma[c]`, and `const_beta[c]` directly. Keep the same Swish, sum/sumsq reduction, mean/variance, affine writeback, grid `(N, (num_groups+3)/4)`, and block size `128`. Also retain a fallback kernel path that uses the original pointer-based parameter loads for any unsupported shape so the scaffold stays correct without changing Python anchors.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.00818,
+      "score": 0.00818,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=600107",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/09_L2_P37_Auto_P37_20260720_002733/eval_traces/20260720_010822_592255_89e1e5bf_kernelbench_l2_37_37_matmul_swish_sum_groupnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0123,
+      "speedup": 1.5036674816625917,
+      "reference_runtimes": {
+        "torch_eager": 0.0123
+      },
+      "speedups": {
+        "torch_eager": 1.5036674816625917
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "best_lineage_push",
+      "performance_hypothesis": "If the champion kernel reads `bias`, `gamma`, and `beta` from constant memory instead of generic global pointers, the repeated per-channel parameter loads reused across all 32768 samples will hit the broadcast/read-only path more efficiently and shave a small amount of latency without perturbing the proven reduction structure.",
+      "single_change_focus": "Swap the fused kernel's parameter reads from global tensor pointers to constant-memory arrays, with a runtime fallback to the existing pointer-based path when `C != 4096`.",
+      "mutation_family": "const_param_path",
+      "target_metric": "speedup"
+    },
+    "phase2_n5": {
+      "node_id": "phase2_n5",
+      "parent_id": "phase2_n3",
+      "depth": 7,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p37_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"fused_swish_bias_groupnorm\", &fused_swish_bias_groupnorm,\n          \"Fused Swish + bias add + GroupNorm (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda_runtime.h>\n\n// One 128-thread block processes 4 consecutive groups from the same sample.\n// Each 32-lane warp owns one 64-channel group; each lane handles 2 contiguous\n// channels via float2 vectorized loads/stores, so all reduction is warp-local --\n// no smem, no __syncthreads.\n// Affine parameters (gamma, beta) are loaded AFTER the warp reduction to\n// keep fewer live registers during the reduction stage.\n__global__ void __launch_bounds__(128, 2) fused_swish_bias_groupnorm_kernel(\n    const float* __restrict__ input,\n    const float* __restrict__ bias,\n    const float* __restrict__ gamma,\n    const float* __restrict__ beta,\n    float* __restrict__ output,\n    int N, int C, int num_groups, float eps\n) {\n    const int sample  = blockIdx.x;\n    const int warp_id = threadIdx.x >> 5;\n    const int lane    = threadIdx.x & 31;\n    const int group   = blockIdx.y * 4 + warp_id;\n\n    if (group >= num_groups) return;\n\n    // Each lane covers 2 contiguous channels within this group\n    const int c0   = group * 64 + lane * 2;\n    const int base = sample * C;\n\n    // Vectorized loads for input and bias only; defer gamma/beta until after reduction\n    float2 in_v   = __ldg(reinterpret_cast<const float2*>(input + base + c0));\n    float2 bias_v = __ldg(reinterpret_cast<const float2*>(bias + c0));\n\n    // Apply Swish (x * sigmoid(x)) and add bias -- keep pre0/pre1 register-resident\n    float pre0 = in_v.x * (1.0f / (1.0f + __expf(-in_v.x))) + bias_v.x;\n    float pre1 = in_v.y * (1.0f / (1.0f + __expf(-in_v.y))) + bias_v.y;\n\n    // Per-lane accumulation over 2 elements\n    float sum   = pre0 + pre1;\n    float sumsq = pre0 * pre0 + pre1 * pre1;\n\n    // Warp-local reduction across 32 lanes (covers all 64 channels)\n    for (int offset = 16; offset > 0; offset >>= 1) {\n        sum   += __shfl_down_sync(0xffffffffu, sum,   offset);\n        sumsq += __shfl_down_sync(0xffffffffu, sumsq, offset);\n    }\n\n    // Compute mean/inv_std on lane 0, then broadcast to all lanes\n    float mean    = 0.0f;\n    float inv_std = 0.0f;\n    if (lane == 0) {\n        mean    = sum * (1.0f / 64.0f);\n        float var = sumsq * (1.0f / 64.0f) - mean * mean;\n        inv_std = rsqrtf(var + eps);\n    }\n    mean    = __shfl_sync(0xffffffffu, mean,    0);\n    inv_std = __shfl_sync(0xffffffffu, inv_std, 0);\n\n    // Load affine parameters now (after reduction) to minimize live registers during reduce\n    float2 gam_v = __ldg(reinterpret_cast<const float2*>(gamma + c0));\n    float2 bet_v = __ldg(reinterpret_cast<const float2*>(beta + c0));\n\n    // Apply GroupNorm affine transform and write output via float2 store\n    float2 out_v;\n    out_v.x = gam_v.x * (pre0 - mean) * inv_std + bet_v.x;\n    out_v.y = gam_v.y * (pre1 - mean) * inv_std + bet_v.y;\n    *reinterpret_cast<float2*>(output + base + c0) = out_v;\n}\n\ntorch::Tensor fused_swish_bias_groupnorm(\n    torch::Tensor input,\n    torch::Tensor bias,\n    torch::Tensor gamma,\n    torch::Tensor beta,\n    int num_groups,\n    float eps\n) {\n    TORCH_CHECK(input.is_cuda() && input.is_contiguous(),\n                \"input must be a contiguous CUDA tensor\");\n    TORCH_CHECK(input.scalar_type() == torch::kFloat32,\n                \"input must be float32\");\n\n    const int N        = input.size(0);\n    const int C        = input.size(1);\n    const int group_sz = C / num_groups;\n    TORCH_CHECK(group_sz == 64,\n                \"This kernel specializes for group_sz == 64\");\n    TORCH_CHECK(num_groups % 4 == 0,\n                \"num_groups must be divisible by 4 for the 4-group-per-block kernel\");\n\n    auto output = torch::empty_like(input);\n\n    const int grid_y = (num_groups + 3) / 4;\n    dim3 grid(N, grid_y);\n    dim3 block(128);\n\n    fused_swish_bias_groupnorm_kernel<<<grid, block>>>(\n        input.data_ptr<float>(),\n        bias.data_ptr<float>(),\n        gamma.data_ptr<float>(),\n        beta.data_ptr<float>(),\n        output.data_ptr<float>(),\n        N, C, num_groups, eps\n    );\n\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a matrix multiplication, applies Swish activation, sums with a bias term, and normalizes with GroupNorm.\n        \"\"\"\n    def __init__(self, in_features, out_features, num_groups, bias_shape):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.matmul = nn.Linear(in_features, out_features)\n        self.bias = nn.Parameter(torch.randn(bias_shape))\n        self.group_norm = nn.GroupNorm(num_groups, out_features)\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        \"\"\"\n                Args:\n                    x (torch.Tensor): Input tensor of shape (batch_size, in_features).\n                Returns:\n                    torch.Tensor: Output tensor of shape (batch_size, out_features).\n                \"\"\"\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = self.matmul(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = _stark_get_extension().fused_swish_bias_groupnorm(\n            x.contiguous(),\n            self.bias,\n            self.group_norm.weight,\n            self.group_norm.bias,\n            self.group_norm.num_groups,\n            float(self.group_norm.eps)\n        )\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_5>>>\n        pass\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_6>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Refine the winning four-group warp-local fused GroupNorm kernel by reducing register live ranges rather than changing launch geometry or reduction topology.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the fused CUDA kernel implementation with the same four-group, 128-thread, one-warp-per-group structure, but reorder dataflow so each lane first loads only the two input values and the two bias values, computes `pre0`/`pre1`, performs the existing warp-local sum/sumsq reduction and mean/inv_std broadcast, and only then loads the two `gamma` and two `beta` scalars for its channels immediately before the final affine writeback. Do not change the launch shape, group indexing, group-size check, reduction formulas, or wrapper signature; only shorten live ranges by removing any early `gamma`/`beta` loads or packed affine temporaries that survive across the reduction.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.006900000000000001,
+      "score": 0.006900000000000001,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=601457",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/l1_p58_p69_repair_plus_l2_p31_p100_claude_cuda_main_20260719_211317/lane_a_gpu3/09_L2_P37_Auto_P37_20260720_002733/eval_traces/20260720_011223_592255_b1c81b81_kernelbench_l2_37_37_matmul_swish_sum_groupnorm"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.011800000000000001,
+      "speedup": 1.710144927536232,
+      "reference_runtimes": {
+        "torch_eager": 0.011800000000000001
+      },
+      "speedups": {
+        "torch_eager": 1.710144927536232
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "In the champion four-warp kernel, loading and holding affine parameters across the Swish+bias and reduction stages inflates register live ranges; deferring `gamma`/`beta` loads until after `mean` and `inv_std` are broadcast should lower register pressure and improve warp scheduling without altering math.",
+      "single_change_focus": "Delay affine parameter loads to the post-reduction stage so only input values and pre-norm intermediates stay live during the warp reduction.",
+      "mutation_family": "late_affine_loads",
+      "target_metric": "speedup"
+    }
+  }
+}

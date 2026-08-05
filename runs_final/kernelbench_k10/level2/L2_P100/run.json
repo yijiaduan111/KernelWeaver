@@ -1,0 +1,2137 @@
+{
+  "task_name": "kernelbench_l2_100_100_convtranspose3d_clamp_min_divide",
+  "config": {
+    "max_attempts": 10,
+    "epsilon": 0.3,
+    "root_child_limit": 5,
+    "dead_branch_threshold": 3,
+    "context_limit": 5,
+    "leaderboard_size": 2,
+    "debug_retry_limit": 1,
+    "benchmark_loops": 120,
+    "warmup_loops": 10,
+    "seed": 7,
+    "verbose": false,
+    "run_profile": "main",
+    "search_profile": "main",
+    "evaluator_profile": "main",
+    "measurement_profile": "main",
+    "provider_name": "openai-compatible",
+    "agent_provider_profile": "codeagent_claude",
+    "plan_provider": "openai-compatible",
+    "code_provider": "claude-compatible",
+    "debug_provider": "openai-compatible",
+    "search_provider": "claude-compatible",
+    "preset": "paper_mini",
+    "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+    "kernelbench_evaluator": "paper",
+    "num_correct_trials": 3,
+    "num_perf_trials": 30,
+    "paper_num_warmup": 5,
+    "paper_discard_first": 1,
+    "timing_method": "cuda_event",
+    "reference_modes": [
+      "torch_eager"
+    ],
+    "semantics_enabled": true,
+    "semantics_mode": "rule",
+    "semantics_max_anchor_hints": 6,
+    "diagnostics_enabled": false,
+    "diagnostics_mode": "root_ncu_v1",
+    "diagnostics_timeout_seconds": 900,
+    "diagnostics_warmup_runs": 2,
+    "diagnostics_profile_runs": 3,
+    "deliberation_enabled": true,
+    "deliberation_profile": "main",
+    "deliberation_mode": "multi_model_v0",
+    "deliberation_providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "deliberation_max_strategies": 10,
+    "deliberation_strategies_per_model": 4,
+    "deliberation_proposal_temperature": 0.4,
+    "deliberation_review_temperature": 0.1,
+    "deliberation_provider_timeout_seconds": 180,
+    "deliberation_phase_timeout_seconds": 240,
+    "evaluator_isolation": "candidate_subprocess",
+    "evaluator_timeout_seconds": 900,
+    "explore_fraction": 0.4,
+    "challenger_fraction": 0.3,
+    "plateau_delta_threshold": 0.03,
+    "plateau_recovery_mutation_attempts": 2,
+    "plateau_window": 3,
+    "deliberation_upgrade_enabled": true,
+    "deliberation_max_rounds": 3,
+    "deliberation_min_remaining_attempts": 8,
+    "phase_two_enabled": true,
+    "phase_two_split_attempts": 5
+  },
+  "best_node_id": "n5",
+  "leaderboard": [
+    "n5",
+    "phase2_root"
+  ],
+  "leaderboard_history": [
+    [],
+    [
+      "root"
+    ],
+    [
+      "n1",
+      "root"
+    ],
+    [
+      "n2",
+      "n1"
+    ],
+    [
+      "n2",
+      "n3"
+    ],
+    [
+      "n5",
+      "n2"
+    ],
+    [],
+    [
+      "phase2_root"
+    ],
+    [
+      "phase2_root",
+      "phase2_n1"
+    ]
+  ],
+  "selection_history": [
+    "root",
+    "n1",
+    "n2",
+    "n2",
+    "n3",
+    "phase2_root",
+    "phase2_n1",
+    "phase2_n2",
+    "phase2_root",
+    "phase2_n3"
+  ],
+  "selection_reasons": [
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf",
+    "explore_leaf",
+    "exploit_best_score",
+    "explore_leaf"
+  ],
+  "selection_exclusions": [
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {}
+  ],
+  "pruned_nodes": {},
+  "debug_stats": {
+    "total_attempts": 0,
+    "per_node": {}
+  },
+  "stats": {
+    "attempt_count": 10,
+    "plan_attempts": 10,
+    "debug_attempts": 0,
+    "failure_counts": {},
+    "failure_stage_counts": {},
+    "invalid_proposals": 0,
+    "attempt_mode_counts": {
+      "explore": 6,
+      "mutate_champion": 3,
+      "best_lineage_push": 1
+    },
+    "provider_transient_error_count": 0,
+    "provider_transient_budget_exhausted_count": 0,
+    "provider_transient_errors_by_stage": {},
+    "provider_transient_errors_by_origin": {},
+    "provider_transient_errors": [],
+    "phase_two_triggered": true,
+    "phase_two_seed_node_id": "n5",
+    "pruned_count": 0
+  },
+  "benchmark_family": "kernelbench",
+  "level": 2,
+  "problem_id": 100,
+  "backend": "cuda",
+  "source_origin": "KernelBench/KernelBench/level2/100_ConvTranspose3d_Clamp_Min_Divide.py",
+  "source_root": "KernelBench",
+  "workflow": "stark",
+  "run_profile": "main",
+  "search_profile": "main",
+  "evaluator_profile": "main",
+  "measurement_profile": "main",
+  "preset": "paper_mini",
+  "evaluation_profile": "kernelbench_profile_paper_mini_v1",
+  "kernelbench_evaluator": "paper",
+  "reference_runtimes": {
+    "torch_eager": 0.038
+  },
+  "speedups": {
+    "torch_eager": 1.241830065359477
+  },
+  "primary_reference": "torch_eager",
+  "semantic_profile": {
+    "enabled": true,
+    "mode": "rule",
+    "op_type": "convolution",
+    "summary": "Convolution style computation; preserve module state and spatial layout.",
+    "source": "KernelBench/KernelBench/level2/100_ConvTranspose3d_Clamp_Min_Divide.py",
+    "exact_facts": null,
+    "recommended_anchors": [
+      "forward_stmt_1",
+      "forward_stmt_2",
+      "forward_stmt_3",
+      "forward_stmt_4",
+      "cuda_cu",
+      "cuda_cpp"
+    ],
+    "anchors": [
+      {
+        "anchor_name": "forward_stmt_1",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = self.conv_transpose(x)",
+        "op_names": [
+          "_convtranspose3d_clamp_min_divide",
+          "a",
+          "and",
+          "by",
+          "clamp",
+          "clamps",
+          "constant",
+          "conv_transpose",
+          "convolution",
+          "convtranspose3d",
+          "d",
+          "divides"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_2",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = torch.clamp(x, min=self.min_value)",
+        "op_names": [
+          "_convtranspose3d_clamp_min_divide",
+          "a",
+          "and",
+          "by",
+          "clamp",
+          "clamps",
+          "constant",
+          "conv_transpose",
+          "convolution",
+          "convtranspose3d",
+          "d",
+          "divides"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_3",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "x = x / self.divisor",
+        "op_names": [
+          "_convtranspose3d_clamp_min_divide",
+          "a",
+          "and",
+          "arithmetic",
+          "by",
+          "clamp",
+          "clamps",
+          "constant",
+          "conv_transpose",
+          "convolution",
+          "convtranspose3d",
+          "d"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "forward_stmt_4",
+        "region_role": "forward",
+        "semantic_type": "convolution",
+        "source_excerpt": "return x",
+        "op_names": [
+          "_convtranspose3d_clamp_min_divide",
+          "a",
+          "and",
+          "by",
+          "clamp",
+          "clamps",
+          "constant",
+          "conv_transpose",
+          "convolution",
+          "convtranspose3d",
+          "d",
+          "divides"
+        ],
+        "optimization_intents": [
+          "preserve_layout_and_kernel_window",
+          "reuse_input_tiles"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site",
+          "preserve NCHW layout unless explicitly transformed",
+          "guard boundary indices"
+        ],
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "anchor_name": "cuda_cpp",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+        "op_names": [
+          "add",
+          "cuda",
+          "custom",
+          "entrypoints",
+          "exports",
+          "extension",
+          "for",
+          "h",
+          "here",
+          "include",
+          "m",
+          "pybind"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      },
+      {
+        "anchor_name": "cuda_cu",
+        "region_role": "helper",
+        "semantic_type": "backend_kernel_region",
+        "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+        "op_names": [
+          "add",
+          "and",
+          "cuda",
+          "cuda_runtime",
+          "exported",
+          "extension",
+          "functions",
+          "h",
+          "here",
+          "include",
+          "kernels",
+          "torch"
+        ],
+        "optimization_intents": [
+          "implement_backend_kernel"
+        ],
+        "backend_hints": [
+          "keep ModelNew I/O unchanged",
+          "edit cuda_cu/cuda_cpp plus the forward call site"
+        ],
+        "risk_notes": [
+          "inspect shape, dtype, and broadcasting assumptions before editing"
+        ],
+        "priority": 4
+      }
+    ],
+    "optimization_intents": [
+      {
+        "name": "preserve_layout_and_kernel_window",
+        "summary": "preserve layout and kernel window",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "preserve NCHW layout unless explicitly transformed",
+            "guard boundary indices"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use masks for spatial boundaries"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 5
+      },
+      {
+        "name": "reuse_input_tiles",
+        "summary": "reuse input tiles",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "backend_hints": {
+          "cuda": [
+            "keep ModelNew I/O unchanged",
+            "edit cuda_cu/cuda_cpp plus the forward call site",
+            "preserve NCHW layout unless explicitly transformed",
+            "guard boundary indices"
+          ],
+          "triton": [
+            "use block programs over flattened or tiled tensors",
+            "mask boundary elements",
+            "use masks for spatial boundaries"
+          ],
+          "tilelang": [
+            "map the computation to explicit tiles and buffers",
+            "keep launch wiring inside kernel anchors"
+          ],
+          "cute": [
+            "describe tile layouts explicitly",
+            "keep tensor layout assumptions local"
+          ]
+        },
+        "risk_notes": [
+          "preserve padding, stride, dilation, groups, and layout",
+          "guard spatial boundaries"
+        ],
+        "priority": 4
+      }
+    ],
+    "risk_notes": [
+      "preserve padding, stride, dilation, groups, and layout",
+      "guard spatial boundaries"
+    ]
+  },
+  "diagnostics_profile": {
+    "enabled": true,
+    "mode": "root_ncu_v1",
+    "ncu_profile": {
+      "enabled": true,
+      "status": "ok",
+      "profiler": "ncu",
+      "kernel_name": "void cudnn::nhwcToNchwKernel<float, float, float, 1, 0, 0>(cudnn::nhwc2nchw_params_t<T3>, const T1 *, T2 *)",
+      "row_count": 71,
+      "kernel_launch_count": 71,
+      "raw_metrics": {
+        "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 92.01,
+        "lts__throughput.avg.pct_of_peak_sustained_elapsed": 32.1,
+        "l1tex__throughput.avg.pct_of_peak_sustained_active": 15.79,
+        "sm__throughput.avg.pct_of_peak_sustained_elapsed": 8.94,
+        "sm__warps_active.avg.pct_of_peak_sustained_active": 94.77,
+        "launch__registers_per_thread": 32,
+        "launch__occupancy_limit_registers": 8,
+        "launch__occupancy_limit_shared_mem": 12,
+        "launch__occupancy_limit_warps": 6,
+        "gpu__time_duration.avg": 9037504,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.34,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.07,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+        "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+        "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+        "smsp__sass_branch_targets_threads_divergent.avg": 0,
+        "smsp__sass_branch_targets_threads_uniform.avg": 49717,
+        "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+        "smsp__warps_eligible.avg": 2044443.2
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ],
+      "error": null
+    },
+    "notes": [
+      "Profiled the root candidate program with Nsight Compute."
+    ]
+  },
+  "strategy_portfolio": {
+    "enabled": true,
+    "mode": "multi_model_v0",
+    "max_strategies": 10,
+    "providers": [
+      "openai-compatible",
+      "claude-compatible",
+      "gemini-compatible"
+    ],
+    "strategies": [
+      {
+        "strategy_id": "strategy_01",
+        "intent": "eliminate_explicit_contiguous_copy",
+        "summary": "Remove the `x.contiguous()` fallback by teaching the fused CUDA epilogue to handle the actual ConvTranspose3d output strides directly; phase-1 already removed one full output allocation, and the Nsight evidence still shows a strongly memory-bound path (`gpu__dram_throughput` ~92% peak, `sm__throughput` ~9%), so avoiding another full-tensor reorder/copy is the most grounded next lever.",
+        "target_anchors": [
+          "forward_stmt_2",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "implementation_hints": [
+          "Keep `self.conv_transpose(x)` on the existing cuDNN path and keep the in-place post-op API shape stable.",
+          "Extend the CUDA entrypoint to accept sizes/strides and launch a strided elementwise epilogue instead of requiring contiguous storage.",
+          "Fast-path truly contiguous tensors with the current vectorized kernel, but add a generic strided fallback so the Python forward no longer materializes a contiguous clone.",
+          "Guard index math carefully for 5D transposed-conv outputs and preserve exact element order/layout semantics."
+        ],
+        "expected_gain": "medium to high if current runs frequently hit the `contiguous()` path; likely larger than more launch-shape tuning because it removes a whole memory pass on a bandwidth-limited workload.",
+        "risk_notes": [
+          "In-place writes on strided tensors are only safe if each logical element maps uniquely; validate no overlapping storage assumptions.",
+          "Generic strided indexing can become compute-heavier, so keep the contiguous fast path.",
+          "Must preserve padding/stride/dilation/groups behavior by leaving the convolution itself unchanged."
+        ],
+        "memory_methods": [
+          "avoid full output clone",
+          "operate on original conv output storage"
+        ],
+        "mutation_axes": [
+          "contiguous_vs_strided_epilogue",
+          "indexing_scheme",
+          "fastpath_dispatch"
+        ],
+        "forbidden_patterns": [
+          "do not change ModelNew I/O",
+          "do not reorder spatial/layout semantics silently",
+          "do not assume contiguous output unconditionally"
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 5.0,
+          "claude-compatible": 5.0,
+          "gemini-compatible": 5.0
+        },
+        "review_notes": {
+          "openai-compatible": "Strongest risk-adjusted option if `contiguous()` is actually triggered often; directly removes a full memory pass on a clearly bandwidth-bound path while preserving cuDNN conv math. Main risk is safe strided in-place handling, but the contiguous fast path and fallback make it manageable.",
+          "claude-compatible": "Highest value. Directly targets the contiguous() copy overhead on a memory-bound workload (92% DRAM util). Removing a full-tensor reorder pass has clear upside. Implementation risk is moderateâstrided indexing adds complexity but keeps the cuDNN path intact. Strong risk-adjusted return.",
+          "gemini-compatible": "Excellent strategy. Eliminating an explicit contiguous copy by supporting strided inputs in the custom epilogue directly reduces memory bandwidth pressure, which is the primary bottleneck."
+        },
+        "priority": 5
+      },
+      {
+        "strategy_id": "strategy_03",
+        "intent": "grid_stride_vectorized_multipack",
+        "summary": "Replace the current single-element-per-thread float4 kernel with a grid-stride loop where each thread processes multiple float4 packs per iteration. The NCU profile shows DRAM at ~92% peak and long-scoreboard stalls at 0.35 ratio, indicating the kernel is memory-bound with latency not fully hidden. A grid-stride loop with 2-4 float4 packs per thread increases arithmetic intensity per warp activation and reduces launch overhead for very large tensors from the 3D conv output.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "In clamp_div_inplace_kernel_f4, use a grid-stride loop: for (int64_t idx = blockIdx.x * blockDim.x + threadIdx.x; idx < n4; idx += gridDim.x * blockDim.x)",
+          "Inside the loop body, unroll 2 float4 loads, apply fmaxf and multiply, then store â this lets the compiler overlap two independent load-use chains and hide the 0.35 long-scoreboard stall ratio",
+          "Cap gridDim.x to a fixed multiple of SM count (e.g., 4 * num_SMs) rather than ceil(n4/threads), so each thread does guaranteed multi-iteration work",
+          "Keep threads=128 since that config reached the best runtime (n5 champion)",
+          "Use __ldg() for the read path to hint read-only L1 texture cache since the data is written back in-place and the read side is read-only within the kernel"
+        ],
+        "expected_gain": "3-6% over n5 champion (1.242x -> ~1.28x) by better hiding the 0.35 long-scoreboard stall through overlapping two independent load-use chains per thread iteration",
+        "risk_notes": [
+          "Must preserve tail handling for elements not divisible by 4",
+          "Grid cap must not under-provision for small tensors; add a fallback to ceil(n4/threads) if num_SMs * 4 < ceil(n4/threads) would leave work uncovered",
+          "Do not change the exported function signature or Python call site"
+        ],
+        "memory_methods": [
+          "float4 vectorized loads",
+          "grid-stride multi-pack unroll"
+        ],
+        "mutation_axes": [
+          "cuda_cu"
+        ],
+        "forbidden_patterns": [
+          "changing threads from 128",
+          "removing the scalar tail kernel",
+          "modifying the Python forward call site"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 4.0,
+          "openai-compatible": 3.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Reasonable low-to-medium upside kernel tuning for the epilogue, but it attacks only the custom post-op and not the larger copy/layout costs. Likely safe if tail handling stays correct, yet expected gains are modest on an already DRAM-saturated stream.",
+          "claude-compatible": "Solid value. Grid-stride multi-pack unroll directly addresses the 0.35 long-scoreboard stall ratio by increasing ILP and hiding memory latency. Low riskâpurely a cuda_cu change with straightforward tail handling. Expected 3-6% gain is credible for the effort.",
+          "gemini-compatible": "Solid CUDA optimization. Using a grid-stride loop with multiple float4 packs per thread increases instruction-level parallelism and helps hide memory latency in bandwidth-bound elementwise kernels."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_02",
+        "intent": "reduce_layout_transform_overhead",
+        "summary": "Target the hidden layout-conversion traffic implied by the dominant profiled kernel `cudnn::nhwcToNchwKernel`; the profile is saturated on DRAM with low SM utilization, so a backend-specific memory-format strategy around ConvTranspose3d is more promising than further arithmetic fusion alone.",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "init_body",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "implementation_hints": [
+          "Experiment with a channels-last-3d aware path for the convolution output and make the fused post-op accept that layout directly instead of forcing an NCHW-normalized epilogue path.",
+          "If feasible within the provided scaffold, keep tensors in the cuDNN-preferred format across conv output and epilogue, only converting when absolutely required at the API boundary.",
+          "Use explicit dispatch logic so the existing NCHW/N-contiguous path remains available as a correctness fallback.",
+          "Make this a selective optimization keyed on dtype/layout/shape because not all transposed-conv shapes benefit equally."
+        ],
+        "expected_gain": "medium; best case is removal or reduction of the dominant layout-conversion kernel launches, which the current Nsight trace suggests are a real cost center.",
+        "risk_notes": [
+          "This is the highest semantic-risk option because layout handling around ConvTranspose3d is subtle.",
+          "Need to preserve observable output layout for callers even if an internal memory format is changed.",
+          "May not help if cuDNN still inserts unavoidable transforms for this exact operator/configuration."
+        ],
+        "memory_methods": [
+          "preserve cuDNN-preferred internal format longer",
+          "avoid redundant NHWC<->NCHW materialization"
+        ],
+        "mutation_axes": [
+          "memory_format",
+          "forward_dispatch",
+          "epilogue_layout_support"
+        ],
+        "forbidden_patterns": [
+          "do not silently return wrong strides/layout to user code",
+          "do not hard-switch entire model to a new format without fallback",
+          "do not alter convolution math parameters"
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 3.0,
+          "claude-compatible": 3.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Potentially useful because the profile points at layout conversion overhead, but internal/external layout management around ConvTranspose3d is subtle and easy to get wrong. Worth exploring selectively, but semantic and implementation risk reduce its risk-adjusted value.",
+          "claude-compatible": "Medium value, higher risk. Targets the nhwcToNchwKernel overhead which the profile shows is real, but layout semantics around ConvTranspose3d are subtle and breakage risk is high. Gain depends on whether cuDNN forces transforms regardless. Better attempted after strategy_01.",
+          "gemini-compatible": "Strong approach. Addressing the implicit layout conversions (NHWC to NCHW) triggered by cuDNN can yield significant savings, though controlling cuDNN's internal layout choices from PyTorch can sometimes be finicky."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_04",
+        "intent": "persistent_warp_pipeline_with_prefetch",
+        "summary": "The long-scoreboard stall ratio of 0.35 means warps are frequently waiting on global memory loads. Introduce a software-prefetch pattern inside the grid-stride loop using __builtin_assume_aligned or explicit __ldg prefetch intrinsics to issue the next iteration's load before the current iteration's compute completes. This is a direct response to the dominant stall type shown in the NCU profile.",
+        "target_anchors": [
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "Inside the grid-stride loop body, load iteration N+1's float4 into a register before the fmaxf/multiply for iteration N completes: float4 next = __ldg(&data[idx + stride]) at the top of the loop before operating on the current 'cur' variable",
+          "Use a double-buffer register pattern: load 'next' at loop top, operate on 'cur', write 'cur', then reassign cur = next at loop bottom",
+          "Guard the prefetch load with an idx + stride < n4 predicate to avoid out-of-bounds reads",
+          "Keep blockDim.x = 128 per the champion configuration",
+          "This pattern specifically targets the 0.35 long-scoreboard stall which dominates over the 0.07 short-scoreboard stall"
+        ],
+        "expected_gain": "4-8% over n5 by directly attacking the dominant stall type; long-scoreboard ratio reduction from 0.35 toward ~0.20 would correspond to meaningful latency hiding",
+        "risk_notes": [
+          "Prefetch predicate must be exact; off-by-one will read garbage or fault",
+          "If the compiler already achieves this via instruction reordering, gain will be smaller",
+          "Keep the scalar tail kernel unchanged"
+        ],
+        "memory_methods": [
+          "software prefetch via __ldg",
+          "double-buffer register pipeline"
+        ],
+        "mutation_axes": [
+          "cuda_cu"
+        ],
+        "forbidden_patterns": [
+          "shared memory staging (unnecessary for this streaming kernel)",
+          "changing the API signature",
+          "removing the contiguous check in the wrapper"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 4.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "More speculative than strategy_03 because modern compilers often already overlap simple load/compute patterns in streaming kernels. Could help a little, but added complexity and uncertain payoff make the risk-adjusted value weaker.",
+          "claude-compatible": "Good value. Software prefetch with double-buffering targets the dominant long-scoreboard stall (0.35 ratio). Implementation is localized to cuda_cu with moderate complexity. Risk is low if predicate guards are correct. Expected 4-8% gain justifies the effort.",
+          "gemini-compatible": "Moderate potential. While software prefetching can help with long-scoreboard stalls, the NVCC compiler often unrolls and schedules loads effectively for simple elementwise operations, potentially limiting the manual gain."
+        },
+        "priority": 4
+      },
+      {
+        "strategy_id": "strategy_05",
+        "intent": "algebraically_fold_divisor_into_conv_path",
+        "summary": "Exploit the constant divisor at module scope by folding the divide into the ConvTranspose3d parameters and reducing the post-op to clamp-only when the divisor sign/semantics permit; this attacks memory traffic by deleting even the cheap multiply from the epilogue and potentially moving more work into the already-optimized cuDNN conv path.",
+        "target_anchors": [
+          "init_body",
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "implementation_hints": [
+          "Use the identity `clamp(y, m) / d == clamp(y / d, m / d)` only when the divisor is known positive and nonzero; `execution_facts` show `divisor=2.0` for the benchmark instance, so it is grounded for this case.",
+          "Represent the scaled behavior in module state or cached constants rather than recomputing per forward.",
+          "After folding, keep only a clamp epilogue in forward; if the clamp can also be lowered to a built-in fast path, that further reduces custom-kernel dependence.",
+          "Gate the optimization conservatively and fall back to the current fused clamp/div path for unsupported divisor cases."
+        ],
+        "expected_gain": "low to medium by itself, but attractive if combined with other bandwidth reductions because it simplifies the epilogue and may enable better backend dispatch.",
+        "risk_notes": [
+          "Not universally valid for negative divisors or divisor values that can change dynamically.",
+          "Altering effective weights/bias requires care to preserve training/inference semantics and module state expectations.",
+          "Likely smaller gain than removing copies/layout transforms because the workload is already dominated by memory movement."
+        ],
+        "memory_methods": [
+          "reduce epilogue arithmetic",
+          "shift scaling into existing conv parameter path"
+        ],
+        "mutation_axes": [
+          "constant_folding",
+          "state_caching",
+          "epilogue_simplification"
+        ],
+        "forbidden_patterns": [
+          "do not apply for negative or zero divisor cases",
+          "do not mutate user-visible learned parameters unsafely",
+          "do not break autograd/state_dict expectations"
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 2.0,
+          "claude-compatible": 2.0,
+          "gemini-compatible": 4.0
+        },
+        "review_notes": {
+          "openai-compatible": "Algebraically valid only under constrained divisor semantics and interacts awkwardly with module parameters, autograd, and state expectations. Even when valid, removing one multiply is unlikely to matter much versus memory traffic and layout overhead.",
+          "claude-compatible": "Low value. Folding the divide into conv parameters is algebraically clever but risky for module semantics (weights, state_dict, autograd). Gain is modest because the workload is memory-bound, not compute-bound. Not worth the correctness risk relative to simpler bandwidth optimizations.",
+          "gemini-compatible": "Clever mathematical optimization. Folding the division into the convolution weights and bias eliminates the operation entirely. However, mutating module parameters carries a risk of breaking state_dict or training semantics if not handled carefully."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_06",
+        "intent": "eliminate_nhwc_to_nchw_transpose_overhead",
+        "summary": "The NCU profiler is sampling a cudnn::nhwcToNchwKernel across 56 kernel launches, and this kernel shows 92% DRAM utilization with only 8.94% SM throughput â it is a pure transpose/format-conversion kernel, not the conv itself. This is the dominant bottleneck. Forcing cuDNN to stay in NCHW format by disabling TF32 or by using torch.backends.cudnn.allow_tf32=False and explicitly setting the memory format at the conv_transpose layer to torch.contiguous_format can eliminate the format-conversion kernel entirely from the critical path.",
+        "target_anchors": [
+          "init_body",
+          "forward_stmt_1",
+          "cuda_cu"
+        ],
+        "implementation_hints": [
+          "In init_body, after creating self.conv_transpose, call self.conv_transpose = self.conv_transpose.to(memory_format=torch.contiguous_format) to lock NCHW layout",
+          "In forward_stmt_1, ensure input x is contiguous in NCHW before the conv: x = x.contiguous() before self.conv_transpose(x) if there is any risk of NHWC input",
+          "Optionally set torch.backends.cudnn.benchmark = True in init_body to let cuDNN pick the fastest algorithm that avoids the format conversion for this specific input shape (64, 128, 3, 2, 1)",
+          "The clamp_div_inplace in forward_stmt_2 already requires contiguous float32, so this is consistent",
+          "If the nhwcToNchwKernel disappears from the profile, the net runtime will drop by however long those 56 launches cost â the 9ms avg duration per launch suggests significant savings"
+        ],
+        "expected_gain": "Potentially 10-20% if the nhwcToNchwKernel is on the critical path; it runs 56 times at ~9ms average which cannot all be sequential but the aggregate overhead is measurable",
+        "risk_notes": [
+          "Setting memory format on the module may not prevent cuDNN from internally using NHWC for Tensor Core paths â verify by re-profiling",
+          "torch.backends.cudnn settings are process-global and may affect other models in the same process",
+          "Do not change stride, padding, dilation, or groups on the ConvTranspose3d"
+        ],
+        "memory_methods": [
+          "NCHW memory format enforcement",
+          "cuDNN algorithm selection via benchmark mode"
+        ],
+        "mutation_axes": [
+          "init_body",
+          "forward_stmt_1"
+        ],
+        "forbidden_patterns": [
+          "channels_last_3d memory format",
+          "changing conv hyperparameters",
+          "replacing nn.ConvTranspose3d with a custom conv kernel"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 3.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 3.0
+        },
+        "review_notes": {
+          "openai-compatible": "The diagnosis is plausible, but the proposed fixes rely on global cuDNN settings and memory-format coercion that may not actually eliminate internal transforms. High chance of limited benefit or collateral effects, so the practical risk-adjusted value is low.",
+          "claude-compatible": "Medium value, moderate risk. Forcing NCHW layout via memory_format and cudnn.benchmark may eliminate the 56 nhwcToNchwKernel launches. However, cuDNN may still choose NHWC internally for Tensor Core paths, and global backend settings can cause side effects. Worth trying after lower-risk options.",
+          "gemini-compatible": "Risky trade-off. Forcing NCHW to avoid transpose kernels might disable Tensor Core usage in cuDNN (which prefers NHWC for 3D convolutions), potentially making the convolution itself significantly slower."
+        },
+        "priority": 3
+      },
+      {
+        "strategy_id": "strategy_08",
+        "intent": "precompute_inv_div_as_float32_constant",
+        "summary": "The current wrapper computes float(1.0 / self.divisor) in Python on every forward call, which involves a Python float (64-bit) division and cast. Precompute and cache the float32 reciprocal once in __init__ as self.inv_divisor = float(1.0 / divisor) to eliminate the per-call Python division. Additionally, store min_value as a Python float once. This is a low-risk micro-optimization that removes two Python-level operations from the hot forward path.",
+        "target_anchors": [
+          "init_body",
+          "forward_stmt_2"
+        ],
+        "implementation_hints": [
+          "In init_body, add: self.inv_divisor = float(1.0 / divisor) and self.min_value_f = float(min_value)",
+          "In forward_stmt_2, change the call to: _stark_get_extension().clamp_div_inplace(x, self.min_value_f, self.inv_divisor)",
+          "This avoids one Python division and two Python float() casts per forward pass",
+          "No changes needed to cuda_cu or cuda_cpp"
+        ],
+        "expected_gain": "Marginal (<1%) but zero-risk; useful as a combinable cleanup alongside other strategies",
+        "risk_notes": [
+          "If divisor is ever mutated after __init__ this would break correctness, but for this problem it is a fixed construction argument",
+          "Purely a Python-layer change; no CUDA code changes"
+        ],
+        "memory_methods": [
+          "cached Python constant"
+        ],
+        "mutation_axes": [
+          "init_body",
+          "forward_stmt_2"
+        ],
+        "forbidden_patterns": [
+          "changing the CUDA kernel",
+          "storing as torch scalar tensor (unnecessary overhead)"
+        ],
+        "source_models": [
+          "claude-compatible"
+        ],
+        "model_scores": {
+          "claude-compatible": 2.0,
+          "openai-compatible": 2.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Safe cleanup with near-zero correctness risk, but the gain is truly marginal because it only removes tiny Python-side overhead. Fine as a free add-on, not meaningful as a primary optimization strategy.",
+          "claude-compatible": "Low value. Caching inv_divisor is trivial and zero-risk but offers <1% gain. Useful as a free combinable cleanup but not a priority on its own. Safe to apply alongside any other strategy.",
+          "gemini-compatible": "Low impact. Precomputing a Python float division in __init__ saves a negligible amount of CPU time and will not measurably affect the GPU-bound execution time of a large 3D convolution."
+        },
+        "priority": 2
+      },
+      {
+        "strategy_id": "strategy_07",
+        "intent": "fuse_convtranspose_and_epilogue_in_custom_cuda_path",
+        "summary": "If the layout-transform and post-op overheads remain dominant, replace the split cuDNN-conv plus custom epilogue with a single custom CUDA ConvTranspose3d kernel that writes final clamped/scaled values directly; this is the most aggressive way to remove extra memory passes on a DRAM-bound workload.",
+        "target_anchors": [
+          "forward_stmt_1",
+          "forward_stmt_2",
+          "forward_stmt_3",
+          "forward_stmt_4",
+          "cuda_cu",
+          "cuda_cpp"
+        ],
+        "implementation_hints": [
+          "Keep ModelNew I/O unchanged, but dispatch to a custom CUDA op implementing ConvTranspose3d plus fused clamp/div for the specific benchmark regime.",
+          "Use output-tiled accumulation with shared-memory or register reuse over the kernel window to honor transposed-conv overlap while minimizing global traffic.",
+          "Write the final post-op result once to global memory instead of materializing an intermediate conv tensor.",
+          "Make this shape-specialized or benchmark-specialized first rather than attempting a fully general grouped/dilated implementation."
+        ],
+        "expected_gain": "potentially high, but only if the custom kernel is tuned well enough to offset losing cuDNNâs mature convolution implementation.",
+        "risk_notes": [
+          "Very high implementation complexity and correctness risk for transposed-conv indexing, overlap accumulation, padding, stride, dilation, and groups.",
+          "Can easily underperform cuDNN if not heavily specialized to the benchmark shape regime.",
+          "Testing burden is much higher than the other options."
+        ],
+        "memory_methods": [
+          "single-write epilogue fusion",
+          "tile/reuse input and weights"
+        ],
+        "mutation_axes": [
+          "custom_convtranspose_kernel",
+          "tile_shape",
+          "accumulation_order",
+          "fused_epilogue"
+        ],
+        "forbidden_patterns": [
+          "do not approximate convolution math",
+          "do not ignore boundary guards",
+          "do not replace cuDNN broadly without a selective fallback"
+        ],
+        "source_models": [
+          "openai-compatible"
+        ],
+        "model_scores": {
+          "openai-compatible": 1.0,
+          "claude-compatible": 1.0,
+          "gemini-compatible": 2.0
+        },
+        "review_notes": {
+          "openai-compatible": "Highest theoretical upside but poor risk-adjusted choice: custom ConvTranspose3d is complex, correctness-sensitive, and likely to underperform cuDNN without heavy specialization. Testing and maintenance cost are disproportionate for a first-line optimization.",
+          "claude-compatible": "Very low value. Custom fused ConvTranspose3d kernel has extreme implementation complexity and correctness risk (padding, stride, dilation, overlap). Unlikely to outperform tuned cuDNN without massive specialization effort. Only viable as a last resort if all other options fail.",
+          "gemini-compatible": "Too complex and high risk. Writing a custom 3D transposed convolution kernel that outperforms highly tuned cuDNN implementations is extremely difficult and likely to fail within a bounded search."
+        },
+        "priority": 2
+      }
+    ],
+    "proposal_errors": {
+      "gemini-compatible": "Expecting ',' delimiter: line 1 column 2980 (char 2979)"
+    },
+    "review_errors": {},
+    "deliberation_round": 1
+  },
+  "phase_transition": {
+    "source_phase": 1,
+    "target_phase": 2,
+    "split_attempts": 5,
+    "trigger_attempt": 5,
+    "root": {
+      "node_id": "root",
+      "strategy_name": null,
+      "runtime": 0.0381,
+      "speedup": 0.9973753280839894,
+      "plan_summary": null,
+      "changed_regions": [],
+      "lineage": [
+        "root"
+      ]
+    },
+    "selected": {
+      "node_id": "n5",
+      "strategy_name": "strategy_03",
+      "runtime": 0.030600000000000002,
+      "speedup": 1.241830065359477,
+      "plan_summary": "Refine the existing fused in-place post-op kernel with a smaller launch shape tuned for this memory-bound epilogue, while keeping the current conv path and extension API structure intact.",
+      "changed_regions": [
+        "cuda_cu"
+      ],
+      "lineage": [
+        "root",
+        "n1",
+        "n2",
+        "n3",
+        "n5"
+      ]
+    },
+    "attempts": [
+      {
+        "node_id": "n1",
+        "parent_id": "root",
+        "strategy_name": "strategy_02",
+        "attempt_mode": "explore",
+        "mutation_family": "fused_postop_kernel",
+        "single_change_focus": "Implement and call one fused CUDA post-op kernel for `clamp(min) / divisor` on the convolution output.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2",
+          "forward_stmt_3"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.0312,
+        "speedup": 1.2211538461538463,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Keep `nn.ConvTranspose3d` on the existing cuDNN path and fuse the post-conv `clamp(min)` plus divide-by-constant into one custom CUDA kernel launched from the forward path, so the large 3D output tensor is read and written only once after convolution."
+      },
+      {
+        "node_id": "n2",
+        "parent_id": "n1",
+        "strategy_name": "strategy_03",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "inplace_postop",
+        "single_change_focus": "Convert the fused `clamp_div` CUDA extension from out-of-place to in-place and invoke it without creating a new tensor.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.030699999999999998,
+        "speedup": 1.241042345276873,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the winning fused post-op path by changing it from out-of-place to in-place so the conv output is read once, transformed in registers, and written back to the same buffer without allocating or filling a second tensor."
+      },
+      {
+        "node_id": "n3",
+        "parent_id": "n2",
+        "strategy_name": "strategy_03",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "api_reciprocal",
+        "single_change_focus": "Change the in-place extension API from `(x, min_value, divisor)` to `(x, min_value, inv_div)` and update the wrapper to use the provided reciprocal directly.",
+        "changed_regions": [
+          "cuda_cpp",
+          "cuda_cu",
+          "forward_stmt_2"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.030699999999999998,
+        "speedup": 1.237785016286645,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the working in-place fused post-op by removing per-launch reciprocal computation from the CUDA wrapper and passing a precomputed inverse divisor directly into the extension call."
+      },
+      {
+        "node_id": "n4",
+        "parent_id": "n2",
+        "strategy_name": "strategy_03",
+        "attempt_mode": "best_lineage_push",
+        "mutation_family": "vector_gridstride_refine",
+        "single_change_focus": "Change only the CUDA implementation so the vectorized path uses a grid-stride loop with multi-pack work per thread, while keeping the same exported function and Python call site.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.030699999999999998,
+        "speedup": 1.237785016286645,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing fused in-place post-op kernel rather than changing the conv path: keep the winning in-place clamp/div structure, but make the CUDA kernel process multiple vector packs per thread with a grid-stride loop to reduce indexing overhead and better saturate memory bandwidth."
+      },
+      {
+        "node_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_03",
+        "attempt_mode": "mutate_champion",
+        "mutation_family": "launch_config_tune",
+        "single_change_focus": "Change only the CUDA launch configuration in the fused in-place kernel wrapper from 256 threads per block to 128 threads per block, keeping both vectorized and scalar kernels otherwise unchanged.",
+        "changed_regions": [
+          "cuda_cu"
+        ],
+        "compile_ok": true,
+        "correct": true,
+        "runtime": 0.030600000000000002,
+        "speedup": 1.241830065359477,
+        "failure_stage": null,
+        "failure_type": null,
+        "plan_summary": "Refine the existing fused in-place post-op kernel with a smaller launch shape tuned for this memory-bound epilogue, while keeping the current conv path and extension API structure intact."
+      }
+    ],
+    "trace_summary": "effective=n1:Implement and call one fused CUDA post-op kernel for `clamp(min) / divisor` on the convolution output.:1.221x; n2:Convert the fused `clamp_div` CUDA extension from out-of-place to in-place and invoke it without creating a new tensor.:1.241x; n5:Change only the CUDA launch configuration in the fused in-place kernel wrapper from 256 threads per block to 128 threads per block, keeping both vectorized and scalar kernels otherwise unchanged.:1.242x | flat=n3:Change the in-place extension API from `(x, min_value, divisor)` to `(x, min_value, inv_div)` and update the wrapper to use the provided reciprocal directly.:1.238x; n4:Change only the CUDA implementation so the vectorized path uses a grid-stride loop with multi-pack work per thread, while keeping the same exported function and Python call site.:1.238x",
+    "root_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void cudnn::nhwcToNchwKernel<float, float, float, 1, 0, 0>(cudnn::nhwc2nchw_params_t<T3>, const T1 *, T2 *)",
+        "row_count": 71,
+        "kernel_launch_count": 71,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 92.01,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 32.1,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 15.79,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 8.94,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 94.77,
+          "launch__registers_per_thread": 32,
+          "launch__occupancy_limit_registers": 8,
+          "launch__occupancy_limit_shared_mem": 12,
+          "launch__occupancy_limit_warps": 6,
+          "gpu__time_duration.avg": 9037504,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.34,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.07,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 49717,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 2044443.2
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "selected_diagnostics": {
+      "enabled": true,
+      "mode": "root_ncu_v1",
+      "ncu_profile": {
+        "enabled": true,
+        "status": "ok",
+        "profiler": "ncu",
+        "kernel_name": "void cudnn::nhwcToNchwKernel<float, float, float, 1, 0, 0>(cudnn::nhwc2nchw_params_t<T3>, const T1 *, T2 *)",
+        "row_count": 56,
+        "kernel_launch_count": 56,
+        "raw_metrics": {
+          "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": 91.97,
+          "lts__throughput.avg.pct_of_peak_sustained_elapsed": 32.1,
+          "l1tex__throughput.avg.pct_of_peak_sustained_active": 15.79,
+          "sm__throughput.avg.pct_of_peak_sustained_elapsed": 8.94,
+          "sm__warps_active.avg.pct_of_peak_sustained_active": 94.79,
+          "launch__registers_per_thread": 32,
+          "launch__occupancy_limit_registers": 8,
+          "launch__occupancy_limit_shared_mem": 12,
+          "launch__occupancy_limit_warps": 6,
+          "gpu__time_duration.avg": 9037408,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.35,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.07,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+          "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 1,
+          "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 1,
+          "smsp__sass_branch_targets_threads_divergent.avg": 0,
+          "smsp__sass_branch_targets_threads_uniform.avg": 49717,
+          "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 32,
+          "smsp__warps_eligible.avg": 2043337.52
+        },
+        "notes": [
+          "Profiled the root candidate program with Nsight Compute."
+        ],
+        "error": null
+      },
+      "notes": [
+        "Profiled the root candidate program with Nsight Compute."
+      ]
+    },
+    "diagnostics_delta": {
+      "gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed": -0.04000000000000625,
+      "gpu__time_duration.avg": -96,
+      "l1tex__throughput.avg.pct_of_peak_sustained_active": 0.0,
+      "launch__occupancy_limit_registers": 0,
+      "launch__occupancy_limit_shared_mem": 0,
+      "launch__occupancy_limit_warps": 0,
+      "launch__registers_per_thread": 0,
+      "lts__throughput.avg.pct_of_peak_sustained_elapsed": 0.0,
+      "sm__throughput.avg.pct_of_peak_sustained_elapsed": 0.0,
+      "sm__warps_active.avg.pct_of_peak_sustained_active": 0.020000000000010232,
+      "smsp__sass_branch_targets_threads_divergent.avg": 0,
+      "smsp__sass_branch_targets_threads_uniform.avg": 0,
+      "smsp__thread_inst_executed_pred_on_per_inst_executed.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.ratio": 0.009999999999999953,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_no_instruction_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_not_selected_per_warp_active.ratio": 0.0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.max_rate": 0,
+      "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.ratio": 0.0,
+      "smsp__warps_eligible.avg": -1105.6799999999348
+    }
+  },
+  "feedback_state": {
+    "total_attempts": 11,
+    "compile_rate": 1.0,
+    "correct_rate": 1.0,
+    "best_speedup": 1.241830065359477,
+    "best_strategy_name": "strategy_03",
+    "phase": "refinement",
+    "current_champion_id": "n5",
+    "current_champion_speedup": 1.241830065359477,
+    "plateau_detected": true,
+    "recent_improvement_deltas": [
+      0.22377851806985682,
+      0.019888499123026815,
+      0.004045049072831874
+    ],
+    "recent_regression_deltas": [
+      0.0,
+      -0.00801155350347349,
+      -0.008820356621612735,
+      0.0,
+      0.0
+    ],
+    "recent_successful_mutation_families": [],
+    "recent_failed_mutation_families": [
+      "conv_layout_bias",
+      "prefetch_pipeline",
+      "grid_stride_unroll",
+      "conv_param_scale_fold",
+      "launch_config_tune"
+    ],
+    "last_mutation_outcome": "regressed_or_flat",
+    "recent_attempts": [
+      {
+        "attempt_id": "n4",
+        "parent_id": "n2",
+        "strategy_name": "strategy_03",
+        "mode": "best_lineage_push",
+        "mutation_family": "vector_gridstride_refine",
+        "speedup": 1.237785016286645,
+        "parent_speedup": 1.241042345276873,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Change only the CUDA implementation so the vectorized path uses a grid-stride loop with multi-pack work per thread, while keeping the same exported function and Python call site."
+      },
+      {
+        "attempt_id": "n5",
+        "parent_id": "n3",
+        "strategy_name": "strategy_03",
+        "mode": "mutate_champion",
+        "mutation_family": "launch_config_tune",
+        "speedup": 1.241830065359477,
+        "parent_speedup": 1.237785016286645,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Change only the CUDA launch configuration in the fused in-place kernel wrapper from 256 threads per block to 128 threads per block, keeping both vectorized and scalar kernels otherwise unchanged."
+      },
+      {
+        "attempt_id": "phase2_n1",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_01",
+        "mode": "explore",
+        "mutation_family": "strided_epilogue_dispatch",
+        "speedup": 1.237785016286645,
+        "parent_speedup": 1.241830065359477,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Teach the fused `clamp_div_inplace` extension to accept 5D sizes/strides and process non-contiguous ConvTranspose3d outputs directly so the Python forward no longer forces `x.contiguous()`."
+      },
+      {
+        "attempt_id": "phase2_n2",
+        "parent_id": "phase2_n1",
+        "strategy_name": "strategy_06",
+        "mode": "explore",
+        "mutation_family": "conv_layout_bias",
+        "speedup": 1.237785016286645,
+        "parent_speedup": 1.237785016286645,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Bias the conv path toward contiguous NCHW by setting cuDNN benchmark/TF32 preferences in init and making the forward input explicitly contiguous before `self.conv_transpose(x)`."
+      },
+      {
+        "attempt_id": "phase2_n3",
+        "parent_id": "phase2_n2",
+        "strategy_name": "strategy_04",
+        "mode": "explore",
+        "mutation_family": "prefetch_pipeline",
+        "speedup": 1.2297734627831716,
+        "parent_speedup": 1.237785016286645,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Modify only the contiguous float4 CUDA kernel in `cuda_cu` to use a grid-stride loop with a register-resident current/next `float4` pipeline and guarded prefetch, while leaving wrapper behavior and scalar fallback intact."
+      },
+      {
+        "attempt_id": "phase2_n4",
+        "parent_id": "phase2_root",
+        "strategy_name": "strategy_03",
+        "mode": "explore",
+        "mutation_family": "grid_stride_unroll",
+        "speedup": 1.2330097087378642,
+        "parent_speedup": 1.241830065359477,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Teach the existing float4 CUDA kernel to iterate grid-stride over multiple packs per thread, while leaving the scalar tail path and exported wrapper unchanged."
+      },
+      {
+        "attempt_id": "phase2_n5",
+        "parent_id": "phase2_n3",
+        "strategy_name": "strategy_05",
+        "mode": "explore",
+        "mutation_family": "conv_param_scale_fold",
+        "speedup": 1.2297734627831716,
+        "parent_speedup": 1.2297734627831716,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Fold the positive constant divisor into ConvTranspose3d parameters during initialization, then switch the forward epilogue to clamp-only on the scaled threshold while retaining the existing CUDA extension call path."
+      },
+      {
+        "attempt_id": "phase2_root",
+        "parent_id": "n5",
+        "strategy_name": "strategy_03",
+        "mode": "mutate_champion",
+        "mutation_family": "launch_config_tune",
+        "speedup": 1.241830065359477,
+        "parent_speedup": 1.241830065359477,
+        "compile_ok": true,
+        "correct": true,
+        "failure_stage": null,
+        "failure_type": null,
+        "single_change_focus": "Change only the CUDA launch configuration in the fused in-place kernel wrapper from 256 threads per block to 128 threads per block, keeping both vectorized and scalar kernels otherwise unchanged."
+      }
+    ],
+    "champion": {
+      "node_id": "n5",
+      "speedup": 1.241830065359477,
+      "strategy_name": "strategy_03",
+      "mutation_family": "launch_config_tune",
+      "lineage": [
+        "root",
+        "n1",
+        "n2",
+        "n3",
+        "n5"
+      ],
+      "recent_positive_mutations": [],
+      "recent_negative_mutations": [
+        {
+          "attempt_id": "phase2_n3",
+          "strategy_name": "strategy_04",
+          "mode": "explore",
+          "mutation_family": "prefetch_pipeline",
+          "speedup": 1.2297734627831716,
+          "parent_speedup": 1.237785016286645,
+          "single_change_focus": "Modify only the contiguous float4 CUDA kernel in `cuda_cu` to use a grid-stride loop with a register-resident current/next `float4` pipeline and guarded prefetch, while leaving wrapper behavior and scalar fallback intact."
+        },
+        {
+          "attempt_id": "phase2_n4",
+          "strategy_name": "strategy_03",
+          "mode": "explore",
+          "mutation_family": "grid_stride_unroll",
+          "speedup": 1.2330097087378642,
+          "parent_speedup": 1.241830065359477,
+          "single_change_focus": "Teach the existing float4 CUDA kernel to iterate grid-stride over multiple packs per thread, while leaving the scalar tail path and exported wrapper unchanged."
+        },
+        {
+          "attempt_id": "phase2_n5",
+          "strategy_name": "strategy_05",
+          "mode": "explore",
+          "mutation_family": "conv_param_scale_fold",
+          "speedup": 1.2297734627831716,
+          "parent_speedup": 1.2297734627831716,
+          "single_change_focus": "Fold the positive constant divisor into ConvTranspose3d parameters during initialization, then switch the forward epilogue to clamp-only on the scaled threshold while retaining the existing CUDA extension call path."
+        },
+        {
+          "attempt_id": "phase2_root",
+          "strategy_name": "strategy_03",
+          "mode": "mutate_champion",
+          "mutation_family": "launch_config_tune",
+          "speedup": 1.241830065359477,
+          "parent_speedup": 1.241830065359477,
+          "single_change_focus": "Change only the CUDA launch configuration in the fused in-place kernel wrapper from 256 threads per block to 128 threads per block, keeping both vectorized and scalar kernels otherwise unchanged."
+        }
+      ],
+      "plateau_detected": true,
+      "lineage_plateau_depth": 3
+    }
+  },
+  "grounded_regions": [
+    {
+      "anchor_name": "user_helpers",
+      "region_role": "helper",
+      "start_line": 36,
+      "end_line": 37,
+      "source_excerpt": "",
+      "source_hash": "da39a3ee5e6b"
+    },
+    {
+      "anchor_name": "cuda_cpp",
+      "region_role": "helper",
+      "start_line": 40,
+      "end_line": 45,
+      "source_excerpt": "#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}",
+      "source_hash": "cf2eec6ba785"
+    },
+    {
+      "anchor_name": "cuda_cu",
+      "region_role": "helper",
+      "start_line": 49,
+      "end_line": 55,
+      "source_excerpt": "#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.",
+      "source_hash": "244009a8eb21"
+    },
+    {
+      "anchor_name": "init_body",
+      "region_role": "init",
+      "start_line": 65,
+      "end_line": 69,
+      "source_excerpt": "self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding)\nself.min_value = min_value\nself.divisor = divisor",
+      "source_hash": "fc04c4d80636"
+    },
+    {
+      "anchor_name": "forward_stmt_1",
+      "region_role": "forward",
+      "start_line": 72,
+      "end_line": 76,
+      "source_excerpt": "# Baseline fallback keeps the official PyTorch forward path.\n# After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\nx = self.conv_transpose(x)",
+      "source_hash": "e02149985fc6"
+    },
+    {
+      "anchor_name": "forward_stmt_2",
+      "region_role": "forward",
+      "start_line": 77,
+      "end_line": 79,
+      "source_excerpt": "x = torch.clamp(x, min=self.min_value)",
+      "source_hash": "9585d171d9ad"
+    },
+    {
+      "anchor_name": "forward_stmt_3",
+      "region_role": "forward",
+      "start_line": 80,
+      "end_line": 82,
+      "source_excerpt": "x = x / self.divisor",
+      "source_hash": "83330fa9a787"
+    },
+    {
+      "anchor_name": "forward_stmt_4",
+      "region_role": "forward",
+      "start_line": 83,
+      "end_line": 85,
+      "source_excerpt": "return x",
+      "source_hash": "03c387736bb5"
+    }
+  ],
+  "nodes": {
+    "root": {
+      "node_id": "root",
+      "parent_id": null,
+      "depth": 0,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p100_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// Add pybind exports for custom CUDA entrypoints here.\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n\n// Add CUDA kernels and exported wrapper functions here.\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a transposed 3D convolution, clamps the output to a minimum value, \n        and then divides the result by a constant.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, min_value, divisor):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding)\n        self.min_value = min_value\n        self.divisor = divisor\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = torch.clamp(x, min=self.min_value)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x / self.divisor\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "root",
+      "child_ids": [
+        "n1"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": null,
+      "plan_summary": null,
+      "anchor_edits": [],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0381,
+      "score": 0.0381,
+      "logs": [
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=193198",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/10_L2_P100_Retry_P100_20260720_222416/eval_traces/20260720_222417_193171_ab8ce0f1_kernelbench_l2_100_100_convtranspose3d_clamp_min_divide"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.038,
+      "speedup": 0.9973753280839894,
+      "reference_runtimes": {
+        "torch_eager": 0.038
+      },
+      "speedups": {
+        "torch_eager": 0.9973753280839894
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": null,
+      "single_change_focus": null,
+      "mutation_family": null,
+      "target_metric": null
+    },
+    "n1": {
+      "node_id": "n1",
+      "parent_id": "root",
+      "depth": 1,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p100_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\ntorch::Tensor clamp_div(torch::Tensor x, double min_value, double divisor);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"clamp_div\", &clamp_div, \"Fused clamp(min) then divide (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n__global__ void clamp_div_kernel_f4(\n    float4* __restrict__ out,\n    const float4* __restrict__ in,\n    int64_t n4,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n4) {\n        float4 v = __ldg(in + idx);\n        v.x = fmaxf(v.x, min_val) * inv_div;\n        v.y = fmaxf(v.y, min_val) * inv_div;\n        v.z = fmaxf(v.z, min_val) * inv_div;\n        v.w = fmaxf(v.w, min_val) * inv_div;\n        out[idx] = v;\n    }\n}\n\n__global__ void clamp_div_kernel_scalar(\n    float* __restrict__ out,\n    const float* __restrict__ in,\n    int64_t n,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n) {\n        out[idx] = fmaxf(__ldg(in + idx), min_val) * inv_div;\n    }\n}\n\ntorch::Tensor clamp_div(torch::Tensor x, double min_value, double divisor) {\n    TORCH_CHECK(x.device().is_cuda(), \"clamp_div: input must be on CUDA\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"clamp_div: only float32 supported\");\n    if (!x.is_contiguous()) {\n        x = x.contiguous();\n    }\n    auto output = torch::empty_like(x);\n    int64_t n = x.numel();\n    float min_val = static_cast<float>(min_value);\n    float inv_div = static_cast<float>(1.0 / divisor);\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n    const int threads = 256;\n    int64_t n4 = n / 4;\n    int64_t tail = n % 4;\n    if (n4 > 0) {\n        int64_t blocks = (n4 + threads - 1) / threads;\n        clamp_div_kernel_f4<<<blocks, threads, 0, stream>>>(\n            reinterpret_cast<float4*>(output.data_ptr<float>()),\n            reinterpret_cast<const float4*>(x.data_ptr<float>()),\n            n4, min_val, inv_div\n        );\n    }\n    if (tail > 0) {\n        int64_t offset = n4 * 4;\n        int64_t blocks = (tail + threads - 1) / threads;\n        clamp_div_kernel_scalar<<<blocks, threads, 0, stream>>>(\n            output.data_ptr<float>() + offset,\n            x.data_ptr<float>() + offset,\n            tail, min_val, inv_div\n        );\n    }\n    return output;\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a transposed 3D convolution, clamps the output to a minimum value, \n        and then divides the result by a constant.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, min_value, divisor):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding)\n        self.min_value = min_value\n        self.divisor = divisor\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        x = _stark_get_extension().clamp_div(x, float(self.min_value), float(self.divisor))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_02",
+      "plan_summary": "Keep `nn.ConvTranspose3d` on the existing cuDNN path and fuse the post-conv `clamp(min)` plus divide-by-constant into one custom CUDA kernel launched from the forward path, so the large 3D output tensor is read and written only once after convolution.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the stub with a C++ binding that declares `torch::Tensor clamp_div(torch::Tensor x, double min_value, double divisor);` and exports it via pybind11 as `m.def(\"clamp_div\", &clamp_div, \"Fused clamp(min) then divide (CUDA)\");`. Do not add unrelated helpers or change module naming.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the stub with a CUDA implementation of `clamp_div`. Include ATen/CUDA headers needed for tensor checks and current stream access. Implement a flat 1-D CUDA kernel over contiguous float tensors that computes `out[i] = fmaxf(in[i], min_value) / divisor` (or multiply by a host-computed reciprocal inside the wrapper), writing to a new `torch::empty_like(x)` output tensor. In the wrapper, validate CUDA device, float32 dtype, and contiguity; if `x` is non-contiguous, make a contiguous copy before launching. Use 256 threads per block, launch on the current CUDA stream, and return the output tensor. Keep the implementation scoped to this exported function only.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the clamp statement with a call into the compiled extension on the optimized path: `x = _stark_get_extension().clamp_div(x, float(self.min_value), float(self.divisor))`. This call should subsume both the clamp and divide operations, so no separate PyTorch clamp remains here.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace the divide statement with a no-op placeholder such as `x = x` so the scaffold stays structurally intact while avoiding a second post-op pass after the fused extension call in the previous anchor.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.0312,
+      "score": 0.0312,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=195335",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/10_L2_P100_Retry_P100_20260720_222416/eval_traces/20260720_222808_193171_bca74363_kernelbench_l2_100_100_convtranspose3d_clamp_min_divide"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0381,
+      "speedup": 1.2211538461538463,
+      "reference_runtimes": {
+        "torch_eager": 0.0381
+      },
+      "speedups": {
+        "torch_eager": 1.2211538461538463
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Because the workload is memory-bound, replacing separate `torch.clamp` and division passes with one fused CUDA kernel will reduce global-memory traffic and kernel-launch overhead enough to improve total forward latency without touching convolution semantics.",
+      "single_change_focus": "Implement and call one fused CUDA post-op kernel for `clamp(min) / divisor` on the convolution output.",
+      "mutation_family": "fused_postop_kernel",
+      "target_metric": "speedup"
+    },
+    "n2": {
+      "node_id": "n2",
+      "parent_id": "n1",
+      "depth": 2,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p100_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double divisor);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"clamp_div_inplace\", &clamp_div_inplace, \"Fused in-place clamp(min) then divide (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n__global__ void clamp_div_inplace_kernel_f4(\n    float4* __restrict__ data,\n    int64_t n4,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n4) {\n        float4 v = data[idx];\n        v.x = fmaxf(v.x, min_val) * inv_div;\n        v.y = fmaxf(v.y, min_val) * inv_div;\n        v.z = fmaxf(v.z, min_val) * inv_div;\n        v.w = fmaxf(v.w, min_val) * inv_div;\n        data[idx] = v;\n    }\n}\n\n__global__ void clamp_div_inplace_kernel_scalar(\n    float* __restrict__ data,\n    int64_t n,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n) {\n        data[idx] = fmaxf(data[idx], min_val) * inv_div;\n    }\n}\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double divisor) {\n    TORCH_CHECK(x.device().is_cuda(), \"clamp_div_inplace: input must be on CUDA\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"clamp_div_inplace: only float32 supported\");\n    TORCH_CHECK(x.is_contiguous(), \"clamp_div_inplace: input must be contiguous\");\n    int64_t n = x.numel();\n    float min_val = static_cast<float>(min_value);\n    float inv_div = static_cast<float>(1.0 / divisor);\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n    const int threads = 256;\n    int64_t n4 = n / 4;\n    int64_t tail = n % 4;\n    if (n4 > 0) {\n        int64_t blocks = (n4 + threads - 1) / threads;\n        clamp_div_inplace_kernel_f4<<<blocks, threads, 0, stream>>>(\n            reinterpret_cast<float4*>(x.data_ptr<float>()),\n            n4, min_val, inv_div\n        );\n    }\n    if (tail > 0) {\n        int64_t offset = n4 * 4;\n        int64_t blocks = (tail + threads - 1) / threads;\n        clamp_div_inplace_kernel_scalar<<<blocks, threads, 0, stream>>>(\n            x.data_ptr<float>() + offset,\n            tail, min_val, inv_div\n        );\n    }\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a transposed 3D convolution, clamps the output to a minimum value, \n        and then divides the result by a constant.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, min_value, divisor):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding)\n        self.min_value = min_value\n        self.divisor = divisor\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not x.is_contiguous():\n            x = x.contiguous()\n        _stark_get_extension().clamp_div_inplace(x, float(self.min_value), float(self.divisor))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n3",
+        "n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Refine the winning fused post-op path by changing it from out-of-place to in-place so the conv output is read once, transformed in registers, and written back to the same buffer without allocating or filling a second tensor.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the exported declaration and pybind binding so the extension exposes a single in-place function `void clamp_div_inplace(torch::Tensor x, double min_value, double divisor);` and binds it as `clamp_div_inplace`. Do not add unrelated exports.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current out-of-place implementation with an in-place CUDA implementation. Keep CUDA/ATen includes, but define kernels that take only a mutable float or float4 pointer plus element count, `min_val`, and `inv_div`, and update `x` in place with `fmaxf(val, min_val) * inv_div`. In the wrapper `clamp_div_inplace`, validate CUDA + float32, make `x` contiguous only if required by reassigning a local contiguous tensor and then copying back only if a contiguous copy was needed, otherwise operate directly on `x`; launch a vectorized `float4` kernel for the aligned bulk and a scalar kernel for the tail; return `void` from the C++ entrypoint instead of allocating `torch::empty_like(x)`.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the current assignment with an in-place extension call: `_stark_get_extension().clamp_div_inplace(x, float(self.min_value), float(self.divisor))` and leave `x` as the tensor to be returned by the existing downstream statements.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.030699999999999998,
+      "score": 0.030699999999999998,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "normalized_python_region_indent:forward_stmt_2",
+        "applied_region_patch:forward_stmt_2:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=195682",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/10_L2_P100_Retry_P100_20260720_222416/eval_traces/20260720_223000_193171_1fd543bc_kernelbench_l2_100_100_convtranspose3d_clamp_min_divide"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0381,
+      "speedup": 1.241042345276873,
+      "reference_runtimes": {
+        "torch_eager": 0.0381
+      },
+      "speedups": {
+        "torch_eager": 1.241042345276873
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Because Nsight showed a memory-bound path and the current fused kernel still allocates `empty_like(x)` and writes a separate output tensor, converting the fused post-op to in-place will reduce DRAM traffic and allocator overhead enough to improve end-to-end latency.",
+      "single_change_focus": "Convert the fused `clamp_div` CUDA extension from out-of-place to in-place and invoke it without creating a new tensor.",
+      "mutation_family": "inplace_postop",
+      "target_metric": "speedup"
+    },
+    "n3": {
+      "node_id": "n3",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p100_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"clamp_div_inplace\", &clamp_div_inplace, \"Fused in-place clamp(min) then multiply by reciprocal (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n__global__ void clamp_div_inplace_kernel_f4(\n    float4* __restrict__ data,\n    int64_t n4,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n4) {\n        float4 v = data[idx];\n        v.x = fmaxf(v.x, min_val) * inv_div;\n        v.y = fmaxf(v.y, min_val) * inv_div;\n        v.z = fmaxf(v.z, min_val) * inv_div;\n        v.w = fmaxf(v.w, min_val) * inv_div;\n        data[idx] = v;\n    }\n}\n\n__global__ void clamp_div_inplace_kernel_scalar(\n    float* __restrict__ data,\n    int64_t n,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n) {\n        data[idx] = fmaxf(data[idx], min_val) * inv_div;\n    }\n}\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div) {\n    TORCH_CHECK(x.device().is_cuda(), \"clamp_div_inplace: input must be on CUDA\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"clamp_div_inplace: only float32 supported\");\n    TORCH_CHECK(x.is_contiguous(), \"clamp_div_inplace: input must be contiguous\");\n    int64_t n = x.numel();\n    float min_val = static_cast<float>(min_value);\n    float inv_d = static_cast<float>(inv_div);\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n    const int threads = 256;\n    int64_t n4 = n / 4;\n    int64_t tail = n % 4;\n    if (n4 > 0) {\n        int64_t blocks = (n4 + threads - 1) / threads;\n        clamp_div_inplace_kernel_f4<<<blocks, threads, 0, stream>>>(\n            reinterpret_cast<float4*>(x.data_ptr<float>()),\n            n4, min_val, inv_d\n        );\n    }\n    if (tail > 0) {\n        int64_t offset = n4 * 4;\n        int64_t blocks = (tail + threads - 1) / threads;\n        clamp_div_inplace_kernel_scalar<<<blocks, threads, 0, stream>>>(\n            x.data_ptr<float>() + offset,\n            tail, min_val, inv_d\n        );\n    }\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a transposed 3D convolution, clamps the output to a minimum value, \n        and then divides the result by a constant.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, min_value, divisor):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding)\n        self.min_value = min_value\n        self.divisor = divisor\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not x.is_contiguous():\n            x = x.contiguous()\n        _stark_get_extension().clamp_div_inplace(x, float(self.min_value), float(1.0 / self.divisor))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Refine the working in-place fused post-op by removing per-launch reciprocal computation from the CUDA wrapper and passing a precomputed inverse divisor directly into the extension call.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the exported function declaration and pybind binding so the extension entrypoint remains `clamp_div_inplace` but now takes `(torch::Tensor x, double min_value, double inv_div)` instead of a divisor argument.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the wrapper signature to `void clamp_div_inplace(torch::Tensor x, double min_value, double inv_div)` and remove the local `1.0 / divisor` computation; cast the incoming reciprocal directly to `float inv_div` and pass it unchanged into the existing vector/scalar kernels. Do not alter kernel bodies, launch geometry, contiguity checks, or in-place writes.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the extension call so it still ensures contiguity, then invokes `_stark_get_extension().clamp_div_inplace(x, float(self.min_value), float(1.0 / self.divisor))` instead of passing `self.divisor` directly.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.030699999999999998,
+      "score": 0.030699999999999998,
+      "logs": [
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "normalized_python_region_indent:forward_stmt_2",
+        "applied_region_patch:forward_stmt_2:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=196094",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/10_L2_P100_Retry_P100_20260720_222416/eval_traces/20260720_223210_193171_6fad0033_kernelbench_l2_100_100_convtranspose3d_clamp_min_divide"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.038,
+      "speedup": 1.237785016286645,
+      "reference_runtimes": {
+        "torch_eager": 0.038
+      },
+      "speedups": {
+        "torch_eager": 1.237785016286645
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Passing `inv_div` from Python into the existing in-place fused kernel removes the wrapper-side division and simplifies launch-time setup enough to yield a measurable incremental speedup while preserving the champion kernel structure.",
+      "single_change_focus": "Change the in-place extension API from `(x, min_value, divisor)` to `(x, min_value, inv_div)` and update the wrapper to use the provided reciprocal directly.",
+      "mutation_family": "api_reciprocal",
+      "target_metric": "speedup"
+    },
+    "n4": {
+      "node_id": "n4",
+      "parent_id": "n2",
+      "depth": 3,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p100_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double divisor);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"clamp_div_inplace\", &clamp_div_inplace, \"Fused in-place clamp(min) then divide (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n__global__ void clamp_div_inplace_kernel_f4(\n    float4* __restrict__ data,\n    int64_t n4,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    int64_t stride = (int64_t)blockDim.x * gridDim.x;\n    int64_t i = idx;\n    // Grid-stride loop: process 2 consecutive float4 packs per iteration\n    for (; i + stride < n4; i += stride * 2) {\n        float4 v0 = data[i];\n        float4 v1 = data[i + stride];\n        v0.x = fmaxf(v0.x, min_val) * inv_div;\n        v0.y = fmaxf(v0.y, min_val) * inv_div;\n        v0.z = fmaxf(v0.z, min_val) * inv_div;\n        v0.w = fmaxf(v0.w, min_val) * inv_div;\n        v1.x = fmaxf(v1.x, min_val) * inv_div;\n        v1.y = fmaxf(v1.y, min_val) * inv_div;\n        v1.z = fmaxf(v1.z, min_val) * inv_div;\n        v1.w = fmaxf(v1.w, min_val) * inv_div;\n        data[i] = v0;\n        data[i + stride] = v1;\n    }\n    // Handle remaining single pack if any\n    if (i < n4) {\n        float4 v = data[i];\n        v.x = fmaxf(v.x, min_val) * inv_div;\n        v.y = fmaxf(v.y, min_val) * inv_div;\n        v.z = fmaxf(v.z, min_val) * inv_div;\n        v.w = fmaxf(v.w, min_val) * inv_div;\n        data[i] = v;\n    }\n}\n\n__global__ void clamp_div_inplace_kernel_scalar(\n    float* __restrict__ data,\n    int64_t n,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n) {\n        data[idx] = fmaxf(data[idx], min_val) * inv_div;\n    }\n}\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double divisor) {\n    TORCH_CHECK(x.device().is_cuda(), \"clamp_div_inplace: input must be on CUDA\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"clamp_div_inplace: only float32 supported\");\n    TORCH_CHECK(x.is_contiguous(), \"clamp_div_inplace: input must be contiguous\");\n    int64_t n = x.numel();\n    float min_val = static_cast<float>(min_value);\n    float inv_div = static_cast<float>(1.0 / divisor);\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n    const int threads = 256;\n    int64_t n4 = n / 4;\n    int64_t tail = n % 4;\n    if (n4 > 0) {\n        int64_t blocks = (n4 + threads - 1) / threads;\n        clamp_div_inplace_kernel_f4<<<blocks, threads, 0, stream>>>(\n            reinterpret_cast<float4*>(x.data_ptr<float>()),\n            n4, min_val, inv_div\n        );\n    }\n    if (tail > 0) {\n        int64_t offset = n4 * 4;\n        int64_t blocks = (tail + threads - 1) / threads;\n        clamp_div_inplace_kernel_scalar<<<blocks, threads, 0, stream>>>(\n            x.data_ptr<float>() + offset,\n            tail, min_val, inv_div\n        );\n    }\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a transposed 3D convolution, clamps the output to a minimum value, \n        and then divides the result by a constant.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, min_value, divisor):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding)\n        self.min_value = min_value\n        self.divisor = divisor\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not x.is_contiguous():\n            x = x.contiguous()\n        _stark_get_extension().clamp_div_inplace(x, float(self.min_value), float(self.divisor))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Refine the existing fused in-place post-op kernel rather than changing the conv path: keep the winning in-place clamp/div structure, but make the CUDA kernel process multiple vector packs per thread with a grid-stride loop to reduce indexing overhead and better saturate memory bandwidth.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current CUDA helper with the same exported function name `clamp_div_inplace(torch::Tensor x, double min_value, double divisor)` but update the implementation as follows: keep the float32/CUDA/contiguous checks and `inv_div = 1.0 / divisor`; replace the current one-pack-per-thread `clamp_div_inplace_kernel_f4` with a grid-stride kernel over `float4*` where each thread processes multiple `float4` elements in a `for (int64_t i = idx; i < n4; i += stride)` loop, and unroll the body so each iteration handles 2 consecutive `float4` packs when available before advancing by `stride * 2`; keep a simple scalar tail kernel for `n % 4`; launch only the vector kernel when `n4 > 0` and only the scalar tail kernel when `tail > 0`; preserve the current stream acquisition with `at::cuda::getCurrentCUDAStream()` and the same function signature and behavior.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.030699999999999998,
+      "score": 0.030699999999999998,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=196693",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/10_L2_P100_Retry_P100_20260720_222416/eval_traces/20260720_223501_193171_457d3956_kernelbench_l2_100_100_convtranspose3d_clamp_min_divide"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.038,
+      "speedup": 1.237785016286645,
+      "reference_runtimes": {
+        "torch_eager": 0.038
+      },
+      "speedups": {
+        "torch_eager": 1.237785016286645
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "best_lineage_push",
+      "performance_hypothesis": "If the in-place fused kernel is rewritten so each thread handles multiple `float4` packs via a grid-stride loop, the kernel will spend less time on launch/index overhead and achieve slightly better effective DRAM throughput on the large output tensor, improving end-to-end latency without changing semantics.",
+      "single_change_focus": "Change only the CUDA implementation so the vectorized path uses a grid-stride loop with multi-pack work per thread, while keeping the same exported function and Python call site.",
+      "mutation_family": "vector_gridstride_refine",
+      "target_metric": "speedup"
+    },
+    "n5": {
+      "node_id": "n5",
+      "parent_id": "n3",
+      "depth": 4,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p100_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"clamp_div_inplace\", &clamp_div_inplace, \"Fused in-place clamp(min) then multiply by reciprocal (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n__global__ void clamp_div_inplace_kernel_f4(\n    float4* __restrict__ data,\n    int64_t n4,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n4) {\n        float4 v = data[idx];\n        v.x = fmaxf(v.x, min_val) * inv_div;\n        v.y = fmaxf(v.y, min_val) * inv_div;\n        v.z = fmaxf(v.z, min_val) * inv_div;\n        v.w = fmaxf(v.w, min_val) * inv_div;\n        data[idx] = v;\n    }\n}\n\n__global__ void clamp_div_inplace_kernel_scalar(\n    float* __restrict__ data,\n    int64_t n,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n) {\n        data[idx] = fmaxf(data[idx], min_val) * inv_div;\n    }\n}\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div) {\n    TORCH_CHECK(x.device().is_cuda(), \"clamp_div_inplace: input must be on CUDA\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"clamp_div_inplace: only float32 supported\");\n    TORCH_CHECK(x.is_contiguous(), \"clamp_div_inplace: input must be contiguous\");\n    int64_t n = x.numel();\n    float min_val = static_cast<float>(min_value);\n    float inv_d = static_cast<float>(inv_div);\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n    const int threads = 128;\n    int64_t n4 = n / 4;\n    int64_t tail = n % 4;\n    if (n4 > 0) {\n        int64_t blocks = (n4 + threads - 1) / threads;\n        clamp_div_inplace_kernel_f4<<<blocks, threads, 0, stream>>>(\n            reinterpret_cast<float4*>(x.data_ptr<float>()),\n            n4, min_val, inv_d\n        );\n    }\n    if (tail > 0) {\n        int64_t offset = n4 * 4;\n        int64_t blocks = (tail + threads - 1) / threads;\n        clamp_div_inplace_kernel_scalar<<<blocks, threads, 0, stream>>>(\n            x.data_ptr<float>() + offset,\n            tail, min_val, inv_d\n        );\n    }\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a transposed 3D convolution, clamps the output to a minimum value, \n        and then divides the result by a constant.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, min_value, divisor):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding)\n        self.min_value = min_value\n        self.divisor = divisor\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not x.is_contiguous():\n            x = x.contiguous()\n        _stark_get_extension().clamp_div_inplace(x, float(self.min_value), float(1.0 / self.divisor))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_root"
+      ],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Refine the existing fused in-place post-op kernel with a smaller launch shape tuned for this memory-bound epilogue, while keeping the current conv path and extension API structure intact.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "In the existing `clamp_div_inplace` wrapper, replace the line `const int threads = 256;` with `const int threads = 128;` and leave the rest of the kernels, API, vectorized path, and tail handling unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.030600000000000002,
+      "score": 0.030600000000000002,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=197105",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/10_L2_P100_Retry_P100_20260720_222416/eval_traces/20260720_223713_193171_25dcb5ab_kernelbench_l2_100_100_convtranspose3d_clamp_min_divide"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.038,
+      "speedup": 1.241830065359477,
+      "reference_runtimes": {
+        "torch_eager": 0.038
+      },
+      "speedups": {
+        "torch_eager": 1.241830065359477
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Because the fused post-op is a simple bandwidth-bound epilogue, reducing the block size from 256 to 128 threads in the CUDA launcher can improve effective memory throughput and scheduling on this workload by lowering per-block resource pressure without altering algorithmic structure.",
+      "single_change_focus": "Change only the CUDA launch configuration in the fused in-place kernel wrapper from 256 threads per block to 128 threads per block, keeping both vectorized and scalar kernels otherwise unchanged.",
+      "mutation_family": "launch_config_tune",
+      "target_metric": "speedup"
+    },
+    "phase2_root": {
+      "node_id": "phase2_root",
+      "parent_id": "n5",
+      "depth": 5,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p100_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"clamp_div_inplace\", &clamp_div_inplace, \"Fused in-place clamp(min) then multiply by reciprocal (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n__global__ void clamp_div_inplace_kernel_f4(\n    float4* __restrict__ data,\n    int64_t n4,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n4) {\n        float4 v = data[idx];\n        v.x = fmaxf(v.x, min_val) * inv_div;\n        v.y = fmaxf(v.y, min_val) * inv_div;\n        v.z = fmaxf(v.z, min_val) * inv_div;\n        v.w = fmaxf(v.w, min_val) * inv_div;\n        data[idx] = v;\n    }\n}\n\n__global__ void clamp_div_inplace_kernel_scalar(\n    float* __restrict__ data,\n    int64_t n,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n) {\n        data[idx] = fmaxf(data[idx], min_val) * inv_div;\n    }\n}\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div) {\n    TORCH_CHECK(x.device().is_cuda(), \"clamp_div_inplace: input must be on CUDA\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"clamp_div_inplace: only float32 supported\");\n    TORCH_CHECK(x.is_contiguous(), \"clamp_div_inplace: input must be contiguous\");\n    int64_t n = x.numel();\n    float min_val = static_cast<float>(min_value);\n    float inv_d = static_cast<float>(inv_div);\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n    const int threads = 128;\n    int64_t n4 = n / 4;\n    int64_t tail = n % 4;\n    if (n4 > 0) {\n        int64_t blocks = (n4 + threads - 1) / threads;\n        clamp_div_inplace_kernel_f4<<<blocks, threads, 0, stream>>>(\n            reinterpret_cast<float4*>(x.data_ptr<float>()),\n            n4, min_val, inv_d\n        );\n    }\n    if (tail > 0) {\n        int64_t offset = n4 * 4;\n        int64_t blocks = (tail + threads - 1) / threads;\n        clamp_div_inplace_kernel_scalar<<<blocks, threads, 0, stream>>>(\n            x.data_ptr<float>() + offset,\n            tail, min_val, inv_d\n        );\n    }\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a transposed 3D convolution, clamps the output to a minimum value, \n        and then divides the result by a constant.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, min_value, divisor):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding)\n        self.min_value = min_value\n        self.divisor = divisor\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not x.is_contiguous():\n            x = x.contiguous()\n        _stark_get_extension().clamp_div_inplace(x, float(self.min_value), float(1.0 / self.divisor))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "phase2_root",
+      "child_ids": [
+        "phase2_n1",
+        "phase2_n4"
+      ],
+      "selected_count": 2,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Refine the existing fused in-place post-op kernel with a smaller launch shape tuned for this memory-bound epilogue, while keeping the current conv path and extension API structure intact.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "In the existing `clamp_div_inplace` wrapper, replace the line `const int threads = 256;` with `const int threads = 128;` and leave the rest of the kernels, API, vectorized path, and tail handling unchanged.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.030600000000000002,
+      "score": 0.030600000000000002,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=197105",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/10_L2_P100_Retry_P100_20260720_222416/eval_traces/20260720_223713_193171_25dcb5ab_kernelbench_l2_100_100_convtranspose3d_clamp_min_divide"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "exploit_best_score",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.038,
+      "speedup": 1.241830065359477,
+      "reference_runtimes": {
+        "torch_eager": 0.038
+      },
+      "speedups": {
+        "torch_eager": 1.241830065359477
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "mutate_champion",
+      "performance_hypothesis": "Because the fused post-op is a simple bandwidth-bound epilogue, reducing the block size from 256 to 128 threads in the CUDA launcher can improve effective memory throughput and scheduling on this workload by lowering per-block resource pressure without altering algorithmic structure.",
+      "single_change_focus": "Change only the CUDA launch configuration in the fused in-place kernel wrapper from 256 threads per block to 128 threads per block, keeping both vectorized and scalar kernels otherwise unchanged.",
+      "mutation_family": "launch_config_tune",
+      "target_metric": "speedup"
+    },
+    "phase2_n1": {
+      "node_id": "phase2_n1",
+      "parent_id": "phase2_root",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p100_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// clamp_div_inplace: fused in-place clamp(min) then multiply by reciprocal.\n// Handles both contiguous (float4 fast path) and non-contiguous 5D strided tensors.\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"clamp_div_inplace\", &clamp_div_inplace, \"Fused in-place clamp(min) then multiply by reciprocal (CUDA, contiguous fast path + strided fallback)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n// Contiguous fast path: vectorized float4\n__global__ void clamp_div_inplace_kernel_f4(\n    float4* __restrict__ data,\n    int64_t n4,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n4) {\n        float4 v = data[idx];\n        v.x = fmaxf(v.x, min_val) * inv_div;\n        v.y = fmaxf(v.y, min_val) * inv_div;\n        v.z = fmaxf(v.z, min_val) * inv_div;\n        v.w = fmaxf(v.w, min_val) * inv_div;\n        data[idx] = v;\n    }\n}\n\n// Contiguous scalar tail kernel\n__global__ void clamp_div_inplace_kernel_scalar(\n    float* __restrict__ data,\n    int64_t n,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n) {\n        data[idx] = fmaxf(data[idx], min_val) * inv_div;\n    }\n}\n\n// Generic strided 5D kernel: decomposes logical index into (i0..i4) and computes\n// storage offset from per-dimension strides. Handles non-contiguous ConvTranspose3d output.\n__global__ void clamp_div_inplace_kernel_strided5d(\n    float* __restrict__ data,\n    int64_t n_total,\n    int64_t sz0, int64_t sz1, int64_t sz2, int64_t sz3, int64_t sz4,\n    int64_t st0, int64_t st1, int64_t st2, int64_t st3, int64_t st4,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n_total) {\n        int64_t tmp = idx;\n        int64_t i4 = tmp % sz4; tmp /= sz4;\n        int64_t i3 = tmp % sz3; tmp /= sz3;\n        int64_t i2 = tmp % sz2; tmp /= sz2;\n        int64_t i1 = tmp % sz1; tmp /= sz1;\n        int64_t i0 = tmp;\n        int64_t offset = i0*st0 + i1*st1 + i2*st2 + i3*st3 + i4*st4;\n        data[offset] = fmaxf(data[offset], min_val) * inv_div;\n    }\n}\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div) {\n    TORCH_CHECK(x.device().is_cuda(), \"clamp_div_inplace: input must be on CUDA\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"clamp_div_inplace: only float32 supported\");\n    float min_val = static_cast<float>(min_value);\n    float inv_d  = static_cast<float>(inv_div);\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n    const int threads = 128;\n    int64_t n = x.numel();\n\n    if (x.is_contiguous()) {\n        // Fast path: vectorized float4 + scalar tail\n        int64_t n4   = n / 4;\n        int64_t tail = n % 4;\n        if (n4 > 0) {\n            int64_t blocks = (n4 + threads - 1) / threads;\n            clamp_div_inplace_kernel_f4<<<blocks, threads, 0, stream>>>(\n                reinterpret_cast<float4*>(x.data_ptr<float>()),\n                n4, min_val, inv_d\n            );\n        }\n        if (tail > 0) {\n            clamp_div_inplace_kernel_scalar<<<1, threads, 0, stream>>>(\n                x.data_ptr<float>() + n4 * 4,\n                tail, min_val, inv_d\n            );\n        }\n    } else if (x.dim() == 5) {\n        // Strided path: operate directly on the ConvTranspose3d output without materializing a copy\n        int64_t sz0 = x.size(0),sz1 = x.size(1),   sz2 = x.size(2),   sz3 = x.size(3),   sz4 = x.size(4);\n        int64_t st0 = x.stride(0), st1 = x.stride(1), st2 = x.stride(2), st3 = x.stride(3), st4 = x.stride(4);\n        int64_t blocks = (n + threads - 1) / threads;\n        clamp_div_inplace_kernel_strided5d<<<blocks, threads, 0, stream>>>(\n            x.data_ptr<float>(),\n            n, sz0, sz1, sz2, sz3, sz4,\n            st0, st1, st2, st3, st4,\n            min_val, inv_d\n        );\n    } else {\n        // Rare fallback for unexpected non-5D non-contiguous layout: make contiguous, operate, copy back\n        auto xc = x.contiguous();\n        int64_t n4   = n / 4;\n        int64_t tail = n % 4;\n        if (n4 > 0) {\n            int64_t blocks = (n4 + threads - 1) / threads;\n            clamp_div_inplace_kernel_f4<<<blocks, threads, 0, stream>>>(\n                reinterpret_cast<float4*>(xc.data_ptr<float>()),\n                n4, min_val, inv_d\n            );\n        }\n        if (tail > 0) {\n            clamp_div_inplace_kernel_scalar<<<1, threads, 0, stream>>>(\n                xc.data_ptr<float>() + n4 * 4,\n                tail, min_val, inv_d\n            );\n        }\n        x.copy_(xc);\n    }\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a transposed 3D convolution, clamps the output to a minimum value, \n        and then divides the result by a constant.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, min_value, divisor):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding)\n        self.min_value = min_value\n        self.divisor = divisor\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _stark_get_extension().clamp_div_inplace(x, float(self.min_value), float(1.0 / self.divisor))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n2"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_01",
+      "plan_summary": "Keep cuDNN ConvTranspose3d as-is, but remove the explicit `x.contiguous()` clone by extending the fused in-place clamp/div CUDA epilogue to operate on the actual 5D output strides with a contiguous fast path and a generic strided fallback.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cpp",
+          "instruction": "Replace the extension declaration/export so `clamp_div_inplace` accepts `(Tensor x, double min_value, double inv_div)` as before but is documented and wired for both contiguous and generic-strided CUDA handling internally; keep the Python-visible function name unchanged.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the CUDA implementation with a dual-path wrapper: keep the current contiguous float4/scalar in-place kernel as the fast path, and add a generic strided 5D in-place kernel that uses `x.size(0..4)` and `x.stride(0..4)` to map each logical element `(n,c,d,h,w)` to storage without requiring `x.is_contiguous()`. Dispatch to the contiguous path when `x.is_contiguous()`, otherwise launch the strided kernel over `x.numel()` logical elements. Retain float32-only checks and in-place semantics.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the forward epilogue call site to remove the `if not x.is_contiguous(): x = x.contiguous()` fallback and invoke `_stark_get_extension().clamp_div_inplace(x, float(self.min_value), float(1.0 / self.divisor))` directly on the convolution output.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.030699999999999998,
+      "score": 0.030699999999999998,
+      "logs": [
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:cuda_cpp:replace",
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=199044",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/10_L2_P100_Retry_P100_20260720_222416/eval_traces/20260720_224310_193171_9cee5185_kernelbench_l2_100_100_convtranspose3d_clamp_min_divide"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.038,
+      "speedup": 1.237785016286645,
+      "reference_runtimes": {
+        "torch_eager": 0.038
+      },
+      "speedups": {
+        "torch_eager": 1.237785016286645
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "The current forward still pays a large bandwidth cost when `x = x.contiguous()` materializes a dense copy before the in-place epilogue; letting the CUDA epilogue consume the ConvTranspose3d output directly via sizes/strides should remove that extra memory pass and outperform more micro-tuning of the existing contiguous-only kernel.",
+      "single_change_focus": "Teach the fused `clamp_div_inplace` extension to accept 5D sizes/strides and process non-contiguous ConvTranspose3d outputs directly so the Python forward no longer forces `x.contiguous()`.",
+      "mutation_family": "strided_epilogue_dispatch",
+      "target_metric": "speedup"
+    },
+    "phase2_n2": {
+      "node_id": "phase2_n2",
+      "parent_id": "phase2_n1",
+      "depth": 7,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p100_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// clamp_div_inplace: fused in-place clamp(min) then multiply by reciprocal.\n// Handles both contiguous (float4 fast path) and non-contiguous 5D strided tensors.\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"clamp_div_inplace\", &clamp_div_inplace, \"Fused in-place clamp(min) then multiply by reciprocal (CUDA, contiguous fast path + strided fallback)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n// Contiguous fast path: vectorized float4\n__global__ void clamp_div_inplace_kernel_f4(\n    float4* __restrict__ data,\n    int64_t n4,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n4) {\n        float4 v = data[idx];\n        v.x = fmaxf(v.x, min_val) * inv_div;\n        v.y = fmaxf(v.y, min_val) * inv_div;\n        v.z = fmaxf(v.z, min_val) * inv_div;\n        v.w = fmaxf(v.w, min_val) * inv_div;\n        data[idx] = v;\n    }\n}\n\n// Contiguous scalar tail kernel\n__global__ void clamp_div_inplace_kernel_scalar(\n    float* __restrict__ data,\n    int64_t n,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n) {\n        data[idx] = fmaxf(data[idx], min_val) * inv_div;\n    }\n}\n\n// Generic strided 5D kernel: decomposes logical index into (i0..i4) and computes\n// storage offset from per-dimension strides. Handles non-contiguous ConvTranspose3d output.\n__global__ void clamp_div_inplace_kernel_strided5d(\n    float* __restrict__ data,\n    int64_t n_total,\n    int64_t sz0, int64_t sz1, int64_t sz2, int64_t sz3, int64_t sz4,\n    int64_t st0, int64_t st1, int64_t st2, int64_t st3, int64_t st4,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n_total) {\n        int64_t tmp = idx;\n        int64_t i4 = tmp % sz4; tmp /= sz4;\n        int64_t i3 = tmp % sz3; tmp /= sz3;\n        int64_t i2 = tmp % sz2; tmp /= sz2;\n        int64_t i1 = tmp % sz1; tmp /= sz1;\n        int64_t i0 = tmp;\n        int64_t offset = i0*st0 + i1*st1 + i2*st2 + i3*st3 + i4*st4;\n        data[offset] = fmaxf(data[offset], min_val) * inv_div;\n    }\n}\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div) {\n    TORCH_CHECK(x.device().is_cuda(), \"clamp_div_inplace: input must be on CUDA\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"clamp_div_inplace: only float32 supported\");\n    float min_val = static_cast<float>(min_value);\n    float inv_d  = static_cast<float>(inv_div);\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n    const int threads = 128;\n    int64_t n = x.numel();\n\n    if (x.is_contiguous()) {\n        // Fast path: vectorized float4 + scalar tail\n        int64_t n4   = n / 4;\n        int64_t tail = n % 4;\n        if (n4 > 0) {\n            int64_t blocks = (n4 + threads - 1) / threads;\n            clamp_div_inplace_kernel_f4<<<blocks, threads, 0, stream>>>(\n                reinterpret_cast<float4*>(x.data_ptr<float>()),\n                n4, min_val, inv_d\n            );\n        }\n        if (tail > 0) {\n            clamp_div_inplace_kernel_scalar<<<1, threads, 0, stream>>>(\n                x.data_ptr<float>() + n4 * 4,\n                tail, min_val, inv_d\n            );\n        }\n    } else if (x.dim() == 5) {\n        // Strided path: operate directly on the ConvTranspose3d output without materializing a copy\n        int64_t sz0 = x.size(0),sz1 = x.size(1),   sz2 = x.size(2),   sz3 = x.size(3),   sz4 = x.size(4);\n        int64_t st0 = x.stride(0), st1 = x.stride(1), st2 = x.stride(2), st3 = x.stride(3), st4 = x.stride(4);\n        int64_t blocks = (n + threads - 1) / threads;\n        clamp_div_inplace_kernel_strided5d<<<blocks, threads, 0, stream>>>(\n            x.data_ptr<float>(),\n            n, sz0, sz1, sz2, sz3, sz4,\n            st0, st1, st2, st3, st4,\n            min_val, inv_d\n        );\n    } else {\n        // Rare fallback for unexpected non-5D non-contiguous layout: make contiguous, operate, copy back\n        auto xc = x.contiguous();\n        int64_t n4   = n / 4;\n        int64_t tail = n % 4;\n        if (n4 > 0) {\n            int64_t blocks = (n4 + threads - 1) / threads;\n            clamp_div_inplace_kernel_f4<<<blocks, threads, 0, stream>>>(\n                reinterpret_cast<float4*>(xc.data_ptr<float>()),\n                n4, min_val, inv_d\n            );\n        }\n        if (tail > 0) {\n            clamp_div_inplace_kernel_scalar<<<1, threads, 0, stream>>>(\n                xc.data_ptr<float>() + n4 * 4,\n                tail, min_val, inv_d\n            );\n        }\n        x.copy_(xc);\n    }\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a transposed 3D convolution, clamps the output to a minimum value, \n        and then divides the result by a constant.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, min_value, divisor):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding)\n        self.min_value = min_value\n        self.divisor = divisor\n        self.conv_transpose = self.conv_transpose.to(memory_format=torch.contiguous_format)\n        torch.backends.cudnn.benchmark = True\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = x.contiguous()\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _stark_get_extension().clamp_div_inplace(x, float(self.min_value), float(1.0 / self.divisor))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n3"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_06",
+      "plan_summary": "Shift the next attempt away from the already-refined fused epilogue and target the profiled bottleneck instead: reduce or eliminate cuDNN's NHWC<->NCHW conversion overhead by biasing ConvTranspose3d toward contiguous NCHW execution and making the input layout explicit before the convolution.",
+      "anchor_edits": [
+        {
+          "anchor_name": "init_body",
+          "instruction": "Replace the init body with the current ConvTranspose3d construction plus stored constants, and append lightweight cuDNN/layout preferences: keep `self.conv_transpose = nn.ConvTranspose3d(...)`, `self.min_value = min_value`, and `self.divisor = divisor`; then add `self.conv_transpose = self.conv_transpose.to(memory_format=torch.contiguous_format)`, `torch.backends.cudnn.benchmark = True`, and `torch.backends.cuda.matmul.allow_tf32 = False` guarded only by CUDA availability if needed.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_1",
+          "instruction": "Replace the forward conv statement so it first ensures NCHW-contiguous input before the convolution, then runs the existing conv unchanged: `x = x.contiguous()` followed by `x = self.conv_transpose(x)`; do not alter the later fused clamp/div call.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.030699999999999998,
+      "score": 0.030699999999999998,
+      "logs": [
+        "normalized_python_region_indent:init_body",
+        "applied_region_patch:init_body:replace",
+        "normalized_python_region_indent:forward_stmt_1",
+        "applied_region_patch:forward_stmt_1:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=199527",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/10_L2_P100_Retry_P100_20260720_222416/eval_traces/20260720_224510_193171_f5d33322_kernelbench_l2_100_100_convtranspose3d_clamp_min_divide"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.038,
+      "speedup": 1.237785016286645,
+      "reference_runtimes": {
+        "torch_eager": 0.038
+      },
+      "speedups": {
+        "torch_eager": 1.237785016286645
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If ConvTranspose3d is steered toward a stable NCHW-contiguous path, cuDNN can avoid or reduce the expensive NHWC->NCHW conversion traffic that currently dominates memory bandwidth, yielding a larger runtime drop than further tuning the already-memory-bound epilogue kernel.",
+      "single_change_focus": "Bias the conv path toward contiguous NCHW by setting cuDNN benchmark/TF32 preferences in init and making the forward input explicitly contiguous before `self.conv_transpose(x)`.",
+      "mutation_family": "conv_layout_bias",
+      "target_metric": "speedup"
+    },
+    "phase2_n3": {
+      "node_id": "phase2_n3",
+      "parent_id": "phase2_n2",
+      "depth": 8,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p100_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// clamp_div_inplace: fused in-place clamp(min) then multiply by reciprocal.\n// Handles both contiguous (float4 fast path) and non-contiguous 5D strided tensors.\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"clamp_div_inplace\", &clamp_div_inplace, \"Fused in-place clamp(min) then multiply by reciprocal (CUDA, contiguous fast path + strided fallback)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n// Contiguous fast path: vectorized float4 with grid-stride double-buffer prefetch\n__global__ void clamp_div_inplace_kernel_f4(\n    float4* __restrict__ data,\n    int64_t n4,\n    float min_val,\n    float inv_div\n) {\n    const int64_t stride = (int64_t)blockDim.x * gridDim.x;\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n\n    if (idx >= n4) return;\n\n    // Prime the pipeline: load first element\n    float4 cur = __ldg(&data[idx]);\n\n    while (true) {\n        int64_t next_idx = idx + stride;\n        // Prefetch next before computing on cur to hide memory latency\n        float4 next;\n        bool has_next = (next_idx < n4);\n        if (has_next) {\n            next = __ldg(&data[next_idx]);\n        }\n        // Compute and store current\n        cur.x = fmaxf(cur.x, min_val) * inv_div;\n        cur.y = fmaxf(cur.y, min_val) * inv_div;\n        cur.z = fmaxf(cur.z, min_val) * inv_div;\n        cur.w = fmaxf(cur.w, min_val) * inv_div;\n        data[idx] = cur;\n\n        if (!has_next) break;\n        idx = next_idx;\n        cur = next;\n    }\n}\n\n// Contiguous scalar tail kernel\n__global__ void clamp_div_inplace_kernel_scalar(\n    float* __restrict__ data,\n    int64_t n,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n) {\n        data[idx] = fmaxf(__ldg(&data[idx]), min_val) * inv_div;\n    }\n}\n\n// Generic strided 5D kernel\n__global__ void clamp_div_inplace_kernel_strided5d(\n    float* __restrict__ data,\n    int64_t n_total,\n    int64_t sz0, int64_t sz1, int64_t sz2, int64_t sz3, int64_t sz4,\n    int64_t st0, int64_t st1, int64_t st2, int64_t st3, int64_t st4,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n_total) {\n        int64_t tmp = idx;\n        int64_t i4 = tmp % sz4; tmp /= sz4;\n        int64_t i3 = tmp % sz3; tmp /= sz3;\n        int64_t i2 = tmp % sz2; tmp /= sz2;\n        int64_t i1 = tmp % sz1; tmp /= sz1;\n        int64_t i0 = tmp;\n        int64_t offset = i0*st0 + i1*st1 + i2*st2 + i3*st3 + i4*st4;\n        data[offset] = fmaxf(data[offset], min_val) * inv_div;\n    }\n}\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div) {\n    TORCH_CHECK(x.device().is_cuda(), \"clamp_div_inplace: input must be on CUDA\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"clamp_div_inplace: only float32 supported\");\n    float min_val = static_cast<float>(min_value);\n    float inv_d  = static_cast<float>(inv_div);\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n    const int threads = 128;\n    int64_t n = x.numel();\n\n    if (x.is_contiguous()) {\n        int64_t n4   = n / 4;\n        int64_t tail = n % 4;\n        if (n4 > 0) {\n            // Cap grid to 4x SM count to guarantee multi-iteration work per thread\n            // and allow the prefetch pipeline to engage; fallback to exact ceil if small\n            int num_sms = 0;\n            cudaDeviceGetAttribute(&num_sms, cudaDevAttrMultiProcessorCount, x.device().index());\n            int64_t capped_blocks = (int64_t)num_sms * 4;\n            int64_t exact_blocks  = (n4 + threads - 1) / threads;\n            int64_t blocks = (capped_blocks < exact_blocks) ? capped_blocks : exact_blocks;\n            clamp_div_inplace_kernel_f4<<<blocks, threads, 0, stream>>>(\n                reinterpret_cast<float4*>(x.data_ptr<float>()),\n                n4, min_val, inv_d\n            );\n        }\n        if (tail > 0) {\n            clamp_div_inplace_kernel_scalar<<<1, threads, 0, stream>>>(\n                x.data_ptr<float>() + n4 * 4,\n                tail, min_val, inv_d\n            );\n        }\n    } else if (x.dim() == 5) {\n        int64_t sz0 = x.size(0), sz1 = x.size(1), sz2 = x.size(2), sz3 = x.size(3), sz4 = x.size(4);\n        int64_t st0 = x.stride(0), st1 = x.stride(1), st2 = x.stride(2), st3 = x.stride(3), st4 = x.stride(4);\n        int64_t blocks = (n + threads - 1) / threads;\n        clamp_div_inplace_kernel_strided5d<<<blocks, threads, 0, stream>>>(\n            x.data_ptr<float>(),\n            n, sz0, sz1, sz2, sz3, sz4,\n            st0, st1, st2, st3, st4,\n            min_val, inv_d\n        );\n    } else {\n        auto xc = x.contiguous();\n        int64_t n4   = n / 4;\n        int64_t tail = n % 4;\n        if (n4 > 0) {\n            int64_t blocks = (n4 + threads - 1) / threads;\n            clamp_div_inplace_kernel_f4<<<blocks, threads, 0, stream>>>(\n                reinterpret_cast<float4*>(xc.data_ptr<float>()),\n                n4, min_val, inv_d\n            );\n        }\n        if (tail > 0) {\n            clamp_div_inplace_kernel_scalar<<<1, threads, 0, stream>>>(\n                xc.data_ptr<float>() + n4 * 4,\n                tail, min_val, inv_d\n            );\n        }\n        x.copy_(xc);\n    }\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a transposed 3D convolution, clamps the output to a minimum value, \n        and then divides the result by a constant.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, min_value, divisor):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding)\n        self.min_value = min_value\n        self.divisor = divisor\n        self.conv_transpose = self.conv_transpose.to(memory_format=torch.contiguous_format)\n        torch.backends.cudnn.benchmark = True\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = x.contiguous()\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _stark_get_extension().clamp_div_inplace(x, float(self.min_value), float(1.0 / self.divisor))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [
+        "phase2_n5"
+      ],
+      "selected_count": 1,
+      "plan_strategy_name": "strategy_04",
+      "plan_summary": "Refine the current winning fused in-place post-op by adding a software-prefetch double-buffer pipeline inside the contiguous float4 kernel to better hide global-memory latency without changing the conv path, API, or launch shape.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the current contiguous fast-path kernel implementation so `clamp_div_inplace_kernel_f4` no longer handles only one `idx`; instead, keep the same function signature but implement a grid-stride loop over `n4` with `stride = (int64_t)blockDim.x * gridDim.x`. Load the first `float4 cur` for the starting `idx` if in range, then in each iteration compute `next_idx = idx + stride`; if `next_idx < n4`, prefetch `float4 next = data[next_idx]` before finishing math/store for `cur`; apply the same `fmaxf(...)*inv_div` transform to `cur`, store it back, then advance `idx = next_idx` and `cur = next`. Exit cleanly when no next element exists. Keep the launch wrapper at 128 threads and preserve the existing scalar tail kernel and call sites; only update the contiguous fast-path kernel body and, if needed, its launch block-count calculation to remain compatible with the new grid-stride loop.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.030899999999999997,
+      "score": 0.030899999999999997,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=199847",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/10_L2_P100_Retry_P100_20260720_222416/eval_traces/20260720_224647_193171_635da787_kernelbench_l2_100_100_convtranspose3d_clamp_min_divide"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": "explore_leaf",
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.038,
+      "speedup": 1.2297734627831716,
+      "reference_runtimes": {
+        "torch_eager": 0.038
+      },
+      "speedups": {
+        "torch_eager": 1.2297734627831716
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Adding a guarded one-iteration-ahead prefetch/double-buffer pattern to the contiguous float4 epilogue kernel will reduce memory-latency exposure from the observed long-scoreboard stalls and slightly improve throughput while keeping the same 128-thread launch and API.",
+      "single_change_focus": "Modify only the contiguous float4 CUDA kernel in `cuda_cu` to use a grid-stride loop with a register-resident current/next `float4` pipeline and guarded prefetch, while leaving wrapper behavior and scalar fallback intact.",
+      "mutation_family": "prefetch_pipeline",
+      "target_metric": "speedup"
+    },
+    "phase2_n4": {
+      "node_id": "phase2_n4",
+      "parent_id": "phase2_root",
+      "depth": 6,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p100_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"clamp_div_inplace\", &clamp_div_inplace, \"Fused in-place clamp(min) then multiply by reciprocal (CUDA)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n// Grid-stride float4 kernel with 2-pack unroll per loop iteration.\n// Each thread processes idx and idx+grid_stride per loop step to overlap\n// two independent load-use chains and hide long-scoreboard stalls.\n__global__ void clamp_div_inplace_kernel_f4(\n    float4* __restrict__ data,\n    int64_t n4,\n    float min_val,\n    float inv_div\n) {\n    int64_t base        = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    int64_t grid_stride = (int64_t)gridDim.x  * blockDim.x;\n\n    for (int64_t idx = base; idx < n4; idx += grid_stride * 2) {\n        // Pack 0\n        float4 v0 = __ldg(&data[idx]);\n        v0.x = fmaxf(v0.x, min_val) * inv_div;\n        v0.y = fmaxf(v0.y, min_val) * inv_div;\n        v0.z = fmaxf(v0.z, min_val) * inv_div;\n        v0.w = fmaxf(v0.w, min_val) * inv_div;\n        data[idx] = v0;\n\n        // Pack 1 (within same loop iteration, independent load chain)\n        int64_t idx2 = idx + grid_stride;\n        if (idx2 < n4) {\n            float4 v1 = __ldg(&data[idx2]);\n            v1.x = fmaxf(v1.x, min_val) * inv_div;\n            v1.y = fmaxf(v1.y, min_val) * inv_div;\n            v1.z = fmaxf(v1.z, min_val) * inv_div;\n            v1.w = fmaxf(v1.w, min_val) * inv_div;\n            data[idx2] = v1;\n        }\n    }\n}\n\n// Scalar tail kernel: handles remaining elements not divisible by 4\n__global__ void clamp_div_inplace_kernel_scalar(\n    float* __restrict__ data,\n    int64_t n,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n) {\n        data[idx] = fmaxf(data[idx], min_val) * inv_div;\n    }\n}\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div) {\n    TORCH_CHECK(x.device().is_cuda(), \"clamp_div_inplace: input must be on CUDA\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"clamp_div_inplace: only float32 supported\");\n    TORCH_CHECK(x.is_contiguous(), \"clamp_div_inplace: input must be contiguous\");\n    int64_t n = x.numel();\n    float min_val = static_cast<float>(min_value);\n    float inv_d   = static_cast<float>(inv_div);\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n    const int threads = 128;\n    int64_t n4   = n / 4;\n    int64_t tail = n % 4;\n    if (n4 > 0) {\n        // Cap grid to4*num_SMs so each thread does guaranteed multi-iteration work\n        // (hides long-scoreboard latency); fall back to exact coverage for small tensors.\n        int device_id;\n        cudaGetDevice(&device_id);\n        int num_sms =1;\n        cudaDeviceGetAttribute(&num_sms, cudaDevAttrMultiProcessorCount, device_id);\n        int64_t max_blocks= (int64_t)num_sms * 4;\n        int64_t needed_blocks = (n4 + (int64_t)threads - 1) / threads;\n        int64_t blocks = (max_blocks < needed_blocks) ? max_blocks : needed_blocks;\n        if (blocks < 1) blocks = 1;\n        clamp_div_inplace_kernel_f4<<<(int)blocks, threads, 0, stream>>>(\n            reinterpret_cast<float4*>(x.data_ptr<float>()),\n            n4, min_val, inv_d\n        );\n    }\n    if (tail > 0) {\n        int64_t offset = n4 * 4;\n        int64_t blocks = (tail + threads - 1) / threads;\n        clamp_div_inplace_kernel_scalar<<<(int)blocks, threads, 0, stream>>>(\n            x.data_ptr<float>() + offset,\n            tail, min_val, inv_d\n        );\n    }\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a transposed 3D convolution, clamps the output to a minimum value, \n        and then divides the result by a constant.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, min_value, divisor):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding)\n        self.min_value = min_value\n        self.divisor = divisor\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        # Baseline fallback keeps the official PyTorch forward path.\n        # After implementing CUDA_CPP_SRC / CUDA_CU_SRC, call _stark_get_extension().your_entrypoint(...).\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        if not x.is_contiguous():\n            x = x.contiguous()\n        _stark_get_extension().clamp_div_inplace(x, float(self.min_value), float(1.0 / self.divisor))\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_03",
+      "plan_summary": "Refine the existing fused in-place CUDA epilogue by making the float4 path a small grid-stride, multi-pack loop while keeping the conv path and extension API unchanged.",
+      "anchor_edits": [
+        {
+          "anchor_name": "cuda_cu",
+          "instruction": "Replace the single-iteration float4 kernel body with a grid-stride loop that processes 2 float4 packs per thread per loop iteration when available, keeping the same `clamp_div_inplace` wrapper, 128-thread launch, and scalar tail kernel; do not alter the Python forward call site or the extension signature.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.030899999999999997,
+      "score": 0.030899999999999997,
+      "logs": [
+        "applied_region_patch:cuda_cu:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=200389",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/10_L2_P100_Retry_P100_20260720_222416/eval_traces/20260720_224944_193171_0dd8c94f_kernelbench_l2_100_100_convtranspose3d_clamp_min_divide"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.0381,
+      "speedup": 1.2330097087378642,
+      "reference_runtimes": {
+        "torch_eager": 0.0381
+      },
+      "speedups": {
+        "torch_eager": 1.2330097087378642
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "Processing multiple float4 packs per thread in a grid-stride loop will better hide long scoreboard stalls and slightly improve throughput on the memory-bound epilogue.",
+      "single_change_focus": "Teach the existing float4 CUDA kernel to iterate grid-stride over multiple packs per thread, while leaving the scalar tail path and exported wrapper unchanged.",
+      "mutation_family": "grid_stride_unroll",
+      "target_metric": "speedup"
+    },
+    "phase2_n5": {
+      "node_id": "phase2_n5",
+      "parent_id": "phase2_n3",
+      "depth": 9,
+      "code": "import torch\nimport torch.nn as nn\nimport hashlib\nfrom torch.utils.cpp_extension import load_inline\n\n_STARK_EXTENSION = None\n\ndef _stark_strip_anchor_markers(source: str) -> str:\n    cleaned_lines = []\n    for line in source.splitlines():\n        stripped = line.lstrip()\n        if stripped.startswith('# <<<IMPROVE:') or stripped.startswith('# <<<END_IMPROVE>>>'):\n            continue\n        cleaned_lines.append(line)\n    return '\\n'.join(cleaned_lines)\n\ndef _stark_extension_name() -> str:\n    digest = hashlib.sha1((_stark_strip_anchor_markers(CUDA_CPP_SRC) + _stark_strip_anchor_markers(CUDA_CU_SRC)).encode('utf-8')).hexdigest()[:12]\n    return f'stark_cuda_l2_p100_{digest}'\n\ndef _stark_get_extension():\n    global _STARK_EXTENSION\n    if _STARK_EXTENSION is None:\n        _STARK_EXTENSION = load_inline(\n            name=_stark_extension_name(),\n            cpp_sources=_stark_strip_anchor_markers(CUDA_CPP_SRC),\n            cuda_sources=_stark_strip_anchor_markers(CUDA_CU_SRC),\n            functions=None,\n            extra_cflags=['-O3'],\n            extra_cuda_cflags=['-O3', '--use_fast_math'],\n            with_cuda=True,\n            verbose=False,\n        )\n    return _STARK_EXTENSION\n\n# <<<IMPROVE:user_helpers>>>\n# <<<END_IMPROVE>>>\n\nCUDA_CPP_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cpp>>>\n#include <torch/extension.h>\n\n// clamp_div_inplace: fused in-place clamp(min) then multiply by reciprocal.\n// Handles both contiguous (float4 fast path) and non-contiguous 5D strided tensors.\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div);\n\nPYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {\n    m.def(\"clamp_div_inplace\", &clamp_div_inplace, \"Fused in-place clamp(min) then multiply by reciprocal (CUDA, contiguous fast path + strided fallback)\");\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nCUDA_CU_SRC = r\"\"\"\n# <<<IMPROVE:cuda_cu>>>\n#include <torch/extension.h>\n#include <cuda.h>\n#include <cuda_runtime.h>\n#include <ATen/cuda/CUDAContext.h>\n\n// Contiguous fast path: vectorized float4 with grid-stride double-buffer prefetch\n__global__ void clamp_div_inplace_kernel_f4(\n    float4* __restrict__ data,\n    int64_t n4,\n    float min_val,\n    float inv_div\n) {\n    const int64_t stride = (int64_t)blockDim.x * gridDim.x;\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n\n    if (idx >= n4) return;\n\n    // Prime the pipeline: load first element\n    float4 cur = __ldg(&data[idx]);\n\n    while (true) {\n        int64_t next_idx = idx + stride;\n        // Prefetch next before computing on cur to hide memory latency\n        float4 next;\n        bool has_next = (next_idx < n4);\n        if (has_next) {\n            next = __ldg(&data[next_idx]);\n        }\n        // Compute and store current\n        cur.x = fmaxf(cur.x, min_val) * inv_div;\n        cur.y = fmaxf(cur.y, min_val) * inv_div;\n        cur.z = fmaxf(cur.z, min_val) * inv_div;\n        cur.w = fmaxf(cur.w, min_val) * inv_div;\n        data[idx] = cur;\n\n        if (!has_next) break;\n        idx = next_idx;\n        cur = next;\n    }\n}\n\n// Contiguous scalar tail kernel\n__global__ void clamp_div_inplace_kernel_scalar(\n    float* __restrict__ data,\n    int64_t n,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n) {\n        data[idx] = fmaxf(__ldg(&data[idx]), min_val) * inv_div;\n    }\n}\n\n// Generic strided 5D kernel\n__global__ void clamp_div_inplace_kernel_strided5d(\n    float* __restrict__ data,\n    int64_t n_total,\n    int64_t sz0, int64_t sz1, int64_t sz2, int64_t sz3, int64_t sz4,\n    int64_t st0, int64_t st1, int64_t st2, int64_t st3, int64_t st4,\n    float min_val,\n    float inv_div\n) {\n    int64_t idx = (int64_t)blockIdx.x * blockDim.x + threadIdx.x;\n    if (idx < n_total) {\n        int64_t tmp = idx;\n        int64_t i4 = tmp % sz4; tmp /= sz4;\n        int64_t i3 = tmp % sz3; tmp /= sz3;\n        int64_t i2 = tmp % sz2; tmp /= sz2;\n        int64_t i1 = tmp % sz1; tmp /= sz1;\n        int64_t i0 = tmp;\n        int64_t offset = i0*st0 + i1*st1 + i2*st2 + i3*st3 + i4*st4;\n        data[offset] = fmaxf(data[offset], min_val) * inv_div;\n    }\n}\n\nvoid clamp_div_inplace(torch::Tensor x, double min_value, double inv_div) {\n    TORCH_CHECK(x.device().is_cuda(), \"clamp_div_inplace: input must be on CUDA\");\n    TORCH_CHECK(x.scalar_type() == torch::kFloat32, \"clamp_div_inplace: only float32 supported\");\n    float min_val = static_cast<float>(min_value);\n    float inv_d  = static_cast<float>(inv_div);\n    cudaStream_t stream = at::cuda::getCurrentCUDAStream();\n    const int threads = 128;\n    int64_t n = x.numel();\n\n    if (x.is_contiguous()) {\n        int64_t n4   = n / 4;\n        int64_t tail = n % 4;\n        if (n4 > 0) {\n            // Cap grid to 4x SM count to guarantee multi-iteration work per thread\n            // and allow the prefetch pipeline to engage; fallback to exact ceil if small\n            int num_sms = 0;\n            cudaDeviceGetAttribute(&num_sms, cudaDevAttrMultiProcessorCount, x.device().index());\n            int64_t capped_blocks = (int64_t)num_sms * 4;\n            int64_t exact_blocks  = (n4 + threads - 1) / threads;\n            int64_t blocks = (capped_blocks < exact_blocks) ? capped_blocks : exact_blocks;\n            clamp_div_inplace_kernel_f4<<<blocks, threads, 0, stream>>>(\n                reinterpret_cast<float4*>(x.data_ptr<float>()),\n                n4, min_val, inv_d\n            );\n        }\n        if (tail > 0) {\n            clamp_div_inplace_kernel_scalar<<<1, threads, 0, stream>>>(\n                x.data_ptr<float>() + n4 * 4,\n                tail, min_val, inv_d\n            );\n        }\n    } else if (x.dim() == 5) {\n        int64_t sz0 = x.size(0), sz1 = x.size(1), sz2 = x.size(2), sz3 = x.size(3), sz4 = x.size(4);\n        int64_t st0 = x.stride(0), st1 = x.stride(1), st2 = x.stride(2), st3 = x.stride(3), st4 = x.stride(4);\n        int64_t blocks = (n + threads - 1) / threads;\n        clamp_div_inplace_kernel_strided5d<<<blocks, threads, 0, stream>>>(\n            x.data_ptr<float>(),\n            n, sz0, sz1, sz2, sz3, sz4,\n            st0, st1, st2, st3, st4,\n            min_val, inv_d\n        );\n    } else {\n        auto xc = x.contiguous();\n        int64_t n4   = n / 4;\n        int64_t tail = n % 4;\n        if (n4 > 0) {\n            int64_t blocks = (n4 + threads - 1) / threads;\n            clamp_div_inplace_kernel_f4<<<blocks, threads, 0, stream>>>(\n                reinterpret_cast<float4*>(xc.data_ptr<float>()),\n                n4, min_val, inv_d\n            );\n        }\n        if (tail > 0) {\n            clamp_div_inplace_kernel_scalar<<<1, threads, 0, stream>>>(\n                xc.data_ptr<float>() + n4 * 4,\n                tail, min_val, inv_d\n            );\n        }\n        x.copy_(xc);\n    }\n}\n# <<<END_IMPROVE>>>\n\"\"\"\n\nclass ModelNew(nn.Module):\n    \"\"\"\n        A model that performs a transposed 3D convolution, clamps the output to a minimum value, \n        and then divides the result by a constant.\n        \"\"\"\n    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, min_value, divisor):\n        super().__init__()\n        # <<<IMPROVE:init_body>>>\n        self.conv_transpose = nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding)\n        self.min_value = min_value\n        self.divisor = divisor\n        self.conv_transpose = self.conv_transpose.to(memory_format=torch.contiguous_format)\n        torch.backends.cudnn.benchmark = True\n        # Fold positive constant divisor into conv parameters once at init\n        self._fold_divisor = (divisor > 0.0) and (divisor != 1.0)\n        if self._fold_divisor:\n            with torch.no_grad():\n                self.conv_transpose.weight.div_(divisor)\n                if self.conv_transpose.bias is not None:\n                    self.conv_transpose.bias.div_(divisor)\n            self._epilogue_min_value = float(min_value / divisor)\n            self._epilogue_inv_div = 1.0\n        else:\n            self._epilogue_min_value = float(min_value)\n            self._epilogue_inv_div = float(1.0 / divisor) if divisor != 0.0 else 1.0\n        # <<<END_IMPROVE>>>\n\n    def forward(self, x):\n        # <<<IMPROVE:forward_stmt_1>>>\n        x = x.contiguous()\n        x = self.conv_transpose(x)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_2>>>\n        _stark_get_extension().clamp_div_inplace(x, self._epilogue_min_value, self._epilogue_inv_div)\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_3>>>\n        x = x\n        # <<<END_IMPROVE>>>\n        # <<<IMPROVE:forward_stmt_4>>>\n        return x\n        # <<<END_IMPROVE>>>\n",
+      "origin": "plan_code",
+      "child_ids": [],
+      "selected_count": 0,
+      "plan_strategy_name": "strategy_05",
+      "plan_summary": "Explore a different family from the current champion by algebraically folding the constant positive divisor into the ConvTranspose3d parameters once in `__init__`, so the hot-path epilogue becomes clamp-only via the existing in-place CUDA kernel.",
+      "anchor_edits": [
+        {
+          "anchor_name": "init_body",
+          "instruction": "Replace the init body so it still creates `self.conv_transpose`, stores `self.min_value` and `self.divisor`, and additionally caches a boolean like `self._fold_divisor = (divisor > 0.0) and (divisor != 1.0)`. When that flag is true, use `with torch.no_grad():` to divide `self.conv_transpose.weight` by `divisor` in place and, if bias exists, divide `self.conv_transpose.bias` by `divisor` in place. Cache `self._epilogue_min_value = float(min_value / divisor)` and `self._epilogue_inv_div = 1.0` for the folded case; otherwise cache `self._epilogue_min_value = float(min_value)` and `self._epilogue_inv_div = float(1.0 / divisor)`. Keep the existing memory-format/benchmark lines intact if present.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_2",
+          "instruction": "Replace the epilogue call so it always invokes the existing `_stark_get_extension().clamp_div_inplace(...)` on `x`, but pass the cached constants from init: `_stark_get_extension().clamp_div_inplace(x, self._epilogue_min_value, self._epilogue_inv_div)`. Do not add new layout conversions or change the conv call site.",
+          "operation": "replace"
+        },
+        {
+          "anchor_name": "forward_stmt_3",
+          "instruction": "Replace this anchor with a no-op placeholder such as `x = x` so the original explicit Python division is removed from the hot path while preserving the forward scaffold shape.",
+          "operation": "replace"
+        }
+      ],
+      "compile_ok": true,
+      "correct": true,
+      "runtime": 0.030899999999999997,
+      "score": 0.030899999999999997,
+      "logs": [
+        "normalized_python_region_indent:init_body",
+        "applied_region_patch:init_body:replace",
+        "applied_region_patch:forward_stmt_2:replace",
+        "applied_region_patch:forward_stmt_3:replace",
+        "isolated_evaluator=candidate_subprocess",
+        "isolated_worker_detached_session=true",
+        "isolated_worker_session_id=200903",
+        "isolated_worker_trace_dir=/data/dyj/KernelWeaver/runs/retry_l1_l2_after_ncu_guard_claude_cuda_main_20260720_153946/lane_1_gpu3/10_L2_P100_Retry_P100_20260720_222416/eval_traces/20260720_225156_193171_3046e268_kernelbench_l2_100_100_convtranspose3d_clamp_min_divide"
+      ],
+      "failure_type": null,
+      "node_status": "correct",
+      "selection_reason": null,
+      "prune_reason": null,
+      "debug_attempts": 0,
+      "latest_failure_stage": null,
+      "reference_runtime": 0.038,
+      "speedup": 1.2297734627831716,
+      "reference_runtimes": {
+        "torch_eager": 0.038
+      },
+      "speedups": {
+        "torch_eager": 1.2297734627831716
+      },
+      "primary_reference": "torch_eager",
+      "plan_mode": "explore",
+      "performance_hypothesis": "If `divisor` is folded into ConvTranspose3d weights/bias once at initialization and the clamp threshold is correspondingly scaled to `min_value / divisor`, then the existing in-place epilogue can run as clamp-only by passing `inv_div=1.0`, reducing per-element post-op work while preserving outputs for the benchmark's positive constant divisor case.",
+      "single_change_focus": "Fold the positive constant divisor into ConvTranspose3d parameters during initialization, then switch the forward epilogue to clamp-only on the scaled threshold while retaining the existing CUDA extension call path.",
+      "mutation_family": "conv_param_scale_fold",
+      "target_metric": "speedup"
+    }
+  }
+}
