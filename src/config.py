@@ -465,7 +465,7 @@ def _fallback_experiment(name: str) -> dict[str, Any]:
             "provider": "openai-compatible",
             "route": "all_api",
             "tasks": "main_l1_15",
-            "search": "main",
+            "search": "main_memory_longterm",
             "evaluator": "main",
             "measurement": "main",
             "runtime": "gpu_single",

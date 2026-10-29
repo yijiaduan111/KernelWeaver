@@ -173,12 +173,12 @@ class AgentContext:
     leaders: list[NodeSnapshot] = field(default_factory=list)
     failure: NodeSnapshot | None = None
     # Compatibility storage for the untrusted task experience journal. This is
-    # intentionally distinct from curated long-term operator_memory below.
+    # separate from the legacy serialization-only fields below.
     long_term: list[dict[str, Any]] = field(default_factory=list)
     performance_feedback: dict[str, Any] = field(default_factory=dict)
     workflow_guidance: dict[str, Any] = field(default_factory=dict)
-    # Curated, cross-task operator knowledge.  This is the canonical long-term
-    # memory channel; tree snapshots above are the task-local short-term memory.
+    # Legacy serialization fields only. This branch does not retrieve or inject
+    # Wiki evidence. Long-term memory is the separate empirical journal above.
     operator_memory: list[dict[str, Any]] = field(default_factory=list)
     # Compatibility field for runs recorded before operator-memory naming.
     domain_wiki_evidence: list[dict[str, Any]] = field(default_factory=list)
@@ -236,12 +236,11 @@ class StarkConfig:
     # KDA-style evidence loop.  This is backend-neutral orchestration; any
     # device-specific advice must come from observations of the current run.
     evidence_workflow_enabled: bool = False
-    # Curated, backend/architecture-scoped long-term operator memory.
+    # Legacy fields retained to read saved artifacts. Enabling any removed
+    # Wiki channel is explicitly rejected by the memory-only workflow.
     operator_memory_enabled: bool = False
     operator_memory_public_only: bool = False
-    # Audit/select the public corpus, while allowing an explicitly separate
-    # per-experiment experience journal.  Unlike public_only, this is not a
-    # claim that cross-task experience is disabled.
+    # Compatibility only; these flags never enable a loader in this branch.
     operator_memory_public_corpus: bool = False
     operator_memory_path: str | None = None
     operator_memory_target_arch: str | None = None
@@ -250,8 +249,7 @@ class StarkConfig:
     domain_wiki_enabled: bool = False
     domain_wiki_path: str | None = None
     domain_wiki_target_arch: str | None = None
-    # Draft pages are never retrieved by default.  An experiment may opt in
-    # specific draft IDs without promoting them for every Wiki-enabled run.
+    # Compatibility only; draft retrieval is not implemented in this branch.
     domain_wiki_experimental_page_ids: list[str] = field(default_factory=list)
     # Appended for positional compatibility. None preserves the old selector.
     search_policy_path: str | None = None

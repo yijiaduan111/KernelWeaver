@@ -1,4 +1,4 @@
-"""Include the canonical root configuration and frozen Wiki in built wheels."""
+"""Include the canonical root configuration in built wheels."""
 from pathlib import Path
 import shutil
 
@@ -11,7 +11,7 @@ class BuildWithAssets(build_py):
         super().run()
         root = Path(__file__).resolve().parent
         destination = Path(self.build_lib) / 'src' / 'assets'
-        for directory in ('configs', 'knowledge/kernelwiki_public'):
+        for directory in ('configs',):
             for source in (root / directory).rglob('*'):
                 if not source.is_file() or '__pycache__' in source.parts:
                     continue

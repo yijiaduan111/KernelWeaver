@@ -30,16 +30,15 @@ jobs:
           PYTHONPATH: KernelBench/src
           CUDA_VISIBLE_DEVICES: ''
         run: python -m unittest discover -s tests
-      - name: Check public knowledge and checkout hygiene
+      - name: Check checkout hygiene
         run: |
-          python scripts/audit_public_wiki.py
           python scripts/check_release.py
       - name: Build the wheel
         run: python -m pip wheel --no-deps . --wheel-dir dist
-      - name: Verify bundled configuration and Wiki outside the checkout
+      - name: Verify the memory-only wheel outside the checkout
         run: |
           python -m venv /tmp/kernelweaver-wheel-test
           /tmp/kernelweaver-wheel-test/bin/python -m pip install dist/*.whl
           cd /tmp
           /tmp/kernelweaver-wheel-test/bin/kernelweaver --help
-          /tmp/kernelweaver-wheel-test/bin/python -c 'from src.config import search_profile; from src.knowledge.public_wiki import PUBLIC_ROOT, audit_public_corpus; assert search_profile("memory_wiki_sm86")["long_term_memory_enabled"]; audit_public_corpus(PUBLIC_ROOT)'
+          /tmp/kernelweaver-wheel-test/bin/python -c 'import importlib.util; from src.config import search_profile; assert search_profile("main_memory_longterm")["long_term_memory_enabled"]; assert importlib.util.find_spec("src.knowledge") is None'

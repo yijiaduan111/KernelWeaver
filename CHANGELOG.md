@@ -1,17 +1,16 @@
 # Changelog
 
-## 0.2.0 (unreleased)
+## 0.2.0 memory-only variant (unreleased)
 
-- Package short-term tree context, a separate persistent experience journal and
-  a frozen public-source SM86 Wiki under `memory_wiki_sm86`.
-- Add portable API routing, clean environment templates and an explicit
-  KernelBench submodule/compatibility patch.
-- Add MIT licensing, third-party notices, contribution/security guidance,
-  CPU regression checks and CI.
-- Exclude RSI experiments, task-mined knowledge, private environment files,
-  model weights and generated experiment artifacts from the release tree.
-- Keep configuration and Wiki assets available in installed wheels.
+- Default to `main_memory_longterm`: task-local tree context and a fresh per-run
+  cross-task experience journal, with five candidate attempts by default.
+- Remove the Wiki corpus, loader, retrieval profiles, prompt injection and audit
+  script. Old Wiki opt-ins fail explicitly rather than silently changing behavior.
+- Preserve MIT licensing, third-party notices, portable API routing, the pinned
+  KernelBench dependency/compatibility patch and CPU validation.
+- Keep model weights, credentials, generated outputs, historical winning kernels
+  and experimental RSI features outside the release tree.
 
-This is a code-packaging release, not a new benchmark result. Existing Git
-history is not rewritten by this branch. Previously exposed credentials must
-be revoked independently.
+This parallel branch does not replace `feature/memory-wiki` or claim new GPU
+benchmark results. Existing Git history is retained, so previously exposed
+credentials still require independent revocation.

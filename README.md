@@ -1,11 +1,11 @@
 # KernelWeaver
 
 PyramidKernel GPU kernel optimization with task-local tree memory, persistent
-cross-task experience, and a frozen public-source Wiki.
+cross-task experience.
 
-This branch packages the memory + Wiki implementation. API credentials, model
+This branch packages short-term and long-term memory without a Wiki. API credentials, model
 weights, historical winning kernels, experimental RSI code and machine-specific
-run artifacts are not included. The main search profile is `memory_wiki_sm86`.
+run artifacts are not included. The main search profile is `main_memory_longterm`.
 
 ## Requirements
 
@@ -14,14 +14,13 @@ run artifacts are not included. The main search profile is `memory_wiki_sm86`.
 - A CUDA toolkit and C++ compiler for generated CUDA extensions.
 - Access to a model/API of your choice, or separately downloaded local weights.
 
-The public hardware Wiki currently targets CUDA SM86 (for example, RTX A6000).
-Use `main_memory_longterm` on other architectures until a suitable corpus is
-provided and validated. Other backend interfaces do not imply tested NPU support.
+Real-device use currently targets CUDA. Backend-scoped experience does not
+establish cross-architecture performance or validated NPU support.
 
 ## Installation
 
 ```bash
-git clone --branch feature/memory-wiki --recurse-submodules https://github.com/yijiaduan111/KernelWeaver.git
+git clone --branch feature/memory-only --recurse-submodules https://github.com/yijiaduan111/KernelWeaver.git
 cd KernelWeaver
 python -m pip install -e ".[benchmark,test]"
 git -C KernelBench apply --check ../patches/kernelbench-compat.patch
@@ -45,8 +44,7 @@ that commit, and apply the same patch. A ZIP does not include Git submodules.
 No API key, GPU or model download is needed:
 
 ```bash
-python stark_cli.py run-demo --task square_list --experiment quick   --provider mock --route-config all_mock --search-config memory_wiki_sm86   --max-attempts 2 --output-dir runs/demo_memory
-python scripts/audit_public_wiki.py
+python stark_cli.py run-demo --task square_list --experiment quick   --provider mock --route-config all_mock --search-config main_memory_longterm   --max-attempts 2 --output-dir runs/demo_memory_only
 ```
 
 ## Generate and evaluate kernels
@@ -54,13 +52,13 @@ python scripts/audit_public_wiki.py
 One task:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python stark_cli.py run-kernelbench   --experiment main --level 1 --problem-id 25 --backend cuda   --provider openai-compatible --route-config all_api   --search-config memory_wiki_sm86 --output-dir runs/memory_wiki_single
+CUDA_VISIBLE_DEVICES=0 python stark_cli.py run-kernelbench   --experiment main --level 1 --problem-id 25 --backend cuda   --provider openai-compatible --route-config all_api   --search-config main_memory_longterm --output-dir runs/memory_only_single
 ```
 
 The representative 15-task development set:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python stark_cli.py run-kernelbench-batch   --experiment main --task-config main_l1_15 --backend cuda   --provider openai-compatible --route-config all_api   --search-config memory_wiki_sm86 --output-dir runs/memory_wiki_15
+CUDA_VISIBLE_DEVICES=0 python stark_cli.py run-kernelbench-batch   --experiment main --task-config main_l1_15 --backend cuda   --provider openai-compatible --route-config all_api   --search-config main_memory_longterm --output-dir runs/memory_only_15
 ```
 
 Select `--provider claude-compatible` for a native Claude-compatible endpoint,
@@ -83,36 +81,33 @@ non-secret settings only. `tmux` is required for detached launch.
 | --- | --- |
 | Short-term tree memory | Current/root/related programs, measured feedback and leaderboard inside one task |
 | Long-term experience | Advisory successes and failures from earlier tasks in the same run |
-| Public Wiki | Read-only source-linked operator and SM86 architecture guidance |
 
-The public Wiki uses operator API structure, not benchmark IDs or stored answers.
-It is validated against a checked-in SHA256 lock. Empirical journal entries are
-not automatically promoted into it. Details and ablation profiles are in
-[docs/memory_wiki.md](docs/memory_wiki.md).
+The journal starts empty for a fresh output directory and is separate for each
+independent run. Wiki corpus files, Wiki retrieval and Wiki prompt injection are
+removed from this branch. Details and ablation profiles are in
+[docs/memory.md](docs/memory.md).
 
 ## Validation
 
 ```bash
 PYTHONPATH="$PWD/KernelBench/src" python -m unittest discover -s tests
-python scripts/audit_public_wiki.py
 python scripts/check_release.py
 ```
 
 Tests use mocked providers or CPU fixtures. Real API/GPU experiments are separate.
 This release makes no new speedup claim. Historical reports in
 `docs/experiment_reports/` describe earlier configurations and should not be
-attributed to this combined profile. The Wiki was assembled after inspecting
-existing development tasks; unseen-task generalization requires a separately
-frozen evaluation set. See [CONTRIBUTING.md](CONTRIBUTING.md).
+attributed to this packaged profile. Reusing observed tasks or journal entries
+is development-set adaptation, not an unseen-task generalization result.
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Layout
 
 ```text
-src/                 agents, tree/context, experience, Wiki and evaluators
+src/                 agents, tree/context, persistent experience and evaluators
 configs/             API routes, search budgets, task and runtime settings
-knowledge/           frozen public-source Wiki and provenance records
 patches/             explicit compatibility patch for the pinned KernelBench
-scripts/             launchers, Wiki audit and public-checkout checks
+scripts/             launchers and public-checkout checks
 tests/               CPU/unit regression checks
 docs/                architecture, usage and historical reports
 KernelBench/         upstream dependency as a pinned Git submodule

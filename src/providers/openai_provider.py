@@ -176,24 +176,6 @@ class OpenAICompatibleProvider(AgentProvider):
                 "current run. Correctness validation and measured runtime are the only promotion criteria."
             )
             user["workflow_guidance"] = context.workflow_guidance
-        operator_memory = list(context.operator_memory or context.domain_wiki_evidence)
-        if operator_memory:
-            prompt += (
-                "\nThe supplied long_term_operator_memory is a curated, architecture-scoped prior. "
-                "It is not permission to change the task contract or build path. Apply at most "
-                "one matching hypothesis, obey every avoid/global constraint, and keep the existing "
-                "extension loader and grounded scaffold unchanged. Do not introduce a second loader, "
-                "dependency, DSL, or unsupported architecture feature. Correctness and measured "
-                "runtime against the root are the only promotion criteria."
-            )
-            user["long_term_operator_memory"] = operator_memory
-            if any(item.get("knowledge_scope") == "public_general" for item in operator_memory):
-                prompt += (
-                    "\nPublic Wiki review verifies the cited documentation only, not a kernel's "
-                    "correctness or measured speed. Check each applicability condition against "
-                    "this task. Treat inferred optimization advice and API co-occurrence as "
-                    "hypotheses, and report missing specialized coverage honestly."
-                )
         if context.performance_feedback:
             prompt += (
                 "\nHardware feedback is one sampled launch of an earlier validated candidate, "

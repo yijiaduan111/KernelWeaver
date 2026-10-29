@@ -123,6 +123,8 @@ def _limit(items: list[NodeSnapshot], limit: int) -> list[NodeSnapshot]:
 def build_plan_context(tree: TreeMemory, node_id: str, config: StarkConfig, long_term_memory=None,
                        performance_feedback=None, workflow_guidance=None,
                        operator_memory_evidence=None) -> AgentContext:
+    if operator_memory_evidence:
+        raise ValueError("Wiki context is unavailable in the memory-only branch")
     current = snapshot_node(tree, node_id)
     root = snapshot_node(tree, tree.root_id)
     node = tree.get_node(node_id)
@@ -143,7 +145,6 @@ def build_plan_context(tree: TreeMemory, node_id: str, config: StarkConfig, long
         long_term=list(long_term_memory or []),
         performance_feedback=dict(performance_feedback or {}),
         workflow_guidance=dict(workflow_guidance or {}),
-        operator_memory=list(operator_memory_evidence or []),
     )
 
 

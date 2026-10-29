@@ -21,7 +21,7 @@ class OpenAIProviderRobustnessTests(unittest.TestCase):
             provider._chat_json_object("system", {}, 0, required_keys=("value",))
         self.assertEqual(provider._chat.call_count, 1)
 
-    def test_operator_memory_is_only_sent_when_exact_evidence_exists(self):
+    def test_legacy_wiki_metadata_is_never_sent_by_memory_only_provider(self):
         provider = OpenAICompatibleProvider(OpenAICompatibleConfig(api_key="test"))
         provider._chat_json_object = mock.Mock(return_value={
             "strategy_name": "grid_stride",
@@ -36,8 +36,8 @@ class OpenAIProviderRobustnessTests(unittest.TestCase):
         evidence = [{"id": "sm86-elementwise-single-pass", "avoid": ["no new build path"]}]
         provider.propose_plan(task, node, AgentContext("plan", snap, snap, operator_memory=evidence))
         call = provider._chat_json_object.call_args
-        self.assertEqual(call.kwargs["user_payload"]["long_term_operator_memory"], evidence)
-        self.assertIn("curated, architecture-scoped prior", call.kwargs["system_prompt"])
+        self.assertNotIn("long_term_operator_memory", call.kwargs["user_payload"])
+        self.assertNotIn("curated, architecture-scoped prior", call.kwargs["system_prompt"])
         provider._chat_json_object.reset_mock()
         provider.propose_plan(task, node, AgentContext("plan", snap, snap))
         self.assertNotIn("long_term_operator_memory", provider._chat_json_object.call_args.kwargs["user_payload"])

@@ -362,17 +362,10 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
     semantics_settings = _resolve_semantics_settings(run_name)
     max_attempts = int(getattr(args, "max_attempts", None) or search_settings.get("max_attempts", 6))
     epsilon = float(getattr(args, "epsilon", None) if getattr(args, "epsilon", None) is not None else search_settings.get("epsilon", 0.4))
-    operator_memory_enabled = bool(
-        search_settings.get("operator_memory_enabled", search_settings.get("domain_wiki_enabled", False))
-    )
-    operator_memory_path_value = search_settings.get("operator_memory_path", search_settings.get("domain_wiki_path"))
-    operator_memory_arch = search_settings.get(
-        "operator_memory_target_arch", search_settings.get("domain_wiki_target_arch")
-    )
-    operator_memory_experimental_ids = search_settings.get(
-        "operator_memory_experimental_page_ids",
-        search_settings.get("domain_wiki_experimental_page_ids") or [],
-    )
+    removed_options = [key for key, value in search_settings.items()
+                       if key.startswith(("operator_memory_", "domain_wiki_")) and value]
+    if removed_options:
+        raise ValueError("Wiki settings are unsupported in this memory-only branch: " + ", ".join(removed_options))
     return StarkConfig(
         max_attempts=max_attempts,
         search_policy_path=(str(asset_path(str(search_settings["search_policy_path"])).resolve())
@@ -419,23 +412,7 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
         profile_feedback_enabled=bool(search_settings.get("profile_feedback_enabled", False)),
         profile_feedback_timeout_seconds=int(search_settings.get("profile_feedback_timeout_seconds", 240)),
         evidence_workflow_enabled=bool(search_settings.get("evidence_workflow_enabled", False)),
-        operator_memory_enabled=operator_memory_enabled,
-        operator_memory_public_only=bool(search_settings.get("operator_memory_public_only", False)),
-        operator_memory_public_corpus=bool(search_settings.get("operator_memory_public_corpus", False)),
-        operator_memory_path=(str(asset_path(str(operator_memory_path_value)).resolve())
-                              if operator_memory_enabled and operator_memory_path_value else None),
-        operator_memory_target_arch=(str(operator_memory_arch) if operator_memory_arch else None),
-        operator_memory_experimental_page_ids=[
-            str(item) for item in operator_memory_experimental_ids
-        ],
-        domain_wiki_enabled=bool(search_settings.get("domain_wiki_enabled", False)),
-        domain_wiki_path=(str(asset_path(str(search_settings["domain_wiki_path"])).resolve())
-                          if search_settings.get("domain_wiki_enabled") and search_settings.get("domain_wiki_path") else None),
-        domain_wiki_target_arch=(str(search_settings.get("domain_wiki_target_arch"))
-                                 if search_settings.get("domain_wiki_target_arch") else None),
-        domain_wiki_experimental_page_ids=[
-            str(item) for item in search_settings.get("domain_wiki_experimental_page_ids") or []
-        ],
+
     )
 
 

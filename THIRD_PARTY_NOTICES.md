@@ -12,14 +12,6 @@ It remains under its upstream MIT license, reproduced in
 `patches/kernelbench-compat.patch` are identified separately and do not change
 the benchmark's numerical tolerances or sample its output elements.
 
-## Wiki sources
-
-The public Wiki contains project-authored summaries with links to primary
-documentation and papers. Source titles, source revisions and URLs are recorded
-in each source page. Linked documentation, papers and associated implementations
-retain their original rights and licenses. Linking to them does not relicense
-their contents under this project's MIT license.
-
 ## Optional software and model weights
 
 PyTorch, Triton, TileLang, CuTe/CUTLASS DSL, Transformers, API services and local

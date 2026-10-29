@@ -20,7 +20,6 @@ from .context import build_code_context, build_debug_context, build_plan_context
 from ..models import AgentContext, AnchorEdit, EvaluationResult, PlanProposal, RunResult, SearchNode, StarkConfig, TaskSpec
 from .tree import TreeMemory
 from .long_term_memory import TaskExperienceJournal
-from ..knowledge import load_operator_memory
 from .local_tuning import choose_local_variant
 from .profile_feedback import profile_live_candidate
 from ..utils import extract_anchor_names, normalize_anchor_scaffold, preserve_anchor_scaffold, shorten_runtime
@@ -289,44 +288,19 @@ def _finalize_run(
 
 def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunResult:
     """Run the main STARK search loop with tree memory and debug routing."""
-    if config.operator_memory_public_only and config.long_term_memory_enabled:
-        raise ValueError("Public-only evaluation cannot read/write the cross-task experience journal")
-    public_corpus = config.operator_memory_public_only or config.operator_memory_public_corpus
+    # Retain old serialized fields for report loading, but fail closed if an
+    # older profile tries to enable a removed knowledge channel.
+    removed_fields = (
+        "operator_memory_enabled", "operator_memory_public_only", "operator_memory_public_corpus",
+        "operator_memory_path", "operator_memory_target_arch", "operator_memory_experimental_page_ids",
+        "domain_wiki_enabled", "domain_wiki_path", "domain_wiki_target_arch", "domain_wiki_experimental_page_ids",
+    )
+    if any(getattr(config, name, None) for name in removed_fields):
+        raise ValueError("Wiki is unavailable in the memory-only branch; use main_memory_longterm.")
     experience_journal = (TaskExperienceJournal(config.long_term_memory_path, config.long_term_memory_top_k)
                           if config.long_term_memory_enabled else None)
     task_experience = experience_journal.retrieve(task) if experience_journal else []
-    # The operator Wiki is the curated long-term memory.  The JSON experience
-    # store above is only a writable experiment journal; it must not silently
-    # promote a generated candidate into trusted operator knowledge.
-    operator_memory_enabled = config.operator_memory_enabled or config.domain_wiki_enabled
-    operator_memory_path = config.operator_memory_path or config.domain_wiki_path
-    operator_memory_arch = config.operator_memory_target_arch or config.domain_wiki_target_arch
-    experimental_pages = (
-        config.operator_memory_experimental_page_ids
-        or config.domain_wiki_experimental_page_ids
-    )
-    if public_corpus and not (
-        operator_memory_enabled and operator_memory_path and operator_memory_arch
-    ):
-        raise ValueError("Public-only evaluation requires an enabled, explicit corpus and architecture")
-    operator_memory = (load_operator_memory(
-                           operator_memory_path,
-                           target_arch=operator_memory_arch,
-                           experimental_page_ids=experimental_pages,
-                           public_only=public_corpus,
-                       )
-                       if operator_memory_enabled and operator_memory_path and operator_memory_arch
-                       else None)
-    operator_memory_evidence = operator_memory.retrieve(task) if operator_memory else []
     tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
-    if public_corpus:
-        stats["operator_memory_policy"] = {
-            "knowledge_scope": "public_general",
-            "corpus_sha256": operator_memory.corpus_sha256,
-            "query_basis": "operator_api_structure_only",
-            "families": sorted(operator_memory.task_families(task)),
-            "cross_task_experience": "enabled_separate_journal" if experience_journal else "disabled",
-        }
     plan_agent = PlanAgent(provider)
     code_agent = CodeAgent(provider)
     debug_agent = DebugAgent(provider)
@@ -338,20 +312,12 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
     profile_attempted = False
     workflow_guidance = _evidence_workflow_guidance(task, config.evidence_workflow_enabled)
     stats["evidence_workflow_enabled"] = bool(workflow_guidance)
-    stats["operator_memory_evidence"] = [item["id"] for item in operator_memory_evidence]
     stats["task_experience_count"] = len(task_experience)
-    stats["operator_memory_matches"] = [
-        {
-            "id": item["id"],
-            "path": item.get("path"),
-            "score": item.get("score"),
-            "confidence": item.get("confidence"),
-        }
-        for item in operator_memory_evidence
-    ]
-    # Keep old report readers functional.
-    stats["domain_wiki_evidence"] = list(stats["operator_memory_evidence"])
-    stats["domain_wiki_matches"] = list(stats["operator_memory_matches"])
+    # Empty legacy report fields do not represent an enabled knowledge channel.
+    stats["operator_memory_evidence"] = []
+    stats["operator_memory_matches"] = []
+    stats["domain_wiki_evidence"] = []
+    stats["domain_wiki_matches"] = []
     if workflow_guidance:
         stats["task_contract"] = workflow_guidance
 
@@ -430,7 +396,7 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
                     task, selected_node,
                     build_plan_context(
                         tree, selected_id, config, active_long_term,
-                        performance_feedback, workflow_guidance, operator_memory_evidence,
+                        performance_feedback, workflow_guidance,
                     ),
                 )
                 candidate_code, evaluation = _evaluate_plan_code(

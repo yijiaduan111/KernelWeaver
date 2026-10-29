@@ -18,6 +18,11 @@ PATTERNS = [re.compile(rb'sk-[A-Za-z0-9_-]{20,}'),
 def main():
     files = subprocess.check_output(['git','ls-files','--cached','--others','--exclude-standard','-z'],cwd=ROOT)
     findings = []
+    for name in ('knowledge','src/knowledge'):
+        if (ROOT/name).exists():
+            findings.append((name,0,'Wiki components are excluded from this branch'))
+    for path in (ROOT/'configs/search').glob('*wiki*'):
+        findings.append((str(path.relative_to(ROOT)),0,'Wiki profile is excluded from this branch'))
     for name in sorted(set(files.decode().split('\0'))- {''}):
         path = ROOT/name
         if not path.is_file() or path.is_symlink():
