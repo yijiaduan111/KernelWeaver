@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from .config import (
+    asset_path,
     agent_provider_profile,
     agent_provider_profile_choices,
     backend_choices,
@@ -303,6 +304,12 @@ def _build_provider(args: argparse.Namespace, run_name: str):
         if name == "openai-compatible":
             provider = OpenAICompatibleProvider.from_env(provider_defaults(name))
             return provider.with_overrides(**overrides) if overrides else provider
+        if name == "micu-compatible":
+            provider = OpenAICompatibleProvider.from_env(
+                provider_defaults(name),
+                env_prefix="MICU",
+            )
+            return provider.with_overrides(**overrides) if overrides else provider
         if name == "claude-compatible":
             provider = ClaudeCompatibleProvider.from_env(
                 _config_payload(
@@ -324,7 +331,7 @@ def _build_provider(args: argparse.Namespace, run_name: str):
         raise SystemExit(f"Unsupported provider: {name}")
 
     resolved_names = {routing["plan_provider"], routing["code_provider"], routing["debug_provider"], routing["search_provider"]}
-    if any(name in {"openai-compatible", "claude-compatible"} for name in resolved_names):
+    if any(name in {"openai-compatible", "micu-compatible", "claude-compatible"} for name in resolved_names):
         load_env_file(_resolve_env_file(args, run_name))
     overrides = _provider_overrides()
     instances = {name: _instantiate_single_provider(name, overrides) for name in sorted(resolved_names)}
@@ -355,8 +362,21 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
     semantics_settings = _resolve_semantics_settings(run_name)
     max_attempts = int(getattr(args, "max_attempts", None) or search_settings.get("max_attempts", 6))
     epsilon = float(getattr(args, "epsilon", None) if getattr(args, "epsilon", None) is not None else search_settings.get("epsilon", 0.4))
+    operator_memory_enabled = bool(
+        search_settings.get("operator_memory_enabled", search_settings.get("domain_wiki_enabled", False))
+    )
+    operator_memory_path_value = search_settings.get("operator_memory_path", search_settings.get("domain_wiki_path"))
+    operator_memory_arch = search_settings.get(
+        "operator_memory_target_arch", search_settings.get("domain_wiki_target_arch")
+    )
+    operator_memory_experimental_ids = search_settings.get(
+        "operator_memory_experimental_page_ids",
+        search_settings.get("domain_wiki_experimental_page_ids") or [],
+    )
     return StarkConfig(
         max_attempts=max_attempts,
+        search_policy_path=(str(asset_path(str(search_settings["search_policy_path"])).resolve())
+                            if search_settings.get("search_policy_path") else None),
         epsilon=epsilon,
         root_child_limit=int(search_settings.get("root_child_limit", 2)),
         dead_branch_threshold=int(search_settings.get("dead_branch_threshold", 2)),
@@ -384,9 +404,38 @@ def _build_config(args: argparse.Namespace, run_name: str) -> StarkConfig:
         paper_discard_first=int(measure_settings.get("paper_discard_first", 1)),
         timing_method=str(measure_settings.get("timing_method", "cuda_event")),
         reference_modes=list(evaluator_settings.get("reference_modes") or ["torch_eager"]),
+        paper_eval_timeout_seconds=int(evaluator_settings.get("paper_eval_timeout_seconds", 900)),
         semantics_enabled=semantics_settings["enabled"],
         semantics_mode=semantics_settings["mode"],
         semantics_max_anchor_hints=semantics_settings["max_anchor_hints"],
+        long_term_memory_enabled=bool(search_settings.get("long_term_memory_enabled", False)),
+        long_term_memory_path=(str(Path(getattr(args, "output_dir", "runs")) / "long_term_memory.json")
+                               if search_settings.get("long_term_memory_enabled", False) else None),
+        long_term_memory_top_k=int(search_settings.get("long_term_memory_top_k", 4)),
+        long_term_memory_exploration_ratio=float(search_settings.get("long_term_memory_exploration_ratio", 0.0)),
+        local_tuning_enabled=bool(search_settings.get("local_tuning_enabled", False)),
+        local_tuning_max_attempts=int(search_settings.get("local_tuning_max_attempts", 2)),
+        local_tuning_start_attempt=int(search_settings.get("local_tuning_start_attempt", 3)),
+        profile_feedback_enabled=bool(search_settings.get("profile_feedback_enabled", False)),
+        profile_feedback_timeout_seconds=int(search_settings.get("profile_feedback_timeout_seconds", 240)),
+        evidence_workflow_enabled=bool(search_settings.get("evidence_workflow_enabled", False)),
+        operator_memory_enabled=operator_memory_enabled,
+        operator_memory_public_only=bool(search_settings.get("operator_memory_public_only", False)),
+        operator_memory_public_corpus=bool(search_settings.get("operator_memory_public_corpus", False)),
+        operator_memory_path=(str(asset_path(str(operator_memory_path_value)).resolve())
+                              if operator_memory_enabled and operator_memory_path_value else None),
+        operator_memory_target_arch=(str(operator_memory_arch) if operator_memory_arch else None),
+        operator_memory_experimental_page_ids=[
+            str(item) for item in operator_memory_experimental_ids
+        ],
+        domain_wiki_enabled=bool(search_settings.get("domain_wiki_enabled", False)),
+        domain_wiki_path=(str(asset_path(str(search_settings["domain_wiki_path"])).resolve())
+                          if search_settings.get("domain_wiki_enabled") and search_settings.get("domain_wiki_path") else None),
+        domain_wiki_target_arch=(str(search_settings.get("domain_wiki_target_arch"))
+                                 if search_settings.get("domain_wiki_target_arch") else None),
+        domain_wiki_experimental_page_ids=[
+            str(item) for item in search_settings.get("domain_wiki_experimental_page_ids") or []
+        ],
     )
 
 
@@ -454,6 +503,25 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
     loader = KernelBenchLoader()
     provider = _build_provider(args, run_name)
     rows: list[dict[str, Any]] = []
+
+    def write_checkpoint() -> None:
+        summary_payload = {
+            "manifest": manifest,
+            "workflow": workflow,
+            "provider": _resolve_provider_name(args, run_name),
+            "run_profile": run_name,
+            "search_profile": _resolve_search_name(args, run_name),
+            "evaluator_profile": _resolve_evaluator_name(args, run_name),
+            "measurement_profile": _resolve_measurement_name(args, run_name),
+            "agent_provider_profile": _resolve_route_name(args, run_name),
+            "kernelbench_root": kernelbench_root,
+            "output_dir": str(output_root),
+            "rows": rows,
+            "aggregates": aggregate_batch_rows(rows),
+        }
+        (output_root / "summary.json").write_text(json.dumps(summary_payload, indent=2, ensure_ascii=False), encoding="utf-8")
+        write_batch_csv(rows, output_root / "summary.csv")
+
     try:
         for item in manifest["tasks"]:
             level = int(item["level"])
@@ -520,6 +588,9 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
                         "best_node_is_root": result.best_node_id == "root",
                         "best_correct": bool(best.compile_ok and best.correct),
                         "paper_fast1": bool(best.correct and isinstance(best.speedup, (int, float)) and best.speedup >= 1.0),
+                        "generated_best_correct": bool(stats["best_correct"]),
+                        "generated_fast1": bool(stats["fast1"]),
+                        "generated_best_speedup": stats["best_speedup"],
                         "run_path": str(run_path),
                         "validation_path": None,
                         "root_correct": bool(result.nodes.get("root") and result.nodes["root"].correct),
@@ -548,23 +619,10 @@ def _run_kernelbench_batch(args: argparse.Namespace) -> int:
                 )
             except Exception as exc:
                 row["error"] = str(exc)
+                if bool(getattr(args, "verbose", False)):
+                    print(f"task_error alias={alias} error={exc}")
             rows.append(row)
-        summary_payload = {
-            "manifest": manifest,
-            "workflow": workflow,
-            "provider": _resolve_provider_name(args, run_name),
-            "run_profile": run_name,
-            "search_profile": _resolve_search_name(args, run_name),
-            "evaluator_profile": _resolve_evaluator_name(args, run_name),
-            "measurement_profile": _resolve_measurement_name(args, run_name),
-            "agent_provider_profile": _resolve_route_name(args, run_name),
-            "kernelbench_root": kernelbench_root,
-            "output_dir": str(output_root),
-            "rows": rows,
-            "aggregates": aggregate_batch_rows(rows),
-        }
-        (output_root / "summary.json").write_text(json.dumps(summary_payload, indent=2, ensure_ascii=False), encoding="utf-8")
-        write_batch_csv(rows, output_root / "summary.csv")
+            write_checkpoint()
         print(f"summary_json={output_root / 'summary.json'}")
         print(f"summary_csv={output_root / 'summary.csv'}")
         return 0

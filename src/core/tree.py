@@ -19,6 +19,8 @@ def _status_from_evaluation(evaluation: EvaluationResult) -> str:
 
 class TreeMemory:
     def __init__(self, root_node: SearchNode, config: StarkConfig) -> None:
+        from .search_policy import load_policy
+
         self.root_id = root_node.node_id
         self.nodes: dict[str, SearchNode] = {root_node.node_id: root_node}
         self.leaderboard: list[str] = []
@@ -28,6 +30,7 @@ class TreeMemory:
         self.selection_exclusion_history: list[dict[str, str]] = []
         self._counter = 0
         self._rng = random.Random(config.seed)
+        self._search_policy = load_policy(config.search_policy_path) if config.search_policy_path else None
 
     def get_node(self, node_id: str) -> SearchNode:
         return self.nodes[node_id]
@@ -133,6 +136,8 @@ class TreeMemory:
     def exclusion_reason(self, node_id: str, config: StarkConfig) -> str | None:
         self.refresh_pruned_nodes(config)
         node = self.nodes[node_id]
+        if node.origin == "local_tune" and node.is_failure:
+            return "failed_parameter_variant_no_debug"
         if node_id in self.pruned_nodes:
             return self.pruned_nodes[node_id]
         if node_id == self.root_id and len(node.child_ids) >= config.root_child_limit:
@@ -183,6 +188,14 @@ class TreeMemory:
         self.selection_exclusion_history.append(dict(exclusions))
         if not candidates:
             return None
+        if self._search_policy is not None:
+            from .search_policy import observe_tree, select_parent
+
+            selected = select_parent(self._search_policy, observe_tree(self, candidates))
+            reason = "rsi_policy_debug" if self.nodes[selected].is_failure else "rsi_policy_select"
+            self.nodes[selected].selected_count += 1
+            self.nodes[selected].selection_reason = reason
+            return selected, reason
         leaves = self.eligible_leaf_nodes(config)
         explore = self._rng.random() < config.epsilon
         if explore and leaves:

@@ -1,6 +1,10 @@
 import argparse
+import os
 import unittest
+from unittest import mock
 
+from src.config import provider_defaults
+from src.providers import OpenAICompatibleProvider
 from stark.cli import _resolve_provider_routing
 
 
@@ -45,3 +49,23 @@ class ProviderRoutingTests(unittest.TestCase):
         self.assertEqual(routing['plan_provider'], 'openai-compatible')
         self.assertEqual(routing['code_provider'], 'claude-compatible')
         self.assertEqual(routing['search_provider'], 'claude-compatible')
+
+    def test_all_micu_route_is_resolved(self):
+        args = self._args(agent_provider_profile='all_micu', provider='micu-compatible')
+        routing = _resolve_provider_routing(args, 'main')
+        self.assertEqual(routing['plan_provider'], 'micu-compatible')
+        self.assertEqual(routing['code_provider'], 'micu-compatible')
+        self.assertEqual(routing['debug_provider'], 'micu-compatible')
+        self.assertEqual(routing['search_provider'], 'micu-compatible')
+
+    def test_micu_provider_uses_its_own_environment_prefix(self):
+        with mock.patch.dict(os.environ, {'MICU_API_KEY': 'test-key'}, clear=True):
+            provider = OpenAICompatibleProvider.from_env(
+                provider_defaults('micu-compatible'),
+                env_prefix='MICU',
+            )
+        self.assertEqual(provider.config.base_url, 'https://www.micuapi.ai/v1')
+        self.assertEqual(provider.config.model, 'claude-sonnet-4-5-20250929')
+        self.assertEqual(provider.config.wire_api, 'chat_completions')
+        self.assertEqual(provider.config.max_tokens, 8192)
+        self.assertEqual(provider._build_endpoint('chat_completions'), 'https://www.micuapi.ai/v1/chat/completions')

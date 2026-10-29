@@ -61,6 +61,11 @@ def aggregate_batch_rows(rows: list[dict[str, Any]]) -> dict[str, Any]:
     generated_total = sum(int(row.get('candidate_total_count') or 0) for row in rows)
     generated_compile = sum(int(row.get('candidate_compile_count') or 0) for row in rows)
     generated_correct = sum(int(row.get('candidate_correct_count') or 0) for row in rows)
+    generated_success_rows = [row for row in rows if row.get('generated_best_correct')]
+    generated_speed_values = [
+        float(row['generated_best_speedup']) if row.get('generated_best_correct') and isinstance(row.get('generated_best_speedup'), (int, float)) else 0.0
+        for row in rows
+    ]
     return {
         'task_count': total,
         'success_count': len(successful),
@@ -78,6 +83,11 @@ def aggregate_batch_rows(rows: list[dict[str, Any]]) -> dict[str, Any]:
             'Success': _ratio(len(successful), total),
             'Fast1': _ratio(sum(1 for row in rows if row.get('paper_fast1')), total),
             'Speed': (sum(speed_metric_values) / total) if total > 0 else None,
+        },
+        'generated_metrics': {
+            'Success': _ratio(len(generated_success_rows), total),
+            'Fast1': _ratio(sum(1 for row in rows if row.get('generated_fast1')), total),
+            'Speed': (sum(generated_speed_values) / total) if total > 0 else None,
         },
         'paper_metrics_by_mode': {
             mode: {
@@ -111,7 +121,8 @@ def write_batch_csv(rows: list[dict[str, Any]], path: Path) -> None:
     fieldnames = [
         'alias', 'level', 'problem_id', 'backend', 'workflow', 'run_profile', 'search_profile', 'evaluator_profile',
         'measurement_profile', 'preset', 'evaluation_profile', 'kernelbench_evaluator', 'status', 'task_name',
-        'best_node_id', 'best_status', 'best_node_is_root', 'best_correct', 'paper_fast1', 'root_correct',
+        'best_node_id', 'best_status', 'best_node_is_root', 'best_correct', 'paper_fast1', 'generated_best_correct',
+        'generated_fast1', 'generated_best_speedup', 'root_correct',
         'non_root_correct', 'improved_over_reference', 'candidate_runtime', 'reference_runtime', 'speedup',
         'primary_reference', 'torch_eager_reference_runtime', 'torch_compile_default_reference_runtime',
         'torch_compile_max_autotune_reference_runtime', 'torch_eager_speedup', 'torch_compile_default_speedup',
@@ -143,12 +154,24 @@ def candidate_attempt_stats(result) -> dict[str, float | int | None]:
     total = len(candidates)
     compile_count = sum(1 for node in candidates if node.compile_ok)
     correct_count = sum(1 for node in candidates if node.correct)
+    correct_candidates = [node for node in candidates if node.correct]
+    best_generated = min(
+        correct_candidates,
+        key=lambda node: (float('inf') if node.runtime is None else node.runtime, node.node_id),
+    ) if correct_candidates else None
     return {
         'total': total,
         'compile': compile_count,
         'correct': correct_count,
         'compile_rate': _ratio(compile_count, total),
         'correct_rate': _ratio(correct_count, total),
+        'best_correct': best_generated is not None,
+        'best_speedup': best_generated.speedup if best_generated is not None else None,
+        'fast1': bool(
+            best_generated is not None
+            and isinstance(best_generated.speedup, (int, float))
+            and best_generated.speedup >= 1.0
+        ),
     }
 
 

@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from stark.core.loader import KernelBenchLoader
+from src.semantics.patterns import classify_statement
 
 
 class SemanticProfileTests(unittest.TestCase):
@@ -70,6 +71,14 @@ class SemanticProfileTests(unittest.TestCase):
         self.assertIsNotNone(profile)
         self.assertEqual(profile.op_type, "reduction")
         self.assertTrue(any("reduction dimension" in note for note in profile.risk_notes))
+
+    def test_pytorch_module_aliases_classify_pool_and_transposed_conv(self):
+        pool = classify_statement("return self.maxpool(x)", task_hint="nn.MaxPool2d")
+        transposed = classify_statement(
+            "return self.conv_transpose3d(x)", task_hint="nn.ConvTranspose3d"
+        )
+        self.assertEqual(pool.op_type, "pooling")
+        self.assertEqual(transposed.op_type, "convolution")
 
     def test_layernorm_records_normalization_risk(self):
         tmp = self._new_tmp_dir()

@@ -21,8 +21,16 @@ import yaml
 from .backends import KERNELBENCH_BACKENDS
 
 
-_REPO_ROOT = Path(__file__).resolve().parents[1]
+_SOURCE_ROOT = Path(__file__).resolve().parents[1]
+_REPO_ROOT = (_SOURCE_ROOT if (_SOURCE_ROOT / "configs" / "experiments").is_dir()
+              else Path(__file__).resolve().parent / "assets")
 _CONFIG_ROOT = _REPO_ROOT / "configs"
+
+
+def asset_path(value: str | Path) -> Path:
+    """Resolve bundled configuration/knowledge in a checkout or installed wheel."""
+    path = Path(value)
+    return path if path.is_absolute() else _REPO_ROOT / path
 
 _WORKFLOWS = ["stark", "sampling", "reflexion", "search-agent", "ma-only"]
 _BACKENDS = list(KERNELBENCH_BACKENDS)
@@ -32,7 +40,7 @@ _DEFAULTS: dict[str, Any] = {
     "backend": "cuda",
     "provider": "openai-compatible",
     "run_profile": "quick",
-    "agent_provider_profile": "codeagent_cudallm",
+    "agent_provider_profile": "all_micu",
     "runtime_profile": "gpu_single",
     "task_config": "main_l1_15",
     "output_root": "runs",
@@ -439,7 +447,7 @@ def _fallback_experiment(name: str) -> dict[str, Any]:
             "workflow": "stark",
             "backend": "cuda",
             "provider": "openai-compatible",
-            "route": "all_gpt",
+            "route": "all_api",
             "tasks": "kb_full_250",
             "search": "paper",
             "evaluator": "paper",
@@ -455,7 +463,7 @@ def _fallback_experiment(name: str) -> dict[str, Any]:
             "workflow": "stark",
             "backend": "cuda",
             "provider": "openai-compatible",
-            "route": "codeagent_cudallm",
+            "route": "all_api",
             "tasks": "main_l1_15",
             "search": "main",
             "evaluator": "main",

@@ -4,7 +4,7 @@ import math
 
 from ..models import AgentContext, NodeSnapshot, StarkConfig
 from .tree import TreeMemory
-from ..utils import last_log_excerpt, normalized_code_hash
+from ..utils import changed_anchor_excerpts, last_log_excerpt, normalized_code_hash
 
 
 def snapshot_node(tree: TreeMemory, node_id: str) -> NodeSnapshot:
@@ -37,7 +37,35 @@ def snapshot_node(tree: TreeMemory, node_id: str) -> NodeSnapshot:
         delta_vs_parent=delta_vs_parent,
         failure_log_excerpt=last_log_excerpt(node.logs),
         code_hash=normalized_code_hash(node.code),
+        plan_summary=node.plan_summary,
+        anchor_edits=[
+            {"anchor_name": edit.anchor_name, "instruction": edit.instruction, "operation": edit.operation}
+            for edit in node.anchor_edits
+        ],
+        changed_anchor_excerpts=changed_anchor_excerpts(
+            root.code,
+            node.code,
+            [edit.anchor_name for edit in node.anchor_edits],
+        ),
+        memory_lesson=_memory_lesson(node),
     )
+
+
+def _memory_lesson(node) -> str | None:
+    strategy = node.plan_strategy_name or "this strategy"
+    if node.correct:
+        if node.speedup is not None and node.speedup >= 1.0:
+            return f"REUSE: {strategy} was correct and achieved {node.speedup:.3f}x speedup. Preserve its working edits."
+        return f"CORRECT_BUT_SLOW: {strategy} was correct; retain correctness but seek a faster mapping."
+    if node.failure_type == "broken_anchor_markers":
+        return "AVOID: scaffold text or markers were changed. Edit anchor bodies only and restore the parent scaffold."
+    if node.latest_failure_stage == "runtime":
+        return f"AVOID_OR_REPAIR: {strategy} failed at runtime. Check int64_t flattened indexing, bounds, shapes, launch sizes, and synchronization."
+    if node.latest_failure_stage == "correctness":
+        return f"REPAIR: {strategy} compiled but was numerically wrong. Preserve the interface and recheck formulas, masks, reductions, and layout."
+    if node.latest_failure_stage == "compile":
+        return f"REPAIR: {strategy} did not compile. Recheck C++/CUDA signatures, pybind exports, includes, and types."
+    return None
 
 
 def _dedupe(items: list[NodeSnapshot]) -> list[NodeSnapshot]:
@@ -92,7 +120,9 @@ def _limit(items: list[NodeSnapshot], limit: int) -> list[NodeSnapshot]:
     return items[:limit]
 
 
-def build_plan_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> AgentContext:
+def build_plan_context(tree: TreeMemory, node_id: str, config: StarkConfig, long_term_memory=None,
+                       performance_feedback=None, workflow_guidance=None,
+                       operator_memory_evidence=None) -> AgentContext:
     current = snapshot_node(tree, node_id)
     root = snapshot_node(tree, tree.root_id)
     node = tree.get_node(node_id)
@@ -110,10 +140,14 @@ def build_plan_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> A
         related=_limit(_sort_snapshots(_dedupe(related)), config.context_limit),
         leaders=_limit(_dedupe_distinct_kernels(_sort_snapshots(_dedupe(leaders))), config.context_limit),
         failure=None,
+        long_term=list(long_term_memory or []),
+        performance_feedback=dict(performance_feedback or {}),
+        workflow_guidance=dict(workflow_guidance or {}),
+        operator_memory=list(operator_memory_evidence or []),
     )
 
 
-def build_code_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> AgentContext:
+def build_code_context(tree: TreeMemory, node_id: str, config: StarkConfig, long_term_memory=None) -> AgentContext:
     current = snapshot_node(tree, node_id)
     root = snapshot_node(tree, tree.root_id)
     node = tree.get_node(node_id)
@@ -126,10 +160,11 @@ def build_code_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> A
         related=_limit(_sort_snapshots(_dedupe(related)), config.context_limit),
         leaders=[],
         failure=None,
+        long_term=list(long_term_memory or []),
     )
 
 
-def build_debug_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> AgentContext:
+def build_debug_context(tree: TreeMemory, node_id: str, config: StarkConfig, long_term_memory=None) -> AgentContext:
     current = snapshot_node(tree, node_id)
     root = snapshot_node(tree, tree.root_id)
     siblings = [snapshot_node(tree, sibling_id) for sibling_id in tree.sibling_ids(node_id)]
@@ -140,4 +175,5 @@ def build_debug_context(tree: TreeMemory, node_id: str, config: StarkConfig) -> 
         related=_limit(_sort_snapshots(_dedupe(siblings)), config.context_limit),
         leaders=[],
         failure=current if current.latest_failure_stage is not None else None,
+        long_term=list(long_term_memory or []),
     )

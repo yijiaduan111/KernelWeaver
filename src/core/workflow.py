@@ -19,7 +19,11 @@ from ..agents import CodeAgent, DebugAgent, PlanAgent
 from .context import build_code_context, build_debug_context, build_plan_context, snapshot_node
 from ..models import AgentContext, AnchorEdit, EvaluationResult, PlanProposal, RunResult, SearchNode, StarkConfig, TaskSpec
 from .tree import TreeMemory
-from ..utils import extract_anchor_names, preserve_anchor_scaffold, shorten_runtime
+from .long_term_memory import TaskExperienceJournal
+from ..knowledge import load_operator_memory
+from .local_tuning import choose_local_variant
+from .profile_feedback import profile_live_candidate
+from ..utils import extract_anchor_names, normalize_anchor_scaffold, preserve_anchor_scaffold, shorten_runtime
 
 
 def _node_status_from_evaluation(evaluation: EvaluationResult) -> str:
@@ -126,6 +130,7 @@ def _new_stats() -> dict:
         "failure_counts": {},
         "failure_stage_counts": {},
         "invalid_proposals": 0,
+        "provider_errors": 0,
     }
 
 
@@ -133,6 +138,33 @@ def _new_debug_stats() -> dict:
     return {
         "total_attempts": 0,
         "per_node": {},
+    }
+
+
+def _evidence_workflow_guidance(task: TaskSpec, enabled: bool) -> dict:
+    """Build a portable task contract inspired by KDA's public workflow.
+
+    The contract deliberately contains no Blackwell-specific recipe.  Backend
+    facts must be supplied by the evaluator or profiler for the current GPU.
+    """
+    if not enabled:
+        return {}
+    return {
+        "method": "kda_style_evidence_loop",
+        "objective": "Produce the fastest correct native kernel under the official evaluator.",
+        "correctness_contract": [
+            "Preserve the exact ModelNew interface and output semantics.",
+            "Pass every official randomized correctness trial before performance promotion.",
+            "Keep bounds, dtype, shape, layout, and int64 flattened-index constraints explicit.",
+        ],
+        "candidate_policy": [
+            "Change one primary performance hypothesis per candidate.",
+            "Ground the hypothesis in measured current/root/related-node evidence, retrieved lessons, or profiler evidence.",
+            "Rank likely impact before cosmetic launch-parameter changes.",
+            "Record failed hypotheses and do not repeat them without a concrete repair.",
+        ],
+        "promotion_rule": "Promote only a correct candidate whose measured runtime improves the relevant parent or root; never infer speed from code appearance.",
+        "hardware_scope": f"Target the evaluator's current {task.backend or 'unknown'} device. Do not assume an architecture not observed in this run.",
     }
 
 
@@ -184,9 +216,10 @@ def _evaluate_plan_code(
         stats["invalid_proposals"] += 1
         return selected_node.code, _invalid_anchor_evaluation(selected_node.code, proposal)
     candidate_code = code_agent.run(task, selected_node, proposal, code_context)
-    if not _anchors_preserved(selected_node.code, candidate_code):
+    normalized_code = normalize_anchor_scaffold(selected_node.code, candidate_code)
+    if normalized_code is None:
         return candidate_code, _broken_anchor_evaluation(selected_node.code, candidate_code)
-    return candidate_code, evaluator.evaluate(task, candidate_code, config)
+    return normalized_code, evaluator.evaluate(task, normalized_code, config)
 
 
 def _evaluate_debug(
@@ -199,9 +232,10 @@ def _evaluate_debug(
 ) -> tuple[PlanProposal, str, EvaluationResult]:
     candidate_code = debug_agent.run(task, selected_node, debug_context)
     proposal = _build_debug_proposal(selected_node)
-    if not _anchors_preserved(selected_node.code, candidate_code):
+    normalized_code = normalize_anchor_scaffold(selected_node.code, candidate_code)
+    if normalized_code is None:
         return proposal, candidate_code, _broken_anchor_evaluation(selected_node.code, candidate_code)
-    return proposal, candidate_code, evaluator.evaluate(task, candidate_code, config)
+    return proposal, normalized_code, evaluator.evaluate(task, normalized_code, config)
 
 
 def _finalize_run(
@@ -255,7 +289,44 @@ def _finalize_run(
 
 def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunResult:
     """Run the main STARK search loop with tree memory and debug routing."""
+    if config.operator_memory_public_only and config.long_term_memory_enabled:
+        raise ValueError("Public-only evaluation cannot read/write the cross-task experience journal")
+    public_corpus = config.operator_memory_public_only or config.operator_memory_public_corpus
+    experience_journal = (TaskExperienceJournal(config.long_term_memory_path, config.long_term_memory_top_k)
+                          if config.long_term_memory_enabled else None)
+    task_experience = experience_journal.retrieve(task) if experience_journal else []
+    # The operator Wiki is the curated long-term memory.  The JSON experience
+    # store above is only a writable experiment journal; it must not silently
+    # promote a generated candidate into trusted operator knowledge.
+    operator_memory_enabled = config.operator_memory_enabled or config.domain_wiki_enabled
+    operator_memory_path = config.operator_memory_path or config.domain_wiki_path
+    operator_memory_arch = config.operator_memory_target_arch or config.domain_wiki_target_arch
+    experimental_pages = (
+        config.operator_memory_experimental_page_ids
+        or config.domain_wiki_experimental_page_ids
+    )
+    if public_corpus and not (
+        operator_memory_enabled and operator_memory_path and operator_memory_arch
+    ):
+        raise ValueError("Public-only evaluation requires an enabled, explicit corpus and architecture")
+    operator_memory = (load_operator_memory(
+                           operator_memory_path,
+                           target_arch=operator_memory_arch,
+                           experimental_page_ids=experimental_pages,
+                           public_only=public_corpus,
+                       )
+                       if operator_memory_enabled and operator_memory_path and operator_memory_arch
+                       else None)
+    operator_memory_evidence = operator_memory.retrieve(task) if operator_memory else []
     tree, root_eval, stats, debug_stats = _initialize_tree(task, config, evaluator)
+    if public_corpus:
+        stats["operator_memory_policy"] = {
+            "knowledge_scope": "public_general",
+            "corpus_sha256": operator_memory.corpus_sha256,
+            "query_basis": "operator_api_structure_only",
+            "families": sorted(operator_memory.task_families(task)),
+            "cross_task_experience": "enabled_separate_journal" if experience_journal else "disabled",
+        }
     plan_agent = PlanAgent(provider)
     code_agent = CodeAgent(provider)
     debug_agent = DebugAgent(provider)
@@ -263,6 +334,26 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
     selection_history: list[str] = []
     selection_reasons: list[str] = []
     selection_exclusions: list[dict[str, str]] = []
+    performance_feedback: dict = {}
+    profile_attempted = False
+    workflow_guidance = _evidence_workflow_guidance(task, config.evidence_workflow_enabled)
+    stats["evidence_workflow_enabled"] = bool(workflow_guidance)
+    stats["operator_memory_evidence"] = [item["id"] for item in operator_memory_evidence]
+    stats["task_experience_count"] = len(task_experience)
+    stats["operator_memory_matches"] = [
+        {
+            "id": item["id"],
+            "path": item.get("path"),
+            "score": item.get("score"),
+            "confidence": item.get("confidence"),
+        }
+        for item in operator_memory_evidence
+    ]
+    # Keep old report readers functional.
+    stats["domain_wiki_evidence"] = list(stats["operator_memory_evidence"])
+    stats["domain_wiki_matches"] = list(stats["operator_memory_matches"])
+    if workflow_guidance:
+        stats["task_contract"] = workflow_guidance
 
     if config.verbose:
         print(
@@ -271,7 +362,18 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
         )
 
     for attempt_index in range(1, config.max_attempts + 1):
-        selected = tree.select_node(config)
+        tuning = None
+        if (config.local_tuning_enabled and attempt_index >= config.local_tuning_start_attempt
+                and stats.get("local_tune_attempts", 0) < config.local_tuning_max_attempts):
+            tuning = choose_local_variant(tree, task.backend)
+        if tuning is not None:
+            parent, variant = tuning
+            parent.selected_count += 1
+            parent.selection_reason = "local_tune_validated_candidate"
+            selected = (parent.node_id, parent.selection_reason)
+            tree.last_exclusions = {}
+        else:
+            selected = tree.select_node(config)
         if selected is None:
             break
         selected_id, selection_reason = selected
@@ -281,45 +383,85 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
         selected_node = tree.get_node(selected_id)
         stats["attempt_count"] += 1
 
+        # Task experience is advisory: reserve deterministic attempts for
+        # fresh exploration so historical CUDA strategies cannot suppress new
+        # candidates. The ratio is rounded to an integer number of attempts.
+        exploration_ratio = min(1.0, max(0.0, float(config.long_term_memory_exploration_ratio)))
+        exploration_slots = int(round(config.max_attempts * exploration_ratio))
+        use_long_term = bool(task_experience) and (attempt_index > exploration_slots)
+        active_long_term = task_experience if use_long_term else []
+
         if config.verbose:
             print(
                 f"[attempt {attempt_index}] workflow=stark selected={selected_id} status={selected_node.status} "
                 f"reason={selection_reason}"
             )
 
-        if selected_node.is_failure and selected_id != tree.root_id:
-            stats["debug_attempts"] += 1
-            debug_stats["total_attempts"] += 1
-            debug_stats["per_node"][selected_id] = debug_stats["per_node"].get(selected_id, 0) + 1
-            selected_node.debug_attempts += 1
-            proposal, candidate_code, evaluation = _evaluate_debug(
-                task,
-                config,
-                evaluator,
-                debug_agent,
-                selected_node,
-                build_debug_context(tree, selected_id, config),
-            )
-            origin = "debug"
-        else:
-            stats["plan_attempts"] += 1
-            proposal = plan_agent.run(task, selected_node, build_plan_context(tree, selected_id, config))
-            candidate_code, evaluation = _evaluate_plan_code(
-                task,
-                config,
-                evaluator,
-                code_agent,
-                selected_node,
-                proposal,
-                build_code_context(tree, selected_id, config),
-                stats,
-            )
-            origin = "plan_code"
+        try:
+            if tuning is not None:
+                stats["local_tune_attempts"] = stats.get("local_tune_attempts", 0) + 1
+                proposal = variant.proposal()
+                candidate_code = variant.code
+                evaluation = evaluator.evaluate(task, candidate_code, config)
+                origin = "local_tune"
+                stats.setdefault("local_tuning_trials", []).append({
+                    "attempt": attempt_index, "parent_id": selected_id,
+                    **variant.metadata(), "correct": evaluation.correct,
+                    "compile_ok": evaluation.compile_ok, "runtime": evaluation.runtime,
+                    "parent_runtime": selected_node.runtime,
+                })
+            elif selected_node.is_failure and selected_id != tree.root_id:
+                stats["debug_attempts"] += 1
+                debug_stats["total_attempts"] += 1
+                debug_stats["per_node"][selected_id] = debug_stats["per_node"].get(selected_id, 0) + 1
+                selected_node.debug_attempts += 1
+                proposal, candidate_code, evaluation = _evaluate_debug(
+                    task,
+                    config,
+                    evaluator,
+                    debug_agent,
+                    selected_node,
+                    build_debug_context(tree, selected_id, config, active_long_term),
+                )
+                origin = "debug"
+            else:
+                stats["plan_attempts"] += 1
+                proposal = plan_agent.run(
+                    task, selected_node,
+                    build_plan_context(
+                        tree, selected_id, config, active_long_term,
+                        performance_feedback, workflow_guidance, operator_memory_evidence,
+                    ),
+                )
+                candidate_code, evaluation = _evaluate_plan_code(
+                    task,
+                    config,
+                    evaluator,
+                    code_agent,
+                    selected_node,
+                    proposal,
+                    build_code_context(tree, selected_id, config, active_long_term),
+                    stats,
+                )
+                origin = "plan_code"
+        except RuntimeError as exc:
+            if "llm " not in str(exc).lower():
+                raise
+            stats["provider_errors"] = stats.get("provider_errors", 0) + 1
+            if config.verbose:
+                print(f"  -> provider_error attempt={attempt_index} error={exc}")
+            continue
 
         child = tree.add_child(selected_id, candidate_code, proposal, evaluation, origin)
         tree.update_leaderboard(child.node_id, config)
         tree.refresh_pruned_nodes(config)
         _record_failure(stats, evaluation)
+        if (config.profile_feedback_enabled and not profile_attempted
+                and task.backend == "cuda" and child.correct
+                and attempt_index < config.max_attempts
+                and child.speedup is not None and child.speedup >= 0.7):
+            profile_attempted = True
+            performance_feedback = profile_live_candidate(task, config, child, stats)
 
         if config.verbose:
             print(
@@ -327,7 +469,7 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
                 f"score={shorten_runtime(child.runtime)} strategy={child.plan_strategy_name}"
             )
 
-    return _finalize_run(
+    result = _finalize_run(
         task,
         config,
         tree,
@@ -338,6 +480,9 @@ def run_stark(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunRe
         selection_exclusions,
         workflow="stark",
     )
+    if experience_journal:
+        experience_journal.record(task, result)
+    return result
 
 
 def run_sampling(task: TaskSpec, config: StarkConfig, provider, evaluator) -> RunResult:

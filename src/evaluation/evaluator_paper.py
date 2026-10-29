@@ -2,6 +2,8 @@ from __future__ import annotations
 
 """KernelBench evaluator aligned with the official open-source helpers."""
 
+import multiprocessing
+import os
 import sys
 from pathlib import Path
 from typing import Any, Callable
@@ -44,6 +46,14 @@ class KernelBenchPaperEvaluator(Evaluator):
     """Evaluate one candidate with the official KernelBench correctness and timing path."""
 
     def evaluate(self, task: TaskSpec, code: str, config: StarkConfig) -> EvaluationResult:
+        # A bad generated kernel can leave CUDA's context in a sticky illegal-access
+        # state.  Evaluate every root/candidate in a fresh spawned process so one
+        # candidate cannot invalidate the remaining search or later benchmark tasks.
+        if os.environ.get("STARK_PAPER_EVAL_ISOLATION", "1").strip().lower() not in {"0", "false", "no"}:
+            return _evaluate_isolated(task, code, config)
+        return self._evaluate_in_process(task, code, config)
+
+    def _evaluate_in_process(self, task: TaskSpec, code: str, config: StarkConfig) -> EvaluationResult:
         if task.entry_kind != "model_class":
             return _failure_result(
                 "compile",
@@ -219,7 +229,17 @@ def _paper_exception_stage(torch, exc: Exception) -> tuple[str, str]:
     error_name = exc.__class__.__name__.lower()
     if isinstance(exc, torch.cuda.OutOfMemoryError) or "out of memory" in message:
         return "runtime", "cuda_out_of_memory"
-    if "cuda" in message or "device-side" in message or "illegal memory access" in message:
+    if _looks_like_compile_failure(message):
+        return "compile", "cuda_compile_error"
+    runtime_markers = (
+        "cuda error:",
+        "cuda kernel launch",
+        "device-side",
+        "illegal memory access",
+        "misaligned address",
+        "invalid configuration argument",
+    )
+    if any(marker in message for marker in runtime_markers):
         return "runtime", error_name or "runtime_error"
     if isinstance(exc, (SyntaxError, ImportError, ModuleNotFoundError)):
         return "compile", error_name or "compile_error"
@@ -227,6 +247,21 @@ def _paper_exception_stage(torch, exc: Exception) -> tuple[str, str]:
 
 
 def _paper_failure_from_metadata(metadata: dict[str, Any]) -> tuple[str, str]:
+    # KernelBench imports ModelNew before its load_inline extension is built.
+    # A lazy nvcc/ninja failure therefore arrives under runtime_error metadata
+    # even though the candidate never produced an executable CUDA kernel.
+    diagnostic = "\n".join(
+        str(metadata.get(key) or "")
+        for key in (
+            "compilation_error_name",
+            "compilation_error",
+            "runtime_error_name",
+            "runtime_error",
+            "runtime_error_traceback",
+        )
+    ).lower()
+    if _looks_like_compile_failure(diagnostic):
+        return "compile", "cuda_compile_error"
     if metadata.get("runtime_error") is not None or metadata.get("runtime_error_name") is not None:
         return "runtime", str(metadata.get("runtime_error_name") or "runtime_error")
     if metadata.get("correctness_issue") is not None or metadata.get("correctness_issue_name") is not None:
@@ -234,6 +269,18 @@ def _paper_failure_from_metadata(metadata: dict[str, Any]) -> tuple[str, str]:
     if metadata.get("compilation_error") is not None or metadata.get("compilation_error_name") is not None:
         return "compile", str(metadata.get("compilation_error_name") or "compile_error")
     return "correctness", "correctness_error"
+
+
+def _looks_like_compile_failure(message: str) -> bool:
+    compile_markers = (
+        "error building extension",
+        "ninja: build stopped",
+        "nvcc fatal",
+        "ptxas error",
+        "compilation error",
+        "failed: cuda.cuda.o",
+    )
+    return any(marker in message for marker in compile_markers)
 
 
 def _metadata_logs(metadata: dict[str, Any]) -> list[str]:
@@ -270,3 +317,58 @@ def _seconds_from_milliseconds(value: Any) -> float | None:
     if value <= 0:
         return None
     return value / 1000.0
+
+
+def _paper_eval_worker(connection, task: TaskSpec, code: str, config: StarkConfig) -> None:
+    try:
+        result = KernelBenchPaperEvaluator()._evaluate_in_process(task, code, config)
+        connection.send(("ok", result))
+    except BaseException as exc:
+        connection.send(("error", f"{exc.__class__.__name__}: {exc}"))
+    finally:
+        connection.close()
+
+
+def _paper_eval_timeout_seconds(config: StarkConfig) -> int:
+    configured = int(getattr(config, "paper_eval_timeout_seconds", 900))
+    override = os.environ.get("STARK_PAPER_EVAL_TIMEOUT_SECONDS")
+    return max(60, int(override) if override is not None else configured)
+
+
+def _evaluate_isolated(task: TaskSpec, code: str, config: StarkConfig) -> EvaluationResult:
+    context = multiprocessing.get_context("spawn")
+    receive_connection, send_connection = context.Pipe(duplex=False)
+    process = context.Process(
+        target=_paper_eval_worker,
+        args=(send_connection, task, code, config),
+        daemon=False,
+    )
+    process.start()
+    send_connection.close()
+    timeout_seconds = _paper_eval_timeout_seconds(config)
+    try:
+        if receive_connection.poll(timeout_seconds):
+            status, payload = receive_connection.recv()
+            process.join(timeout=10)
+            if status == "ok" and isinstance(payload, EvaluationResult):
+                return payload
+            return _failure_result("runtime", "isolated_evaluator_error", f"isolated_evaluator_error: {payload}")
+        process.terminate()
+        process.join(timeout=10)
+        return _failure_result(
+            "runtime",
+            "isolated_evaluator_timeout",
+            f"isolated_evaluator_timeout: exceeded {timeout_seconds}s",
+        )
+    except (EOFError, OSError) as exc:
+        process.join(timeout=10)
+        return _failure_result(
+            "runtime",
+            "isolated_evaluator_crash",
+            f"isolated_evaluator_crash: exitcode={process.exitcode}; {exc}",
+        )
+    finally:
+        receive_connection.close()
+        if process.is_alive():
+            process.terminate()
+            process.join(timeout=10)

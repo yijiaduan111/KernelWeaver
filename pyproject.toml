@@ -4,17 +4,37 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kernelweaver"
-version = "0.1.0"
-description = "Clean STARK-style baseline for kernel optimization experiments."
+version = "0.2.0"
+description = "PyramidKernel kernel optimization with short-term memory, persistent experience, and a public-source Wiki."
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [
-  "PyYAML>=6.0",
+license = {file = "LICENSE"}
+authors = [{name = "KernelWeaver contributors"}]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
+dependencies = ["PyYAML>=6.0"]
+
+[project.optional-dependencies]
+benchmark = ["torch>=2.7", "numpy>=1.24", "requests>=2.31", "pydantic>=2", "python-dotenv>=1", "tqdm>=4", "packaging>=23", "ninja>=1.11"]
+local = ["transformers>=4.45", "accelerate>=0.30"]
+test = ["pytest>=7"]
+
+[project.urls]
+Repository = "https://github.com/yijiaduan111/KernelWeaver"
+Issues = "https://github.com/yijiaduan111/KernelWeaver/issues"
 
 [project.scripts]
 stark = "stark.cli:main"
+kernelweaver = "src.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["stark", "stark.*", "src", "src.*"]
+
+[tool.setuptools]
+include-package-data = true
+license-files = ["LICENSE", "licenses/*.txt"]

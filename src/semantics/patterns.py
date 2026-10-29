@@ -20,8 +20,15 @@ _ELEMENTWISE_TOKENS = {
 _REDUCTION_TOKENS = {"sum", "mean", "amax", "amin", "max", "min", "prod", "argmax", "argmin"}
 _NORM_TOKENS = {"layer_norm", "layernorm", "batch_norm", "batchnorm", "group_norm", "instancenorm", "rms_norm"}
 _MATMUL_TOKENS = {"matmul", "mm", "bmm", "linear", "einsum", "addmm"}
-_CONV_TOKENS = {"conv", "conv1d", "conv2d", "conv3d", "conv_transpose", "depthwise"}
-_POOL_TOKENS = {"pool", "max_pool", "avg_pool", "adaptive_avg_pool", "adaptive_max_pool"}
+_CONV_TOKENS = {
+    "conv", "conv1d", "conv2d", "conv3d", "conv_transpose", "convtranspose1d",
+    "convtranspose2d", "convtranspose3d", "depthwise",
+}
+_POOL_TOKENS = {
+    "pool", "max_pool", "maxpool", "maxpool1d", "maxpool2d", "maxpool3d",
+    "avg_pool", "avgpool", "avgpool1d", "avgpool2d", "avgpool3d",
+    "adaptive_avg_pool", "adaptive_max_pool",
+}
 _ATTENTION_TOKENS = {"attention", "scaled_dot_product_attention", "qkv"}
 _LOSS_TOKENS = {"loss", "cross_entropy", "nll_loss", "mse_loss", "bce"}
 

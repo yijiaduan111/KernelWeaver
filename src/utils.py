@@ -27,6 +27,52 @@ def preserve_anchor_scaffold(original_code: str, candidate_code: str) -> bool:
     return original_parts == candidate_parts
 
 
+def normalize_anchor_scaffold(original_code: str, candidate_code: str) -> str | None:
+    """Put candidate anchor bodies into the trusted original scaffold.
+
+    Language models occasionally reflow comments, docstrings, or whitespace outside
+    editable anchors even when every marker is intact.  Those changes should not turn
+    into a fake compiler failure: discard them and retain only the proposed anchor
+    bodies.  A missing, duplicated, or reordered marker is still rejected.
+    """
+    original_matches = list(_ANCHOR_PATTERN.finditer(original_code))
+    candidate_matches = list(_ANCHOR_PATTERN.finditer(candidate_code))
+    original_names = [str(match.group("name")) for match in original_matches]
+    candidate_names = [str(match.group("name")) for match in candidate_matches]
+    if not original_matches or original_names != candidate_names:
+        return None
+
+    rendered: list[str] = []
+    cursor = 0
+    for original_match, candidate_match in zip(original_matches, candidate_matches):
+        rendered.append(original_code[cursor:original_match.start()])
+        rendered.append(str(original_match.group(1)))
+        rendered.append(str(candidate_match.group("body")))
+        rendered.append(str(original_match.group(4)))
+        cursor = original_match.end()
+    rendered.append(original_code[cursor:])
+    return "".join(rendered)
+
+
+def changed_anchor_excerpts(
+    root_code: str,
+    candidate_code: str,
+    anchor_names: list[str] | None = None,
+    max_chars: int = 800,
+) -> dict[str, str]:
+    """Return compact realized edits for short-term cross-candidate memory."""
+    root_bodies = _anchor_bodies(root_code)
+    candidate_bodies = _anchor_bodies(candidate_code)
+    selected = set(anchor_names or candidate_bodies)
+    excerpts: dict[str, str] = {}
+    for name, body in candidate_bodies.items():
+        if name not in selected or body == root_bodies.get(name):
+            continue
+        cleaned = body.strip()
+        excerpts[name] = cleaned if len(cleaned) <= max_chars else cleaned[: max_chars - 3] + "..."
+    return excerpts
+
+
 def apply_anchor_edit(source_code: str, anchor_name: str, new_body: str, operation: str = "replace") -> str:
     match = None
     for candidate in _ANCHOR_PATTERN.finditer(source_code):
@@ -134,6 +180,10 @@ def _split_anchor_scaffold(source_code: str) -> list[tuple[str, str]]:
         cursor = match.end()
     parts.append(("text", source_code[cursor:]))
     return parts
+
+
+def _anchor_bodies(source_code: str) -> dict[str, str]:
+    return {str(match.group("name")): str(match.group("body")) for match in _ANCHOR_PATTERN.finditer(source_code)}
 
 
 def _maybe_import_torch():

@@ -38,6 +38,8 @@ kw_write_launch_script() {
   local repo_root=$2
   local command_array_name=$3
   local -n command_ref=$command_array_name
+  # Never persist credentials in generated launcher scripts. Detached runs
+  # read the private .env file through the normal provider configuration.
   local forwarded_vars=(
     KERNELWEAVER_CONDA_PREFIX
     KERNELWEAVER_CONDA_ENV
@@ -45,13 +47,10 @@ kw_write_launch_script() {
     CUDA_VISIBLE_DEVICES
     CUDALLM_DEVICE
     CUDALLM_MODEL_PATH
-    OPENAI_API_KEY
     OPENAI_BASE_URL
     OPENAI_MODEL
-    CLAUDE_API_KEY
     CLAUDE_BASE_URL
     CLAUDE_MODEL
-    ANTHROPIC_API_KEY
     ANTHROPIC_BASE_URL
     ANTHROPIC_MODEL
   )

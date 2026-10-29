@@ -1,0 +1,162 @@
+diff --git a/src/kernelbench/eval.py b/src/kernelbench/eval.py
+index 3557dc9..6ea92bd 100644
+--- a/src/kernelbench/eval.py
++++ b/src/kernelbench/eval.py
+@@ -22,6 +22,7 @@ import torch.nn as nn
+ from pydantic import BaseModel
+ 
+ from . import timing, dataset
++from . import safe_compare
+ 
+ REPO_TOP_PATH = os.path.abspath(
+     os.path.join(
+@@ -384,8 +385,10 @@ def _process_input_tensor(input, device, backend="cuda", precision=torch.float32
+     if not isinstance(input, torch.Tensor):
+         return input
+     
+-    # cast to the desired percision dtype for activations
+-    input_tensor = input.to(dtype=precision)
++    # Cast only floating/complex activations. Integer and boolean tensors often
++    # encode indices, labels, masks, or shapes; changing their dtype breaks the
++    # reference semantics (for example, cross_entropy requires integer labels).
++    input_tensor = input.to(dtype=precision) if (input.is_floating_point() or input.is_complex()) else input
+     
+     # Default for all other backends and float types
+     return input_tensor.to(device=device)
+@@ -801,11 +804,10 @@ def run_and_check_correctness(
+                 # now we will return the tolerance from get_tolerance_for_precision
+                 tolerance = get_tolerance_for_precision(precision)
+                 # check output value difference
+-                if not torch.allclose(
++                if not safe_compare.allclose(
+                     output, output_new, atol=tolerance, rtol=tolerance
+                 ):  # fail
+-                    max_diff = torch.max(torch.abs(output - output_new)).item()
+-                    avg_diff = torch.mean(torch.abs(output - output_new)).item()
++                    max_diff, avg_diff = safe_compare.difference_stats(output, output_new)
+                     metadata.setdefault("max_difference", []).append(f"{max_diff:.6f}")
+                     metadata.setdefault("avg_difference", []).append(f"{avg_diff:.6f}")
+                     metadata["correctness_issue"] = "Output mismatch"
+@@ -909,4 +911,4 @@ def check_metadata_serializable_all_types(metadata: dict):
+ # if __name__ == "__main__":
+ # fetch_kernel_from_database("kernelbench_prompt_v2_level_2", 1, 1, "http://localhost:9091")
+ # print(fetch_ref_arch_from_level_problem_id("2", 1, with_name=True))
+-# Note: fetch_baseline_time is available in kernelbench.timing module
+\ No newline at end of file
++# Note: fetch_baseline_time is available in kernelbench.timing module
+diff --git a/src/kernelbench/timing.py b/src/kernelbench/timing.py
+index f22920b..2fcfd58 100644
+--- a/src/kernelbench/timing.py
++++ b/src/kernelbench/timing.py
+@@ -31,7 +31,7 @@ def measure_ref_program_time(
+     For pure PyTorch program, we assume it operates all on main stream (as torch operators execute on the default cuda stream).
+     Standard PyTorch ops do NOT spawn extra streams.
+     """
+-    from kernelbench.eval import load_original_model_and_inputs, set_seed
++    from kernelbench.eval import _process_input_tensor, load_original_model_and_inputs, set_seed
+ 
+     context = {}
+     Model, get_init_inputs, get_inputs = load_original_model_and_inputs(
+@@ -60,14 +60,8 @@ def measure_ref_program_time(
+ 
+ 
+             # set model weights and inputs to specified precision
+-            inputs = [
+-                x.to(device=device, dtype=precision_dtype) if isinstance(x, torch.Tensor) else x
+-                for x in inputs
+-            ]
+-            init_inputs = [
+-                x.to(device=device, dtype=precision_dtype) if isinstance(x, torch.Tensor) else x
+-                for x in init_inputs
+-            ]
++            inputs = [_process_input_tensor(x, device, precision=precision_dtype) for x in inputs]
++            init_inputs = [_process_input_tensor(x, device, precision=precision_dtype) for x in init_inputs]
+ 
+             model = Model(*init_inputs)
+             model = model.to(device=device, dtype=precision_dtype)
+@@ -623,4 +617,3 @@ def get_timing_stats(elapsed_times: list[float], device: torch.device = None) ->
+         stats["device"] = str(device)  # for debugging
+ 
+     return stats
+-
+diff --git a/src/kernelbench/utils.py b/src/kernelbench/utils.py
+index d2d1b17..aca2288 100644
+--- a/src/kernelbench/utils.py
++++ b/src/kernelbench/utils.py
+@@ -18,9 +18,18 @@ from tqdm import tqdm
+ import torch
+ from importlib.resources import files, as_file
+ 
+-# API clients
+-from openai import OpenAI
+-from litellm import completion
++# API clients are optional for local evaluation. KernelWeaver only imports the
++# GPU/evaluation helpers from this module, so do not require generation-server
++# dependencies unless query_server is actually used.
++try:
++    from openai import OpenAI
++except ImportError:  # pragma: no cover - only exercised by generation clients
++    OpenAI = None
++
++try:
++    from litellm import completion
++except ImportError:  # pragma: no cover - only exercised by generation clients
++    completion = None
+ 
+ import numpy as np
+ from contextlib import contextmanager
+@@ -605,4 +614,4 @@ def rand_mix_like(tensor: torch.Tensor, dist: str = "random", **kwargs):
+ 
+ # Register convenience aliases under torch namespace (does not shadow existing fns)
+ setattr(torch, "rand_mix", rand_mix)
+-setattr(torch, "rand_mix_like", rand_mix_like)
+\ No newline at end of file
++setattr(torch, "rand_mix_like", rand_mix_like)
+diff --git a/src/kernelbench/safe_compare.py b/src/kernelbench/safe_compare.py
+new file mode 100644
+--- /dev/null
++++ b/src/kernelbench/safe_compare.py
+@@ -0,0 +1,43 @@
++"""Opt-in bounded-memory verification; no sampling or relaxed tolerances."""
++import os
++
++import torch
++
++
++def tensor_chunks(a, b, limit):
++    """Yield views, including strided tensors, without copying a whole output."""
++    if a.numel() <= limit:
++        yield a, b
++    elif a.is_contiguous() and b.is_contiguous():
++        a, b = a.view(-1), b.view(-1)
++        for start in range(0, a.numel(), limit):
++            yield a[start:start + limit], b[start:start + limit]
++    else:
++        axis = max(range(a.ndim), key=lambda i: a.shape[i])
++        step = max(1, limit // (a.numel() // a.shape[axis]))
++        for start in range(0, a.shape[axis], step):
++            size = min(step, a.shape[axis] - start)
++            yield from tensor_chunks(a.narrow(axis, start, size), b.narrow(axis, start, size), limit)
++
++
++def allclose(a, b, *, rtol=1e-5, atol=1e-8, equal_nan=False, chunk_elements=None):
++    limit = int(os.environ.get("KERNELBENCH_CHECK_CHUNK_ELEMENTS", "0")) if chunk_elements is None else chunk_elements
++    if limit <= 0 or a.shape != b.shape or a.numel() <= limit:
++        return torch.allclose(a, b, rtol=rtol, atol=atol, equal_nan=equal_nan)
++    # Every element must pass exactly the original torch.allclose test.
++    return all(torch.allclose(x, y, rtol=rtol, atol=atol, equal_nan=equal_nan)
++               for x, y in tensor_chunks(a, b, limit))
++
++
++def difference_stats(a, b):
++    limit = int(os.environ.get("KERNELBENCH_CHECK_CHUNK_ELEMENTS", "0"))
++    if limit <= 0 or a.numel() <= limit:
++        return torch.max(torch.abs(a - b)).item(), torch.mean(torch.abs(a - b)).item()
++    maximum = torch.zeros((), device=a.device, dtype=a.real.dtype)
++    total = torch.zeros((), device=a.device, dtype=torch.float64)
++    for x, y in tensor_chunks(a, b, limit):
++        diff = torch.abs(x - y)
++        maximum = torch.maximum(maximum, diff.max())
++        total += diff.sum(dtype=torch.float64)
++    # Diagnostics only: double-precision summation does not affect pass/fail.
++    return maximum.item(), (total / a.numel()).item()

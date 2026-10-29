@@ -158,6 +158,10 @@ class NodeSnapshot:
     delta_vs_parent: float | None = None
     failure_log_excerpt: str | None = None
     code_hash: str | None = None
+    plan_summary: str | None = None
+    anchor_edits: list[dict[str, str]] = field(default_factory=list)
+    changed_anchor_excerpts: dict[str, str] = field(default_factory=dict)
+    memory_lesson: str | None = None
 
 
 @dataclass(slots=True)
@@ -168,6 +172,16 @@ class AgentContext:
     related: list[NodeSnapshot] = field(default_factory=list)
     leaders: list[NodeSnapshot] = field(default_factory=list)
     failure: NodeSnapshot | None = None
+    # Compatibility storage for the untrusted task experience journal. This is
+    # intentionally distinct from curated long-term operator_memory below.
+    long_term: list[dict[str, Any]] = field(default_factory=list)
+    performance_feedback: dict[str, Any] = field(default_factory=dict)
+    workflow_guidance: dict[str, Any] = field(default_factory=dict)
+    # Curated, cross-task operator knowledge.  This is the canonical long-term
+    # memory channel; tree snapshots above are the task-local short-term memory.
+    operator_memory: list[dict[str, Any]] = field(default_factory=list)
+    # Compatibility field for runs recorded before operator-memory naming.
+    domain_wiki_evidence: list[dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass(slots=True)
@@ -202,9 +216,45 @@ class StarkConfig:
     paper_discard_first: int = 1
     timing_method: str = "cuda_event"
     reference_modes: list[str] = field(default_factory=lambda: ["torch_eager"])
+    # Hard wall-clock guard for one isolated KernelBench evaluation. This is
+    # backend-neutral and covers compilation, correctness, and measurement.
+    paper_eval_timeout_seconds: int = 900
     semantics_enabled: bool = True
     semantics_mode: str = "rule"
     semantics_max_anchor_hints: int = 6
+    long_term_memory_enabled: bool = False
+    long_term_memory_path: str | None = None
+    long_term_memory_top_k: int = 4
+    # Fraction of STARK attempts reserved for fresh exploration without the
+    # untrusted cross-task experience journal.
+    long_term_memory_exploration_ratio: float = 0.0
+    local_tuning_enabled: bool = False
+    local_tuning_max_attempts: int = 2
+    local_tuning_start_attempt: int = 3
+    profile_feedback_enabled: bool = False
+    profile_feedback_timeout_seconds: int = 240
+    # KDA-style evidence loop.  This is backend-neutral orchestration; any
+    # device-specific advice must come from observations of the current run.
+    evidence_workflow_enabled: bool = False
+    # Curated, backend/architecture-scoped long-term operator memory.
+    operator_memory_enabled: bool = False
+    operator_memory_public_only: bool = False
+    # Audit/select the public corpus, while allowing an explicitly separate
+    # per-experiment experience journal.  Unlike public_only, this is not a
+    # claim that cross-task experience is disabled.
+    operator_memory_public_corpus: bool = False
+    operator_memory_path: str | None = None
+    operator_memory_target_arch: str | None = None
+    operator_memory_experimental_page_ids: list[str] = field(default_factory=list)
+    # Compatibility fields for old domain_wiki_* experiment manifests.
+    domain_wiki_enabled: bool = False
+    domain_wiki_path: str | None = None
+    domain_wiki_target_arch: str | None = None
+    # Draft pages are never retrieved by default.  An experiment may opt in
+    # specific draft IDs without promoting them for every Wiki-enabled run.
+    domain_wiki_experimental_page_ids: list[str] = field(default_factory=list)
+    # Appended for positional compatibility. None preserves the old selector.
+    search_policy_path: str | None = None
 
 
 @dataclass(slots=True)
